@@ -33,7 +33,6 @@ install:
 
 build:
   stage: build
-  image: node:18.12.1-stretch
   script:
     - npm run build
 
