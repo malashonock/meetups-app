@@ -11,6 +11,12 @@
 - [Cypress](https://www.cypress.io/) - tools for e2e and integration tests
 - [TypeScript](https://www.typescriptlang.org/) - a strongly typed programming language that builds on JavaScript
 
+## Resources
+
+- [Requirements](https://gitlab.com/samfeinternship2022/docs)
+- [Api Server](https://gitlab.com/samfeinternship2022/api-server)
+- [Design](https://www.figma.com/file/xu4vtVzCyKp9Thzpp7DkVj/Internship-Meetups-App?node-id=129%3A0&t=B6e10yduGP4ACePq-0)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
