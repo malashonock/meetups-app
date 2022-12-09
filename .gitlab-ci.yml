@@ -38,6 +38,10 @@ build:
 
 test:
   stage: test
+  only:
+    refs:
+      - main
+      - master
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
   script:
     - npm run test:ci
