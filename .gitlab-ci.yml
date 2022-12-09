@@ -1,4 +1,4 @@
-image: node:18.12.1-stretch
+image: node:18.12.1
 variables:
   FF_USE_FASTZIP: 'true'
   CYPRESS_INSTALL_BINARY: 0
