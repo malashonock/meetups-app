@@ -21,7 +21,8 @@
     "husky": "^8.0.2",
     "jest-junit": "^15.0.0",
     "lint-staged": "^13.1.0",
-    "prettier": "2.8.1"
+    "prettier": "2.8.1",
+    "cypress": "^12.0.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -33,7 +34,8 @@
     "format:check": "prettier --check .",
     "test": "react-scripts test",
     "test:coverage": "react-scripts test --coverage --watchAll=false",
-    "test:ci": "react-scripts test --coverage --watchAll=false --collectCoverage --coverageDirectory=\"./coverage\" --ci --reporters=default --reporters=jest-junit "
+    "test:ci": "react-scripts test --coverage --watchAll=false --collectCoverage --coverageDirectory=\"./coverage\" --ci --reporters=default --reporters=jest-junit ",
+    "test:e2e": "cypress open"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown",

@@ -1,5 +1,16 @@
 # Getting Started with Create React App
 
+[![pipeline status](https://gitlab.com/samfeinternship2022/meetups-template/badges/master/pipeline.svg)](https://gitlab.com/samfeinternship2022/meetups-template/-/commits/master)
+[![coverage report](https://gitlab.com/samfeinternship2022/meetups-template/badges/master/coverage.svg)](https://gitlab.com/samfeinternship2022/meetups-template/-/commits/master)
+
+## Built With
+
+- [React](https://reactjs.org/)
+- [Jest](https://jestjs.io) - unit testing framework
+- [ESLint](https://eslint.org/) - JavaScript linting utility
+- [Cypress](https://www.cypress.io/) - tools for e2e and integration tests
+- [TypeScript](https://www.typescriptlang.org/) - a strongly typed programming language that builds on JavaScript
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
