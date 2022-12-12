@@ -10,6 +10,7 @@
 - [ESLint](https://eslint.org/) - JavaScript linting utility
 - [Cypress](https://www.cypress.io/) - tools for e2e and integration tests
 - [TypeScript](https://www.typescriptlang.org/) - a strongly typed programming language that builds on JavaScript
+- [Storybook](https://storybook.js.org/)
 
 ## Resources
 
