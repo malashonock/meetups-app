@@ -1,7 +1,7 @@
 # Getting Started with Create React App
 
-[![pipeline status](https://gitlab.com/samfeinternship2022/meetups-template/badges/master/pipeline.svg)](https://gitlab.com/samfeinternship2022/meetups-template/-/commits/master)
-[![coverage report](https://gitlab.com/samfeinternship2022/meetups-template/badges/master/coverage.svg)](https://gitlab.com/samfeinternship2022/meetups-template/-/commits/master)
+[![pipeline status](https://gitlab.com/samfeinternship2022/kireynko-kalinin-malashonak/badges/master/pipeline.svg)](https://gitlab.com/samfeinternship2022/kireynko-kalinin-malashonak/-/commits/master)
+[![coverage report](https://gitlab.com/samfeinternship2022/kireynko-kalinin-malashonak/badges/master/coverage.svg)](https://gitlab.com/samfeinternship2022/kireynko-kalinin-malashonak/-/commits/master)
 
 ## Built With
 
