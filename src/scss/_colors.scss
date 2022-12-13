@@ -1,0 +1,40 @@
+/* Primary */
+
+$blue-color: #314ad7;
+$purple-color: #8065ec;
+$light-purple-color: #e4e8ff;
+
+/* Gradient */
+
+$purple-gradient-color: linear-gradient(
+  63.5deg,
+  $purple-color 16.63%,
+  $blue-color 83.37%
+);
+
+/* Neutral */
+
+$black-color: #3c4861;
+$white-color: #ffffff;
+
+$gray-01-color: #5b6887;
+$gray-02-color: #848fa5;
+$gray-03-color: #aab6ca;
+$gray-04-color: #c2cbda;
+$gray-05-color: #d5dce7;
+$gray-06-color: #e2e7ef;
+$gray-07-color: #f4f6fc;
+
+/* Additional */
+
+$green-01-color: #009a73;
+$green-02-color: #2bbc7e;
+$green-03-color: #d6f7e9;
+
+$red-01-color: #ef2f00;
+$red-02-color: #ff380c;
+$red-03-color: #ffebe5;
+
+$orange-01-color: #fb9700;
+$orange-02-color: #ffc121;
+$orange-03-color: #fff6dc;
