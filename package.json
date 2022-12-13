@@ -50,7 +50,8 @@
     "test:ci": "react-scripts test --coverage --watchAll=false --collectCoverage --coverageDirectory=\"./coverage\" --ci --reporters=default --reporters=jest-junit ",
     "test:e2e": "cypress open",
     "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public",
+    "prepare": "husky install"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown",
