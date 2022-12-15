@@ -1,6 +1,7 @@
 /* Primary */
 
-$blue-color: #314ad7;
+$blue-01-color: #2a40bf;
+$blue-02-color: #314ad7;
 $purple-color: #8065ec;
 $light-purple-color: #e4e8ff;
 
@@ -9,8 +10,20 @@ $light-purple-color: #e4e8ff;
 $purple-gradient-color: linear-gradient(
   63.5deg,
   $purple-color 16.63%,
-  $blue-color 83.37%
+  $blue-02-color 83.37%
 );
+
+// for smooth transition from gradient to solid
+$blue-01-gradient-color: linear-gradient($blue-01-color, $blue-01-color);
+
+/* Transparent */
+
+$gray-shadow-01-color: rgba(60, 72, 97, 0.3);
+$gray-shadow-02-color: rgba(60, 72, 97, 0.2);
+$gray-transparent-01-color: rgba(132, 143, 165, 0.2);
+$gray-transparent-02-color: rgba(132, 143, 165, 0.1);
+$purple-transparent-01-color: rgba(128, 101, 236, 0.4);
+$purple-transparent-02-color: rgba(128, 101, 236, 0.2);
 
 /* Neutral */
 
