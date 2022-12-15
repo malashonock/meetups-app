@@ -1,0 +1,126 @@
+@import '~style/colors';
+
+.wrapper {
+  position: relative;
+
+  display: inline-block;
+
+  &:hover {
+    cursor: default;
+  }
+}
+
+.tooltip {
+  position: absolute;
+  top: 40px;
+  left: 50%;
+
+  width: max-content;
+  max-width: 230px;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 4px;
+  box-sizing: border-box;
+  padding: 20px 30px;
+  z-index: 1;
+
+  border-radius: 3px;
+  box-shadow: 0px 9px 24px $gray-shadow-03-color;
+
+  transform: translate(-50%);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -7px;
+
+    padding: 8px;
+    z-index: 1;
+
+    border-radius: 2px;
+
+    transform: rotate(45deg);
+  }
+
+  &.black {
+    background-color: $black-color;
+    color: $white-color;
+
+    &::before {
+      background-color: $black-color;
+    }
+  }
+
+  &.color {
+    background-color: $purple-color;
+    color: $white-color;
+
+    &::before {
+      background-color: $purple-color;
+    }
+  }
+
+  &.outline,
+  &.white {
+    background-color: $white-color;
+
+    .heading {
+      color: $black-color;
+    }
+
+    .description {
+      color: $gray-02-color;
+    }
+
+    &::before {
+      background-color: $white-color;
+    }
+  }
+
+  &.outline {
+    border: 1px solid $gray-05-color;
+
+    &::before {
+      border: 1px solid $gray-05-color;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0px;
+
+      padding: 8px 14px;
+      z-index: 1;
+
+      background-color: $white-color;
+    }
+  }
+}
+
+/* Will be changed */
+.heading {
+  font-family: 'Rubik';
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 0.4px;
+
+  margin: 0;
+  padding: 0;
+}
+
+/* Will be changed */
+.description {
+  font-family: 'Roboto';
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  text-align: center;
+
+  margin: 0;
+  padding: 0;
+}
+
+.visible {
+  display: flex;
+}
