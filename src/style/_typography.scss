@@ -1,0 +1,172 @@
+@import '_colors.scss';
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('fonts/Roboto-Bold.woff2') format('woff2'),
+    url('fonts/Roboto-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('fonts/Roboto-Regular.woff2') format('woff2'),
+    url('fonts/Roboto-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('fonts/Roboto-Medium.woff2') format('woff2'),
+    url('fonts/Roboto-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Rubik';
+  src: url('fonts/Rubik-Regular.woff2') format('woff2'),
+    url('fonts/Rubik-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+$main-font-family: 'Roboto';
+$secondary-font-family: 'Rubik';
+
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-bold: 700;
+
+$font-size-xl: 24px;
+$font-size-l: 20px;
+$font-size-m: 18px;
+$font-size-s: 16px;
+$font-size-xs: 14px;
+
+//Heading text
+
+.h3-head--f1 {
+  font-family: $main-font-family;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-xl;
+  color: $black-color;
+}
+
+.h4-head--f1 {
+  font-family: $main-font-family;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-l;
+  color: $black-color;
+}
+
+.h5-head--f1 {
+  font-family: $main-font-family;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-m;
+  color: $black-color;
+}
+
+.h6-head--f1 {
+  font-family: $main-font-family;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-s;
+  color: $black-color;
+}
+
+.h4-head--f2 {
+  font-family: $secondary-font-family;
+  font-weight: $font-weight-regular;
+  font-size: $font-size-l;
+  color: $black-color;
+}
+
+.h5-head--f2 {
+  font-family: $secondary-font-family;
+  font-weight: $font-weight-regular;
+  font-size: $font-size-m;
+  color: $black-color;
+}
+
+.subtitle {
+  font-family: $main-font-family;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-xs;
+  color: $black-color;
+}
+
+//Body text
+
+.body {
+  font-family: $main-font-family;
+  font-weight: $font-weight-regular;
+  color: $black-color;
+  &--s {
+    font-size: $font-size-s;
+  }
+  &--xs {
+    font-size: $font-size-xs;
+  }
+}
+
+//Button text
+.btn-text {
+  font-family: $main-font-family;
+  font-weight: $font-weight-medium;
+  font-size: $font-size-xs;
+  &--primary {
+    color: $white-color;
+  }
+  &--secondary {
+    color: $purple-color;
+  }
+  &--default {
+    color: $gray-02-color;
+  }
+}
+
+//Placeholder
+
+.placeholder {
+  font-family: $main-font-family;
+  font-weight: $font-weight-regular;
+  font-size: $font-size-xs;
+  &--default {
+    color: $gray-02-color;
+  }
+  &--focus {
+    color: $gray-03-color;
+  }
+  &--active {
+    color: $black-color;
+  }
+}
+
+.label {
+  font-family: $main-font-family;
+  font-weight: $font-weight-medium;
+  font-size: $font-size-xs;
+  color: $gray-03-color;
+}
+
+//Paragraph text
+
+.paragraph {
+  font-family: $main-font-family;
+  font-weight: $font-weight-regular;
+  font-size: $font-size-xs;
+  &--c1 {
+    color: $gray-01-color;
+  }
+  &--c2 {
+    color: $gray-02-color;
+  }
+  &--c3 {
+    color: $gray-03-color;
+  }
+}
