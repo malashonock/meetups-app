@@ -36,8 +36,8 @@
   font-display: swap;
 }
 
-$main-font-family: 'Roboto';
-$secondary-font-family: 'Rubik';
+$main-font-family: 'Roboto', sans-serif;
+$secondary-font-family: 'Rubik', sans-serif;
 
 $font-weight-regular: 400;
 $font-weight-medium: 500;
@@ -49,44 +49,44 @@ $font-size-m: 18px;
 $font-size-s: 16px;
 $font-size-xs: 14px;
 
-//Heading text
+/* Heading text */
 
-.h3-head--f1 {
+.h1--f1 {
   font-family: $main-font-family;
   font-weight: $font-weight-bold;
   font-size: $font-size-xl;
   color: $black-color;
 }
 
-.h4-head--f1 {
+.h2--f1 {
   font-family: $main-font-family;
   font-weight: $font-weight-bold;
   font-size: $font-size-l;
   color: $black-color;
 }
 
-.h5-head--f1 {
+.h3--f1 {
   font-family: $main-font-family;
   font-weight: $font-weight-bold;
   font-size: $font-size-m;
   color: $black-color;
 }
 
-.h6-head--f1 {
+.h4--f1 {
   font-family: $main-font-family;
   font-weight: $font-weight-bold;
   font-size: $font-size-s;
   color: $black-color;
 }
 
-.h4-head--f2 {
+.h2--f2 {
   font-family: $secondary-font-family;
   font-weight: $font-weight-regular;
   font-size: $font-size-l;
   color: $black-color;
 }
 
-.h5-head--f2 {
+.h3--f2 {
   font-family: $secondary-font-family;
   font-weight: $font-weight-regular;
   font-size: $font-size-m;
@@ -100,49 +100,67 @@ $font-size-xs: 14px;
   color: $black-color;
 }
 
-//Body text
+/* Body text */
 
-.body {
+%body-base {
   font-family: $main-font-family;
   font-weight: $font-weight-regular;
   color: $black-color;
+}
+
+.body {
   &--s {
+    @extend %body-base;
     font-size: $font-size-s;
   }
   &--xs {
+    @extend %body-base;
     font-size: $font-size-xs;
   }
 }
 
-//Button text
-.btn-text {
+/* Button text */
+
+%btn-text-base {
   font-family: $main-font-family;
   font-weight: $font-weight-medium;
   font-size: $font-size-xs;
+}
+
+.btn-text {
   &--primary {
+    @extend %btn-text-base;
     color: $white-color;
   }
   &--secondary {
+    @extend %btn-text-base;
     color: $purple-color;
   }
   &--default {
+    @extend %btn-text-base;
     color: $gray-02-color;
   }
 }
 
-//Placeholder
+/* Placeholder */
 
-.placeholder {
+%placeholder-base {
   font-family: $main-font-family;
   font-weight: $font-weight-regular;
   font-size: $font-size-xs;
+}
+
+.placeholder {
   &--default {
+    @extend %placeholder-base;
     color: $gray-02-color;
   }
   &--focus {
+    @extend %placeholder-base;
     color: $gray-03-color;
   }
   &--active {
+    @extend %placeholder-base;
     color: $black-color;
   }
 }
@@ -154,19 +172,25 @@ $font-size-xs: 14px;
   color: $gray-03-color;
 }
 
-//Paragraph text
+/* Paragraph text */
 
-.paragraph {
+%paragraph-base {
   font-family: $main-font-family;
   font-weight: $font-weight-regular;
   font-size: $font-size-xs;
+}
+
+.paragraph {
   &--c1 {
+    @extend %paragraph-base;
     color: $gray-01-color;
   }
   &--c2 {
+    @extend %paragraph-base;
     color: $gray-02-color;
   }
   &--c3 {
+    @extend %paragraph-base;
     color: $gray-03-color;
   }
 }
