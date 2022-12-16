@@ -1,22 +1,21 @@
-import React, { useState } from 'react';
+import React, { PropsWithChildren, useState } from 'react';
 import classNames from 'classnames';
 
 import styles from './Tooltip.module.scss';
 
 interface TooltipProps {
-  children: React.ReactNode;
-  variant?: 'black' | 'color' | 'outline' | 'white';
+  variant?: 'dark' | 'colored' | 'outline' | 'white';
   heading: string;
   description: string;
 }
 
 function Tooltip({
   children,
-  variant = 'black',
+  variant = 'dark',
   heading,
   description,
-}: TooltipProps) {
-  const [visible, setVisible] = useState(false);
+}: PropsWithChildren<TooltipProps>) {
+  const [visible, setVisible] = useState(true);
 
   const showTooltip = () => setVisible(true);
   const hideTooltip = () => setVisible(false);
