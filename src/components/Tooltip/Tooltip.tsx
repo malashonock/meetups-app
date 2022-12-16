@@ -15,7 +15,7 @@ function Tooltip({
   heading,
   description,
 }: PropsWithChildren<TooltipProps>) {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
 
   const showTooltip = () => setVisible(true);
   const hideTooltip = () => setVisible(false);
