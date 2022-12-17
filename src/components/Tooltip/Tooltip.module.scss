@@ -58,7 +58,7 @@
   &.colored {
     background-color: $purple-color;
     color: $white-color;
-    box-shadow: $gray-shadow-03-color;
+    box-shadow: 0px 9px 24px $gray-shadow-03-color;
 
     &::before {
       background-color: $purple-color;
@@ -68,9 +68,9 @@
   &.outline,
   &.white {
     background-color: $white-color;
-    box-shadow: $gray-shadow-03-color;
+    box-shadow: 0px 9px 24px $gray-shadow-03-color;
 
-    .heading {
+    .title {
       color: $black-color;
     }
 
@@ -85,7 +85,7 @@
 
   &.outline {
     border: 1px solid $gray-05-color;
-    box-shadow: $gray-shadow-04-color;
+    box-shadow: 0px 2px 4px $gray-shadow-04-color;
 
     &::before {
       border: 1px solid $gray-05-color;
@@ -105,7 +105,7 @@
 }
 
 /* Will be changed */
-.heading {
+.title {
   font-family: 'Rubik';
   font-weight: 500;
   font-size: 16px;

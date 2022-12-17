@@ -5,16 +5,16 @@ import styles from './Tooltip.module.scss';
 
 interface TooltipProps {
   variant?: 'dark' | 'colored' | 'outline' | 'white';
-  heading: string;
+  title: string;
   description: string;
 }
 
-function Tooltip({
+export const Tooltip = ({
   children,
   variant = 'dark',
-  heading,
+  title,
   description,
-}: PropsWithChildren<TooltipProps>) {
+}: PropsWithChildren<TooltipProps>) => {
   const [visible, setVisible] = useState(false);
 
   const showTooltip = () => setVisible(true);
@@ -32,11 +32,9 @@ function Tooltip({
           [styles.visible]: visible,
         })}
       >
-        <h6 className={styles.heading}>{heading}</h6>
+        <h6 className={styles.title}>{title}</h6>
         <p className={styles.description}>{description}</p>
       </div>
     </div>
   );
-}
-
-export default Tooltip;
+};
