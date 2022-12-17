@@ -1,4 +1,3 @@
-import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Typography } from 'components';
 
@@ -90,18 +89,18 @@ ParagraphC3.args = {
   variant: 'paragraph--c3',
 };
 
-export const PlaceHolderActive = Template.bind({});
-PlaceHolderActive.args = {
+export const PlaceholderActive = Template.bind({});
+PlaceholderActive.args = {
   variant: 'placeholder--active',
 };
 
-export const PlaceHolderDefault = Template.bind({});
-PlaceHolderDefault.args = {
+export const PlaceholderDefault = Template.bind({});
+PlaceholderDefault.args = {
   variant: 'placeholder--default',
 };
 
-export const PlaceHolderFocus = Template.bind({});
-PlaceHolderFocus.args = {
+export const PlaceholderFocus = Template.bind({});
+PlaceholderFocus.args = {
   variant: 'placeholder--focus',
 };
 
