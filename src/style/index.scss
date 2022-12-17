@@ -1,6 +1,7 @@
 @import '~normalize.css/normalize.css';
-@import 'colors.scss';
-@import 'typography.scss';
+@import './colors';
+@import './typography';
+@import './mixins';
 
 body {
   margin: 0;
