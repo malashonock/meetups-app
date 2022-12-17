@@ -1,0 +1,5 @@
+@mixin smooth-transition($transition-property) {
+  transition-property: $transition-property;
+  transition-duration: 0.2s;
+  transition-timing-function: ease;
+}
