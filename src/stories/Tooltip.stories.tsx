@@ -6,18 +6,19 @@ import { Tooltip } from 'components';
 export default {
   title: 'Components/Tooltip',
   component: Tooltip,
+  parameters: {
+    layout: 'centered',
+  },
   args: {
-    heading: 'Heading',
+    title: 'Title',
     description: 'It is a description inside a tooltip',
   },
 } as ComponentMeta<typeof Tooltip>;
 
 const Template: ComponentStory<typeof Tooltip> = (args) => (
-  <div style={{ display: 'flex', justifyContent: 'center' }}>
-    <Tooltip {...args}>
-      <button>Hover to see a tooltip</button>
-    </Tooltip>
-  </div>
+  <Tooltip {...args}>
+    <span>Hover to see a tooltip</span>
+  </Tooltip>
 );
 
 export const Dark = Template.bind({});
