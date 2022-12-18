@@ -4,6 +4,7 @@ import classNames from 'classnames';
 
 import styles from './Header.module.scss';
 import logo from 'assets/images/logo.svg';
+import { UserPreview } from 'components/UserPreview/UserPreview';
 
 export const Header = (): JSX.Element => {
   const getLinkClassName = ({ isActive }: { isActive: boolean }) =>
@@ -23,10 +24,7 @@ export const Header = (): JSX.Element => {
             Новости
           </NavLink>
         </nav>
-        <div className={styles.user}>
-          <span className={styles['user-name']}>Nikolai Borisik</span>
-          <div className={styles['user-photo']}>NB</div>
-        </div>
+        <UserPreview name="Nikolai Borisik" />
       </div>
     </header>
   );

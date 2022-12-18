@@ -56,33 +56,3 @@
     }
   }
 }
-
-.user {
-  display: flex;
-  align-items: center;
-  column-gap: 12px;
-
-  color: $white-color;
-
-  // Typography will be changed
-  &-name {
-    font-family: 'Roboto';
-    font-weight: 400;
-    font-size: 16px;
-  }
-
-  &-photo {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    font-family: 'Roboto';
-    font-weight: 400;
-    font-size: 16px;
-
-    border-radius: 50%;
-    background: $user-bg-color;
-  }
-}
