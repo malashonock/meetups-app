@@ -2,6 +2,7 @@ import React, { PropsWithChildren, useState } from 'react';
 import classNames from 'classnames';
 
 import styles from './Tooltip.module.scss';
+import { Typography } from 'components/Typography/Typography';
 
 interface TooltipProps {
   variant?: 'dark' | 'colored' | 'outline' | 'white';
@@ -32,8 +33,12 @@ export const Tooltip = ({
           [styles.visible]: visible,
         })}
       >
-        <h6 className={styles.title}>{title}</h6>
-        <p className={styles.description}>{description}</p>
+        <Typography variant="h4--f2" className={styles.title}>
+          {title}
+        </Typography>
+        <Typography variant="body--s" className={styles.description}>
+          {description}
+        </Typography>
       </div>
     </div>
   );
