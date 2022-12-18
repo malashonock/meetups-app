@@ -5,10 +5,12 @@ import { getInitials } from 'helpers/getInitials';
 import styles from './UserPreview.module.scss';
 
 interface UserPreviewProps {
-  name: string;
+  name?: string;
 }
 
-export const UserPreview = ({ name }: UserPreviewProps): JSX.Element => {
+export const UserPreview = ({
+  name = 'Guest',
+}: UserPreviewProps): JSX.Element => {
   const userInitials = useMemo(() => getInitials(name), [name]);
 
   return (

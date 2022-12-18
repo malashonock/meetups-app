@@ -16,6 +16,8 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.5.0",
     "react-scripts": "5.0.1",
+    "sass": "^1.56.2",
+    "storybook-addon-react-router-v6": "^0.2.1",
     "typescript": "^4.9.4",
     "web-vitals": "^2.1.4"
   },

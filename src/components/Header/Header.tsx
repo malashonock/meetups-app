@@ -2,9 +2,10 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import classNames from 'classnames';
 
+import { UserPreview } from 'components/';
+
 import styles from './Header.module.scss';
 import logo from 'assets/images/logo.svg';
-import { UserPreview } from 'components/UserPreview/UserPreview';
 
 export const Header = (): JSX.Element => {
   const getLinkClassName = ({ isActive }: { isActive: boolean }) =>
