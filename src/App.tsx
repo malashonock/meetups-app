@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import { Header } from './components/';
 
@@ -13,6 +13,7 @@ function App() {
         <Routes>
           <Route index path="/meetups" element={<div>Meetups</div>} />
           <Route path="/news" element={<div>News</div>} />
+          <Route path="/" element={<Navigate replace to="/meetups" />} />
           <Route path="*" element={<div>404</div>} />
         </Routes>
       </div>
