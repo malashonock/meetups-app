@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import classNames from 'classnames';
 
-import { UserPreview } from 'components/';
+import { Typography, UserPreview } from 'components';
 
 import styles from './Header.module.scss';
 import logo from 'assets/images/logo.svg';
@@ -19,10 +19,10 @@ export const Header = (): JSX.Element => {
         <img src={logo} alt="Логотип" height={'45px'} />
         <nav className={styles.nav}>
           <NavLink to="/meetups" className={getLinkClassName}>
-            Митапы
+            <Typography variant="nav">Митапы</Typography>
           </NavLink>
           <NavLink to="/news" className={getLinkClassName}>
-            Новости
+            <Typography variant="nav">Новости</Typography>
           </NavLink>
         </nav>
         <UserPreview name="Nikolai Borisik" />

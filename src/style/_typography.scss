@@ -113,6 +113,14 @@ $line-spacing-xs: 2px;
   color: $black-color;
 }
 
+.nav {
+  font-family: $main-font-family;
+  font-weight: $font-weight-regular;
+  font-size: $font-size-s;
+  color: $white-color;
+  text-decoration: none;
+}
+
 /* Body text */
 
 %body-base {

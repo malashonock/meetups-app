@@ -24,17 +24,8 @@
   display: flex;
   column-gap: 70px;
 
-  // Typography will be changed
   &-link {
     position: relative;
-
-    font-family: 'Roboto';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-
-    color: $white-color;
-    text-decoration: none;
 
     &::after {
       content: '';

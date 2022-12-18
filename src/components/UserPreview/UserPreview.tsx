@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 
 import { getInitials } from 'helpers/getInitials';
+import { Typography } from 'components';
 
 import styles from './UserPreview.module.scss';
 
@@ -15,8 +16,10 @@ export const UserPreview = ({
 
   return (
     <div className={styles.user}>
-      <span className={styles['user-name']}>{name}</span>
-      <div className={styles['user-photo']}>{userInitials}</div>
+      <Typography variant="nav">{name}</Typography>
+      <div className={styles['user-photo']}>
+        <Typography variant="nav">{userInitials}</Typography>
+      </div>
     </div>
   );
 };

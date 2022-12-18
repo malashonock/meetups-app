@@ -108,3 +108,14 @@ export const Subtitle = Template.bind({});
 Subtitle.args = {
   variant: 'subtitle',
 };
+
+const TemplateWithPurpleBg: ComponentStory<typeof Typography> = (args) => (
+  <div style={{ padding: '30px', background: '#8065ec' }}>
+    <Typography {...args} />
+  </div>
+);
+
+export const Nav = TemplateWithPurpleBg.bind({});
+Nav.args = {
+  variant: 'nav',
+};
