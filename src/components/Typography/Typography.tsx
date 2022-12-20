@@ -8,6 +8,7 @@ type TypographySelector =
   | 'h2--f2'
   | 'h3--f2'
   | 'subtitle'
+  | 'nav'
   | 'body--s'
   | 'body--xs'
   | 'btn-text--primary'
@@ -29,6 +30,7 @@ const variantMapping: Record<TypographySelector, HTMLElementName> = {
   'h2--f2': 'h2',
   'h3--f2': 'h3',
   subtitle: 'h6',
+  nav: 'span',
   'body--s': 'p',
   'body--xs': 'p',
   'btn-text--primary': 'span',
