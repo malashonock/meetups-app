@@ -66,7 +66,6 @@ type TypographyProps = {
 export const Typography = ({
   variant,
   children,
-  className,
   ...nativeHtmlProps
 }: TypographyProps): JSX.Element => {
   const elementName = variantMapping[variant];
@@ -74,7 +73,7 @@ export const Typography = ({
   return (
     <Component
       {...(nativeHtmlProps as HTMLAttributes<HTMLElement<typeof elementName>>)}
-      className={classNames(variant, className)}
+      className={classNames(nativeHtmlProps.className, variant)}
     >
       {children}
     </Component>

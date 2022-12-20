@@ -71,7 +71,6 @@
     }
   }
 
-  &.outline,
   &.white {
     background-color: $white-color;
     box-shadow: 0px 9px 24px $gray-shadow-03-color;
@@ -86,10 +85,16 @@
   }
 
   &.outline {
+    background-color: $white-color;
     border: 1px solid $gray-05-color;
     box-shadow: 0px 2px 4px $gray-shadow-04-color;
 
+    .description {
+      color: $gray-02-color;
+    }
+
     &::before {
+      background-color: $white-color;
       border: 1px solid $gray-05-color;
     }
 
