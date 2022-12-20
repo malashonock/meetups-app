@@ -105,12 +105,20 @@ $line-spacing-xs: 2px;
   color: $black-color;
 }
 
+.h4--f2 {
+  font-family: $secondary-font-family;
+  font-weight: $font-weight-medium;
+  font-size: $font-size-s;
+  line-height: calc(100% + $line-spacing-xs);
+  color: $black-color;
+}
+
 .subtitle {
   font-family: $main-font-family;
   font-weight: $font-weight-bold;
   font-size: $font-size-xs;
   line-height: calc(100% + $line-spacing-xl);
-  color: $black-color;
+  color: $white-color;
 }
 
 .nav {

@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { DetailedHTMLProps, HTMLAttributes, PropsWithChildren } from 'react';
 
 type TypographySelector =
@@ -7,6 +8,7 @@ type TypographySelector =
   | 'h4--f1'
   | 'h2--f2'
   | 'h3--f2'
+  | 'h4--f2'
   | 'subtitle'
   | 'nav'
   | 'body--s'
@@ -29,6 +31,7 @@ const variantMapping: Record<TypographySelector, HTMLElementName> = {
   'h4--f1': 'h4',
   'h2--f2': 'h2',
   'h3--f2': 'h3',
+  'h4--f2': 'h4',
   subtitle: 'h6',
   nav: 'span',
   'body--s': 'p',
@@ -70,7 +73,7 @@ export const Typography = ({
   return (
     <Component
       {...(nativeHtmlProps as HTMLAttributes<HTMLElement<typeof elementName>>)}
-      className={variant}
+      className={classNames(nativeHtmlProps.className, variant)}
     >
       {children}
     </Component>

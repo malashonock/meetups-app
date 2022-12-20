@@ -14,6 +14,12 @@ const Template: ComponentStory<typeof Typography> = (args) => (
   <Typography {...args} />
 );
 
+const TemplateWithPurpleBg: ComponentStory<typeof Typography> = (args) => (
+  <div style={{ padding: '30px', background: '#8065ec' }}>
+    <Typography {...args} />
+  </div>
+);
+
 export const BodyS = Template.bind({});
 BodyS.args = {
   variant: 'body--s',
@@ -67,6 +73,11 @@ H2F2.args = {
 export const H3F2 = Template.bind({});
 H3F2.args = {
   variant: 'h3--f2',
+};
+
+export const H4F2 = TemplateWithPurpleBg.bind({});
+H4F2.args = {
+  variant: 'h4--f2',
 };
 
 export const Label = Template.bind({});
