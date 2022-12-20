@@ -10,14 +10,19 @@ function App() {
   return (
     <BrowserRouter>
       <Header />
-      <div className={styles['app-container']}>
+      <main className={styles['app-container']}>
         <Routes>
           <Route path="/" element={<Navigate replace to="/meetups" />} />
-          <Route path="/meetups" element={<MeetupPage />} />
-          <Route path="/news" element={<div>News</div>} />
+          <Route path="meetups" element={<MeetupPage />}>
+            <Route index element={<Navigate replace to="t1" />}></Route>
+            <Route path="t1" element={<div>t1</div>}></Route>
+            <Route path="t2" element={<div>t2</div>}></Route>
+            <Route path="t3" element={<div>t3</div>}></Route>
+          </Route>
+          <Route path="news" element={<div>News</div>} />
           <Route path="*" element={<div>404</div>} />
         </Routes>
-      </div>
+      </main>
     </BrowserRouter>
   );
 }
