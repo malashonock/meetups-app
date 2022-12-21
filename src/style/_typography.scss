@@ -36,180 +36,112 @@
   font-display: swap;
 }
 
-$main-font-family: 'Roboto', sans-serif;
-$secondary-font-family: 'Rubik', sans-serif;
+/* Utility classes */
 
-$font-weight-regular: 400;
-$font-weight-medium: 500;
-$font-weight-bold: 700;
-
-$font-size-xl: 24px;
-$font-size-l: 20px;
-$font-size-m: 18px;
-$font-size-s: 16px;
-$font-size-xs: 14px;
-
-$line-spacing-xl: 7px;
-$line-spacing-l: 5px;
-$line-spacing-m: 4px;
-$line-spacing-s: 3px;
-$line-spacing-xs: 2px;
-
-/* Heading text */
-
-.h1--f1 {
-  font-family: $main-font-family;
-  font-weight: $font-weight-bold;
-  font-size: $font-size-xl;
-  line-height: calc(100% + $line-spacing-m);
-  color: $black-color;
-}
-
-.h2--f1 {
-  font-family: $main-font-family;
-  font-weight: $font-weight-bold;
-  font-size: $font-size-l;
-  line-height: calc(100% + $line-spacing-s);
-  color: $black-color;
-}
-
-.h3--f1 {
-  font-family: $main-font-family;
-  font-weight: $font-weight-bold;
-  font-size: $font-size-m;
-  line-height: calc(100% + $line-spacing-s);
-  color: $black-color;
-}
-
-.h4--f1 {
-  font-family: $main-font-family;
-  font-weight: $font-weight-bold;
-  font-size: $font-size-s;
-  line-height: calc(100% + $line-spacing-s);
-  color: $black-color;
-}
-
-.h2--f2 {
-  font-family: $secondary-font-family;
-  font-weight: $font-weight-regular;
-  font-size: $font-size-l;
-  line-height: calc(100% + $line-spacing-m);
-  color: $black-color;
-}
-
-.h3--f2 {
-  font-family: $secondary-font-family;
-  font-weight: $font-weight-regular;
-  font-size: $font-size-m;
-  line-height: calc(100% + $line-spacing-s);
-  color: $black-color;
-}
-
-.subtitle {
-  font-family: $main-font-family;
-  font-weight: $font-weight-bold;
-  font-size: $font-size-xs;
-  line-height: calc(100% + $line-spacing-xl);
-  color: $black-color;
-}
-
-/* Body text */
-
-%body-base {
-  font-family: $main-font-family;
-  font-weight: $font-weight-regular;
-  color: $black-color;
-}
-
-.body {
-  &--s {
-    @extend %body-base;
-    font-size: $font-size-s;
-    line-height: calc(100% + $line-spacing-l);
+/* Font family */
+.ff {
+  &-1 {
+    font-family: 'Roboto', sans-serif;
   }
-  &--xs {
-    @extend %body-base;
-    font-size: $font-size-xs;
-    line-height: calc(100% + $line-spacing-xl);
+  &-2 {
+    font-family: 'Rubik', sans-serif;
   }
 }
 
-/* Button text */
-
-%btn-text-base {
-  font-family: $main-font-family;
-  font-weight: $font-weight-medium;
-  font-size: $font-size-xs;
-  line-height: calc(100% + $line-spacing-xs);
-}
-
-.btn-text {
-  &--primary {
-    @extend %btn-text-base;
-    color: $white-color;
+/* Font size */
+.fs {
+  &-xs {
+    font-size: 14px;
   }
-  &--secondary {
-    @extend %btn-text-base;
-    color: $purple-color;
+  &-s {
+    font-size: 16px;
   }
-  &--default {
-    @extend %btn-text-base;
-    color: $gray-02-color;
+  &-m {
+    font-size: 18px;
+  }
+  &-l {
+    font-size: 20px;
+  }
+  &-xl {
+    font-size: 24px;
   }
 }
 
-/* Placeholder */
-
-%placeholder-base {
-  font-family: $main-font-family;
-  font-weight: $font-weight-regular;
-  line-height: calc(100% + $line-spacing-xs);
-  font-size: $font-size-xs;
+/* Font weight */
+.fw {
+  &-regular {
+    font-weight: 400;
+  }
+  &-medium {
+    font-weight: 500;
+  }
+  &-bold {
+    font-weight: 700;
+  }
 }
 
-.placeholder {
-  &--default {
-    @extend %placeholder-base;
-    color: $gray-02-color;
+/* Line height */
+.lh {
+  line-height: calc(100% + var(--line-spacing));
+
+  &-xs {
+    --line-spacing: 2px;
   }
-  &--focus {
-    @extend %placeholder-base;
-    color: $gray-03-color;
+  &-s {
+    --line-spacing: 3px;
   }
-  &--active {
-    @extend %placeholder-base;
+  &-m {
+    --line-spacing: 4px;
+  }
+  &-l {
+    --line-spacing: 5px;
+  }
+  &-xl {
+    --line-spacing: 7px;
+  }
+}
+
+/* Letter spacing */
+.ls {
+  &-0 {
+    letter-spacing: normal;
+  }
+  &-1 {
+    letter-spacing: 0.25px;
+  }
+}
+
+/* Font color */
+.fc {
+  &-black {
     color: $black-color;
   }
-}
-
-.label {
-  font-family: $main-font-family;
-  font-weight: $font-weight-medium;
-  font-size: $font-size-xs;
-  line-height: calc(100% + $line-spacing-xs);
-  color: $gray-03-color;
-}
-
-/* Paragraph text */
-
-%paragraph-base {
-  font-family: $main-font-family;
-  font-weight: $font-weight-regular;
-  line-height: calc(100% + $line-spacing-xl);
-  font-size: $font-size-xs;
-}
-
-.paragraph {
-  &--c1 {
-    @extend %paragraph-base;
+  &-gray-01 {
     color: $gray-01-color;
   }
-  &--c2 {
-    @extend %paragraph-base;
+  &-gray-02 {
     color: $gray-02-color;
   }
-  &--c3 {
-    @extend %paragraph-base;
+  &-gray-03 {
     color: $gray-03-color;
+  }
+  &-white {
+    color: $white-color;
+  }
+  &-purple {
+    color: $purple-color;
+  }
+}
+
+/* Text align */
+.ta {
+  &-left {
+    text-align: left;
+  }
+  &-center {
+    text-align: center;
+  }
+  &-right {
+    text-align: right;
   }
 }
