@@ -81,23 +81,28 @@
 }
 
 /* Line height */
-.lh {
-  line-height: calc(100% + var(--line-spacing));
+@mixin line-height($line-spacing) {
+  line-height: calc(100% + $line-spacing);
+}
 
+.lh {
   &-xs {
-    --line-spacing: 2px;
+    @include line-height(2px);
   }
   &-s {
-    --line-spacing: 3px;
+    @include line-height(3px);
   }
   &-m {
-    --line-spacing: 4px;
+    @include line-height(4px);
   }
   &-l {
-    --line-spacing: 5px;
+    @include line-height(5px);
   }
   &-xl {
-    --line-spacing: 7px;
+    @include line-height(6px);
+  }
+  &-xxl {
+    @include line-height(7px);
   }
 }
 
