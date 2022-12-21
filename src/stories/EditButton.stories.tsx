@@ -5,6 +5,9 @@ export default {
   title: 'Components/IconButton/EditButton',
   component: EditButton,
   argTypes: { onClick: { action: 'clicked' } },
+  args: {
+    disabled: false,
+  },
 } as ComponentMeta<typeof EditButton>;
 
 const Template: ComponentStory<typeof EditButton> = (args) => (

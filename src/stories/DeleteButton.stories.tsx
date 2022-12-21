@@ -5,6 +5,9 @@ export default {
   title: 'Components/IconButton/DeleteButton',
   component: DeleteButton,
   argTypes: { onClick: { action: 'clicked' } },
+  args: {
+    disabled: false,
+  },
 } as ComponentMeta<typeof DeleteButton>;
 
 const Template: ComponentStory<typeof DeleteButton> = (args) => (
