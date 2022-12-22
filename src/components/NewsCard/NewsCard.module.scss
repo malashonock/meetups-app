@@ -64,6 +64,11 @@
       @extend .fc-gray-03;
     }
 
+    .title,
+    .text {
+      @include multiline-ellipsis(2);
+    }
+
     .title {
       @extend .ff-2;
       @extend .fw-medium;
@@ -79,15 +84,6 @@
       @extend .fs-xs;
       @extend .lh-xxl;
       @extend .fc-gray-02;
-
-      text-overflow: ellipsis;
-      overflow: hidden;
-      /* Borrowed from here: */
-      /* https://kiranworkspace.com/ellipsis-to-multiline-text-in-css/ */
-      white-space: normal;
-      display: -webkit-box !important;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
     }
   }
 }
