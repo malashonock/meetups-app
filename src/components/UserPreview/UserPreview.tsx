@@ -1,25 +1,35 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
-import { getInitials } from 'helpers/getInitials';
+import { getFirstLetter } from 'helpers';
 import { Typography } from 'components';
 
 import styles from './UserPreview.module.scss';
+import { ShortUser } from 'model';
+import classNames from 'classnames';
+
+type UserPreviewVariant = 'header' | 'default';
 
 interface UserPreviewProps {
-  name?: string;
+  user: ShortUser;
+  variant?: UserPreviewVariant;
 }
 
 export const UserPreview = ({
-  name = 'Guest',
+  user,
+  variant = 'default',
 }: UserPreviewProps): JSX.Element => {
-  const userInitials = useMemo(() => getInitials(name), [name]);
+  const { name, surname } = user;
+
+  const userInitials = useMemo(() => {
+    return getFirstLetter(name) + getFirstLetter(surname);
+  }, [name, surname]);
 
   return (
-    <div className={styles.user}>
-      <Typography variant="nav">{name}</Typography>
-      <div className={styles['user-photo']}>
-        <Typography variant="nav">{userInitials}</Typography>
+    <div className={classNames(styles.user, styles[variant])}>
+      <div className={styles.avatar}>
+        <Typography className={styles.initials}>{userInitials}</Typography>
       </div>
+      <Typography className={styles.name}>{`${name} ${surname}`}</Typography>
     </div>
   );
 };

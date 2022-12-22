@@ -6,6 +6,13 @@ import { Typography, UserPreview } from 'components';
 
 import styles from './Header.module.scss';
 import logo from 'assets/images/logo.svg';
+import { ShortUser } from 'model';
+
+const user: ShortUser = {
+  id: 'AAA-AAA',
+  name: 'Albert',
+  surname: 'Richards',
+};
 
 export const Header = (): JSX.Element => {
   const getLinkClassName = ({ isActive }: { isActive: boolean }) =>
@@ -19,13 +26,13 @@ export const Header = (): JSX.Element => {
         <img src={logo} alt="Логотип" height={'45px'} />
         <nav className={styles.nav}>
           <NavLink to="/meetups" className={getLinkClassName}>
-            <Typography variant="nav">Митапы</Typography>
+            <Typography>Митапы</Typography>
           </NavLink>
           <NavLink to="/news" className={getLinkClassName}>
-            <Typography variant="nav">Новости</Typography>
+            <Typography>Новости</Typography>
           </NavLink>
         </nav>
-        <UserPreview name="Nikolai Borisik" />
+        <UserPreview variant="header" user={user} />
       </div>
     </header>
   );

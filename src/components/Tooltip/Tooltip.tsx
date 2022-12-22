@@ -33,10 +33,10 @@ export const Tooltip = ({
           [styles.visible]: visible,
         })}
       >
-        <Typography variant="h4--f2" className={styles.title}>
+        <Typography variant="heading" className={styles.title}>
           {title}
         </Typography>
-        <Typography variant="body--s" className={styles.description}>
+        <Typography variant="paragraph" className={styles.description}>
           {description}
         </Typography>
       </div>

@@ -1,0 +1,33 @@
+@import '~style/colors';
+@import '~style/mixins';
+
+.button {
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  outline: none;
+  background: transparent;
+  cursor: pointer;
+
+  width: 16px;
+  height: 16px;
+
+  > * {
+    height: 100%;
+    width: 100%;
+  }
+
+  &:not(:disabled) {
+    @include smooth-transition(filter);
+
+    &:hover {
+      filter: invert(43%) sepia(38%) saturate(1277%) hue-rotate(215deg)
+        brightness(96%) contrast(92%);
+      @include smooth-transition(filter);
+    }
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}

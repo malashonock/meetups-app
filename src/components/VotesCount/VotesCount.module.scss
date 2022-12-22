@@ -1,0 +1,22 @@
+@import '~style/typography';
+
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.icon {
+  width: 20px;
+  height: 21px;
+}
+
+.text {
+  @extend .ff-1;
+  @extend .fw-regular;
+  @extend .fs-xs;
+  @extend .lh-s;
+  @extend .ls-1;
+  @extend .fc-gray-03;
+}

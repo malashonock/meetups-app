@@ -3,19 +3,65 @@
 
 .user {
   display: flex;
+  flex-direction: row;
+  justify-content: start;
   align-items: center;
-  column-gap: 12px;
 
-  color: $white-color;
+  .avatar {
+    width: var(--avatar-diameter);
+    height: var(--avatar-diameter);
 
-  &-photo {
-    width: 40px;
-    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
 
     border-radius: 50%;
-    background: rgba($white-color, 0.45);
+  }
+
+  .name,
+  .initials {
+    @extend .ff-1;
+    @extend .fw-regular;
+    @extend .ls-1;
+  }
+
+  &.header {
+    --avatar-diameter: 40px;
+    column-gap: 12px;
+    flex-direction: row-reverse;
+
+    .avatar {
+      background-color: $white-transparent-color;
+    }
+
+    .name,
+    .initials {
+      @extend .fs-s;
+      @extend .lh-s;
+      @extend .fc-white;
+    }
+  }
+
+  &.default {
+    --avatar-diameter: 30px;
+    column-gap: 9px;
+
+    .avatar {
+      background-color: $gray-04-color;
+    }
+
+    .name,
+    .initials {
+      @extend .fs-xs;
+      @extend .lh-xs;
+    }
+
+    .name {
+      @extend .fc-gray-01;
+    }
+
+    .initials {
+      @extend .fc-white;
+    }
   }
 }

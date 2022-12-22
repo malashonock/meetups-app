@@ -1,51 +1,22 @@
 import classNames from 'classnames';
-import { DetailedHTMLProps, HTMLAttributes, PropsWithChildren } from 'react';
 
-type TypographySelector =
-  | 'h1--f1'
-  | 'h2--f1'
-  | 'h3--f1'
-  | 'h4--f1'
-  | 'h2--f2'
-  | 'h3--f2'
-  | 'h4--f2'
-  | 'subtitle'
-  | 'nav'
-  | 'body--s'
-  | 'body--xs'
-  | 'btn-text--primary'
-  | 'btn-text--secondary'
-  | 'btn-text--default'
-  | 'placeholder--default'
-  | 'placeholder--focus'
-  | 'placeholder--active'
-  | 'label'
-  | 'paragraph--c1'
-  | 'paragraph--c2'
-  | 'paragraph--c3';
+import {
+  DetailedHTMLProps,
+  HTMLAttributes,
+  PropsWithChildren,
+  useMemo,
+} from 'react';
 
-const variantMapping: Record<TypographySelector, HTMLElementName> = {
-  'h1--f1': 'h1',
-  'h2--f1': 'h2',
-  'h3--f1': 'h3',
-  'h4--f1': 'h4',
-  'h2--f2': 'h2',
-  'h3--f2': 'h3',
-  'h4--f2': 'h4',
-  subtitle: 'h6',
-  nav: 'span',
-  'body--s': 'p',
-  'body--xs': 'p',
-  'btn-text--primary': 'span',
-  'btn-text--secondary': 'span',
-  'btn-text--default': 'span',
-  'placeholder--default': 'span',
-  'placeholder--focus': 'span',
-  'placeholder--active': 'span',
-  label: 'span',
-  'paragraph--c1': 'p',
-  'paragraph--c2': 'p',
-  'paragraph--c3': 'p',
+import styles from './Typography.module.scss';
+
+export type TypographySelector = 'heading' | 'paragraph' | 'other';
+
+const headingMapping: Record<string, HTMLElementName> = {
+  'fs-xl': 'h1',
+  'fs-l': 'h2',
+  'fs-m': 'h3',
+  'fs-s': 'h4',
+  'fs-xs': 'h5',
 };
 
 type HTMLElementName = keyof JSX.IntrinsicElements;
@@ -59,21 +30,43 @@ type HTMLElement<TElementName extends HTMLElementName> =
     : never;
 
 type TypographyProps = {
-  variant: TypographySelector;
+  variant?: TypographySelector;
 } & PropsWithChildren &
   HTMLAttributes<unknown>;
 
 export const Typography = ({
-  variant,
+  variant = 'other',
   children,
   ...nativeHtmlProps
 }: TypographyProps): JSX.Element => {
-  const elementName = variantMapping[variant];
-  const Component = elementName;
+  const Component = useMemo(() => {
+    switch (variant) {
+      case 'heading':
+        const { className } = nativeHtmlProps;
+        const fontSizeClasses = className
+          ?.split(' ')
+          .filter((cls) => cls.startsWith('fs-'));
+        const lastFontSizeClass =
+          fontSizeClasses && fontSizeClasses.length > 0
+            ? fontSizeClasses.reverse()[0]
+            : 'fs-m';
+        return headingMapping[lastFontSizeClass] ?? 'h3';
+      case 'paragraph':
+      default:
+        return 'p';
+      case 'other':
+        return 'span';
+    }
+  }, [nativeHtmlProps, variant]);
+
   return (
     <Component
-      {...(nativeHtmlProps as HTMLAttributes<HTMLElement<typeof elementName>>)}
-      className={classNames(nativeHtmlProps.className, variant)}
+      {...(nativeHtmlProps as HTMLAttributes<HTMLElement<typeof Component>>)}
+      className={classNames(
+        styles.typography,
+        variant,
+        nativeHtmlProps.className,
+      )}
     >
       {children}
     </Component>

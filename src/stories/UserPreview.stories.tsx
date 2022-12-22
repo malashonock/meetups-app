@@ -1,30 +1,138 @@
-import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-
 import { UserPreview } from 'components';
 
 export default {
   title: 'Components/UserPreview',
   component: UserPreview,
-  parameters: {
-    layout: 'centered',
-  },
 } as ComponentMeta<typeof UserPreview>;
 
-const Template: ComponentStory<typeof UserPreview> = (args) => (
-  <div style={{ padding: '30px', background: '#8065ec' }}>
-    <UserPreview {...args} />
-  </div>
-);
-
-export const LoggedIn = Template.bind({});
-
-LoggedIn.story = {
-  argTypes: { name: { defaultValue: 'Nikolai Borisik' } },
+/* Mock users */
+const user_EN_FirstName = {
+  id: 'AAA-AAA',
+  name: 'John',
+  surname: '',
 };
 
-export const LoggedOut = Template.bind({});
+const user_EN_FullName = {
+  id: 'AAA-AAA',
+  name: 'John',
+  surname: 'Doe',
+};
 
-LoggedOut.story = {
-  argTypes: { name: { control: { type: 'no' } } },
+const user_EN_ManyNames = {
+  id: 'AAA-AAA',
+  name: 'John F.',
+  surname: 'Kennedy',
+};
+
+const user_RU_FirstName = {
+  id: 'AAA-AAA',
+  name: 'Вася',
+  surname: '',
+};
+
+const user_RU_FullName = {
+  id: 'AAA-AAA',
+  name: 'Вася',
+  surname: 'Пупкин',
+};
+
+const user_RU_ManyNames = {
+  id: 'AAA-AAA',
+  name: 'Остап Сулейман Ибрагим',
+  surname: 'Берта-Мария Бендер-бей',
+};
+
+/* Default template */
+const DefaultTemplate: ComponentStory<typeof UserPreview> = (args) => (
+  <UserPreview {...args} />
+);
+
+export const Default_EN_FirstName = DefaultTemplate.bind({});
+
+Default_EN_FirstName.args = {
+  variant: 'default',
+  user: user_EN_FirstName,
+};
+
+export const Default_EN_FullName = DefaultTemplate.bind({});
+
+Default_EN_FullName.args = {
+  variant: 'default',
+  user: user_EN_FullName,
+};
+
+export const Default_EN_ManyNames = DefaultTemplate.bind({});
+
+Default_EN_ManyNames.args = {
+  variant: 'default',
+  user: user_EN_ManyNames,
+};
+
+export const Default_RU_FirstName = DefaultTemplate.bind({});
+
+Default_RU_FirstName.args = {
+  variant: 'default',
+  user: user_RU_FirstName,
+};
+
+export const Default_RU_FullName = DefaultTemplate.bind({});
+
+Default_RU_FullName.args = {
+  variant: 'default',
+  user: user_RU_FullName,
+};
+
+export const Default_RU_ManyNames = DefaultTemplate.bind({});
+
+Default_RU_ManyNames.args = {
+  variant: 'default',
+  user: user_RU_ManyNames,
+};
+
+/* Header template */
+const HeaderTemplate: ComponentStory<typeof UserPreview> = (args) => (
+  <UserPreview {...args} />
+);
+
+export const Header_EN_FirstName = HeaderTemplate.bind({});
+
+Header_EN_FirstName.args = {
+  variant: 'header',
+  user: user_EN_FirstName,
+};
+
+export const Header_EN_FullName = HeaderTemplate.bind({});
+
+Header_EN_FullName.args = {
+  variant: 'header',
+  user: user_EN_FullName,
+};
+
+export const Header_EN_ManyNames = HeaderTemplate.bind({});
+
+Header_EN_ManyNames.args = {
+  variant: 'header',
+  user: user_EN_ManyNames,
+};
+
+export const Header_RU_FirstName = HeaderTemplate.bind({});
+
+Header_RU_FirstName.args = {
+  variant: 'header',
+  user: user_RU_FirstName,
+};
+
+export const Header_RU_FullName = HeaderTemplate.bind({});
+
+Header_RU_FullName.args = {
+  variant: 'header',
+  user: user_RU_FullName,
+};
+
+export const Header_RU_ManyNames = HeaderTemplate.bind({});
+
+Header_RU_ManyNames.args = {
+  variant: 'header',
+  user: user_RU_ManyNames,
 };
