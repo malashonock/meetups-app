@@ -1,0 +1,35 @@
+@import '~style/colors';
+@import '~style/typography';
+@import '~style/mixins';
+
+.tabs {  
+  width: 100%;
+  display: flex;
+  margin-top: 50px;
+
+  border-bottom: 1px solid $gray-06-color;
+
+  cursor: pointer;
+}
+
+.tab {
+  position: relative;
+
+  width: 100%;   
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  padding-bottom: 15px;
+}
+
+.tab-indicator {
+  position: relative;
+  left: 0px;
+
+  height: 2px;
+  margin-bottom: 30px;
+
+  background: $purple-color; 
+
+  @include smooth-transition(all);
+}

@@ -5,6 +5,7 @@ import { Header } from 'components';
 import { MeetupPage } from 'pages';
 
 import styles from './App.module.scss';
+import { meetupTabs, meetupTabToDescriptor } from 'components';
 
 function App() {
   return (
@@ -14,13 +15,24 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate replace to="/meetups" />} />
           <Route path="meetups" element={<MeetupPage />}>
-            <Route index element={<Navigate replace to="t1" />}></Route>
-            <Route path="t1" element={<div>t1</div>}></Route>
-            <Route path="t2" element={<div>t2</div>}></Route>
-            <Route path="t3" element={<div>t3</div>}></Route>
+            <Route
+              index
+              element={
+                <Navigate
+                  replace
+                  to={meetupTabToDescriptor[meetupTabs[0]].link}
+                />
+              }
+            ></Route>
+            {meetupTabs.map((tab) => (
+              <Route
+                path={meetupTabToDescriptor[tab].link}
+                element={meetupTabToDescriptor[tab].component}
+              ></Route>
+            ))}
           </Route>
           <Route path="news" element={<div>News</div>} />
-          <Route path="*" element={<div>404</div>} />
+          <Route path="*" element={<div>404 | Page Not Found</div>} />
         </Routes>
       </main>
     </BrowserRouter>

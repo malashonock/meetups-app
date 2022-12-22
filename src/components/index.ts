@@ -8,3 +8,4 @@ export * from './DeleteButton/DeleteButton';
 export * from './EditButton/EditButton';
 export * from './Header/Header';
 export * from './Tooltip/Tooltip';
+export * from './Tabs/Tabs';
