@@ -6,3 +6,5 @@ export * from './VotesCount/VotesCount';
 export * from './IconButton/IconButton';
 export * from './DeleteButton/DeleteButton';
 export * from './EditButton/EditButton';
+export * from './Header/Header';
+export * from './Tooltip/Tooltip';

@@ -11,11 +11,11 @@
   background-color: $white-color;
   border-radius: 6px;
 
-  box-shadow: 0 4px 9px $gray-shadow-03-color;
+  box-shadow: 0 4px 9px $gray-shadow-05-color;
   @include smooth-transition(box-shadow);
 
   &:hover {
-    box-shadow: 0 5px 10px $gray-shadow-04-color;
+    box-shadow: 0 5px 10px $gray-shadow-06-color;
     @include smooth-transition(box-shadow);
   }
 
