@@ -2,8 +2,9 @@ import React, { useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { NavLink, Outlet } from 'react-router-dom';
 
+import { Typography } from 'components';
+
 import styles from './Tabs.module.scss';
-import { Typography } from 'components/Typography/Typography';
 
 enum MeetupTab {
   Topics = 'Темы',
@@ -12,12 +13,12 @@ enum MeetupTab {
   Finished = 'Прошедшие',
 }
 
+export const meetupTabs = Object.values(MeetupTab);
+
 type MeetupTabDescriptor = {
   link: string;
   component: React.ReactNode | JSX.Element;
 };
-
-export const meetupTabs = Object.values(MeetupTab);
 
 export const meetupTabToDescriptor: Record<MeetupTab, MeetupTabDescriptor> = {
   [MeetupTab.Topics]: {
@@ -66,7 +67,7 @@ export const Tabs = () => {
             className={getLinkClassName}
             onClick={() => setIndicatorStyle(index)}
           >
-            {tab}
+            <Typography>{tab}</Typography>
           </NavLink>
         ))}
       </div>

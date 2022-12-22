@@ -1,0 +1,9 @@
+@import '~style/typography';
+
+.heading {
+  @extend .ff-1;
+  @extend .fw-bold;
+  @extend .lh-m;
+  @extend .fc-black;
+  @extend .ta-center;
+}

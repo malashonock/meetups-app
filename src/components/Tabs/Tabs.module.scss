@@ -18,13 +18,24 @@
   width: 100%;   
   display: flex;
   justify-content: center;
-  align-items: center; 
   padding-bottom: 15px;
+
+  @extend .ff-1;
+  @extend .fw-regular;
+  @extend .fs-s;
+  @extend .lh-s;
+  @extend .fc-gray-02;
+
+  &.active {
+    @extend .fw-medium;
+    @extend .fc-black;
+  }
 }
 
 .tab-indicator {
   position: relative;
   left: 0px;
+  bottom: 2px;
 
   height: 2px;
   margin-bottom: 30px;

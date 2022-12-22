@@ -1,11 +1,10 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
-import { Header } from 'components';
+import { Header, meetupTabs, meetupTabToDescriptor } from 'components';
 import { MeetupPage } from 'pages';
 
 import styles from './App.module.scss';
-import { meetupTabs, meetupTabToDescriptor } from 'components';
 
 function App() {
   return (

@@ -3,10 +3,10 @@ import { NavLink } from 'react-router-dom';
 import classNames from 'classnames';
 
 import { Typography, UserPreview } from 'components';
+import { ShortUser } from 'model';
 
 import styles from './Header.module.scss';
 import logo from 'assets/images/logo.svg';
-import { ShortUser } from 'model';
 
 const user: ShortUser = {
   id: 'AAA-AAA',
