@@ -1,9 +1,9 @@
 import React from 'react';
+import classNames from 'classnames';
 
-import { Typography, Tabs } from 'components';
+import { Typography, MeetupStagesTabs } from 'components';
 
 import styles from './MeetupPage.module.scss';
-import classNames from 'classnames';
 
 export const MeetupPage = () => {
   return (
@@ -14,7 +14,7 @@ export const MeetupPage = () => {
       >
         Митапы
       </Typography>
-      <Tabs />
+      <MeetupStagesTabs />
     </div>
   );
 };

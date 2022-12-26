@@ -2,11 +2,11 @@ import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { withRouter } from 'storybook-addon-react-router-v6';
 
-import { Tabs } from 'components';
+import { MeetupStagesTabs, Tabs } from 'components';
 
 export default {
-  title: 'Components/Tabs',
-  component: Tabs,
+  title: 'Components/MeetupStagesTabs',
+  component: MeetupStagesTabs,
   decorators: [withRouter],
   parameters: {
     layout: 'centered',
@@ -18,7 +18,7 @@ export default {
 
 const Template: ComponentStory<typeof Tabs> = () => (
   <div style={{ width: '550px' }}>
-    <Tabs />
+    <MeetupStagesTabs />
   </div>
 );
 

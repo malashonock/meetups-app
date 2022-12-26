@@ -1,78 +1,64 @@
-import React, { useEffect, useRef } from 'react';
-import classNames from 'classnames';
-import { NavLink, Outlet } from 'react-router-dom';
-
-import { Typography } from 'components';
+import React, { PropsWithChildren, useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import styles from './Tabs.module.scss';
 
-enum MeetupTab {
-  Topics = 'Темы',
-  Moderating = 'На модерации',
-  Upcoming = 'Будущие',
-  Finished = 'Прошедшие',
+interface RenderTabCallbackParams<T> {
+  tab: T;
+  onSetActiveTab: () => void;
 }
 
-export const meetupTabs = Object.values(MeetupTab);
+export type RenderTabCallback<T> = (
+  params: RenderTabCallbackParams<T>,
+) => React.ReactNode;
 
-type MeetupTabDescriptor = {
-  link: string;
-  component: React.ReactNode | JSX.Element;
-};
+interface TabsProps<T> {
+  tabs: T[];
+  renderTab: RenderTabCallback<T>;
+  usesUrl?: boolean;
+}
 
-export const meetupTabToDescriptor: Record<MeetupTab, MeetupTabDescriptor> = {
-  [MeetupTab.Topics]: {
-    link: 'topics',
-    component: <div>Tab 1 Content</div>,
-  },
-  [MeetupTab.Moderating]: {
-    link: 'moderating',
-    component: <div>Tab 2 Content</div>,
-  },
-  [MeetupTab.Upcoming]: {
-    link: 'upcoming',
-    component: <div>Tab 3 Content</div>,
-  },
-  [MeetupTab.Finished]: {
-    link: 'finished',
-    component: <div>Tab 4 Content</div>,
-  },
-};
-
-export const Tabs = () => {
-  const indicatorRef = useRef<HTMLDivElement>(null);
+export function Tabs<T>({
+  tabs,
+  renderTab,
+  usesUrl,
+  children,
+}: PropsWithChildren<TabsProps<T>>) {
+  const location = useLocation();
 
   useEffect(() => {
-    if (indicatorRef.current) {
-      indicatorRef.current.style.width = `calc(100%/${meetupTabs.length})`;
-    }
-  }, []);
+    if (usesUrl) {
+      const tabToOpen = location.pathname.split('/').slice(-1)[0] as T;
+      const indexOfTabToOpen = tabs.indexOf(tabToOpen);
 
-  const setIndicatorStyle = (index: number) => {
-    if (indicatorRef.current) {
-      indicatorRef.current.style.left = `calc(calc(100%/${meetupTabs.length}) * ${index})`;
+      document.documentElement.style.setProperty(
+        '--position',
+        `${indexOfTabToOpen !== -1 ? indexOfTabToOpen : 0}`,
+      );
+    } else {
+      document.documentElement.style.setProperty('--position', '0');
     }
+  });
+
+  const setIndicatorPosition = (index: number) => {
+    document.documentElement.style.setProperty('--position', `${index}`);
   };
-
-  const getLinkClassName = ({ isActive }: { isActive: boolean }) =>
-    isActive ? classNames(styles.tab, styles.active) : styles.tab;
 
   return (
     <>
       <div className={styles.tabs}>
-        {meetupTabs.map((tab, index) => (
-          <NavLink
-            key={tab}
-            to={meetupTabToDescriptor[tab].link}
-            className={getLinkClassName}
-            onClick={() => setIndicatorStyle(index)}
-          >
-            <Typography>{tab}</Typography>
-          </NavLink>
-        ))}
+        {tabs.map((tab, index) =>
+          renderTab({
+            tab,
+            onSetActiveTab: () => setIndicatorPosition(index),
+          }),
+        )}
       </div>
-      <div className={styles['tab-indicator']} ref={indicatorRef}></div>
-      <Outlet />
+      <div
+        className={styles['tab-indicator']}
+        style={{ '--numOfTabs': tabs.length } as React.CSSProperties}
+      />
+      <div className={styles['tabs-content']}>{children}</div>
     </>
   );
-};
+}

@@ -32,17 +32,11 @@
   }
 }
 
-:root {
-  --position: 0;
-  --numOfTabs: 1;
-}
-
 .tab-indicator {
   position: relative;
-  left: calc(calc(100%/var(--numOfTabs)) * var(--position));
+  left: 0px;
   bottom: 2px;
 
-  width: calc(100%/var(--numOfTabs));
   height: 2px;
   margin-bottom: 30px;
 

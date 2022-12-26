@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
-import { Header, meetupTabs, meetupTabToDescriptor } from 'components';
+import { Header, meetupTabsLinks, meetupTabToDescriptor } from 'components';
 import { MeetupPage } from 'pages';
 
 import styles from './App.module.scss';
@@ -16,18 +16,14 @@ function App() {
           <Route path="meetups" element={<MeetupPage />}>
             <Route
               index
-              element={
-                <Navigate
-                  replace
-                  to={meetupTabToDescriptor[meetupTabs[0]].link}
-                />
-              }
-            ></Route>
-            {meetupTabs.map((tab) => (
+              element={<Navigate replace to={meetupTabsLinks[0]} />}
+            />
+            {meetupTabsLinks.map((tabLink) => (
               <Route
-                path={meetupTabToDescriptor[tab].link}
-                element={meetupTabToDescriptor[tab].component}
-              ></Route>
+                key={tabLink}
+                path={tabLink}
+                element={meetupTabToDescriptor[tabLink].component}
+              />
             ))}
           </Route>
           <Route path="news" element={<div>News</div>} />
