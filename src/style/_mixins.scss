@@ -14,3 +14,8 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: $max-lines;
 }
+
+// for smooth transition from gradient to solid
+@mixin placeholder-gradient($color) {
+  background: linear-gradient($color, $color);
+}
