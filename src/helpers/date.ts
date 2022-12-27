@@ -14,20 +14,42 @@ const formattedWeekDays = [
   'Субб.',
 ];
 
-export const parseDateString = (dateString: string): FormattedDateTime => {
+const defaultLocale: Intl.LocalesArgument = 'ru-RU';
+
+const defaultDateOptions: Intl.DateTimeFormatOptions = {
+  day: 'numeric',
+  month: 'long',
+};
+
+const defaultTimeOptions: Intl.DateTimeFormatOptions = {
+  timeStyle: 'short',
+};
+
+export interface DateParserOptions {
+  locale?: Intl.LocalesArgument;
+  dateOptions?: Intl.DateTimeFormatOptions;
+  timeOptions?: Intl.DateTimeFormatOptions;
+}
+
+export const parseDateString = (
+  dateString: string,
+  options?: DateParserOptions,
+): FormattedDateTime => {
   const date = new Date(dateString);
-  const locale = 'ru-RU';
+
+  let locale: Intl.LocalesArgument | undefined;
+  let dateOptions: Intl.DateTimeFormatOptions | undefined;
+  let timeOptions: Intl.DateTimeFormatOptions | undefined;
+
+  ({
+    locale = defaultLocale,
+    dateOptions = defaultDateOptions,
+    timeOptions = defaultTimeOptions,
+  } = options ?? {});
 
   const formattedWeekDay = formattedWeekDays[date.getDay()];
-
-  const formattedDate = date.toLocaleDateString(locale, {
-    day: 'numeric',
-    month: 'long',
-  });
-
-  const formattedTime = date.toLocaleTimeString(locale, {
-    timeStyle: 'short',
-  });
+  const formattedDate = date.toLocaleDateString(locale, dateOptions);
+  const formattedTime = date.toLocaleTimeString(locale, timeOptions);
 
   return {
     formattedWeekDay,

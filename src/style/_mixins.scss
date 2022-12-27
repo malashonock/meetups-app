@@ -3,3 +3,14 @@
   transition-duration: 0.2s;
   transition-timing-function: ease;
 }
+
+@mixin multiline-ellipsis($max-lines) {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  /* Borrowed from here: */
+  /* https://kiranworkspace.com/ellipsis-to-multiline-text-in-css/ */
+  white-space: normal;
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $max-lines;
+}
