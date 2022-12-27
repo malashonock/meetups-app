@@ -1,11 +1,5 @@
 import classNames from 'classnames';
-
-import {
-  DetailedHTMLProps,
-  HTMLAttributes,
-  PropsWithChildren,
-  useMemo,
-} from 'react';
+import { DetailedHTMLProps, HTMLAttributes, PropsWithChildren } from 'react';
 
 import styles from './Typography.module.scss';
 
@@ -39,7 +33,7 @@ export const Typography = ({
   children,
   ...nativeHtmlProps
 }: TypographyProps): JSX.Element => {
-  const Component = useMemo(() => {
+  const getComponent = () => {
     switch (variant) {
       case 'heading':
         const { className } = nativeHtmlProps;
@@ -51,13 +45,15 @@ export const Typography = ({
             ? fontSizeClasses.reverse()[0]
             : 'font-size-m';
         return headingMapping[lastFontSizeClass] ?? 'h3';
+      case 'other':
+        return 'span';
       case 'paragraph':
       default:
         return 'p';
-      case 'other':
-        return 'span';
     }
-  }, [nativeHtmlProps, variant]);
+  };
+
+  const Component = getComponent();
 
   return (
     <Component

@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+
 import {
   DeleteButton,
   EditButton,
@@ -8,7 +9,7 @@ import {
 } from 'components';
 import { parseDateString } from 'helpers';
 import { Meetup, MeetupStatus } from 'model';
-import { useMemo } from 'react';
+
 import styles from './MeetupCard.module.scss';
 
 interface MeetupCardProps {
@@ -30,7 +31,7 @@ export const MeetupCard = ({ meetup }: MeetupCardProps): JSX.Element => {
       parseDateString(start));
   }
 
-  const variant = useMemo((): MeetupCardVariant => {
+  const getVariant = (): MeetupCardVariant => {
     switch (status) {
       case MeetupStatus.REQUEST:
       default:
@@ -40,7 +41,9 @@ export const MeetupCard = ({ meetup }: MeetupCardProps): JSX.Element => {
       case MeetupStatus.CONFIRMED:
         return isOver ? 'finished' : 'upcoming';
     }
-  }, [status, isOver]);
+  };
+
+  const variant = getVariant();
 
   return (
     <article className={classNames(styles.card, styles[variant])}>
