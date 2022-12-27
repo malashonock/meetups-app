@@ -52,7 +52,7 @@
 
     &:hover::after,
     &.active::after {
-      transform: scale(1);
+      transform: scaleX(1);
     }
   }
 }
