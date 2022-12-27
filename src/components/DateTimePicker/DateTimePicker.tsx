@@ -15,6 +15,7 @@ export const DateTimePicker = (): JSX.Element => {
       showTimeSelect
       dateFormat="d MMM yyyy HH:mm"
       timeFormat="HH:mm"
+      placeholderText="d MMM yyyy HH:mm"
     ></DatePicker>
   );
 };
