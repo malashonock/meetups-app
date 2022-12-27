@@ -12,11 +12,11 @@ import styles from './Typography.module.scss';
 export type TypographySelector = 'heading' | 'paragraph' | 'other';
 
 const headingMapping: Record<string, HTMLElementName> = {
-  'fs-xl': 'h1',
-  'fs-l': 'h2',
-  'fs-m': 'h3',
-  'fs-s': 'h4',
-  'fs-xs': 'h5',
+  'font-size-xl': 'h1',
+  'font-size-l': 'h2',
+  'font-size-m': 'h3',
+  'font-size-s': 'h4',
+  'font-size-xs': 'h5',
 };
 
 type HTMLElementName = keyof JSX.IntrinsicElements;
@@ -45,11 +45,11 @@ export const Typography = ({
         const { className } = nativeHtmlProps;
         const fontSizeClasses = className
           ?.split(' ')
-          .filter((cls) => cls.startsWith('fs-'));
+          .filter((cls) => cls.startsWith('font-size-'));
         const lastFontSizeClass =
           fontSizeClasses && fontSizeClasses.length > 0
             ? fontSizeClasses.reverse()[0]
-            : 'fs-m';
+            : 'font-size-m';
         return headingMapping[lastFontSizeClass] ?? 'h3';
       case 'paragraph':
       default:
