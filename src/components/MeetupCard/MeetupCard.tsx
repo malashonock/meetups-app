@@ -16,7 +16,12 @@ interface MeetupCardProps {
   meetup: Meetup;
 }
 
-type MeetupCardVariant = 'topic' | 'onModeration' | 'upcoming' | 'finished';
+enum MeetupCardVariant {
+  Topic = 'topic',
+  OnModeration = 'onModeration',
+  Upcoming = 'upcoming',
+  Finished = 'finished',
+}
 
 export const MeetupCard = ({ meetup }: MeetupCardProps): JSX.Element => {
   const { status, author, start, place, subject, excerpt, goCount, isOver } =
@@ -35,11 +40,11 @@ export const MeetupCard = ({ meetup }: MeetupCardProps): JSX.Element => {
     switch (status) {
       case MeetupStatus.REQUEST:
       default:
-        return 'topic';
+        return MeetupCardVariant.Topic;
       case MeetupStatus.DRAFT:
-        return 'onModeration';
+        return MeetupCardVariant.OnModeration;
       case MeetupStatus.CONFIRMED:
-        return isOver ? 'finished' : 'upcoming';
+        return isOver ? MeetupCardVariant.Finished : MeetupCardVariant.Upcoming;
     }
   };
 

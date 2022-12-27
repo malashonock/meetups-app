@@ -6,7 +6,10 @@ import { ShortUser } from 'model';
 
 import styles from './UserPreview.module.scss';
 
-type UserPreviewVariant = 'header' | 'default';
+export enum UserPreviewVariant {
+  Header = 'header',
+  Default = 'default',
+}
 
 interface UserPreviewProps {
   user: ShortUser;
@@ -15,7 +18,7 @@ interface UserPreviewProps {
 
 export const UserPreview = ({
   user,
-  variant = 'default',
+  variant = UserPreviewVariant.Default,
 }: UserPreviewProps): JSX.Element => {
   const { name, surname } = user;
 

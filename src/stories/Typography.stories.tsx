@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { Typography } from 'components';
+import { Typography, TypographySelector } from 'components';
 
 const typographyUtilities: string[] = [
   'ff-1',
@@ -52,15 +52,15 @@ const Template: ComponentStory<typeof Typography> = (args) => (
 
 export const HeadingTypography = Template.bind({});
 HeadingTypography.args = {
-  variant: 'heading',
+  variant: TypographySelector.Heading,
 };
 
 export const ParagraphTypography = Template.bind({});
 ParagraphTypography.args = {
-  variant: 'paragraph',
+  variant: TypographySelector.Paragraph,
 };
 
 export const OtherTypography = Template.bind({});
 OtherTypography.args = {
-  variant: 'other',
+  variant: TypographySelector.Other,
 };

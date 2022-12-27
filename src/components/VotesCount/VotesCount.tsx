@@ -1,5 +1,6 @@
 import { ReactComponent as ProfileIcon } from './profile.svg';
-import { Typography } from 'components';
+import { Typography, TypographySelector } from 'components';
+
 import styles from './VotesCount.module.scss';
 
 interface VotesCountProps {
@@ -10,7 +11,10 @@ export const VotesCount = ({ votesCount }: VotesCountProps): JSX.Element => {
   return (
     <div className={styles.wrapper}>
       <ProfileIcon className={styles.icon} />
-      <Typography variant="paragraph" className={styles.text}>
+      <Typography
+        variant={TypographySelector.Paragraph}
+        className={styles.text}
+      >
         {votesCount} поддерживают
       </Typography>
     </div>

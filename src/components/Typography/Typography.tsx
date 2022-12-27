@@ -3,7 +3,11 @@ import { DetailedHTMLProps, HTMLAttributes, PropsWithChildren } from 'react';
 
 import styles from './Typography.module.scss';
 
-export type TypographySelector = 'heading' | 'paragraph' | 'other';
+export enum TypographySelector {
+  Heading = 'heading',
+  Paragraph = 'paragraph',
+  Other = 'other',
+}
 
 const headingMapping: Record<string, HTMLElementName> = {
   'font-size-xl': 'h1',
@@ -29,7 +33,7 @@ type TypographyProps = {
   HTMLAttributes<unknown>;
 
 export const Typography = ({
-  variant = 'other',
+  variant = TypographySelector.Other,
   children,
   ...nativeHtmlProps
 }: TypographyProps): JSX.Element => {
