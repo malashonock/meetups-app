@@ -1,0 +1,89 @@
+@import '~style/colors';
+@import '~style/typography';
+@import '~style/mixins';
+
+.news {
+  position: relative;
+
+  .image {
+    position: absolute;
+    z-index: 1;
+    overflow: hidden;
+
+    width: 144px;
+    height: 144px;
+    border-radius: 5px;
+
+    $shadow-color: rgba(105, 112, 127, 0.3);
+    box-shadow: 3px 5px 8px $shadow-color;
+    @include smooth-transition(box-shadow);
+
+    &:hover {
+      box-shadow: 3px 5px 8px adjust-color($shadow-color, $alpha: +0.1);
+      @include smooth-transition(box-shadow);
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+    }
+  }
+
+  .content {
+    position: relative;
+    top: 8px;
+    left: 8px;
+
+    height: 152px;
+    padding: 16px;
+    padding-left: 160px;
+    border-radius: 5px;
+
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+
+    background-color: $white-color;
+    $shadow-color: rgba(215, 221, 232, 0.15);
+    box-shadow: 0 4px 3px $shadow-color;
+    @include smooth-transition(box-shadow);
+
+    &:hover {
+      box-shadow: 0 4px 3px adjust-color($shadow-color, $alpha: +0.1);
+      @include smooth-transition(box-shadow);
+    }
+
+    .date {
+      @extend .ff-1;
+      @extend .fw-regular;
+      @extend .fs-xs;
+      @extend .lh-xs;
+      letter-spacing: 0.09px;
+      @extend .fc-gray-03;
+    }
+
+    .title,
+    .text {
+      @include multiline-ellipsis(2);
+    }
+
+    .title {
+      @extend .ff-2;
+      @extend .fw-medium;
+      @extend .fs-m;
+      line-height: 100%;
+      letter-spacing: -0.3px;
+      @extend .fc-black;
+    }
+
+    .text {
+      @extend .ff-1;
+      @extend .fw-regular;
+      @extend .fs-xs;
+      @extend .lh-xxl;
+      @extend .fc-gray-02;
+    }
+  }
+}
