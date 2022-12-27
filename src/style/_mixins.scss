@@ -3,3 +3,8 @@
   transition-duration: 0.2s;
   transition-timing-function: ease;
 }
+
+// for smooth transition from gradient to solid
+@mixin placeholder-gradient($color) {
+  background: linear-gradient($color, $color);
+}

@@ -31,7 +31,7 @@
   &.primary {
     --border-width: 0px;
 
-    background: $purple-gradient-color;
+    background: $purple-gradient-01-color;
     @extend .fc-white;
 
     &:not(:disabled) {
@@ -40,7 +40,9 @@
       }
 
       &:active {
-        background: $blue-01-gradient-color; // switch off the gradient
+        @include placeholder-gradient(
+          $blue-01-color
+        ); // switch off the gradient
 
         box-shadow: 0px 2px 3px $gray-shadow-02-color;
       }
