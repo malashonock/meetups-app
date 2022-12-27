@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useEffect, useState } from 'react';
+import React, { PropsWithChildren, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import styles from './Tabs.module.scss';

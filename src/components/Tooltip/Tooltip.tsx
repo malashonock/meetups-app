@@ -1,8 +1,9 @@
 import React, { PropsWithChildren, useState } from 'react';
 import classNames from 'classnames';
 
+import { Typography } from 'components';
+
 import styles from './Tooltip.module.scss';
-import { Typography } from 'components/Typography/Typography';
 
 interface TooltipProps {
   variant?: 'dark' | 'colored' | 'outline' | 'white';
