@@ -9,7 +9,6 @@
   box-shadow: 0px 8px 16px $gray-shadow-04-color;
   border-radius: 4px;
   box-sizing: border-box;
-  height: 224px;
 
   @extend .font-family-1;
 
@@ -101,7 +100,7 @@
   }
 
   &__month-container {
-    width: 186px;
+    width: 218px;
   }
 
   &__navigation {
@@ -173,6 +172,7 @@
 
   &__day-names {
     padding: 7.5px 0;
+    margin: 0 !important;
     border-bottom: 1px solid $gray-05-color;
   }
 
@@ -228,7 +228,9 @@
       overflow: overlay !important;
 
       width: 100% !important;
-      height: 160px !important;
+
+      --time-list-height: 167px;
+      height: var(--time-list-height) !important;
 
       &::-webkit-scrollbar {
         width: 18px;
