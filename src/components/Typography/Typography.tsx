@@ -3,19 +3,16 @@ import { DetailedHTMLProps, HTMLAttributes, PropsWithChildren } from 'react';
 
 import styles from './Typography.module.scss';
 
-export enum TypographySelector {
-  Heading = 'heading',
-  Paragraph = 'paragraph',
-  Other = 'other',
+export enum TypographyComponent {
+  Heading1 = 'h1',
+  Heading2 = 'h2',
+  Heading3 = 'h3',
+  Heading4 = 'h4',
+  Heading5 = 'h5',
+  Heading6 = 'h6',
+  Paragraph = 'p',
+  Span = 'span',
 }
-
-const headingMapping: Record<string, HTMLElementName> = {
-  'font-size-xl': 'h1',
-  'font-size-l': 'h2',
-  'font-size-m': 'h3',
-  'font-size-s': 'h4',
-  'font-size-xs': 'h5',
-};
 
 type HTMLElementName = keyof JSX.IntrinsicElements;
 
@@ -28,43 +25,23 @@ type HTMLElement<TElementName extends HTMLElementName> =
     : never;
 
 type TypographyProps = {
-  variant?: TypographySelector;
+  component?: TypographyComponent;
 } & PropsWithChildren &
   HTMLAttributes<unknown>;
 
 export const Typography = ({
-  variant = TypographySelector.Other,
+  component = TypographyComponent.Span,
   children,
   ...nativeHtmlProps
 }: TypographyProps): JSX.Element => {
-  const getComponent = () => {
-    switch (variant) {
-      case 'heading':
-        const { className } = nativeHtmlProps;
-        const fontSizeClasses = className
-          ?.split(' ')
-          .filter((cls) => cls.startsWith('font-size-'));
-        const lastFontSizeClass =
-          fontSizeClasses && fontSizeClasses.length > 0
-            ? fontSizeClasses.reverse()[0]
-            : 'font-size-m';
-        return headingMapping[lastFontSizeClass] ?? 'h3';
-      case 'other':
-        return 'span';
-      case 'paragraph':
-      default:
-        return 'p';
-    }
-  };
-
-  const Component = getComponent();
+  const Component = component;
 
   return (
     <Component
       {...(nativeHtmlProps as HTMLAttributes<HTMLElement<typeof Component>>)}
       className={classNames(
         styles.typography,
-        variant,
+        component,
         nativeHtmlProps.className,
       )}
     >

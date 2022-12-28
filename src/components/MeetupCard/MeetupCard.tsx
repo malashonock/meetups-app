@@ -4,6 +4,7 @@ import {
   DeleteButton,
   EditButton,
   Typography,
+  TypographyComponent,
   UserPreview,
   VotesCount,
 } from 'components';
@@ -85,9 +86,19 @@ export const MeetupCard = ({ meetup }: MeetupCardProps): JSX.Element => {
       </header>
 
       <div className={styles.body}>
-        <Typography className={styles.subject}>{subject}</Typography>
+        <Typography
+          component={TypographyComponent.Heading2}
+          className={styles.subject}
+        >
+          {subject}
+        </Typography>
         {excerpt !== undefined && (
-          <Typography className={styles.excerpt}>{excerpt}</Typography>
+          <Typography
+            component={TypographyComponent.Paragraph}
+            className={styles.excerpt}
+          >
+            {excerpt}
+          </Typography>
         )}
       </div>
 

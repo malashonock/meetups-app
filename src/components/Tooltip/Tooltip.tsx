@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, useState } from 'react';
 import classNames from 'classnames';
 
-import { Typography, TypographySelector } from 'components';
+import { Typography, TypographyComponent } from 'components';
 
 import styles from './Tooltip.module.scss';
 
@@ -42,13 +42,13 @@ export const Tooltip = ({
         })}
       >
         <Typography
-          variant={TypographySelector.Heading}
+          component={TypographyComponent.Heading3}
           className={styles.title}
         >
           {title}
         </Typography>
         <Typography
-          variant={TypographySelector.Paragraph}
+          component={TypographyComponent.Paragraph}
           className={styles.description}
         >
           {description}
