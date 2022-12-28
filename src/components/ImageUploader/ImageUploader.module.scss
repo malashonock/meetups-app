@@ -17,6 +17,14 @@
   @extend .font-weight-regular;
   @extend .text-align-center;
 
+  @include smooth-transition(all);
+
+  &.active {
+    background-color: $gray-07-color;
+    border-color: $purple-color;
+    @include smooth-transition(all);
+  }
+
   .promptText {
     margin-top: 8px;
 

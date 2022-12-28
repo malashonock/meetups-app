@@ -13,31 +13,38 @@ const MAX_FILESIZE = 10_000_000; // bytes
 const BYTES_IN_MEGABYTE = 1_000_000;
 
 export const ImageUploader = (): JSX.Element => {
+  const acceptOptions = ACCEPT_FORMATS.reduce((formats, format) => {
+    return {
+      ...formats,
+      ...{
+        ['image/' + format.slice(1)]: [],
+      },
+    };
+  }, {});
+
   const {
     getRootProps,
     getInputProps,
     isFocused,
     isDragAccept,
     isDragReject,
+    isDragActive,
+    isFileDialogActive,
     open,
   } = useDropzone({
-    accept: {
-      'image/*': ACCEPT_FORMATS,
-    },
+    accept: acceptOptions,
     noClick: true,
     noKeyboard: true,
-    maxFiles: 1,
+    multiple: false,
     maxSize: MAX_FILESIZE,
   });
 
   const classList = classNames(
     styles.dropBox,
-    isFocused ?? styles.focused,
-    isDragAccept ?? styles.accept,
-    isDragReject ?? styles.reject,
+    (isDragActive || isFileDialogActive) ?? styles.active,
   );
 
-  const acceptFormats = ACCEPT_FORMATS.join(' ');
+  const acceptFileExtensions = ACCEPT_FORMATS.join(' ');
 
   const maxFileSize = Math.round(MAX_FILESIZE / BYTES_IN_MEGABYTE);
 
@@ -59,7 +66,7 @@ export const ImageUploader = (): JSX.Element => {
         </Typography>
         <div className={styles.constraints}>
           <Typography component={TypographyComponent.Paragraph}>
-            Разрешенные форматы: {acceptFormats}
+            Разрешенные форматы: {acceptFileExtensions}
           </Typography>
           <Typography component={TypographyComponent.Paragraph}>
             Максимальный размер файла: {maxFileSize} Mb
