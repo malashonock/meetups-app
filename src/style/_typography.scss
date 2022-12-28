@@ -50,6 +50,9 @@
 
 /* Font size */
 .fs {
+  &-xxs {
+    font-size: 12px;
+  }
   &-xs {
     font-size: 14px;
   }
@@ -138,6 +141,12 @@
   }
   &-purple {
     color: $purple-color;
+  }
+  &-green {
+    color: $green-01-color;
+  }
+  &-red {
+    color: $red-01-color;
   }
 }
 
