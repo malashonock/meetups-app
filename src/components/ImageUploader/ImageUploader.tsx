@@ -22,26 +22,19 @@ export const ImageUploader = (): JSX.Element => {
     };
   }, {});
 
-  const {
-    getRootProps,
-    getInputProps,
-    isFocused,
-    isDragAccept,
-    isDragReject,
-    isDragActive,
-    isFileDialogActive,
-    open,
-  } = useDropzone({
-    accept: acceptOptions,
-    noClick: true,
-    noKeyboard: true,
-    multiple: false,
-    maxSize: MAX_FILESIZE,
-  });
+  const { getRootProps, getInputProps, isDragAccept, isDragReject, open } =
+    useDropzone({
+      accept: acceptOptions,
+      noClick: true,
+      noKeyboard: true,
+      multiple: false,
+      maxSize: MAX_FILESIZE,
+    });
 
   const classList = classNames(
     styles.dropBox,
-    (isDragActive || isFileDialogActive) ?? styles.active,
+    isDragAccept ? styles.willAccept : '',
+    isDragReject ? styles.willReject : '',
   );
 
   const acceptFileExtensions = ACCEPT_FORMATS.join(' ');
