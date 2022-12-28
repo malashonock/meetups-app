@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { useDropzone } from 'react-dropzone';
 import { ReactComponent as UploadIcon } from './upload.svg';
-import styles from './ImageUploader.module.scss';
+import styles from './ImageDropbox.module.scss';
 import {
   Typography,
   TypographyComponent,
@@ -12,7 +12,7 @@ const ACCEPT_FORMATS = ['.jpg', '.jpeg', '.png'];
 const MAX_FILESIZE = 10_000_000; // bytes
 const BYTES_IN_MEGABYTE = 1_000_000;
 
-export const ImageUploader = (): JSX.Element => {
+export const ImageDropbox = (): JSX.Element => {
   const acceptOptions = ACCEPT_FORMATS.reduce((formats, format) => {
     return {
       ...formats,
@@ -32,7 +32,7 @@ export const ImageUploader = (): JSX.Element => {
     });
 
   const classList = classNames(
-    styles.dropBox,
+    styles.dropbox,
     isDragAccept ? styles.willAccept : '',
     isDragReject ? styles.willReject : '',
   );

@@ -10,4 +10,4 @@ export * from './Header/Header';
 export * from './Tooltip/Tooltip';
 export * from './NewsCard/NewsCard';
 export * from './DateTimePicker/DateTimePicker';
-export * from './ImageUploader/ImageUploader';
+export * from './ImageDropbox/ImageDropbox';
