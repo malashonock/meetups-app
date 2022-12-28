@@ -39,6 +39,24 @@ export function Tabs({
     setActiveTabValue(arrayChildren[0].props.value);
   }, []);
 
+  /* Chooses which tab is active on initialisation */
+
+  useEffect(() => {
+    if (changesUrl) {
+      const tabToOpen = location.pathname.split('/').slice(-1)[0];
+      const indexOfTabToOpen = arrayChildren
+        .map((child) => child.props.to)
+        .indexOf(tabToOpen);
+
+      document.documentElement.style.setProperty(
+        '--position',
+        `${indexOfTabToOpen !== -1 ? indexOfTabToOpen : 0}`,
+      );
+    } else {
+      document.documentElement.style.setProperty('--position', '0');
+    }
+  });
+
   /* Change indicator if tabs dont change url (tabs are not NavLinks) */
   useEffect(() => {
     if (!changesUrl) {
@@ -51,16 +69,16 @@ export function Tabs({
   }, [activeTabValue]);
 
   /* Change indicator if tabs change url (tabs are NavLinks) */
-  useEffect(() => {
-    if (changesUrl) {
-      const tabToOpen = location.pathname.split('/').slice(-1)[0];
-      const indexOfTabToOpen = arrayChildren
-        .map((child) => child.props.to)
-        .indexOf(tabToOpen);
+  // useEffect(() => {
+  //   if (changesUrl) {
+  //     const tabToOpen = location.pathname.split('/').slice(-1)[0];
+  //     const indexOfTabToOpen = arrayChildren
+  //       .map((child) => child.props.to)
+  //       .indexOf(tabToOpen);
 
-      setIndicatorPosition(indexOfTabToOpen !== -1 ? indexOfTabToOpen : 0);
-    }
-  }, [location]);
+  //     setIndicatorPosition(indexOfTabToOpen !== -1 ? indexOfTabToOpen : 0);
+  //   }
+  // }, [location]);
 
   const handleClick = (e: React.SyntheticEvent<EventTarget>) => {
     if (!(e.target instanceof HTMLElement)) {
@@ -70,6 +88,19 @@ export function Tabs({
     setActiveTabValue(e.target.dataset.tabValue as string);
   };
 
+  let childrenHavingOnClickFunction;
+
+  if (changesUrl) {
+    childrenHavingOnClickFunction = React.Children.map(
+      children,
+      (child, index) => {
+        return React.cloneElement(child as ReactElement, {
+          onClick: () => setIndicatorPosition(index),
+        });
+      },
+    );
+  }
+
   return (
     <>
       <div
@@ -78,7 +109,7 @@ export function Tabs({
           if (!changesUrl) handleClick(e);
         }}
       >
-        {children}
+        {childrenHavingOnClickFunction || children}
       </div>
       <div
         className={styles['tab-indicator']}
