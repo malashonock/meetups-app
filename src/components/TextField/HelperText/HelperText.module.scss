@@ -1,0 +1,39 @@
+@import '~style/colors';
+@import '~style/typography';
+@import '~style/mixins';
+
+.error {
+  display: flex;
+
+  @extend .ff-1;
+  @extend .fw-regular;
+  @extend .fs-xxs;
+  @extend .lh-m;
+  @extend .fc-red;
+
+  &::before {
+    content: url(error.svg);
+    vertical-align: middle;
+    margin-right: 4px;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.success {
+  display: flex;
+
+  @extend .ff-1;
+  @extend .fw-regular;
+  @extend .fs-xxs;
+  @extend .lh-m;
+  @extend .fc-green;
+
+  &::before {
+    content: url(success.svg);
+    vertical-align: middle;
+    margin-right: 4px;
+    width: 16px;
+    height: 16px;
+  }
+}
