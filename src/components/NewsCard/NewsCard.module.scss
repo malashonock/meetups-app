@@ -56,12 +56,12 @@
     }
 
     .date {
-      @extend .ff-1;
-      @extend .fw-regular;
-      @extend .fs-xs;
-      @extend .lh-xs;
+      @extend .font-family-1;
+      @extend .font-weight-regular;
+      @extend .font-size-xs;
+      @extend .line-height-xs;
       letter-spacing: 0.09px;
-      @extend .fc-gray-03;
+      @extend .font-color-gray-03;
     }
 
     .title,
@@ -70,20 +70,20 @@
     }
 
     .title {
-      @extend .ff-2;
-      @extend .fw-medium;
-      @extend .fs-m;
+      @extend .font-family-2;
+      @extend .font-weight-medium;
+      @extend .font-size-m;
       line-height: 100%;
       letter-spacing: -0.3px;
-      @extend .fc-black;
+      @extend .font-color-black;
     }
 
     .text {
-      @extend .ff-1;
-      @extend .fw-regular;
-      @extend .fs-xs;
-      @extend .lh-xxl;
-      @extend .fc-gray-02;
+      @extend .font-family-1;
+      @extend .font-weight-regular;
+      @extend .font-size-xs;
+      @extend .line-height-xxl;
+      @extend .font-color-gray-02;
     }
   }
 }

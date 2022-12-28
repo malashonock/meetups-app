@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { UserPreview } from 'components';
+import { UserPreview, UserPreviewVariant } from 'components';
 
 export default {
   title: 'Components/UserPreview',
@@ -51,42 +51,42 @@ const DefaultTemplate: ComponentStory<typeof UserPreview> = (args) => (
 export const Default_EN_FirstName = DefaultTemplate.bind({});
 
 Default_EN_FirstName.args = {
-  variant: 'default',
+  variant: UserPreviewVariant.Default,
   user: user_EN_FirstName,
 };
 
 export const Default_EN_FullName = DefaultTemplate.bind({});
 
 Default_EN_FullName.args = {
-  variant: 'default',
+  variant: UserPreviewVariant.Default,
   user: user_EN_FullName,
 };
 
 export const Default_EN_ManyNames = DefaultTemplate.bind({});
 
 Default_EN_ManyNames.args = {
-  variant: 'default',
+  variant: UserPreviewVariant.Default,
   user: user_EN_ManyNames,
 };
 
 export const Default_RU_FirstName = DefaultTemplate.bind({});
 
 Default_RU_FirstName.args = {
-  variant: 'default',
+  variant: UserPreviewVariant.Default,
   user: user_RU_FirstName,
 };
 
 export const Default_RU_FullName = DefaultTemplate.bind({});
 
 Default_RU_FullName.args = {
-  variant: 'default',
+  variant: UserPreviewVariant.Default,
   user: user_RU_FullName,
 };
 
 export const Default_RU_ManyNames = DefaultTemplate.bind({});
 
 Default_RU_ManyNames.args = {
-  variant: 'default',
+  variant: UserPreviewVariant.Default,
   user: user_RU_ManyNames,
 };
 
@@ -98,41 +98,41 @@ const HeaderTemplate: ComponentStory<typeof UserPreview> = (args) => (
 export const Header_EN_FirstName = HeaderTemplate.bind({});
 
 Header_EN_FirstName.args = {
-  variant: 'header',
+  variant: UserPreviewVariant.Header,
   user: user_EN_FirstName,
 };
 
 export const Header_EN_FullName = HeaderTemplate.bind({});
 
 Header_EN_FullName.args = {
-  variant: 'header',
+  variant: UserPreviewVariant.Header,
   user: user_EN_FullName,
 };
 
 export const Header_EN_ManyNames = HeaderTemplate.bind({});
 
 Header_EN_ManyNames.args = {
-  variant: 'header',
+  variant: UserPreviewVariant.Header,
   user: user_EN_ManyNames,
 };
 
 export const Header_RU_FirstName = HeaderTemplate.bind({});
 
 Header_RU_FirstName.args = {
-  variant: 'header',
+  variant: UserPreviewVariant.Header,
   user: user_RU_FirstName,
 };
 
 export const Header_RU_FullName = HeaderTemplate.bind({});
 
 Header_RU_FullName.args = {
-  variant: 'header',
+  variant: UserPreviewVariant.Header,
   user: user_RU_FullName,
 };
 
 export const Header_RU_ManyNames = HeaderTemplate.bind({});
 
 Header_RU_ManyNames.args = {
-  variant: 'header',
+  variant: UserPreviewVariant.Header,
   user: user_RU_ManyNames,
 };

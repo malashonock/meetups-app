@@ -35,11 +35,11 @@
 
       list-style: none;
 
-      @extend .ff-1;
-      @extend .fw-regular;
-      @extend .fs-s;
-      @extend .lh-s;
-      @extend .fc-gray-01;
+      @extend .font-family-1;
+      @extend .font-weight-regular;
+      @extend .font-size-s;
+      @extend .line-height-s;
+      @extend .font-color-gray-01;
 
       > .appointmentItem {
         position: relative;
@@ -72,19 +72,19 @@
     row-gap: 12px;
 
     .subject {
-      @extend .ff-2;
-      @extend .fw-medium;
-      @extend .fs-m;
-      @extend .lh-xl;
-      @extend .fc-black;
+      @extend .font-family-2;
+      @extend .font-weight-medium;
+      @extend .font-size-m;
+      @extend .line-height-xl;
+      @extend .font-color-black;
     }
 
     .excerpt {
-      @extend .ff-1;
-      @extend .fw-regular;
-      @extend .fs-xs;
-      @extend .lh-xxl;
-      @extend .fc-gray-02;
+      @extend .font-family-1;
+      @extend .font-weight-regular;
+      @extend .font-size-xs;
+      @extend .line-height-xxl;
+      @extend .font-color-gray-02;
     }
   }
 }

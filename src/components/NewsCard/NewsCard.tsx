@@ -1,4 +1,4 @@
-import { Typography } from 'components';
+import { Typography, TypographyComponent } from 'components';
 import { parseDateString } from 'helpers';
 import { News } from 'model';
 import styles from './NewsCard.module.scss';
@@ -20,13 +20,22 @@ export const NewsCard = ({ news }: NewsCardProps): JSX.Element => {
         <img src={image} alt={title} />
       </figure>
       <div className={styles.content}>
-        <Typography variant="paragraph" className={styles.date}>
+        <Typography
+          component={TypographyComponent.Paragraph}
+          className={styles.date}
+        >
           {formattedDate}
         </Typography>
-        <Typography variant="heading" className={styles.title}>
+        <Typography
+          component={TypographyComponent.Heading2}
+          className={styles.title}
+        >
           {title}
         </Typography>
-        <Typography variant="paragraph" className={styles.text}>
+        <Typography
+          component={TypographyComponent.Paragraph}
+          className={styles.text}
+        >
           {text}
         </Typography>
       </div>

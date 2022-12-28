@@ -1,21 +1,28 @@
 import classNames from 'classnames';
+
 import {
   DeleteButton,
   EditButton,
   Typography,
+  TypographyComponent,
   UserPreview,
   VotesCount,
 } from 'components';
 import { parseDateString } from 'helpers';
 import { Meetup, MeetupStatus } from 'model';
-import { useMemo } from 'react';
+
 import styles from './MeetupCard.module.scss';
 
 interface MeetupCardProps {
   meetup: Meetup;
 }
 
-type MeetupCardVariant = 'topic' | 'onModeration' | 'upcoming' | 'finished';
+enum MeetupCardVariant {
+  Topic = 'topic',
+  OnModeration = 'onModeration',
+  Upcoming = 'upcoming',
+  Finished = 'finished',
+}
 
 export const MeetupCard = ({ meetup }: MeetupCardProps): JSX.Element => {
   const { status, author, start, place, subject, excerpt, goCount, isOver } =
@@ -30,17 +37,19 @@ export const MeetupCard = ({ meetup }: MeetupCardProps): JSX.Element => {
       parseDateString(start));
   }
 
-  const variant = useMemo((): MeetupCardVariant => {
+  const getVariant = (): MeetupCardVariant => {
     switch (status) {
       case MeetupStatus.REQUEST:
       default:
-        return 'topic';
+        return MeetupCardVariant.Topic;
       case MeetupStatus.DRAFT:
-        return 'onModeration';
+        return MeetupCardVariant.OnModeration;
       case MeetupStatus.CONFIRMED:
-        return isOver ? 'finished' : 'upcoming';
+        return isOver ? MeetupCardVariant.Finished : MeetupCardVariant.Upcoming;
     }
-  }, [status, isOver]);
+  };
+
+  const variant = getVariant();
 
   return (
     <article className={classNames(styles.card, styles[variant])}>
@@ -77,9 +86,19 @@ export const MeetupCard = ({ meetup }: MeetupCardProps): JSX.Element => {
       </header>
 
       <div className={styles.body}>
-        <Typography className={styles.subject}>{subject}</Typography>
+        <Typography
+          component={TypographyComponent.Heading2}
+          className={styles.subject}
+        >
+          {subject}
+        </Typography>
         {excerpt !== undefined && (
-          <Typography className={styles.excerpt}>{excerpt}</Typography>
+          <Typography
+            component={TypographyComponent.Paragraph}
+            className={styles.excerpt}
+          >
+            {excerpt}
+          </Typography>
         )}
       </div>
 

@@ -12,11 +12,11 @@
   border-radius: 5px;
   padding: calc(12px - var(--border-width));
 
-  @extend .ff-1;
-  @extend .fw-medium;
-  @extend .fs-xs;
-  @extend .lh-xs;
-  @extend .ta-center;
+  @extend .font-family-1;
+  @extend .font-weight-medium;
+  @extend .font-size-xs;
+  @extend .line-height-xs;
+  @extend .text-align-center;
 
   cursor: pointer;
 
@@ -31,7 +31,7 @@
     --border-width: 0px;
 
     background: $purple-gradient-01-color;
-    @extend .fc-white;
+    @extend .font-color-white;
 
     &:not(:disabled) {
       &:hover {
@@ -58,7 +58,7 @@
 
   &.secondary {
     border-color: $purple-color;
-    @extend .fc-purple;
+    @extend .font-color-purple;
 
     &:not(:disabled) {
       &:hover {
@@ -73,7 +73,7 @@
 
   &.default {
     border-color: $gray-05-color;
-    @extend .fc-gray-02;
+    @extend .font-color-gray-02;
 
     &:not(:disabled) {
       &:hover {

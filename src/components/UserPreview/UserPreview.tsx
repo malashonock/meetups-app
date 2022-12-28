@@ -1,13 +1,15 @@
-import { useMemo } from 'react';
+import classNames from 'classnames';
 
 import { getFirstLetter } from 'helpers';
 import { Typography } from 'components';
+import { ShortUser } from 'model';
 
 import styles from './UserPreview.module.scss';
-import { ShortUser } from 'model';
-import classNames from 'classnames';
 
-type UserPreviewVariant = 'header' | 'default';
+export enum UserPreviewVariant {
+  Header = 'header',
+  Default = 'default',
+}
 
 interface UserPreviewProps {
   user: ShortUser;
@@ -16,13 +18,11 @@ interface UserPreviewProps {
 
 export const UserPreview = ({
   user,
-  variant = 'default',
+  variant = UserPreviewVariant.Default,
 }: UserPreviewProps): JSX.Element => {
   const { name, surname } = user;
 
-  const userInitials = useMemo(() => {
-    return getFirstLetter(name) + getFirstLetter(surname);
-  }, [name, surname]);
+  const userInitials = getFirstLetter(name) + getFirstLetter(surname);
 
   return (
     <div className={classNames(styles.user, styles[variant])}>

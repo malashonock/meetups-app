@@ -28,11 +28,11 @@
   &-link {
     position: relative;
 
-    @extend .ff-1;
-    @extend .fw-regular;
-    @extend .fs-s;
-    @extend .lh-s;
-    @extend .fc-white;
+    @extend .font-family-1;
+    @extend .font-weight-regular;
+    @extend .font-size-s;
+    @extend .line-height-s;
+    @extend .font-color-white;
 
     &::after {
       content: '';
