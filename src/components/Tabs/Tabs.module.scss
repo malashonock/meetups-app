@@ -15,6 +15,12 @@
   border-bottom: 1px solid $gray-06-color;
 
   cursor: pointer;
+
+  & > * {
+    position: relative;
+
+    width: 100%; 
+  }
 }
 
 .tab-indicator {

@@ -14,6 +14,7 @@ export const MeetupPage = () => {
       >
         Митапы
       </Typography>
+
       <MeetupStagesTabs />
     </div>
   );

@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { NavLink, Outlet } from 'react-router-dom';
 
-import { RenderTabCallback, Tabs, Typography } from 'components';
+import { Tabs, TabsManager, Typography } from 'components';
 
 import styles from './MeetupStagesTabs.module.scss';
 
@@ -41,27 +41,24 @@ export const meetupTabToDescriptor: Record<MeetupTabLink, MeetupTabDescriptor> =
   };
 
 export function MeetupStagesTabs() {
-  const renderMeetupTab: RenderTabCallback<MeetupTabLink> = ({
-    tab,
-    onSetActiveTab,
-  }) => (
-    <NavLink
-      key={tab}
-      to={tab}
-      className={({ isActive }) =>
-        classNames(styles.tab, {
-          [styles.active]: isActive,
-        })
-      }
-      onClick={onSetActiveTab}
-    >
-      <Typography>{meetupTabToDescriptor[tab].label}</Typography>
-    </NavLink>
-  );
-
   return (
-    <Tabs tabs={meetupTabsLinks} renderTab={renderMeetupTab} usesUrl>
+    <TabsManager>
+      <Tabs changesUrl>
+        {meetupTabsLinks.map((tab) => (
+          <NavLink
+            key={tab}
+            to={tab}
+            className={({ isActive }) =>
+              classNames(styles.tab, {
+                [styles.active]: isActive,
+              })
+            }
+          >
+            <Typography>{meetupTabToDescriptor[tab].label}</Typography>
+          </NavLink>
+        ))}
+      </Tabs>
       <Outlet />
-    </Tabs>
+    </TabsManager>
   );
 }
