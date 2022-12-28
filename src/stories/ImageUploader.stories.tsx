@@ -1,11 +1,11 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { ImageDropbox } from 'components';
+import { ImageUploader } from 'components';
 
 export default {
-  title: 'Components/ImageUploader/ImageDropbox',
-  component: ImageDropbox,
-} as ComponentMeta<typeof ImageDropbox>;
+  title: 'Components/ImageUploader',
+  component: ImageUploader,
+} as ComponentMeta<typeof ImageUploader>;
 
-const Template: ComponentStory<typeof ImageDropbox> = () => <ImageDropbox />;
+const Template: ComponentStory<typeof ImageUploader> = () => <ImageUploader />;
 
 export const Default = Template.bind({});

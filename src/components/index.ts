@@ -11,3 +11,5 @@ export * from './Tooltip/Tooltip';
 export * from './NewsCard/NewsCard';
 export * from './DateTimePicker/DateTimePicker';
 export * from './ImageDropbox/ImageDropbox';
+export * from './ImagePreview/ImagePreview';
+export * from './ImageUploader/ImageUploader';
