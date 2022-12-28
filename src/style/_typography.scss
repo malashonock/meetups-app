@@ -50,6 +50,18 @@
 
 /* Font size */
 .font-size {
+  &-5xs {
+    font-size: 10px;
+  }
+  &-4xs {
+    font-size: 11px;
+  }
+  &-3xs {
+    font-size: 12px;
+  }
+  &-2xs {
+    font-size: 13px;
+  }
   &-xs {
     font-size: 14px;
   }
@@ -86,6 +98,12 @@
 }
 
 .line-height {
+  &-0 {
+    line-height: 100%;
+  }
+  &-2xs {
+    @include line-height(1px);
+  }
   &-xs {
     @include line-height(2px);
   }
