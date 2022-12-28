@@ -1,0 +1,14 @@
+@import '~style/colors';
+@import '~style/typography';
+@import '~style/mixins';
+
+.label {
+  display: flex;
+  margin-bottom: 8px;
+
+  @extend .ff-1;
+  @extend .fw-medium;
+  @extend .fs-xs;
+  @extend .lh-xs;
+  @extend .fc-gray-03;
+}
