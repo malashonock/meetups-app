@@ -1,0 +1,57 @@
+@import '~style/colors';
+@import '~style/typography';
+@import '~style/mixins';
+
+.dropBox {
+  background: $white-color;
+  border: 1px dashed $gray-05-color;
+  border-radius: 5px;
+  padding: 14px;
+  padding-top: 24px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @extend .font-family-1;
+  @extend .font-weight-regular;
+  @extend .text-align-center;
+
+  .promptText {
+    margin-top: 8px;
+
+    @extend .font-size-2xs;
+    @extend .font-color-gray-01;
+  }
+
+  .browseFileLink {
+    outline: none;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+
+    @extend .font-color-blue-02;
+    @extend .line-height-l;
+
+    @include smooth-transition(all);
+
+    &:hover,
+    &:active {
+      @extend .font-color-purple;
+      @include smooth-transition(all);
+    }
+
+    &:active {
+      transform: scale(0.99);
+      @include smooth-transition(all);
+    }
+  }
+
+  .constraints {
+    margin-top: 12px;
+
+    @extend .font-size-5xs;
+    @extend .font-color-gray-03;
+    @extend .line-height-xs;
+  }
+}
