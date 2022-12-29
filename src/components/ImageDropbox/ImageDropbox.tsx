@@ -1,11 +1,8 @@
 import classNames from 'classnames';
 import { useDropzone } from 'react-dropzone';
 import { ReactComponent as UploadIcon } from './upload.svg';
-import {
-  Typography,
-  TypographyComponent,
-} from 'components/Typography/Typography';
-import { ImageUploaderProps } from 'components/ImageUploader/ImageUploader';
+import { Typography, TypographyComponent } from 'components';
+import { ImageState } from 'components/ImageUploader/ImageUploader';
 import styles from './ImageDropbox.module.scss';
 
 const ACCEPT_FORMATS = ['.jpg', '.jpeg', '.png'];
@@ -13,10 +10,7 @@ const ACCEPT_FORMATS = ['.jpg', '.jpeg', '.png'];
 const MAX_FILESIZE = 10_000_000; // bytes
 const BYTES_IN_MEGABYTE = 1_000_000;
 
-export const ImageDropbox = ({
-  image,
-  setImage,
-}: ImageUploaderProps): JSX.Element => {
+export const ImageDropbox = ({ image, setImage }: ImageState): JSX.Element => {
   const acceptOptions = ACCEPT_FORMATS.reduce((formats, format) => {
     return {
       ...formats,

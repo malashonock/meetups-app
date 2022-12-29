@@ -1,7 +1,7 @@
 import { ImageDropbox, ImagePreview } from 'components';
 import { Dispatch, SetStateAction, useState } from 'react';
 
-export interface ImageUploaderProps {
+export interface ImageState {
   image: File | null;
   setImage: Dispatch<SetStateAction<File | null>>;
 }
@@ -9,14 +9,14 @@ export interface ImageUploaderProps {
 export const ImageUploader = (): JSX.Element => {
   const [image, setImage] = useState<File | null>(null);
 
-  const uploaderProps: ImageUploaderProps = {
+  const imageState: ImageState = {
     image,
     setImage,
   };
 
   return !image ? (
-    <ImageDropbox {...uploaderProps} />
+    <ImageDropbox {...imageState} />
   ) : (
-    <ImagePreview {...uploaderProps} />
+    <ImagePreview {...imageState} />
   );
 };
