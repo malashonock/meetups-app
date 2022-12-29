@@ -1,9 +1,10 @@
 @import '~style/typography';
 
 .heading {
-  @extend .ff-1;
-  @extend .fw-bold;
-  @extend .lh-m;
-  @extend .fc-black;
-  @extend .ta-center;
+  @extend .font-family-1;
+  @extend .font-weight-bold;
+  @extend .font-size-xl;
+  @extend .line-height-m;
+  @extend .font-color-black;
+  @extend .text-align-center;
 }

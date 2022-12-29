@@ -13,14 +13,14 @@
   justify-content: center;
   padding-bottom: 15px;
 
-  @extend .ff-1;
-  @extend .fw-regular;
-  @extend .fs-s;
-  @extend .lh-s;
-  @extend .fc-gray-02;
+  @extend .font-family-1;
+  @extend .font-weight-regular;
+  @extend .font-size-s;
+  @extend .line-height-s;
+  @extend .font-color-gray-02;
 
   &.active {
-    @extend .fw-medium;
-    @extend .fc-black;
+    @extend .font-weight-medium;
+    @extend .font-color-black;
   }
 }

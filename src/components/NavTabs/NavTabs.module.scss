@@ -2,11 +2,6 @@
 @import '~style/typography';
 @import '~style/mixins';
 
-:root {
-  --position: 0;
-  --numOfTabs: 1;
-}
-
 .tabs {  
   width: 100%;
   display: flex;
