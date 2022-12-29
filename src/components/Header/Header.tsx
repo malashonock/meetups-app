@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import classNames from 'classnames';
 
-import { Typography, UserPreview } from 'components';
+import { Typography, UserPreview, UserPreviewVariant } from 'components';
 import { ShortUser } from 'model';
 
 import styles from './Header.module.scss';
@@ -41,7 +41,7 @@ export const Header = (): JSX.Element => {
             <Typography>Новости</Typography>
           </NavLink>
         </nav>
-        <UserPreview variant="header" user={user} />
+        <UserPreview variant={UserPreviewVariant.Header} user={user} />
       </div>
     </header>
   );

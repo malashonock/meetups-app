@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { Button } from 'components';
+import { Button, ButtonVariant } from 'components';
 
 export default {
   title: 'Components/Button',
@@ -17,15 +17,15 @@ const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />;
 export const Primary = Template.bind({});
 
 Primary.args = {
-  variant: 'primary',
+  variant: ButtonVariant.Primary,
 };
 
 export const Secondary = Template.bind({});
 Secondary.args = {
-  variant: 'secondary',
+  variant: ButtonVariant.Secondary,
 };
 
 export const Default = Template.bind({});
 Default.args = {
-  variant: 'default',
+  variant: ButtonVariant.Default,
 };

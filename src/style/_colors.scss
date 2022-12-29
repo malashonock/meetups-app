@@ -7,14 +7,16 @@ $light-purple-color: #e4e8ff;
 
 /* Gradient */
 
-$purple-gradient-color: linear-gradient(
+$purple-gradient-01-color: linear-gradient(
   63.5deg,
   $purple-color 17%,
   $blue-02-color 83%
 );
-
-// for smooth transition from gradient to solid
-$blue-01-gradient-color: linear-gradient($blue-01-color, $blue-01-color);
+$purple-gradient-02-color: linear-gradient(
+  132.17deg,
+  $purple-color -2.22%,
+  $blue-02-color 103.24%
+);
 
 /* Transparent */
 

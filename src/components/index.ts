@@ -14,3 +14,5 @@ export * from './Tab/Tab';
 export * from './TabPanel/TabPanel';
 export * from './TabsManager/TabsManager';
 export * from './MeetupStagesTabs/MeetupStagesTabs';
+export * from './NewsCard/NewsCard';
+export * from './DateTimePicker/DateTimePicker';

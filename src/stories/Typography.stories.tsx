@@ -1,34 +1,34 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { Typography } from 'components';
+import { Typography, TypographyComponent } from 'components';
 
 const typographyUtilities: string[] = [
-  'ff-1',
-  'ff-2',
-  'fw-regular',
-  'fw-medium',
-  'fw-bold',
-  'fs-xs',
-  'fs-s',
-  'fs-m',
-  'fs-l',
-  'fs-xl',
-  'lh-xs',
-  'lh-s',
-  'lh-m',
-  'lh-l',
-  'lh-xl',
-  'lh-xxl',
-  'ls-0',
-  'ls-1',
-  'fc-black',
-  'fc-gray-01',
-  'fc-gray-02',
-  'fc-gray-03',
-  'fc-white',
-  'fc-purple',
-  'ta-left',
-  'ta-center',
-  'ta-right',
+  'font-family-1',
+  'font-family-2',
+  'font-weight-regular',
+  'font-weight-medium',
+  'font-weight-bold',
+  'font-size-xs',
+  'font-size-s',
+  'font-size-m',
+  'font-size-l',
+  'font-size-xl',
+  'line-height-xs',
+  'line-height-s',
+  'line-height-m',
+  'line-height-l',
+  'line-height-xl',
+  'line-height-xxl',
+  'letter-spacing-0',
+  'letter-spacing-1',
+  'font-color-black',
+  'font-color-gray-01',
+  'font-color-gray-02',
+  'font-color-gray-03',
+  'font-color-white',
+  'font-color-purple',
+  'text-align-left',
+  'text-align-center',
+  'text-align-right',
 ];
 
 export default {
@@ -50,17 +50,42 @@ const Template: ComponentStory<typeof Typography> = (args) => (
   <Typography {...args} />
 );
 
-export const HeadingTypography = Template.bind({});
-HeadingTypography.args = {
-  variant: 'heading',
+export const Heading1Typography = Template.bind({});
+Heading1Typography.args = {
+  component: TypographyComponent.Heading1,
+};
+
+export const Heading2Typography = Template.bind({});
+Heading2Typography.args = {
+  component: TypographyComponent.Heading2,
+};
+
+export const Heading3Typography = Template.bind({});
+Heading3Typography.args = {
+  component: TypographyComponent.Heading3,
+};
+
+export const Heading4Typography = Template.bind({});
+Heading4Typography.args = {
+  component: TypographyComponent.Heading4,
+};
+
+export const Heading5Typography = Template.bind({});
+Heading5Typography.args = {
+  component: TypographyComponent.Heading5,
+};
+
+export const Heading6Typography = Template.bind({});
+Heading6Typography.args = {
+  component: TypographyComponent.Heading6,
 };
 
 export const ParagraphTypography = Template.bind({});
 ParagraphTypography.args = {
-  variant: 'paragraph',
+  component: TypographyComponent.Paragraph,
 };
 
-export const OtherTypography = Template.bind({});
-OtherTypography.args = {
-  variant: 'other',
+export const SpanTypography = Template.bind({});
+SpanTypography.args = {
+  component: TypographyComponent.Span,
 };

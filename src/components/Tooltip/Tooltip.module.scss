@@ -24,7 +24,6 @@
   align-items: center;
   row-gap: 5px;
   visibility: hidden;
-  box-sizing: border-box;
   padding: 20px 30px;
   z-index: 1;
 
@@ -51,7 +50,7 @@
   &.colored {
     .title,
     .description {
-      @extend .fc-white;
+      @extend .font-color-white;
     }
   }
 
@@ -77,11 +76,11 @@
     background-color: $white-color;
 
     .title {
-      @extend .fc-black;
+      @extend .font-color-black;
     }
 
     .description {
-      @extend .fc-gray-02;
+      @extend .font-color-gray-02;
     }
 
     &::before {
@@ -115,21 +114,21 @@
 }
 
 .title {
-  @extend .ff-2;
-  @extend .fw-medium;
-  @extend .fs-s;
-  @extend .lh-s;
-  @extend .ls-2;
-  @extend .ta-center;
+  @extend .font-family-2;
+  @extend .font-weight-medium;
+  @extend .font-size-s;
+  @extend .line-height-s;
+  @extend .letter-spacing-2;
+  @extend .text-align-center;
 }
 
 .description {
-  @extend .ff-1;
-  @extend .fw-regular;
-  @extend .fs-xs;
-  @extend .lh-xl;
-  @extend .ls-0;
-  @extend .ta-center;
+  @extend .font-family-1;
+  @extend .font-weight-regular;
+  @extend .font-size-xs;
+  @extend .line-height-xl;
+  @extend .letter-spacing-0;
+  @extend .text-align-center;
 }
 
 .visible {
