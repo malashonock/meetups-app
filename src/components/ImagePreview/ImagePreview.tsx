@@ -1,6 +1,9 @@
-import { ImageState } from 'components/ImageUploader/ImageUploader';
 import styles from './ImagePreview.module.scss';
 
-export const ImagePreview = ({ image, setImage }: ImageState): JSX.Element => {
+interface ImagePreviewProps {
+  image: File;
+}
+
+export const ImagePreview = ({ image }: ImagePreviewProps): JSX.Element => {
   return <></>;
 };
