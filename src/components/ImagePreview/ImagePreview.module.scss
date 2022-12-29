@@ -1,0 +1,94 @@
+@import '~style/colors';
+@import '~style/typography';
+@import '~style/mixins';
+
+.preview {
+  width: 292px;
+  max-width: 100%;
+
+  background: $white-color;
+  border: 1px dashed $gray-05-color;
+  border-radius: 4px;
+  padding: 12px 16px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 16px;
+}
+
+.thumbnail {
+  width: 32px;
+  height: 32px;
+
+  background-color: rgba(49, 74, 215, 0.1);
+  border-radius: 2px;
+
+  > * {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+  }
+
+  .placeholder {
+    padding: 6px;
+  }
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  row-gap: 4px;
+
+  @extend .font-family-1;
+
+  .fileName {
+    @extend .font-weight-regular;
+    @extend .font-size-xs;
+    @extend .line-height-xs;
+    @extend .font-color-black;
+  }
+
+  .fileSize {
+    @extend .font-weight-regular;
+    @extend .font-size-5xs;
+    @extend .line-height-xs;
+    @extend .font-color-gray-03;
+  }
+}
+
+.clear {
+  &Btn {
+    margin-left: auto;
+
+    border: none;
+    outline: none;
+    background: transparent;
+    width: 12px;
+    height: 12px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+
+    path {
+      @include smooth-transition(all);
+    }
+
+    &:hover,
+    &:active {
+      path {
+        fill: $red-02-color;
+        @include smooth-transition(fill);
+      }
+    }
+
+    &:active {
+      transform: scale(0.99);
+      @include smooth-transition(transform);
+    }
+  }
+}
