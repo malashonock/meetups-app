@@ -1,20 +1,20 @@
+import { FileWithUrl } from 'types';
 import classNames from 'classnames';
-import { Dispatch, SetStateAction } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { ReactComponent as UploadIcon } from './upload.svg';
 import { Typography, TypographyComponent } from 'components';
+import { ReactComponent as UploadIcon } from './upload.svg';
+import { convertBytesToMb } from 'helpers';
 import styles from './ImageDropbox.module.scss';
 
 const ACCEPT_FORMATS = ['.jpg', '.jpeg', '.png'];
 
 const MAX_FILESIZE = 10_000_000; // bytes
-const BYTES_IN_MEGABYTE = 1_000_000;
 
 interface ImageDropboxProps {
-  setImage: Dispatch<SetStateAction<File | null>>;
+  onDrop: (image: FileWithUrl) => void;
 }
 
-export const ImageDropbox = ({ setImage }: ImageDropboxProps): JSX.Element => {
+export const ImageDropbox = ({ onDrop }: ImageDropboxProps): JSX.Element => {
   const acceptOptions = ACCEPT_FORMATS.reduce((formats, format) => {
     return {
       ...formats,
@@ -24,9 +24,15 @@ export const ImageDropbox = ({ setImage }: ImageDropboxProps): JSX.Element => {
     };
   }, {});
 
-  const onDrop = (acceptedFiles: File[]) => {
+  const handleDrop = (acceptedFiles: File[]): void => {
     if (acceptedFiles.length > 0) {
-      setImage(acceptedFiles[0]);
+      const acceptedFile = acceptedFiles[0];
+
+      const image: FileWithUrl = Object.assign(acceptedFile, {
+        url: URL.createObjectURL(acceptedFile),
+      });
+
+      onDrop(image);
     }
   };
 
@@ -37,7 +43,7 @@ export const ImageDropbox = ({ setImage }: ImageDropboxProps): JSX.Element => {
       noKeyboard: true,
       multiple: false,
       maxSize: MAX_FILESIZE,
-      onDrop,
+      onDrop: handleDrop,
     });
 
   const classList = classNames(
@@ -48,7 +54,7 @@ export const ImageDropbox = ({ setImage }: ImageDropboxProps): JSX.Element => {
 
   const acceptFileExtensions = ACCEPT_FORMATS.join(' ');
 
-  const maxFileSize = Math.round(MAX_FILESIZE / BYTES_IN_MEGABYTE);
+  const maxFileSize = Math.round(convertBytesToMb(MAX_FILESIZE));
 
   return (
     <div className="container">
@@ -71,7 +77,7 @@ export const ImageDropbox = ({ setImage }: ImageDropboxProps): JSX.Element => {
             Разрешенные форматы: {acceptFileExtensions}
           </Typography>
           <Typography component={TypographyComponent.Paragraph}>
-            Максимальный размер файла: {maxFileSize} Mb
+            Максимальный размер файла: {maxFileSize.toFixedIfAny(1)} Mb
           </Typography>
         </div>
       </div>
