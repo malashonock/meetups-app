@@ -1,12 +1,25 @@
 import { ImageDropbox, ImagePreview } from 'components';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+import { FileWithUrl } from 'types';
 
 export const ImageUploader = (): JSX.Element => {
-  const [image, setImage] = useState<File | null>(null);
+  const [image, setImage] = useState<FileWithUrl | null>(null);
+
+  const handleUpload = useCallback((image: FileWithUrl): void => {
+    setImage(image);
+  }, []);
+
+  const handleClear = useCallback((): void => {
+    if (image) {
+      URL.revokeObjectURL(image.url);
+    }
+
+    setImage(null);
+  }, []);
 
   return !image ? (
-    <ImageDropbox setImage={setImage} />
+    <ImageDropbox onDrop={handleUpload} />
   ) : (
-    <ImagePreview image={image} />
+    <ImagePreview image={image} onClear={handleClear} />
   );
 };
