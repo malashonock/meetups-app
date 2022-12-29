@@ -1,29 +1,22 @@
 import React, {
   Children,
-  PropsWithChildren,
   ReactElement,
   useContext,
   useEffect,
   useLayoutEffect,
 } from 'react';
 import classNames from 'classnames';
-import { useLocation } from 'react-router-dom';
 
-import { TabsContext, TabsContextType } from 'components';
+import { Tab, TabsContext, TabsContextType } from 'components';
 
 import styles from './Tabs.module.scss';
 
 interface TabsProps {
-  changesUrl: boolean;
   className?: string;
+  children: Array<ReactElement<typeof Tab>>;
 }
 
-export function Tabs({
-  changesUrl,
-  className,
-  children,
-}: PropsWithChildren<TabsProps>) {
-  const location = useLocation();
+export function Tabs({ className, children }: TabsProps) {
   const { activeTabValue, setActiveTabValue } = useContext(
     TabsContext,
   ) as TabsContextType;
@@ -34,52 +27,6 @@ export function Tabs({
     document.documentElement.style.setProperty('--position', `${index}`);
   };
 
-  /* Set state of active tab value (which is null at start) equal to first tab on initialization */
-  useLayoutEffect(() => {
-    setActiveTabValue(arrayChildren[0].props.value);
-  }, []);
-
-  /* Chooses which tab is active on initialisation */
-
-  useEffect(() => {
-    if (changesUrl) {
-      const tabToOpen = location.pathname.split('/').slice(-1)[0];
-      const indexOfTabToOpen = arrayChildren
-        .map((child) => child.props.to)
-        .indexOf(tabToOpen);
-
-      document.documentElement.style.setProperty(
-        '--position',
-        `${indexOfTabToOpen !== -1 ? indexOfTabToOpen : 0}`,
-      );
-    } else {
-      document.documentElement.style.setProperty('--position', '0');
-    }
-  });
-
-  /* Change indicator if tabs dont change url (tabs are not NavLinks) */
-  useEffect(() => {
-    if (!changesUrl) {
-      const index = arrayChildren
-        .map((child) => child.props.value)
-        .indexOf(activeTabValue);
-
-      setIndicatorPosition(index);
-    }
-  }, [activeTabValue]);
-
-  /* Change indicator if tabs change url (tabs are NavLinks) */
-  // useEffect(() => {
-  //   if (changesUrl) {
-  //     const tabToOpen = location.pathname.split('/').slice(-1)[0];
-  //     const indexOfTabToOpen = arrayChildren
-  //       .map((child) => child.props.to)
-  //       .indexOf(tabToOpen);
-
-  //     setIndicatorPosition(indexOfTabToOpen !== -1 ? indexOfTabToOpen : 0);
-  //   }
-  // }, [location]);
-
   const handleClick = (e: React.SyntheticEvent<EventTarget>) => {
     if (!(e.target instanceof HTMLElement)) {
       return;
@@ -88,28 +35,28 @@ export function Tabs({
     setActiveTabValue(e.target.dataset.tabValue as string);
   };
 
-  let childrenHavingOnClickFunction;
+  /* Set state of active tab value (which is null at start) equal to first tab on initialization */
+  useLayoutEffect(() => {
+    setActiveTabValue(arrayChildren[0].props.value);
+  }, []);
 
-  if (changesUrl) {
-    childrenHavingOnClickFunction = React.Children.map(
-      children,
-      (child, index) => {
-        return React.cloneElement(child as ReactElement, {
-          onClick: () => setIndicatorPosition(index),
-        });
-      },
-    );
-  }
+  useEffect(() => {
+    const index = arrayChildren
+      .map((child) => child.props.value)
+      .indexOf(activeTabValue);
+
+    setIndicatorPosition(index);
+  }, [activeTabValue]);
 
   return (
     <>
       <div
         className={classNames(styles.tabs, className)}
         onClick={(e) => {
-          if (!changesUrl) handleClick(e);
+          handleClick(e);
         }}
       >
-        {childrenHavingOnClickFunction || children}
+        {children}
       </div>
       <div
         className={styles['tab-indicator']}

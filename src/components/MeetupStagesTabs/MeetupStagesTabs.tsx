@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
-import { Tabs, TabsManager, Typography } from 'components';
+import { Typography, NavTabs } from 'components';
 
 import styles from './MeetupStagesTabs.module.scss';
 
@@ -42,8 +42,8 @@ export const meetupTabToDescriptor: Record<MeetupTabLink, MeetupTabDescriptor> =
 
 export function MeetupStagesTabs() {
   return (
-    <TabsManager>
-      <Tabs changesUrl>
+    <>
+      <NavTabs className={styles.tabs}>
         {meetupTabsLinks.map((tab) => (
           <NavLink
             key={tab}
@@ -57,8 +57,7 @@ export function MeetupStagesTabs() {
             <Typography>{meetupTabToDescriptor[tab].label}</Typography>
           </NavLink>
         ))}
-      </Tabs>
-      <Outlet />
-    </TabsManager>
+      </NavTabs>
+    </>
   );
 }
