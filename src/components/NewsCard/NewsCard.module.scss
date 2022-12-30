@@ -60,7 +60,7 @@
       @extend .font-weight-regular;
       @extend .font-size-xs;
       @extend .line-height-xs;
-      letter-spacing: 0.09px;
+      @extend .letter-spacing-larger-01;
       @extend .font-color-gray-03;
     }
 
@@ -74,7 +74,7 @@
       @extend .font-weight-medium;
       @extend .font-size-m;
       line-height: 100%;
-      letter-spacing: -0.3px;
+      @extend .letter-spacing-smaller;
       @extend .font-color-black;
     }
 
