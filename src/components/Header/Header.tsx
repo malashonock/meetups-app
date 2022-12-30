@@ -23,8 +23,8 @@ export const Header = (): JSX.Element => {
           <NavLink
             to="/meetups"
             className={({ isActive }) =>
-              classNames(styles['nav-link'], {
-                [styles['active']]: isActive,
+              classNames(styles.navLink, {
+                [styles.active]: isActive,
               })
             }
           >
@@ -33,8 +33,8 @@ export const Header = (): JSX.Element => {
           <NavLink
             to="/news"
             className={({ isActive }) =>
-              classNames(styles['nav-link'], {
-                [styles['active']]: isActive,
+              classNames(styles.navLink, {
+                [styles.active]: isActive,
               })
             }
           >
