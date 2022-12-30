@@ -1,3 +1,4 @@
+@use 'sass:color';
 @import '~style/colors';
 @import '~style/typography';
 @import '~style/mixins';
@@ -11,11 +12,11 @@
   background-color: $white-color;
   border-radius: 6px;
 
-  box-shadow: 0 4px 9px $gray-shadow-05-color;
+  box-shadow: 0 4px 9px $gray-shadow-04-color;
   @include smooth-transition(box-shadow);
 
   &:hover {
-    box-shadow: 0 5px 10px $gray-shadow-06-color;
+    box-shadow: 0 5px 10px color.adjust($gray-shadow-04-color, $alpha: +0.15);
     @include smooth-transition(box-shadow);
   }
 

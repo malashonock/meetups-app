@@ -1,3 +1,4 @@
+@use 'sass:color';
 @import '~style/colors';
 @import '~style/typography';
 @import '~style/mixins';
@@ -43,7 +44,8 @@
           $blue-01-color
         ); // switch off the gradient
 
-        box-shadow: 0px 2px 3px $gray-shadow-02-color;
+        box-shadow: 0px 2px 3px
+          color.adjust($gray-shadow-01-color, $alpha: -0.1);
       }
     }
   }
