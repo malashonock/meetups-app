@@ -2,8 +2,8 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Typography, TypographyComponent } from 'components';
 
 const typographyUtilities: string[] = [
-  'font-family-1',
-  'font-family-2',
+  'font-family-primary',
+  'font-family-secondary',
   'font-weight-regular',
   'font-weight-medium',
   'font-weight-bold',
@@ -18,8 +18,11 @@ const typographyUtilities: string[] = [
   'line-height-l',
   'line-height-xl',
   'line-height-xxl',
-  'letter-spacing-0',
-  'letter-spacing-1',
+  'letter-spacing-smaller',
+  'letter-spacing-normal',
+  'letter-spacing-larger-01',
+  'letter-spacing-larger-02',
+  'letter-spacing-larger-03',
   'font-color-black',
   'font-color-gray-01',
   'font-color-gray-02',

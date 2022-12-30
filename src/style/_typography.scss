@@ -40,10 +40,10 @@
 
 /* Font family */
 .font-family {
-  &-1 {
+  &-primary {
     font-family: 'Roboto', sans-serif;
   }
-  &-2 {
+  &-secondary {
     font-family: 'Rubik', sans-serif;
   }
 }
@@ -108,13 +108,19 @@
 
 /* Letter spacing */
 .letter-spacing {
-  &-0 {
+  &-smaller {
+    letter-spacing: -0.3px;
+  }
+  &-normal {
     letter-spacing: normal;
   }
-  &-1 {
+  &-larger-01 {
+    letter-spacing: 0.09px;
+  }
+  &-larger-02 {
     letter-spacing: 0.25px;
   }
-  &-2 {
+  &-larger-03 {
     letter-spacing: 0.4px;
   }
 }

@@ -64,7 +64,7 @@
 
   &.colored {
     background-color: $purple-color;
-    box-shadow: 0px 9px 24px $gray-shadow-03-color;
+    box-shadow: 0px 9px 24px $gray-shadow-02-color;
 
     &::before {
       background-color: $purple-color;
@@ -89,11 +89,11 @@
   }
 
   &.white {
-    box-shadow: 0px 9px 24px $gray-shadow-03-color;
+    box-shadow: 0px 9px 24px $gray-shadow-02-color;
   }
 
   &.outline {
-    box-shadow: 0px 2px 4px $gray-shadow-04-color;
+    box-shadow: 0px 2px 4px $black-shadow-color;
     border: 1px solid $gray-05-color;
 
     &::before {
@@ -114,20 +114,20 @@
 }
 
 .title {
-  @extend .font-family-2;
+  @extend .font-family-secondary;
   @extend .font-weight-medium;
   @extend .font-size-s;
   @extend .line-height-s;
-  @extend .letter-spacing-2;
+  @extend .letter-spacing-larger-03;
   @extend .text-align-center;
 }
 
 .description {
-  @extend .font-family-1;
+  @extend .font-family-primary;
   @extend .font-weight-regular;
   @extend .font-size-xs;
   @extend .line-height-xl;
-  @extend .letter-spacing-0;
+  @extend .letter-spacing-normal;
   @extend .text-align-center;
 }
 
