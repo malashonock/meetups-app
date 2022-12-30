@@ -9,7 +9,7 @@ type Props = {
   successText: string;
 } & PropsWithChildren;
 
-export function ErrorTransition({
+export function HelperText({
   toggle,
   picked,
   successText,
