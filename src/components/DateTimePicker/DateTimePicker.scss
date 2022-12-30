@@ -10,7 +10,7 @@
   border-radius: 4px;
   box-sizing: border-box;
 
-  @extend .font-family-1;
+  @extend .font-family-primary;
 
   $triangle-side: 4px;
 
@@ -56,7 +56,7 @@
       border-radius: 5px;
       padding: 11px;
 
-      @extend .font-family-1;
+      @extend .font-family-primary;
       @extend .font-weight-regular;
       @extend .font-size-xs;
       @extend .line-height-xs;

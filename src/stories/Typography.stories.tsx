@@ -2,8 +2,8 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Typography, TypographyComponent } from 'components';
 
 const typographyUtilities: string[] = [
-  'font-family-1',
-  'font-family-2',
+  'font-family-primary',
+  'font-family-secondary',
   'font-weight-regular',
   'font-weight-medium',
   'font-weight-bold',

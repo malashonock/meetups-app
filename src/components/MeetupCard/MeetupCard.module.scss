@@ -35,7 +35,7 @@
 
       list-style: none;
 
-      @extend .font-family-1;
+      @extend .font-family-primary;
       @extend .font-weight-regular;
       @extend .font-size-s;
       @extend .line-height-s;
@@ -72,7 +72,7 @@
     row-gap: 12px;
 
     .subject {
-      @extend .font-family-2;
+      @extend .font-family-secondary;
       @extend .font-weight-medium;
       @extend .font-size-m;
       @extend .line-height-xl;
@@ -80,7 +80,7 @@
     }
 
     .excerpt {
-      @extend .font-family-1;
+      @extend .font-family-primary;
       @extend .font-weight-regular;
       @extend .font-size-xs;
       @extend .line-height-xxl;

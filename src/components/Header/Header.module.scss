@@ -28,7 +28,7 @@
   &-link {
     position: relative;
 
-    @extend .font-family-1;
+    @extend .font-family-primary;
     @extend .font-weight-regular;
     @extend .font-size-s;
     @extend .line-height-s;

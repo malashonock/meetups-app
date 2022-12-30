@@ -56,7 +56,7 @@
     }
 
     .date {
-      @extend .font-family-1;
+      @extend .font-family-primary;
       @extend .font-weight-regular;
       @extend .font-size-xs;
       @extend .line-height-xs;
@@ -70,7 +70,7 @@
     }
 
     .title {
-      @extend .font-family-2;
+      @extend .font-family-secondary;
       @extend .font-weight-medium;
       @extend .font-size-m;
       line-height: 100%;
@@ -79,7 +79,7 @@
     }
 
     .text {
-      @extend .font-family-1;
+      @extend .font-family-primary;
       @extend .font-weight-regular;
       @extend .font-size-xs;
       @extend .line-height-xxl;

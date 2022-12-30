@@ -20,7 +20,7 @@
 
   .name,
   .initials {
-    @extend .font-family-1;
+    @extend .font-family-primary;
     @extend .font-weight-regular;
     @extend .letter-spacing-1;
   }
