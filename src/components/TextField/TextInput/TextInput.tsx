@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { Field, FieldProps, ErrorMessage } from 'formik';
 
 import styles from './TextInput.module.scss';
-import { ErrorTransition } from '../HelperText/HelperText';
+import { HelperText } from '../HelperText/HelperText';
 
 export function TextInput<T>(props: {
   name: keyof T;
@@ -27,13 +27,13 @@ export function TextInput<T>(props: {
               value={value}
               placeholder={placeholder}
             />
-            <ErrorTransition
+            <HelperText
               toggle={hasError}
               picked={!!form.touched[name]}
               successText={successText}
             >
               <ErrorMessage name={String(name)} />
-            </ErrorTransition>
+            </HelperText>
           </div>
         );
       }}
