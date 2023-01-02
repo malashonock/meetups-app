@@ -3,7 +3,7 @@ import { Typography, TypographyComponent } from 'components';
 import { ReactComponent as ThumbnailIcon } from './assets/thumbnail.svg';
 import { ReactComponent as CloseIcon } from './assets/close.svg';
 import { FileWithUrl } from 'types';
-import { convertBytesToMb } from 'helpers';
+import { getFileSizeString } from 'helpers';
 import styles from './ImagePreview.module.scss';
 
 interface ImagePreviewProps {
@@ -41,7 +41,7 @@ export const ImagePreview = ({
           component={TypographyComponent.Paragraph}
           className={styles.fileSize}
         >
-          File size: {convertBytesToMb(size).toFixedIfAny(1)} Mb
+          File size: {getFileSizeString(size, 1)}
         </Typography>
       </div>
       <button className={styles.clearBtn} onClick={handleClear}>

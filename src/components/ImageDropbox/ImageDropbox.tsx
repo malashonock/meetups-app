@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { useDropzone } from 'react-dropzone';
 import { Typography, TypographyComponent } from 'components';
 import { ReactComponent as UploadIcon } from './upload.svg';
-import { convertBytesToMb } from 'helpers';
+import { getFileSizeString } from 'helpers';
 import styles from './ImageDropbox.module.scss';
 
 const ACCEPT_FORMATS = ['.jpg', '.jpeg', '.png'];
@@ -54,8 +54,6 @@ export const ImageDropbox = ({ onDrop }: ImageDropboxProps): JSX.Element => {
 
   const acceptFileExtensions = ACCEPT_FORMATS.join(' ');
 
-  const maxFileSize = Math.round(convertBytesToMb(MAX_FILESIZE));
-
   return (
     <div className="container">
       <div {...getRootProps()} className={classList}>
@@ -77,7 +75,7 @@ export const ImageDropbox = ({ onDrop }: ImageDropboxProps): JSX.Element => {
             Разрешенные форматы: {acceptFileExtensions}
           </Typography>
           <Typography component={TypographyComponent.Paragraph}>
-            Максимальный размер файла: {maxFileSize.toFixedIfAny(1)} Mb
+            Максимальный размер файла: {getFileSizeString(MAX_FILESIZE)}
           </Typography>
         </div>
       </div>
