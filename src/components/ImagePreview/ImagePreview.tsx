@@ -25,7 +25,7 @@ export const ImagePreview = ({
     <div className={styles.preview}>
       <figure className={styles.thumbnail}>
         {url ? (
-          <img src={url} alt="Image thumbnail" />
+          <img src={url} alt="Миниатюра загруженного изображения" />
         ) : (
           <ThumbnailIcon className={styles.placeholder} />
         )}
