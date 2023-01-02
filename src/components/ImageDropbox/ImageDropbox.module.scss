@@ -61,11 +61,23 @@
     }
   }
 
-  .constraints {
+  .constraints,
+  .errors {
     margin-top: 12px;
 
     @extend .font-size-5xs;
-    @extend .font-color-gray-03;
     @extend .line-height-xs;
+  }
+
+  .constraints {
+    @extend .font-color-gray-03;
+  }
+
+  .errors {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+
+    @extend .font-color-red;
   }
 }
