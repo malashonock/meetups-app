@@ -1,0 +1,46 @@
+@import '~style/colors';
+@import '~style/typography';
+@import '~style/mixins';
+
+.input {
+  display: flex;
+  box-sizing: border-box;
+  border: 1px solid $gray-05-color;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 470px;
+  height: 40px;
+  padding: 10px 12px;
+  margin-bottom: 4px;
+
+  @extend .ff-1;
+  @extend .fw-regular;
+  @extend .fs-xs;
+  @extend .lh-xs;
+  @extend .fc-black;
+
+  &::placeholder {
+    @extend .fc-gray-02;
+  }
+
+  &:hover {
+    background-color: $gray-07-color;
+  }
+
+  &:focus {
+    outline: none !important;
+    border: 2px solid $purple-color;
+
+    &::placeholder {
+      @extend .fc-gray-03;
+    }
+  }
+}
+
+.error {
+  border: 2px solid $red-02-color;
+}
+
+.success {
+  border: 2px solid $green-02-color;
+}
