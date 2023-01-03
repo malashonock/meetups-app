@@ -1,8 +1,14 @@
-import { ImageDropbox, ImagePreview } from 'components';
+import { ImageDropbox, ImagePreview, ImagePreviewMode } from 'components';
 import { useCallback, useState } from 'react';
 import { FileWithUrl } from 'types';
 
-export const ImageUploader = (): JSX.Element => {
+interface ImageUploaderProps {
+  variant?: ImagePreviewMode;
+}
+
+export const ImageUploader = ({
+  variant = ImagePreviewMode.Thumbnail,
+}: ImageUploaderProps): JSX.Element => {
   const [image, setImage] = useState<FileWithUrl | null>(null);
 
   const handleUpload = useCallback((image: FileWithUrl): void => {
@@ -20,6 +26,6 @@ export const ImageUploader = (): JSX.Element => {
   return !image ? (
     <ImageDropbox onDrop={handleUpload} />
   ) : (
-    <ImagePreview image={image} onClear={handleClear} />
+    <ImagePreview variant={variant} image={image} onClear={handleClear} />
   );
 };

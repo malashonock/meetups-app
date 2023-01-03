@@ -1,17 +1,25 @@
-import { FileWithPath } from 'react-dropzone';
+import classNames from 'classnames';
 import { Typography, TypographyComponent } from 'components';
-import { ReactComponent as ThumbnailIcon } from './assets/thumbnail.svg';
+import { ReactComponent as ImagePlaceholder } from './assets/image-placeholder.svg';
 import { ReactComponent as CloseIcon } from './assets/close.svg';
+import { ReactComponent as ChangeImageIcon } from './assets/change-photo.svg';
 import { FileWithUrl } from 'types';
 import { getFileSizeString } from 'helpers';
 import styles from './ImagePreview.module.scss';
 
+export enum ImagePreviewMode {
+  Thumbnail = 'thumbnail',
+  Large = 'large',
+}
+
 interface ImagePreviewProps {
+  variant?: ImagePreviewMode;
   image: FileWithUrl;
   onClear: () => void;
 }
 
 export const ImagePreview = ({
+  variant = ImagePreviewMode.Thumbnail,
   image,
   onClear,
 }: ImagePreviewProps): JSX.Element => {
@@ -22,30 +30,36 @@ export const ImagePreview = ({
   };
 
   return (
-    <div className={styles.preview}>
-      <figure className={styles.thumbnail}>
+    <div className={classNames(styles.preview, styles[variant])}>
+      <figure className={styles.image}>
         {url ? (
-          <img src={url} alt="Миниатюра загруженного изображения" />
+          <img src={url} alt="Загруженное изображение" />
         ) : (
-          <ThumbnailIcon className={styles.placeholder} />
+          <ImagePlaceholder className={styles.placeholder} />
         )}
       </figure>
-      <div className={styles.info}>
-        <Typography
-          component={TypographyComponent.Heading4}
-          className={styles.fileName}
-        >
-          {name}
-        </Typography>
-        <Typography
-          component={TypographyComponent.Paragraph}
-          className={styles.fileSize}
-        >
-          File size: {getFileSizeString(size, 1)}
-        </Typography>
-      </div>
+      {variant === ImagePreviewMode.Thumbnail && (
+        <div className={styles.info}>
+          <Typography
+            component={TypographyComponent.Heading4}
+            className={styles.fileName}
+          >
+            {name}
+          </Typography>
+          <Typography
+            component={TypographyComponent.Paragraph}
+            className={styles.fileSize}
+          >
+            File size: {getFileSizeString(size, 1)}
+          </Typography>
+        </div>
+      )}
       <button className={styles.clearBtn} onClick={handleClear}>
-        <CloseIcon className={styles.clearIcon} />
+        {variant === ImagePreviewMode.Thumbnail ? (
+          <CloseIcon />
+        ) : (
+          <ChangeImageIcon />
+        )}
       </button>
     </div>
   );
