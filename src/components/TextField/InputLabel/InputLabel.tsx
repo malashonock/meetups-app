@@ -1,9 +1,13 @@
+import { PropsWithChildren } from 'react';
+
+import { Typography } from 'components/Typography/Typography';
+
 import styles from './InputLabel.module.scss';
 
-type Props = {
-  text: string;
+export const InputLabel = ({ children }: PropsWithChildren): JSX.Element => {
+  return (
+    <Typography variant="heading" className={styles.label}>
+      {children}
+    </Typography>
+  );
 };
-
-export function Label(props: Props): JSX.Element {
-  return <h3 className={styles.label}>{props.text}</h3>;
-}
