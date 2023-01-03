@@ -1,11 +1,9 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-
+import { object, string } from 'yup';
 import { Formik, Form } from 'formik';
 
-import { Label } from '../components/TextField/InputLabel/InputLabel';
-import { TextInput } from '../components/TextField/TextInput/TextInput';
-import { validationSchema } from 'components/TextField/validations';
+import { TextInput } from '../components/TextField/TextField';
 
 export default {
   title: 'Components/TextField',
@@ -18,6 +16,15 @@ export default {
     description: 'It is a TextField description',
   },
 } as ComponentMeta<typeof TextInput>;
+
+const validationSchema = object().shape({
+  userValue: string()
+    .required('Please enter your value')
+    .matches(
+      /^(\S+$)/,
+      'This field cannot contain spaces only or start with them',
+    ),
+});
 
 const TextField: ComponentStory<typeof TextInput> = () => (
   <Formik
@@ -33,11 +40,11 @@ const TextField: ComponentStory<typeof TextInput> = () => (
     {() => {
       return (
         <Form>
-          <Label text="Label" />
           <TextInput
             name="userValue"
             successText="Succes helper text"
             placeholder="Placeholder"
+            labelText="Label"
           />
         </Form>
       );
