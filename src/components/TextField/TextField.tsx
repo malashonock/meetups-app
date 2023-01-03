@@ -36,11 +36,7 @@ export const TextInput = ({
               value={value}
               placeholder={placeholder}
             />
-            <HelperText
-              name={name}
-              variant={viewVariant()}
-              picked={!!form.touched[name]}
-            >
+            <HelperText variant={viewVariant()} picked={!!form.touched[name]}>
               {hasError ? (
                 <div>
                   {form.errors[name] && (
