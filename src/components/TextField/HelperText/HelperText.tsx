@@ -1,23 +1,25 @@
 import { PropsWithChildren } from 'react';
 import styles from './HelperText.module.scss';
+import classNames from 'classnames';
 
-export const containerStyles = styles.container;
-
-type Props = {
-  toggle: boolean;
+type HelperTextProps = {
+  variant: 'error' | 'success' | false;
   picked: boolean;
-  successText: string;
 } & PropsWithChildren;
 
-export function HelperText({
-  toggle,
+export const HelperText = ({
+  variant,
   picked,
-  successText,
   children,
-}: Props): JSX.Element {
-  return toggle ? (
-    <div className={styles.error}>{children}</div>
-  ) : (
-    <div>{picked && <div className={styles.success}>{successText}</div>}</div>
+}: HelperTextProps): JSX.Element => {
+  return (
+    <div
+      className={classNames(
+        styles.container,
+        picked && variant && styles[variant],
+      )}
+    >
+      {children}
+    </div>
   );
-}
+};
