@@ -1,0 +1,16 @@
+.stepper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  margin-top: 50px;
+
+  &-body {
+    width: calc(100% * var(--numOfSteps));
+    display: flex;
+    overflow: hidden;
+    transform: translateX(calc(calc(100% / var(--numOfSteps)) * var(--currentStep)));
+  }
+}
+
+

@@ -2,15 +2,15 @@
 @import '~style/typography';
 @import '~style/mixins';
 
-.tabs {  
+.stepper-progress {
+  width: 100%;
+}
+
+.steps {  
   width: 100%;
   display: flex;
 
   border-bottom: 1px solid $gray-06-color;
-
-  cursor: pointer;
-
-  & > * {
-    width: 100%; 
-  }
 }
+
+

@@ -1,6 +1,8 @@
-import React, { Children, ReactElement, useEffect } from 'react';
+import React, { Children, ReactElement, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { NavLink, useLocation } from 'react-router-dom';
+
+import { TabsIndicator } from 'components';
 
 import styles from './NavTabs.module.scss';
 
@@ -11,12 +13,9 @@ interface NavTabsProps {
 
 export const NavTabs = ({ className, children }: NavTabsProps) => {
   const location = useLocation();
+  const [indicatorPosition, setIndicatorPosition] = useState(0);
 
   const arrayChildren = Children.toArray(children) as ReactElement[];
-
-  const setIndicatorPosition = (index: number) => {
-    document.documentElement.style.setProperty('--position', `${index}`);
-  };
 
   const childrenWithOnClickFunction = React.Children.map(
     children,
@@ -34,10 +33,7 @@ export const NavTabs = ({ className, children }: NavTabsProps) => {
       .map((child) => child.props.to)
       .indexOf(tabToOpen);
 
-    document.documentElement.style.setProperty(
-      '--position',
-      `${indexOfTabToOpen !== -1 ? indexOfTabToOpen : 0}`,
-    );
+    setIndicatorPosition(indexOfTabToOpen !== -1 ? indexOfTabToOpen : 0);
   });
 
   return (
@@ -45,9 +41,9 @@ export const NavTabs = ({ className, children }: NavTabsProps) => {
       <div className={classNames(styles.tabs, className)}>
         {childrenWithOnClickFunction}
       </div>
-      <div
-        className={styles['tab-indicator']}
-        style={{ '--numOfTabs': arrayChildren.length } as React.CSSProperties}
+      <TabsIndicator
+        tabsAmount={arrayChildren.length}
+        currentTab={indicatorPosition}
       />
     </>
   );

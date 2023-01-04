@@ -1,31 +1,35 @@
 import React, {
   Children,
+  PropsWithChildren,
   ReactElement,
   useContext,
   useEffect,
   useLayoutEffect,
+  useState,
 } from 'react';
 import classNames from 'classnames';
 
-import { Tab, TabsContext, TabsContextType } from 'components';
+import {
+  TabProps,
+  TabsContext,
+  TabsContextType,
+  TabsIndicator,
+} from 'components';
 
 import styles from './Tabs.module.scss';
 
 interface TabsProps {
   className?: string;
-  children: Array<ReactElement<typeof Tab>>;
 }
 
-export function Tabs({ className, children }: TabsProps) {
+export function Tabs({ className, children }: PropsWithChildren<TabsProps>) {
   const { activeTabValue, setActiveTabValue } = useContext(
     TabsContext,
   ) as TabsContextType;
 
-  const arrayChildren = Children.toArray(children) as ReactElement[];
+  const [indicatorPosition, setIndicatorPosition] = useState(0);
 
-  const setIndicatorPosition = (index: number) => {
-    document.documentElement.style.setProperty('--position', `${index}`);
-  };
+  const arrayChildren = Children.toArray(children) as ReactElement<TabProps>[];
 
   const handleClick = (e: React.SyntheticEvent<EventTarget>) => {
     if (!(e.target instanceof HTMLElement)) {
@@ -35,17 +39,16 @@ export function Tabs({ className, children }: TabsProps) {
     setActiveTabValue(e.target.dataset.tabValue as string);
   };
 
-  /* Set state of active tab value (which is null at start) equal to first tab on initialization */
   useLayoutEffect(() => {
     setActiveTabValue(arrayChildren[0].props.value);
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const index = arrayChildren
       .map((child) => child.props.value)
-      .indexOf(activeTabValue);
+      .indexOf(activeTabValue!);
 
-    setIndicatorPosition(index);
+    setIndicatorPosition(index + 1);
   }, [activeTabValue]);
 
   return (
@@ -58,9 +61,9 @@ export function Tabs({ className, children }: TabsProps) {
       >
         {children}
       </div>
-      <div
-        className={styles['tab-indicator']}
-        style={{ '--numOfTabs': arrayChildren.length } as React.CSSProperties}
+      <TabsIndicator
+        tabsAmount={arrayChildren.length}
+        currentTab={indicatorPosition - 1}
       />
     </>
   );

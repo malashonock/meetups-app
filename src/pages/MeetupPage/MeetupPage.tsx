@@ -1,5 +1,4 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
 
 import { Typography, MeetupStagesTabs, TypographyComponent } from 'components';
 
@@ -15,7 +14,6 @@ export const MeetupPage = () => {
         Митапы
       </Typography>
       <MeetupStagesTabs />
-      <Outlet />
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Outlet } from 'react-router-dom';
 
 import { Typography, NavTabs } from 'components';
 
@@ -8,7 +8,7 @@ import styles from './MeetupStagesTabs.module.scss';
 
 enum MeetupTabLink {
   Topics = 'topics',
-  OnModeration = 'onmoderation',
+  OnModeration = 'onModeration',
   Upcoming = 'upcoming',
   Finished = 'finished',
 }
@@ -58,6 +58,7 @@ export function MeetupStagesTabs() {
           </NavLink>
         ))}
       </NavTabs>
+      <Outlet />
     </>
   );
 }

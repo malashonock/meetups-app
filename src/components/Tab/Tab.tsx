@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import { TabsContext, TabsContextType } from 'components';
 
-interface TabProps {
+export interface TabProps {
   value: string;
   className?: string;
   classNameActive?: string;
