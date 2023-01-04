@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Header } from 'components';
 
 import styles from './App.module.scss';
+import { NotFoundPage } from 'pages';
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
           <Route path="/" element={<Navigate replace to="/meetups" />} />
           <Route path="/meetups" element={<div>Meetups</div>} />
           <Route path="/news" element={<div>News</div>} />
-          <Route path="*" element={<div>404</div>} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>
     </BrowserRouter>
