@@ -86,7 +86,7 @@
 
     * {
       font-size: 13px;
-      @extend .font-color-black;
+      @extend .font-color-dark;
       @extend .line-height-xs;
     }
   }
@@ -129,7 +129,7 @@
       }
 
       &::before {
-        border-color: $black-color;
+        border-color: $dark-color;
         @include smooth-transition(filter);
         border-width: 1px 1px 0 0;
         width: 3.75px;
@@ -252,7 +252,7 @@
         padding: 0 !important;
         height: 28px !important;
 
-        @extend .font-color-black;
+        @extend .font-color-dark;
       }
     }
   }

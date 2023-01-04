@@ -55,10 +55,10 @@
   }
 
   &.dark {
-    background-color: $black-color;
+    background-color: $dark-color;
 
     &::before {
-      background-color: $black-color;
+      background-color: $dark-color;
     }
   }
 
@@ -76,7 +76,7 @@
     background-color: $white-color;
 
     .title {
-      @extend .font-color-black;
+      @extend .font-color-dark;
     }
 
     .description {

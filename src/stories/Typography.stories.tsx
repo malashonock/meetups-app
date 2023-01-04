@@ -23,7 +23,7 @@ const typographyUtilities: string[] = [
   'letter-spacing-larger-01',
   'letter-spacing-larger-02',
   'letter-spacing-larger-03',
-  'font-color-black',
+  'font-color-dark',
   'font-color-gray-01',
   'font-color-gray-02',
   'font-color-gray-03',
