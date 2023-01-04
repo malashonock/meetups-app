@@ -14,35 +14,33 @@ const user: ShortUser = {
   surname: 'Richards',
 };
 
-export const Header = (): JSX.Element => {
-  return (
-    <header className={styles.header}>
-      <div className={styles.container}>
-        <img src={logo} alt="Логотип" height={'45px'} />
-        <nav className={styles.nav}>
-          <NavLink
-            to="/meetups"
-            className={({ isActive }) =>
-              classNames(styles.navLink, {
-                [styles.active]: isActive,
-              })
-            }
-          >
-            <Typography>Митапы</Typography>
-          </NavLink>
-          <NavLink
-            to="/news"
-            className={({ isActive }) =>
-              classNames(styles.navLink, {
-                [styles.active]: isActive,
-              })
-            }
-          >
-            <Typography>Новости</Typography>
-          </NavLink>
-        </nav>
-        <UserPreview variant={UserPreviewVariant.Header} user={user} />
-      </div>
-    </header>
-  );
-};
+export const Header = (): JSX.Element => (
+  <header className={styles.header}>
+    <div className={styles.container}>
+      <img src={logo} alt="Логотип" height={'45px'} />
+      <nav className={styles.nav}>
+        <NavLink
+          to="/meetups"
+          className={({ isActive }) =>
+            classNames(styles.navLink, {
+              [styles.active]: isActive,
+            })
+          }
+        >
+          <Typography>Митапы</Typography>
+        </NavLink>
+        <NavLink
+          to="/news"
+          className={({ isActive }) =>
+            classNames(styles.navLink, {
+              [styles.active]: isActive,
+            })
+          }
+        >
+          <Typography>Новости</Typography>
+        </NavLink>
+      </nav>
+      <UserPreview variant={UserPreviewVariant.Header} user={user} />
+    </div>
+  </header>
+);
