@@ -1,31 +1,43 @@
 import { ImageDropbox, ImagePreview, ImagePreviewMode } from 'components';
-import { useCallback, useState } from 'react';
+import { Field, FieldProps } from 'formik';
 import { FileWithUrl } from 'types';
 
 interface ImageUploaderProps {
+  name: string;
   variant?: ImagePreviewMode;
 }
 
 export const ImageUploader = ({
+  name,
   variant = ImagePreviewMode.Thumbnail,
-}: ImageUploaderProps): JSX.Element => {
-  const [image, setImage] = useState<FileWithUrl | null>(null);
+}: ImageUploaderProps): JSX.Element => (
+  <Field name={name}>
+    {({
+      field: { name, value },
+      form: { setFieldValue },
+    }: FieldProps<FileWithUrl | null>) => {
+      const image = value;
+      const setImage = (image: FileWithUrl | null): void => {
+        setFieldValue(name, image);
+      };
 
-  const handleUpload = useCallback((image: FileWithUrl): void => {
-    setImage(image);
-  }, []);
+      const handleUpload = (image: FileWithUrl): void => {
+        setImage(image);
+      };
 
-  const handleClear = useCallback((): void => {
-    if (image) {
-      URL.revokeObjectURL(image.url);
-    }
+      const handleClear = (): void => {
+        if (image) {
+          URL.revokeObjectURL(image.url);
+        }
 
-    setImage(null);
-  }, []);
+        setImage(null);
+      };
 
-  return !image ? (
-    <ImageDropbox onDrop={handleUpload} />
-  ) : (
-    <ImagePreview variant={variant} image={image} onClear={handleClear} />
-  );
-};
+      return !image ? (
+        <ImageDropbox onDrop={handleUpload} />
+      ) : (
+        <ImagePreview variant={variant} image={image} onClear={handleClear} />
+      );
+    }}
+  </Field>
+);

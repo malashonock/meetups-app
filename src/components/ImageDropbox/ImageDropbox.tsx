@@ -88,7 +88,11 @@ export const ImageDropbox = ({ onDrop }: ImageDropboxProps): JSX.Element => {
           Перетащите изображения сюда
           <br />
           или{' '}
-          <button className={styles.browseFileLink} onClick={open}>
+          <button
+            type="button"
+            className={styles.browseFileLink}
+            onClick={open}
+          >
             загрузите
           </button>
         </Typography>
