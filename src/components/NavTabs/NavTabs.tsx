@@ -1,4 +1,10 @@
-import React, { Children, ReactElement, useEffect, useState } from 'react';
+import React, {
+  Children,
+  HTMLAttributes,
+  ReactElement,
+  useEffect,
+  useState,
+} from 'react';
 import classNames from 'classnames';
 import { NavLink, useLocation } from 'react-router-dom';
 
@@ -6,8 +12,7 @@ import { TabsIndicator } from 'components';
 
 import styles from './NavTabs.module.scss';
 
-interface NavTabsProps {
-  className?: string;
+interface NavTabsProps extends HTMLAttributes<HTMLElement> {
   children: Array<ReactElement<typeof NavLink>>;
 }
 

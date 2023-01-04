@@ -3,11 +3,9 @@ import React, {
   PropsWithChildren,
   ReactElement,
   useContext,
-  useEffect,
   useLayoutEffect,
   useState,
 } from 'react';
-import classNames from 'classnames';
 
 import {
   TabProps,
@@ -18,11 +16,7 @@ import {
 
 import styles from './Tabs.module.scss';
 
-interface TabsProps {
-  className?: string;
-}
-
-export function Tabs({ className, children }: PropsWithChildren<TabsProps>) {
+export function Tabs({ children }: PropsWithChildren) {
   const { activeTabValue, setActiveTabValue } = useContext(
     TabsContext,
   ) as TabsContextType;
@@ -44,9 +38,10 @@ export function Tabs({ className, children }: PropsWithChildren<TabsProps>) {
   }, []);
 
   useLayoutEffect(() => {
-    const index = arrayChildren
-      .map((child) => child.props.value)
-      .indexOf(activeTabValue!);
+    const index = arrayChildren.findIndex(
+      (child: ReactElement<TabProps>): boolean =>
+        child.props.value === activeTabValue,
+    );
 
     setIndicatorPosition(index + 1);
   }, [activeTabValue]);
@@ -54,7 +49,7 @@ export function Tabs({ className, children }: PropsWithChildren<TabsProps>) {
   return (
     <>
       <div
-        className={classNames(styles.tabs, className)}
+        className={styles.tabs}
         onClick={(e) => {
           handleClick(e);
         }}

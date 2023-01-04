@@ -4,6 +4,7 @@ import {
   Step,
   StepperContext,
   StepperContextType,
+  StepDescriptor,
 } from 'components';
 
 import styles from './StepperProgress.module.scss';
@@ -20,14 +21,16 @@ export const StepperProgress = ({ currentStep }: StepperProgressProps) => {
   return (
     <div className={styles['stepper-progress']}>
       <div className={styles.steps}>
-        {stepsDescriptor.map((step, i) => (
-          <Step
-            key={step.title}
-            variant={step.variant}
-            title={step.title}
-            number={i + 1}
-          ></Step>
-        ))}
+        {stepsDescriptor.map(
+          (step: StepDescriptor, i: number): JSX.Element => (
+            <Step
+              key={step.title}
+              variant={step.variant}
+              title={step.title}
+              number={i + 1}
+            ></Step>
+          ),
+        )}
       </div>
       <TabsIndicator
         tabsAmount={stepsDescriptor.length}

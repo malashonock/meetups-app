@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 
-import { Tabs, TabPanel, Tab } from 'components';
+import { Tabs, TabContent, Tab } from 'components';
 
 export type TabsContextType = {
   activeTabValue: string | null;
@@ -24,21 +24,21 @@ export const TabsManager = ({ tabs }: TabsManagerProps) => {
   return (
     <TabsContext.Provider value={{ activeTabValue, setActiveTabValue }}>
       <Tabs>
-        {tabs
-          .map((tab) => tab.title)
-          .map((title, index) => (
-            <Tab value={`${index}`} key={title}>
-              {title}
+        {tabs.map(
+          (tab: Tab, index: number): JSX.Element => (
+            <Tab value={`${index}`} key={tab.title}>
+              {tab.title}
             </Tab>
-          ))}
+          ),
+        )}
       </Tabs>
-      {tabs
-        .map((tab) => tab.element)
-        .map((element, index) => (
-          <TabPanel key={index} value={`${index}`}>
-            {element}
-          </TabPanel>
-        ))}
+      {tabs.map(
+        (tab: Tab, index: number): JSX.Element => (
+          <TabContent key={index} value={`${index}`}>
+            {tab.element}
+          </TabContent>
+        ),
+      )}
     </TabsContext.Provider>
   );
 };

@@ -2,23 +2,18 @@ import React, { PropsWithChildren, useContext } from 'react';
 
 import { TabsContext, TabsContextType } from 'components';
 
-interface TabPanelProps {
+interface TabContentProps {
   value: string;
-  className?: string;
 }
 
-export const TabPanel = ({
+export const TabContent = ({
   value,
-  className = '',
   children,
-}: PropsWithChildren<TabPanelProps>) => {
+}: PropsWithChildren<TabContentProps>) => {
   const { activeTabValue } = useContext(TabsContext) as TabsContextType;
 
   return (
-    <div
-      style={{ display: activeTabValue === value ? 'block' : 'none' }}
-      className={className}
-    >
+    <div style={{ display: activeTabValue === value ? 'block' : 'none' }}>
       {children}
     </div>
   );

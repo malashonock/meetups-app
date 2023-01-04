@@ -5,6 +5,7 @@ import { NavLink, Outlet } from 'react-router-dom';
 import { Typography, NavTabs } from 'components';
 
 import styles from './MeetupStagesTabs.module.scss';
+import { JsxEmit } from 'typescript';
 
 enum MeetupTabLink {
   Topics = 'topics',
@@ -44,19 +45,21 @@ export function MeetupStagesTabs() {
   return (
     <>
       <NavTabs className={styles.tabs}>
-        {meetupTabsLinks.map((tab) => (
-          <NavLink
-            key={tab}
-            to={tab}
-            className={({ isActive }) =>
-              classNames(styles.tab, {
-                [styles.active]: isActive,
-              })
-            }
-          >
-            <Typography>{meetupTabToDescriptor[tab].label}</Typography>
-          </NavLink>
-        ))}
+        {meetupTabsLinks.map(
+          (tab: MeetupTabLink): JSX.Element => (
+            <NavLink
+              key={tab}
+              to={tab}
+              className={({ isActive }) =>
+                classNames(styles.tab, {
+                  [styles.active]: isActive,
+                })
+              }
+            >
+              <Typography>{meetupTabToDescriptor[tab].label}</Typography>
+            </NavLink>
+          ),
+        )}
       </NavTabs>
       <Outlet />
     </>

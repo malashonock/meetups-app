@@ -11,7 +11,7 @@ export enum StepVariant {
   Disabled = 'disabled',
 }
 
-interface StepDescriptor {
+export interface StepDescriptor {
   title: string;
   element: JSX.Element;
   variant: StepVariant;
@@ -138,16 +138,18 @@ export const Stepper = ({ steps }: StepperProps) => {
             } as React.CSSProperties
           }
         >
-          {steps.map((step, i) => (
-            <StepContent
-              key={step.title}
-              currentStep={currentStep}
-              isFirst={i === 0}
-              isLast={i === steps.length - 1}
-            >
-              {step.element}
-            </StepContent>
-          ))}
+          {steps.map(
+            (step: Step, i: number): JSX.Element => (
+              <StepContent
+                key={step.title}
+                currentStep={currentStep}
+                isFirst={i === 0}
+                isLast={i === steps.length - 1}
+              >
+                {step.element}
+              </StepContent>
+            ),
+          )}
         </div>
       </div>
     </StepperContext.Provider>
