@@ -17,7 +17,7 @@ const user: ShortUser = {
 export const Header = (): JSX.Element => (
   <header className={styles.header}>
     <div className={styles.container}>
-      <img src={logo} alt="Логотип" height={'45px'} />
+      <img src={logo} className={styles.logo} alt="Логотип" />
       <nav className={styles.nav}>
         <NavLink
           to="/meetups"
