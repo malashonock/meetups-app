@@ -2,9 +2,9 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import { Header } from 'components';
+import { NotFoundPage } from 'pages';
 
 import styles from './App.module.scss';
-import { NotFoundPage } from 'pages';
 
 function App() {
   return (

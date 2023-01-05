@@ -30,18 +30,16 @@ export const NotFoundPage = () => {
             <div className={styles.paper}>
               <div className={styles.face}>
                 <div className={styles.eyes}>
+                  <div className={classNames(styles.eye, styles.eyeLeft)}></div>
                   <div
-                    className={classNames(styles.eye, styles['eye-left'])}
-                  ></div>
-                  <div
-                    className={classNames(styles.eye, styles['eye-right'])}
+                    className={classNames(styles.eye, styles.eyeRight)}
                   ></div>
                 </div>
                 <div
-                  className={classNames(styles.cheeks, styles['cheeks-left'])}
+                  className={classNames(styles.cheeks, styles.cheeksLeft)}
                 ></div>
                 <div
-                  className={classNames(styles.cheeks, styles['cheeks-right'])}
+                  className={classNames(styles.cheeks, styles.cheeksRight)}
                 ></div>
                 <div className={styles.mouth}></div>
               </div>
