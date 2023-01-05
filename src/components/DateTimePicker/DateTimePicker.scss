@@ -85,9 +85,9 @@
     border: none;
 
     * {
-      font-size: 13px;
-      @extend .font-color-dark;
+      @extend .font-size-2xs;
       @extend .line-height-xs;
+      @extend .font-color-dark;
     }
   }
 
@@ -180,7 +180,7 @@
     margin: 0;
     width: calc(100% / 7);
 
-    font-size: 11px;
+    @extend .font-size-4xs;
     @extend .font-weight-regular;
   }
 
@@ -263,8 +263,8 @@
     justify-content: center;
     align-items: center;
 
-    font-size: 12px;
-    line-height: 100%;
+    @extend .font-size-3xs;
+    @extend .line-height-0;
 
     &:not(&--selected):hover:not(:active) {
       background: color.change($gray-03-color, $alpha: 0.14) !important;
