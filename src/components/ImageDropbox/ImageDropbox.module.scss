@@ -17,7 +17,7 @@
   flex-direction: column;
   align-items: center;
 
-  @extend .font-family-1;
+  @extend .font-family-primary;
   @extend .font-weight-regular;
   @extend .text-align-center;
 
@@ -39,6 +39,7 @@
     margin-top: 8px;
 
     @extend .font-size-2xs;
+    @extend .line-height-l;
     @extend .font-color-gray-01;
   }
 

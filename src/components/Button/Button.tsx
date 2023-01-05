@@ -17,13 +17,11 @@ export const Button = ({
   variant = ButtonVariant.Primary,
   children,
   ...nativeButtonProps
-}: ButtonProps): JSX.Element => {
-  return (
-    <button
-      {...nativeButtonProps}
-      className={classNames(styles.button, styles[variant])}
-    >
-      {children}
-    </button>
-  );
-};
+}: ButtonProps): JSX.Element => (
+  <button
+    {...nativeButtonProps}
+    className={classNames(styles.button, styles[variant])}
+  >
+    {children}
+  </button>
+);

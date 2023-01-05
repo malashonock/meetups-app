@@ -4,6 +4,11 @@
   transition-timing-function: ease;
 }
 
+/* Line height */
+@mixin line-height($line-spacing) {
+  line-height: calc(100% + $line-spacing);
+}
+
 @mixin multiline-ellipsis($max-lines) {
   text-overflow: ellipsis;
   overflow: hidden;
@@ -15,12 +20,12 @@
   -webkit-line-clamp: $max-lines;
 }
 
-// for smooth transition from gradient to solid
+/* For smooth transition from gradient to solid */
 @mixin placeholder-gradient($color) {
   background: linear-gradient($color, $color);
 }
 
-// shorthand properties are not inheritable
+/* Shorthand properties are not inheritable */
 @mixin border-radius-inherit() {
   border-top-left-radius: inherit;
   border-top-right-radius: inherit;

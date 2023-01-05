@@ -1,3 +1,4 @@
+@use 'sass:color';
 @import '~style/colors';
 @import '~style/typography';
 @import '~style/mixins';
@@ -11,11 +12,11 @@
   background-color: $white-color;
   border-radius: 6px;
 
-  box-shadow: 0 4px 9px $gray-shadow-05-color;
+  box-shadow: 0 4px 9px $gray-shadow-04-color;
   @include smooth-transition(box-shadow);
 
   &:hover {
-    box-shadow: 0 5px 10px $gray-shadow-06-color;
+    box-shadow: 0 5px 10px color.adjust($gray-shadow-04-color, $alpha: +0.15);
     @include smooth-transition(box-shadow);
   }
 
@@ -35,7 +36,7 @@
 
       list-style: none;
 
-      @extend .font-family-1;
+      @extend .font-family-primary;
       @extend .font-weight-regular;
       @extend .font-size-s;
       @extend .line-height-s;
@@ -72,15 +73,15 @@
     row-gap: 12px;
 
     .subject {
-      @extend .font-family-2;
+      @extend .font-family-secondary;
       @extend .font-weight-medium;
       @extend .font-size-m;
       @extend .line-height-xl;
-      @extend .font-color-black;
+      @extend .font-color-dark;
     }
 
     .excerpt {
-      @extend .font-family-1;
+      @extend .font-family-primary;
       @extend .font-weight-regular;
       @extend .font-size-xs;
       @extend .line-height-xxl;

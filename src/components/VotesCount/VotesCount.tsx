@@ -7,16 +7,14 @@ interface VotesCountProps {
   votesCount: number;
 }
 
-export const VotesCount = ({ votesCount }: VotesCountProps): JSX.Element => {
-  return (
-    <div className={styles.wrapper}>
-      <ProfileIcon className={styles.icon} />
-      <Typography
-        component={TypographyComponent.Paragraph}
-        className={styles.text}
-      >
-        {votesCount} поддерживают
-      </Typography>
-    </div>
-  );
-};
+export const VotesCount = ({ votesCount }: VotesCountProps): JSX.Element => (
+  <div className={styles.wrapper}>
+    <ProfileIcon className={styles.icon} />
+    <Typography
+      component={TypographyComponent.Paragraph}
+      className={styles.text}
+    >
+      {votesCount} поддерживают
+    </Typography>
+  </div>
+);

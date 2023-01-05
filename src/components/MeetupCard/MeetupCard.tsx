@@ -58,7 +58,7 @@ export const MeetupCard = ({ meetup }: MeetupCardProps): JSX.Element => {
           <UserPreview user={author} />
         ) : (
           <ul className={styles.appointment}>
-            {start !== undefined && (
+            {start !== undefined ? (
               <>
                 <li className={styles.appointmentItem} key="date">
                   <Typography className={styles.date}>
@@ -71,6 +71,8 @@ export const MeetupCard = ({ meetup }: MeetupCardProps): JSX.Element => {
                   </Typography>
                 </li>
               </>
+            ) : (
+              '—'
             )}
             {place !== undefined && (
               <li className={styles.appointmentItem} key="location">

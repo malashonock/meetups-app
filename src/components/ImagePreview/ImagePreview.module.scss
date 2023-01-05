@@ -121,13 +121,13 @@
   flex-direction: column;
   row-gap: 4px;
 
-  @extend .font-family-1;
+  @extend .font-family-primary;
 
   .fileName {
     @extend .font-weight-regular;
     @extend .font-size-xs;
     @extend .line-height-xs;
-    @extend .font-color-black;
+    @extend .font-color-dark;
   }
 
   .fileSize {

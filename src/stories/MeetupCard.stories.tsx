@@ -42,9 +42,13 @@ const meetupTopicWithExcerpt: Meetup = {
     'Основные темы, которые буду рассказывать: Database-first (EF Core), Db migrations, Software triggers, DbSet pre-filter (tenant-solution)',
 };
 
-const meetupOnModeration: Meetup = {
+const meetupOnModerationNoDate: Meetup = {
   ...meetupTopicWithExcerpt,
   status: MeetupStatus.DRAFT,
+};
+
+const meetupOnModeration: Meetup = {
+  ...meetupOnModerationNoDate,
   start: new Date(2022, 3, 23, 15, 0).toISOString(),
 };
 
@@ -69,6 +73,12 @@ export const MeetupCard_Topic_WithExcerpt = Template.bind({});
 
 MeetupCard_Topic_WithExcerpt.args = {
   meetup: meetupTopicWithExcerpt,
+};
+
+export const MeetupCard_OnModerationNoDate = Template.bind({});
+
+MeetupCard_OnModerationNoDate.args = {
+  meetup: meetupOnModerationNoDate,
 };
 
 export const MeetupCard_OnModeration = Template.bind({});

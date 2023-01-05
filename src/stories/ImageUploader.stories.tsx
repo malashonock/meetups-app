@@ -52,8 +52,8 @@ const Template: ComponentStory<typeof ImageUploader> = ({ name, variant }) => (
         <Typography
           component={TypographyComponent.Paragraph}
           className={classNames(
-            'font-family-1',
-            'font-color-black',
+            'font-family-primary',
+            'font-color-dark',
             'font-size-xs',
             'line-height-xs',
           )}

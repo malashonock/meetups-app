@@ -9,7 +9,7 @@ function App() {
   return (
     <BrowserRouter>
       <Header />
-      <div className={styles['app-container']}>
+      <div className={styles.container}>
         <Routes>
           <Route path="/" element={<Navigate replace to="/meetups" />} />
           <Route path="/meetups" element={<div>Meetups</div>} />
