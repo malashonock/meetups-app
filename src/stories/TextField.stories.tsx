@@ -3,30 +3,24 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { object, string } from 'yup';
 import { Formik, Form } from 'formik';
 
-import { TextInput } from '../components/TextField/TextField';
+import { TextField } from 'components';
 
 export default {
   title: 'Components/TextField',
-  component: TextInput,
+  component: TextField,
   parameters: {
     layout: 'centered',
   },
   args: {
-    title: 'Title',
-    description: 'It is a TextField description',
+    title: 'TextField',
   },
-} as ComponentMeta<typeof TextInput>;
+} as ComponentMeta<typeof TextField>;
 
 const validationSchema = object().shape({
-  userValue: string()
-    .required('Please enter your value')
-    .matches(
-      /^(\S+$)/,
-      'This field cannot contain spaces only or start with them',
-    ),
+  userValue: string().required('Please enter your value'),
 });
 
-const TextField: ComponentStory<typeof TextInput> = () => (
+const TextFields: ComponentStory<typeof TextField> = (args) => (
   <Formik
     validationSchema={validationSchema}
     initialValues={{
@@ -37,19 +31,19 @@ const TextField: ComponentStory<typeof TextInput> = () => (
       setSubmitting(false);
     }}
   >
-    {() => {
-      return (
-        <Form>
-          <TextInput
-            name="userValue"
-            successText="Succes helper text"
-            placeholder="Placeholder"
-            labelText="Label"
-          />
-        </Form>
-      );
-    }}
+    {() => (
+      <Form>
+        <TextField {...args} />
+      </Form>
+    )}
   </Formik>
 );
 
-export const Default = TextField.bind({});
+export const Default = TextFields.bind({});
+
+Default.args = {
+  name: 'userValue',
+  placeholder: 'Placeholder',
+  labelText: 'Label',
+  successText: 'Success text',
+};
