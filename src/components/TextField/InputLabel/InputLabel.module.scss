@@ -1,14 +1,9 @@
-@import '~style/colors';
 @import '~style/typography';
-@import '~style/mixins';
 
 .label {
-  display: flex;
-  margin-bottom: 8px;
-
-  @extend .ff-1;
-  @extend .fw-medium;
-  @extend .fs-xs;
-  @extend .lh-xs;
-  @extend .fc-gray-03;
+  @extend .font-family-primary;
+  @extend .font-weight-medium;
+  @extend .font-size-xs;
+  @extend .line-height-xs;
+  @extend .font-color-gray-03;
 }
