@@ -20,9 +20,9 @@
 
   .name,
   .initials {
-    @extend .ff-1;
-    @extend .fw-regular;
-    @extend .ls-1;
+    @extend .font-family-primary;
+    @extend .font-weight-regular;
+    @extend .letter-spacing-larger-02;
   }
 
   &.header {
@@ -36,9 +36,9 @@
 
     .name,
     .initials {
-      @extend .fs-s;
-      @extend .lh-s;
-      @extend .fc-white;
+      @extend .font-size-s;
+      @extend .line-height-s;
+      @extend .font-color-white;
     }
   }
 
@@ -52,16 +52,16 @@
 
     .name,
     .initials {
-      @extend .fs-xs;
-      @extend .lh-xs;
+      @extend .font-size-xs;
+      @extend .line-height-xs;
     }
 
     .name {
-      @extend .fc-gray-01;
+      @extend .font-color-gray-01;
     }
 
     .initials {
-      @extend .fc-white;
+      @extend .font-color-white;
     }
   }
 }

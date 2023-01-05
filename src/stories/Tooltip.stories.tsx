@@ -1,7 +1,7 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { Tooltip } from 'components';
+import { Tooltip, TooltipVariant } from 'components';
 
 export default {
   title: 'Components/Tooltip',
@@ -24,23 +24,23 @@ const Template: ComponentStory<typeof Tooltip> = (args) => (
 export const Dark = Template.bind({});
 
 Dark.args = {
-  variant: 'dark',
+  variant: TooltipVariant.Dark,
 };
 
 export const Colored = Template.bind({});
 
 Colored.args = {
-  variant: 'colored',
+  variant: TooltipVariant.Colored,
 };
 
 export const Outline = Template.bind({});
 
 Outline.args = {
-  variant: 'outline',
+  variant: TooltipVariant.Outline,
 };
 
 export const White = Template.bind({});
 
 White.args = {
-  variant: 'white',
+  variant: TooltipVariant.White,
 };

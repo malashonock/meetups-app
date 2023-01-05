@@ -7,23 +7,26 @@ $light-purple-color: #e4e8ff;
 
 /* Gradient */
 
-$purple-gradient-color: linear-gradient(
+$purple-gradient-01-color: linear-gradient(
   63.5deg,
   $purple-color 17%,
   $blue-02-color 83%
 );
-
-// for smooth transition from gradient to solid
-$blue-01-gradient-color: linear-gradient($blue-01-color, $blue-01-color);
+$purple-gradient-02-color: linear-gradient(
+  132.17deg,
+  $purple-color -2.22%,
+  $blue-02-color 103.24%
+);
 
 /* Transparent */
 
+$black-shadow-color: rgba(0, 0, 0, 0.1);
+
 $gray-shadow-01-color: rgba(60, 72, 97, 0.3);
-$gray-shadow-02-color: rgba(60, 72, 97, 0.2);
-$gray-shadow-03-color: rgba(51, 63, 82, 0.15);
-$gray-shadow-04-color: rgba(0, 0, 0, 0.1);
-$gray-shadow-05-color: rgba(194, 203, 218, 0.25);
-$gray-shadow-06-color: rgba(194, 203, 218, 0.4);
+$gray-shadow-02-color: rgba(51, 63, 82, 0.15);
+$gray-shadow-03-color: rgba(105, 112, 127, 0.3);
+$gray-shadow-04-color: rgba(194, 203, 218, 0.25);
+$gray-shadow-05-color: rgba(215, 221, 232, 0.15);
 
 $gray-transparent-01-color: rgba(132, 143, 165, 0.2);
 $gray-transparent-02-color: rgba(132, 143, 165, 0.1);
@@ -34,7 +37,7 @@ $white-transparent-color: rgba(255, 255, 255, 0.43);
 
 /* Neutral */
 
-$black-color: #3c4861;
+$dark-color: #3c4861;
 $white-color: #ffffff;
 
 $gray-01-color: #5b6887;

@@ -1,4 +1,5 @@
-@import '_colors.scss';
+@import 'colors.scss';
+@import 'mixins.scss';
 
 @font-face {
   font-family: 'Roboto';
@@ -39,19 +40,28 @@
 /* Utility classes */
 
 /* Font family */
-.ff {
-  &-1 {
+.font-family {
+  &-primary {
     font-family: 'Roboto', sans-serif;
   }
-  &-2 {
+  &-secondary {
     font-family: 'Rubik', sans-serif;
   }
 }
 
 /* Font size */
-.fs {
-  &-xxs {
+.font-size {
+  &-5xs {
+    font-size: 10px;
+  }
+  &-4xs {
+    font-size: 11px;
+  }
+  &-3xs {
     font-size: 12px;
+  }
+  &-2xs {
+    font-size: 13px;
   }
   &-xs {
     font-size: 14px;
@@ -71,7 +81,7 @@
 }
 
 /* Font weight */
-.fw {
+.font-weight {
   &-regular {
     font-weight: 400;
   }
@@ -83,12 +93,13 @@
   }
 }
 
-/* Line height */
-@mixin line-height($line-spacing) {
-  line-height: calc(100% + $line-spacing);
-}
-
-.lh {
+.line-height {
+  &-0 {
+    line-height: 100%;
+  }
+  &-2xs {
+    @include line-height(1px);
+  }
   &-xs {
     @include line-height(2px);
   }
@@ -110,22 +121,28 @@
 }
 
 /* Letter spacing */
-.ls {
-  &-0 {
+.letter-spacing {
+  &-smaller {
+    letter-spacing: -0.3px;
+  }
+  &-normal {
     letter-spacing: normal;
   }
-  &-1 {
+  &-larger-01 {
+    letter-spacing: 0.09px;
+  }
+  &-larger-02 {
     letter-spacing: 0.25px;
   }
-  &-2 {
+  &-larger-03 {
     letter-spacing: 0.4px;
   }
 }
 
 /* Font color */
-.fc {
-  &-black {
-    color: $black-color;
+.font-color {
+  &-dark {
+    color: $dark-color;
   }
   &-gray-01 {
     color: $gray-01-color;
@@ -142,16 +159,22 @@
   &-purple {
     color: $purple-color;
   }
-  &-green {
-    color: $green-01-color;
+  &-blue-01 {
+    color: $blue-01-color;
+  }
+  &-blue-02 {
+    color: $blue-02-color;
   }
   &-red {
     color: $red-01-color;
   }
+  &-green {
+    color: $green-01-color;
+  }
 }
 
 /* Text align */
-.ta {
+.text-align {
   &-left {
     text-align: left;
   }

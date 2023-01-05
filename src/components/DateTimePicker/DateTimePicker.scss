@@ -1,0 +1,285 @@
+@use 'sass:color';
+@import '~style/colors';
+@import '~style/typography';
+@import '~style/mixins';
+
+.react-datepicker {
+  background: $white-color;
+  border: 1px solid $gray-05-color;
+  box-shadow: 0px 8px 16px $black-shadow-color;
+  border-radius: 4px;
+  box-sizing: border-box;
+
+  @extend .font-family-primary;
+
+  $triangle-side: 4px;
+
+  &-wrapper {
+    width: 223px;
+  }
+
+  &-popper {
+    padding-top: $triangle-side !important;
+  }
+
+  &__triangle {
+    left: 206px !important;
+    transform: none !important;
+    margin-top: -$triangle-side !important;
+
+    &::before,
+    &::after {
+      left: -$triangle-side !important;
+      border-width: $triangle-side !important;
+      width: 0 !important;
+    }
+
+    &::before {
+      border-bottom-color: $gray-05-color !important;
+    }
+
+    &::after {
+      border-bottom-color: $white-color !important;
+      z-index: 0 !important;
+    }
+  }
+
+  &__input-container {
+    input[type='text'] {
+      position: relative;
+      box-sizing: border-box;
+      width: 100%;
+
+      outline: none;
+      background: $white-color;
+      border: 1px solid rgba(49, 74, 215, 0.75);
+      border-radius: 5px;
+      padding: 11px;
+
+      @extend .font-family-primary;
+      @extend .font-weight-regular;
+      @extend .font-size-xs;
+      @extend .line-height-xs;
+      @extend .font-color-gray-01;
+
+      background-image: url(./calendar.svg);
+      background-repeat: no-repeat;
+      background-position: top 9px right 11px;
+    }
+  }
+
+  &__month-container,
+  &__month-container &__header {
+    border-top-left-radius: inherit !important;
+  }
+
+  &__time-container,
+  &__time-container &__header {
+    border-top-right-radius: inherit !important;
+    padding: 0 16px !important;
+  }
+
+  &__header {
+    padding: 0;
+    background-color: $white-color;
+    border: none;
+
+    * {
+      @extend .font-size-2xs;
+      @extend .line-height-xs;
+      @extend .font-color-dark;
+    }
+  }
+
+  &__month-container {
+    padding: 16px !important;
+  }
+
+  &__time-container {
+    padding: 16px 0 !important;
+  }
+
+  &__month-container {
+    width: 218px;
+  }
+
+  &__navigation {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    @include placeholder-gradient(color.change($gray-03-color, $alpha: 0.14));
+
+    &:hover,
+    &:active {
+      background: $purple-gradient-02-color;
+    }
+
+    &-icon {
+      &--previous,
+      &--next {
+        top: 3px;
+      }
+
+      &--previous {
+        right: 3.5px;
+      }
+
+      &--next {
+        left: 3.5px;
+      }
+
+      &::before {
+        border-color: $dark-color;
+        @include smooth-transition(filter);
+        border-width: 1px 1px 0 0;
+        width: 3.75px;
+        height: 3.75px;
+      }
+    }
+
+    &:hover &-icon::before,
+    &:active &-icon::before {
+      border-color: $white-color;
+    }
+
+    &:active &-icon {
+      &::before {
+        filter: drop-shadow(0 0 0.5px $white-color);
+        @include smooth-transition(filter);
+      }
+    }
+
+    &--previous,
+    &--next {
+      top: 14px;
+    }
+
+    &--previous {
+      left: 16px;
+    }
+
+    &--next {
+      left: 182px;
+    }
+  }
+
+  &__current-month,
+  &-time__header {
+    padding-bottom: 16px;
+    border-bottom: 1px solid $gray-05-color;
+    @extend .font-weight-medium;
+  }
+
+  &__day-names {
+    padding: 7.5px 0;
+    margin: 0 !important;
+    border-bottom: 1px solid $gray-05-color;
+  }
+
+  &__day-name {
+    margin: 0;
+    width: calc(100% / 7);
+
+    @extend .font-size-4xs;
+    @extend .font-weight-regular;
+  }
+
+  &__month {
+    margin: 0;
+    padding-top: 9px;
+
+    display: flex;
+    flex-direction: column;
+    row-gap: 2px;
+  }
+
+  &__week {
+    height: 24px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  &__day {
+    margin: 0;
+    width: 24px;
+    border-radius: 4px !important;
+    @extend .font-color-gray-01;
+
+    &--outside-month {
+      opacity: 0.2;
+    }
+  }
+
+  &__time {
+    &-container {
+      border-color: $gray-05-color;
+      width: 132px;
+    }
+
+    &-box {
+      margin: 0 !important;
+      width: 100% !important;
+    }
+
+    &-list {
+      position: relative;
+      overflow: overlay !important;
+
+      width: 100% !important;
+
+      --time-list-height: 167px;
+      height: var(--time-list-height) !important;
+
+      &::-webkit-scrollbar {
+        width: 18px;
+
+        &-track {
+          background-color: transparent;
+        }
+
+        &-thumb {
+          min-height: 40px;
+          background-color: $gray-06-color;
+          background-clip: content-box;
+          border: 6px solid transparent;
+          border-radius: 9px;
+        }
+      }
+
+      &-item {
+        padding: 0 !important;
+        height: 28px !important;
+
+        @extend .font-color-dark;
+      }
+    }
+  }
+
+  &__day,
+  &__time-list-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    @extend .font-size-3xs;
+    @extend .line-height-0;
+
+    &:not(&--selected):hover:not(:active) {
+      background: color.change($gray-03-color, $alpha: 0.14) !important;
+    }
+
+    &:active,
+    &--selected,
+    &--keyboard-selected {
+      background: $purple-gradient-02-color;
+      @extend .font-color-white;
+      font-weight: normal !important;
+    }
+
+    &:active {
+      text-shadow: 0 0 1px $white-color;
+    }
+  }
+}

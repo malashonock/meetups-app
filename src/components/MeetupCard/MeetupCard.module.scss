@@ -1,3 +1,4 @@
+@use 'sass:color';
 @import '~style/colors';
 @import '~style/typography';
 @import '~style/mixins';
@@ -11,11 +12,11 @@
   background-color: $white-color;
   border-radius: 6px;
 
-  box-shadow: 0 4px 9px $gray-shadow-05-color;
+  box-shadow: 0 4px 9px $gray-shadow-04-color;
   @include smooth-transition(box-shadow);
 
   &:hover {
-    box-shadow: 0 5px 10px $gray-shadow-06-color;
+    box-shadow: 0 5px 10px color.adjust($gray-shadow-04-color, $alpha: +0.15);
     @include smooth-transition(box-shadow);
   }
 
@@ -35,11 +36,11 @@
 
       list-style: none;
 
-      @extend .ff-1;
-      @extend .fw-regular;
-      @extend .fs-s;
-      @extend .lh-s;
-      @extend .fc-gray-01;
+      @extend .font-family-primary;
+      @extend .font-weight-regular;
+      @extend .font-size-s;
+      @extend .line-height-s;
+      @extend .font-color-gray-01;
 
       > .appointmentItem {
         position: relative;
@@ -72,19 +73,19 @@
     row-gap: 12px;
 
     .subject {
-      @extend .ff-2;
-      @extend .fw-medium;
-      @extend .fs-m;
-      @extend .lh-xl;
-      @extend .fc-black;
+      @extend .font-family-secondary;
+      @extend .font-weight-medium;
+      @extend .font-size-m;
+      @extend .line-height-xl;
+      @extend .font-color-dark;
     }
 
     .excerpt {
-      @extend .ff-1;
-      @extend .fw-regular;
-      @extend .fs-xs;
-      @extend .lh-xxl;
-      @extend .fc-gray-02;
+      @extend .font-family-primary;
+      @extend .font-weight-regular;
+      @extend .font-size-xs;
+      @extend .line-height-xxl;
+      @extend .font-color-gray-02;
     }
   }
 }

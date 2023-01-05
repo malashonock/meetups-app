@@ -13,10 +13,10 @@
 }
 
 .text {
-  @extend .ff-1;
-  @extend .fw-regular;
-  @extend .fs-xs;
-  @extend .lh-s;
-  @extend .ls-1;
-  @extend .fc-gray-03;
+  @extend .font-family-primary;
+  @extend .font-weight-regular;
+  @extend .font-size-xs;
+  @extend .line-height-s;
+  @extend .letter-spacing-larger-02;
+  @extend .font-color-gray-03;
 }

@@ -1,18 +1,26 @@
 import React, { PropsWithChildren, useState } from 'react';
 import classNames from 'classnames';
 
+import { Typography, TypographyComponent } from 'components';
+
 import styles from './Tooltip.module.scss';
-import { Typography } from 'components/Typography/Typography';
+
+export enum TooltipVariant {
+  Dark = 'dark',
+  Colored = 'colored',
+  Outline = 'outline',
+  White = 'white',
+}
 
 interface TooltipProps {
-  variant?: 'dark' | 'colored' | 'outline' | 'white';
+  variant?: TooltipVariant;
   title: string;
   description: string;
 }
 
 export const Tooltip = ({
   children,
-  variant = 'dark',
+  variant = TooltipVariant.Dark,
   title,
   description,
 }: PropsWithChildren<TooltipProps>) => {
@@ -33,10 +41,16 @@ export const Tooltip = ({
           [styles.visible]: visible,
         })}
       >
-        <Typography variant="heading" className={styles.title}>
+        <Typography
+          component={TypographyComponent.Heading3}
+          className={styles.title}
+        >
           {title}
         </Typography>
-        <Typography variant="paragraph" className={styles.description}>
+        <Typography
+          component={TypographyComponent.Paragraph}
+          className={styles.description}
+        >
           {description}
         </Typography>
       </div>
