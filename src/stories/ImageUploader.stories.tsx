@@ -1,5 +1,12 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { Button, ImagePreviewMode, ImageUploader } from 'components';
+import classNames from 'classnames';
+import {
+  Button,
+  ImagePreviewMode,
+  ImageUploader,
+  Typography,
+  TypographyComponent,
+} from 'components';
 import { Form, Formik } from 'formik';
 import { FileWithUrl } from 'types';
 
@@ -33,7 +40,17 @@ const Template: ComponentStory<typeof ImageUploader> = ({ name, variant }) => (
       >
         <ImageUploader name={name} variant={variant} />
         <Button type="submit">Submit (check console logs)</Button>
-        <div>{JSON.stringify(values[name])}</div>
+        <Typography
+          component={TypographyComponent.Paragraph}
+          className={classNames(
+            'font-family-1',
+            'font-color-black',
+            'font-size-xs',
+            'line-height-xs',
+          )}
+        >
+          Field value: {JSON.stringify(values[name])}
+        </Typography>
       </Form>
     )}
   </Formik>

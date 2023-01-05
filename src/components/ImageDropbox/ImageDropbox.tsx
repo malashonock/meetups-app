@@ -77,7 +77,7 @@ export const ImageDropbox = ({ onDrop }: ImageDropboxProps): JSX.Element => {
   };
 
   return (
-    <div className="container">
+    <div className={styles.container}>
       <div {...getRootProps()} className={classList}>
         <input {...getInputProps()} />
         <UploadIcon />
