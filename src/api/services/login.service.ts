@@ -8,7 +8,7 @@ export const login = async (credentials: Credentials): Promise<void> => {
 };
 
 export const checkLogin = async (): Promise<User> => {
-  const authenticatedUser: User = await httpClient.get('/login');
+  const { data: authenticatedUser } = await httpClient.get<User>('/login');
   return authenticatedUser;
 };
 

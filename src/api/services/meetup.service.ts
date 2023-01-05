@@ -2,17 +2,19 @@ import { httpClient } from 'helpers';
 import { Meetup, NewMeetup } from 'model';
 
 export const getMeetups = async (): Promise<Meetup[]> => {
-  return await httpClient.get('/meetups');
+  const { data: meetups } = await httpClient.get<Meetup[]>('/meetups');
+  return meetups;
 };
 
 export const getMeetup = async (id: string): Promise<Meetup> => {
-  return await httpClient.get(`/meetups/${id}`);
+  const { data: meetup } = await httpClient.get<Meetup>(`/meetups/${id}`);
+  return meetup;
 };
 
 export const createMeetup = async (
   newMeetupData: NewMeetup,
 ): Promise<Meetup> => {
-  const createdMeetup: Meetup = await httpClient.post('/meetups', {
+  const { data: createdMeetup } = await httpClient.post<Meetup>('/meetups', {
     data: newMeetupData,
   });
   return createdMeetup;
@@ -21,7 +23,7 @@ export const createMeetup = async (
 export const updateMeetup = async (
   updatedMeetupData: Meetup,
 ): Promise<Meetup> => {
-  const updatedMeetup: Meetup = await httpClient.put('/meetups', {
+  const { data: updatedMeetup } = await httpClient.put<Meetup>('/meetups', {
     data: updatedMeetupData,
   });
   return updatedMeetup;

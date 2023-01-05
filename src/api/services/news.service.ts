@@ -2,17 +2,19 @@ import { httpClient } from 'helpers';
 import { NewNews, News } from 'model';
 
 export const getNews = async (): Promise<News[]> => {
-  return await httpClient.get('/news');
+  const { data: articles } = await httpClient.get<News[]>('/news');
+  return articles;
 };
 
 export const getNewsArticle = async (id: string): Promise<News> => {
-  return await httpClient.get(`/news/${id}`);
+  const { data: article } = await httpClient.get<News>(`/news/${id}`);
+  return article;
 };
 
 export const createNewsArticle = async (
   newArticleData: NewNews,
 ): Promise<News> => {
-  const createdArticle: News = await httpClient.post('/news', {
+  const { data: createdArticle } = await httpClient.post<News>('/news', {
     data: newArticleData,
   });
   return createdArticle;
@@ -21,7 +23,7 @@ export const createNewsArticle = async (
 export const updateNewsArticle = async (
   updatedArticleData: News,
 ): Promise<News> => {
-  const updatedArticle: News = await httpClient.put('/news', {
+  const { data: updatedArticle } = await httpClient.put<News>('/news', {
     data: updatedArticleData,
   });
   return updatedArticle;
