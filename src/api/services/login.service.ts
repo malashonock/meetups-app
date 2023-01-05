@@ -11,3 +11,7 @@ export const checkLogin = async (): Promise<User> => {
   const authenticatedUser: User = await httpClient.get('/login');
   return authenticatedUser;
 };
+
+export const logout = async (): Promise<void> => {
+  await httpClient.get('/logout');
+};
