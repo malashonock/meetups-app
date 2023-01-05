@@ -9,6 +9,7 @@ import {
 } from 'components';
 import { Form, Formik } from 'formik';
 import { FileWithUrl } from 'types';
+import * as yup from 'yup';
 
 export default {
   title: 'Components/ImageUploader',
@@ -24,8 +25,16 @@ const Template: ComponentStory<typeof ImageUploader> = ({ name, variant }) => (
     initialValues={{
       [name]: null,
     }}
-    onSubmit={(values) => {
+    validationSchema={yup.object().shape({
+      [name]: yup
+        .mixed()
+        .required(
+          'Пожалуйста, загрузите изображение формата .jpg, .jpeg или .png',
+        ),
+    })}
+    onSubmit={(values: FormValues, { setSubmitting }) => {
       console.log(values[name]);
+      setSubmitting(false); // onSubmit is sync, so need to call this
     }}
   >
     {({ values }) => (

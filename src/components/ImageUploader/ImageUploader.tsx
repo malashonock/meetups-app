@@ -15,6 +15,7 @@ export const ImageUploader = ({
     {({
       field: { name, value },
       form: { setFieldValue },
+      meta: { error },
     }: FieldProps<FileWithUrl | null>) => {
       const image = value;
       const setImage = (image: FileWithUrl | null): void => {
@@ -34,7 +35,7 @@ export const ImageUploader = ({
       };
 
       return !image ? (
-        <ImageDropbox onDrop={handleUpload} />
+        <ImageDropbox onDrop={handleUpload} externalError={error} />
       ) : (
         <ImagePreview variant={variant} image={image} onClear={handleClear} />
       );

@@ -11,14 +11,16 @@ const ACCEPT_FORMATS = ['.jpg', '.jpeg', '.png'];
 
 const MAX_FILESIZE = 10_000_000; // bytes
 
-const ERRORS_TIMEOUT = 3_000; // milliseconds
-
 interface ImageDropboxProps {
   onDrop: (image: FileWithUrl) => void;
+  externalError?: string;
 }
 
-export const ImageDropbox = ({ onDrop }: ImageDropboxProps): JSX.Element => {
-  const [errors, setErrors] = useState<FileError[]>([]);
+export const ImageDropbox = ({
+  onDrop,
+  externalError,
+}: ImageDropboxProps): JSX.Element => {
+  const [internalErrors, setInternalErrors] = useState<string[]>([]);
 
   const acceptOptions = ACCEPT_FORMATS.reduce((formats, format) => {
     return {
@@ -28,6 +30,15 @@ export const ImageDropbox = ({ onDrop }: ImageDropboxProps): JSX.Element => {
       },
     };
   }, {});
+
+  const acceptFileExtensions = ACCEPT_FORMATS.join(' ');
+
+  const translateError = (error: string): string => {
+    return error
+      .replace('File type must be', 'Допустимые типы файлов:')
+      .replace('File is larger than', 'Размер файла превышает')
+      .replace('bytes', 'байт');
+  };
 
   const handleAcceptedDrop = (acceptedFiles: File[]): void => {
     if (acceptedFiles.length > 0) {
@@ -43,11 +54,12 @@ export const ImageDropbox = ({ onDrop }: ImageDropboxProps): JSX.Element => {
 
   const handleRejectedDrop = (fileRejections: FileRejection[]): void => {
     // https://github.com/react-dropzone/react-dropzone/pull/938
-    const errors = fileRejections.flatMap(
-      ({ errors }: FileRejection): FileError[] => errors,
-    );
-    setErrors(errors);
-    setTimeout(() => setErrors([]), ERRORS_TIMEOUT);
+    const errors = fileRejections
+      .flatMap(({ errors }: FileRejection): FileError[] => errors)
+      .map(({ message }: FileError): string => message)
+      .map(translateError);
+
+    setInternalErrors(errors);
   };
 
   const { getRootProps, getInputProps, isDragAccept, isDragReject, open } =
@@ -61,20 +73,18 @@ export const ImageDropbox = ({ onDrop }: ImageDropboxProps): JSX.Element => {
       onDropRejected: handleRejectedDrop,
     });
 
+  const errors: string[] =
+    internalErrors.length > 0
+      ? internalErrors
+      : externalError
+      ? [externalError]
+      : [];
+
   const classList = classNames(
     styles.dropbox,
     isDragAccept ? styles.willAccept : '',
     isDragReject || errors.length > 0 ? styles.willReject : '',
   );
-
-  const acceptFileExtensions = ACCEPT_FORMATS.join(' ');
-
-  const translateError = (error: string): string => {
-    return error
-      .replace('File type must be', 'Допустимые типы файлов:')
-      .replace('File is larger than', 'Размер файла превышает')
-      .replace('bytes', 'байт');
-  };
 
   return (
     <div className={styles.container}>
@@ -106,14 +116,14 @@ export const ImageDropbox = ({ onDrop }: ImageDropboxProps): JSX.Element => {
         </div>
         {errors.length > 0 ? (
           <ul className={styles.errors}>
-            {errors.map(({ code, message }: FileError): JSX.Element => {
+            {errors.map((error: string, index: number): JSX.Element => {
               return (
-                <li key={code}>
+                <li key={index}>
                   <Typography
                     component={TypographyComponent.Paragraph}
                     className={styles.error}
                   >
-                    {translateError(message)}
+                    {error}
                   </Typography>
                 </li>
               );
