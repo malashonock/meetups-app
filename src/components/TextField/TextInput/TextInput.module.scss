@@ -1,0 +1,44 @@
+@import '~style/colors';
+@import '~style/typography';
+@import '~style/mixins';
+
+.input {
+  box-sizing: border-box;
+  border: 1px solid $gray-05-color;
+  border-radius: 4px;
+  max-width: 100%;
+  height: 40px;
+  padding: 12px;
+  outline: none !important;
+
+  @extend .font-family-primary;
+  @extend .font-weight-regular;
+  @extend .font-size-xs;
+  @extend .line-height-xs;
+  @extend .font-color-dark;
+
+  &::placeholder {
+    @extend .font-color-gray-02;
+  }
+
+  &:hover {
+    background-color: $gray-07-color;
+    @include smooth-transition($gray-07-color);
+  }
+
+  &:focus {
+    border: 2px solid $purple-color;
+
+    &::placeholder {
+      @extend .font-color-gray-03;
+    }
+  }
+}
+
+.error {
+  border: 2px solid $red-02-color;
+}
+
+.success {
+  border: 2px solid $green-02-color;
+}
