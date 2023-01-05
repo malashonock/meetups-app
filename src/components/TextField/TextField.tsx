@@ -1,53 +1,68 @@
 import { Field, FieldProps } from 'formik';
 
-import { InputLabel } from './InputLabel/InputLabel';
-import { HelperText } from './HelperText/HelperText';
-import { InputText } from './InputText/InputText';
-import { Typography } from 'components/Typography/Typography';
+import { InputLabel } from 'components';
+import { HelperText } from 'components';
+import { TextInput, TextInputVariant } from 'components';
 
-type TextInputProps = {
+import { HelperTextVariant } from 'components';
+
+type TextFieldProps = {
   name: string;
   placeholder?: string;
-  successText: string;
+  successText?: string;
+  helperText?: string;
   labelText: string;
 };
 
-export const TextInput = ({
+export const TextField = ({
   name,
   placeholder,
   successText,
   labelText,
-}: TextInputProps): JSX.Element => {
+  helperText,
+}: TextFieldProps): JSX.Element => {
   return (
     <Field name={name}>
       {({ field, form }: FieldProps) => {
         const hasError = !!form.errors[name] && !!form.touched[name];
         const value = form.values[name];
-        const viewVariant = () => {
-          return hasError ? 'error' : !!form.values[name] && 'success';
-        };
+        let variantHelperText = HelperTextVariant.Default;
+
+        if (hasError) {
+          variantHelperText = HelperTextVariant.Error;
+        } else {
+          if (successText && !!form.values[name] && !!form.touched[name]) {
+            variantHelperText = HelperTextVariant.Success;
+          }
+        }
+
+        const variantTextInput =
+          (hasError
+            ? TextInputVariant.Error
+            : !!form.values[name] && TextInputVariant.Success) ||
+          TextInputVariant.None;
+
+        const resultHelperText =
+          !!helperText && !form.touched[name] ? (
+            <>{helperText}</>
+          ) : hasError ? (
+            form.errors[name] && <>{form.errors[name] as string}</>
+          ) : (
+            !!form.touched[name] && <>{successText}</>
+          );
+
         return (
           <div>
-            <InputLabel children={labelText} />
-            <InputText
-              type="text"
-              variant={viewVariant()}
+            <InputLabel style={{ marginBottom: '8px' }}>{labelText}</InputLabel>
+            <TextInput
+              style={{ marginBottom: '4px', width: '500px' }}
+              variant={variantTextInput}
               field={field}
               value={value}
               placeholder={placeholder}
             />
-            <HelperText variant={viewVariant()} picked={!!form.touched[name]}>
-              {hasError ? (
-                <div>
-                  {form.errors[name] && (
-                    <Typography>{form.errors[name] as string}</Typography>
-                  )}
-                </div>
-              ) : (
-                <div>
-                  {form.touched[name] && <Typography>{successText}</Typography>}
-                </div>
-              )}
+            <HelperText variant={variantHelperText}>
+              {resultHelperText}
             </HelperText>
           </div>
         );
