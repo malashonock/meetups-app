@@ -97,7 +97,7 @@ export const ImageDropbox = ({
         >
           Перетащите изображения сюда
           <br />
-          или{' '}
+          или
           <button
             type="button"
             className={styles.browseFileLink}
