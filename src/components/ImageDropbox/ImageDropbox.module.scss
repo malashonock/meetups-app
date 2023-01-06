@@ -24,8 +24,8 @@
   @include smooth-transition(all);
 
   &.willAccept {
-    background-color: $green-03-color;
-    border-color: $green-02-color;
+    background-color: $green-04-color;
+    border-color: $green-03-color;
     @include smooth-transition(all);
   }
 
