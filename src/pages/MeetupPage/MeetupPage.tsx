@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Typography, MeetupStagesTabs, TypographyComponent } from 'components';
 
 import styles from './MeetupPage.module.scss';

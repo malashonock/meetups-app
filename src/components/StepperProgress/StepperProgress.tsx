@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+
 import {
   TabsIndicator,
   Step,
@@ -14,9 +15,7 @@ interface StepperProgressProps {
 }
 
 export const StepperProgress = ({ currentStep }: StepperProgressProps) => {
-  const { stepsDescriptor, setStepsDescriptor } = useContext(
-    StepperContext,
-  ) as StepperContextType;
+  const { stepsDescriptor } = useContext(StepperContext) as StepperContextType;
 
   return (
     <div className={styles['stepper-progress']}>

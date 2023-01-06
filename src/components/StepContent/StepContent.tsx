@@ -9,7 +9,8 @@ import {
 
 import styles from './StepContent.module.scss';
 
-export interface StepProps {
+interface StepContentProps {
+  step: number;
   currentStep: number;
   isLast: boolean;
   isFirst: boolean;
@@ -18,16 +19,11 @@ export interface StepProps {
 export const StepContent = ({
   isFirst,
   isLast,
-  currentStep,
+  step,
   children,
-}: PropsWithChildren<StepProps>) => {
-  const {
-    stepsDescriptor,
-    setStepsDescriptor,
-    handleCreate,
-    handleNextStep,
-    handlePreviousStep,
-  } = useContext(StepperContext) as StepperContextType;
+}: PropsWithChildren<StepContentProps>) => {
+  const { stepsDescriptor, onFinish, handleNextStep, handlePreviousStep } =
+    useContext(StepperContext) as StepperContextType;
 
   return (
     <div className={styles['step']}>
@@ -42,16 +38,18 @@ export const StepContent = ({
         </Button>
 
         {isLast ? (
-          <Button onClick={handleCreate} variant={ButtonVariant.Primary}>
+          <Button
+            onClick={onFinish}
+            variant={ButtonVariant.Primary}
+            disabled={!stepsDescriptor[step].confirmed}
+          >
             Создать
           </Button>
         ) : (
           <Button
             onClick={handleNextStep}
             variant={ButtonVariant.Primary}
-            // disabled={
-            //   stepsDescriptor[currentStep + 1].variant === StepVariant.Disabled
-            // }
+            disabled={!stepsDescriptor[step].confirmed}
           >
             Далее
           </Button>

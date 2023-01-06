@@ -1,4 +1,10 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
 
 import { StepperProgress, StepContent, Step } from 'components';
 
@@ -11,35 +17,39 @@ export enum StepVariant {
   Disabled = 'disabled',
 }
 
-export interface StepDescriptor {
+export interface StepElementProps {
+  setConfirmed: (index: number, state: boolean) => void;
+  index: number;
+}
+
+interface Step {
   title: string;
-  element: JSX.Element;
+  element: ({ setConfirmed, index }: StepElementProps) => JSX.Element;
+  noVerify?: boolean;
+}
+
+export interface StepDescriptor extends Step {
   variant: StepVariant;
   confirmed: boolean;
+  visited: boolean;
 }
+
+export const StepperContext = createContext<StepperContextType | null>(null);
 
 export type StepperContextType = {
   stepsDescriptor: StepDescriptor[];
   setStepsDescriptor: Dispatch<SetStateAction<StepDescriptor[]>>;
   handleNextStep: () => void;
   handlePreviousStep: () => void;
-  handleCreate: () => void;
+  onFinish: () => void;
 };
-
-export const StepperContext = React.createContext<StepperContextType | null>(
-  null,
-);
-
-interface Step {
-  title: string;
-  element: JSX.Element;
-}
 
 interface StepperProps {
   steps: Step[];
+  onFinish: () => void;
 }
 
-export const Stepper = ({ steps }: StepperProps) => {
+export const Stepper = ({ steps, onFinish }: StepperProps) => {
   const [currentStep, setCurrentStep] = useState<number>(0);
 
   const [stepsDescriptor, setStepsDescriptor] = useState(
@@ -47,47 +57,94 @@ export const Stepper = ({ steps }: StepperProps) => {
       Object.assign({}, step, {
         variant: StepVariant.Disabled,
         confirmed: false,
+        visited: false,
       }),
     ),
   );
 
-  useEffect(() => {
-    stepsDescriptor.map((step, i) => {
-      if (i === 0) {
-        step.variant = StepVariant.Active;
-        return step;
-      }
-      return step;
-    });
-  }, []);
+  const moveStepperContent = () => {
+    document.documentElement.style.setProperty(
+      '--currentStep',
+      `-${currentStep}`,
+    );
+  };
 
-  useEffect(() => {
-    moveStepper();
+  const changeCurrentStepVariantBeforeLeave = (
+    step: StepDescriptor,
+    index: number,
+  ): StepDescriptor => {
+    if (index === currentStep) {
+      return {
+        ...step,
+        variant: step.confirmed ? StepVariant.Confirmed : StepVariant.Available,
+      };
+    }
 
+    return step;
+  };
+
+  const setConfirmed = (index: number, state: boolean) => {
     setStepsDescriptor(
       stepsDescriptor.map((step, i) => {
-        if (i === currentStep) {
-          step.variant = StepVariant.Active;
+        if (i === index) {
+          step.confirmed = state;
+
+          /* Set appropriate variant to next steps (if they exist) if current step is confirmed */
+          if (stepsDescriptor[i + 1] && state)
+            for (
+              let nextStepIndex = i + 1;
+              nextStepIndex < stepsDescriptor.length;
+              nextStepIndex++
+            )
+              stepsDescriptor[nextStepIndex].variant = stepsDescriptor[
+                nextStepIndex
+              ].confirmed
+                ? StepVariant.Confirmed
+                : stepsDescriptor[nextStepIndex].visited ||
+                  nextStepIndex === i + 1
+                ? StepVariant.Available
+                : StepVariant.Disabled;
+
+          /* Set disabled variant to next steps (if they exist) if current step is not confirmed */
+          if (stepsDescriptor[i + 1] && !state)
+            for (
+              let nextStepIndex = i + 1;
+              nextStepIndex < stepsDescriptor.length;
+              nextStepIndex++
+            )
+              stepsDescriptor[nextStepIndex].variant = StepVariant.Disabled;
+
           return step;
         }
+
         return step;
       }),
     );
+  };
+
+  useEffect(() => {
+    if (stepsDescriptor[currentStep].noVerify) {
+      setConfirmed(currentStep, true);
+    }
+
+    setStepsDescriptor(
+      stepsDescriptor.map((step, i) =>
+        i === currentStep
+          ? { ...step, variant: StepVariant.Active, visited: true }
+          : step,
+      ),
+    );
+
+    moveStepperContent();
   }, [currentStep]);
 
   const handleNextStep = () => {
     const nextStep = currentStep + 1;
     if (nextStep <= steps.length) {
       setStepsDescriptor(
-        stepsDescriptor.map((step, i) => {
-          if (i === currentStep) {
-            if (step.confirmed) step.variant = StepVariant.Confirmed;
-            else step.variant = StepVariant.Available;
-            return step;
-          }
-          return step;
-        }),
+        stepsDescriptor.map(changeCurrentStepVariantBeforeLeave),
       );
+
       setCurrentStep(nextStep);
     }
   };
@@ -96,26 +153,11 @@ export const Stepper = ({ steps }: StepperProps) => {
     const previousStep = currentStep - 1;
     if (previousStep >= 0) {
       setStepsDescriptor(
-        stepsDescriptor.map((step, i) => {
-          if (i === currentStep) {
-            if (step.confirmed) step.variant = StepVariant.Confirmed;
-            else step.variant = StepVariant.Available;
-            return step;
-          }
-          return step;
-        }),
+        stepsDescriptor.map(changeCurrentStepVariantBeforeLeave),
       );
+
       setCurrentStep(previousStep);
     }
-  };
-
-  const handleCreate = () => {};
-
-  const moveStepper = () => {
-    document.documentElement.style.setProperty(
-      '--currentStep',
-      `-${currentStep}`,
-    );
   };
 
   return (
@@ -125,7 +167,7 @@ export const Stepper = ({ steps }: StepperProps) => {
         setStepsDescriptor,
         handleNextStep,
         handlePreviousStep,
-        handleCreate,
+        onFinish,
       }}
     >
       <div className={styles.stepper}>
@@ -139,14 +181,15 @@ export const Stepper = ({ steps }: StepperProps) => {
           }
         >
           {steps.map(
-            (step: Step, i: number): JSX.Element => (
+            (step: Step, index: number): JSX.Element => (
               <StepContent
                 key={step.title}
+                step={index}
                 currentStep={currentStep}
-                isFirst={i === 0}
-                isLast={i === steps.length - 1}
+                isFirst={index === 0}
+                isLast={index === steps.length - 1}
               >
-                {step.element}
+                {step.element({ setConfirmed, index })}
               </StepContent>
             ),
           )}
