@@ -1,29 +1,25 @@
-import styles from './TextInput.module.scss';
-
+import { AllHTMLAttributes } from 'react';
 import classNames from 'classnames';
 
-import { AllHTMLAttributes } from 'react';
+import { TextFieldVariant } from 'components';
 
-export enum TextInputVariant {
-  Error = 'error',
-  Success = 'success',
-  None = 'none',
-}
+import styles from './TextInput.module.scss';
 
 type TextInputProps = {
-  variant: TextInputVariant;
-  field?: object;
+  variant: TextFieldVariant;
 } & AllHTMLAttributes<HTMLInputElement>;
 
 export const TextInput = ({
   variant,
-  field,
   ...nativeHtmlProps
 }: TextInputProps): JSX.Element => (
   <input
-    className={classNames(styles.input, styles[variant])}
     type="text"
-    {...field}
     {...nativeHtmlProps}
+    className={classNames(
+      nativeHtmlProps.className,
+      styles.input,
+      styles[variant],
+    )}
   />
 );
