@@ -116,18 +116,16 @@ export const ImageDropbox = ({
         </div>
         {errors.length > 0 ? (
           <ul className={styles.errors}>
-            {errors.map((error: string, index: number): JSX.Element => {
-              return (
-                <li key={index}>
-                  <Typography
-                    component={TypographyComponent.Paragraph}
-                    className={styles.error}
-                  >
-                    {error}
-                  </Typography>
-                </li>
-              );
-            })}
+            {errors.map((error: string, index: number) => (
+              <li key={index}>
+                <Typography
+                  component={TypographyComponent.Paragraph}
+                  className={styles.error}
+                >
+                  {error}
+                </Typography>
+              </li>
+            ))}
           </ul>
         ) : null}
       </div>
