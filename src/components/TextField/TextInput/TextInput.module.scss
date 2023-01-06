@@ -10,6 +10,7 @@
   height: 40px;
   padding: 12px;
   outline: none !important;
+  @include smooth-transition($gray-07-color);
 
   @extend .font-family-primary;
   @extend .font-weight-regular;
@@ -23,7 +24,6 @@
 
   &:hover {
     background-color: $gray-07-color;
-    @include smooth-transition($gray-07-color);
   }
 
   &:focus {
