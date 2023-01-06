@@ -1,21 +1,16 @@
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, HTMLAttributes } from 'react';
 import classNames from 'classnames';
 
-import { Typography, TypographyComponent } from 'components';
+import { Typography, TypographyComponent, TextFieldVariant } from 'components';
 import styles from './HelperText.module.scss';
 
-export enum HelperTextVariant {
-  Error = 'error',
-  Success = 'success',
-  Default = 'default',
-}
-
 type HelperTextProps = {
-  variant: HelperTextVariant;
-} & PropsWithChildren;
+  variant: TextFieldVariant;
+} & PropsWithChildren &
+  HTMLAttributes<HTMLElement>;
 
 export const HelperText = ({
-  variant = HelperTextVariant.Default,
+  variant = TextFieldVariant.Default,
   children,
 }: HelperTextProps): JSX.Element => (
   <Typography
