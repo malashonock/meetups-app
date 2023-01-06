@@ -8,8 +8,8 @@
   align-items: center;
 
   .avatar {
-    width: var(--avatar-diameter);
-    height: var(--avatar-diameter);
+    min-width: var(--avatar-diameter);
+    min-height: var(--avatar-diameter);
 
     display: flex;
     align-items: center;
