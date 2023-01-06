@@ -64,6 +64,11 @@
       transform: scale(0.99);
       @include smooth-transition(all);
     }
+
+    &::before {
+      content: ' ';
+      white-space: pre;
+    }
   }
 
   .constraints,
