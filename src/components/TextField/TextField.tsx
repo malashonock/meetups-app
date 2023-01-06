@@ -1,10 +1,15 @@
+import { AllHTMLAttributes } from 'react';
 import { Field, FieldProps } from 'formik';
 
-import { InputLabel } from 'components';
-import { HelperText } from 'components';
-import { TextInput, TextInputVariant } from 'components';
+import { InputLabel, HelperText, TextInput } from 'components';
 
-import { HelperTextVariant } from 'components';
+import styles from './TextField.module.scss';
+
+export enum TextFieldVariant {
+  Error = 'error',
+  Success = 'success',
+  Default = 'default',
+}
 
 type TextFieldProps = {
   name: string;
@@ -12,7 +17,7 @@ type TextFieldProps = {
   successText?: string;
   helperText?: string;
   labelText: string;
-};
+} & AllHTMLAttributes<HTMLElement>;
 
 export const TextField = ({
   name,
@@ -20,53 +25,50 @@ export const TextField = ({
   successText,
   labelText,
   helperText,
-}: TextFieldProps): JSX.Element => {
-  return (
-    <Field name={name}>
-      {({ field, form }: FieldProps) => {
-        const hasError = !!form.errors[name] && !!form.touched[name];
-        const value = form.values[name];
-        let variantHelperText = HelperTextVariant.Default;
+  ...nativeHtmlProps
+}: TextFieldProps): JSX.Element => (
+  <Field name={name}>
+    {({ field, form: { touched, values }, meta: { error } }: FieldProps) => {
+      const hasError = !!error && !!touched[name];
+      let variantHelperText = TextFieldVariant.Default;
 
-        if (hasError) {
-          variantHelperText = HelperTextVariant.Error;
-        } else {
-          if (successText && !!form.values[name] && !!form.touched[name]) {
-            variantHelperText = HelperTextVariant.Success;
-          }
+      if (hasError) {
+        variantHelperText = TextFieldVariant.Error;
+      } else {
+        if (successText && !!values[name] && !!touched[name]) {
+          variantHelperText = TextFieldVariant.Success;
         }
+      }
 
-        const variantTextInput =
-          (hasError
-            ? TextInputVariant.Error
-            : !!form.values[name] && TextInputVariant.Success) ||
-          TextInputVariant.None;
+      const variantTextInput =
+        (hasError
+          ? TextFieldVariant.Error
+          : !!values[name] && TextFieldVariant.Success) ||
+        TextFieldVariant.Default;
 
-        const resultHelperText =
-          !!helperText && !form.touched[name] ? (
-            <>{helperText}</>
-          ) : hasError ? (
-            form.errors[name] && <>{form.errors[name] as string}</>
-          ) : (
-            !!form.touched[name] && <>{successText}</>
-          );
-
-        return (
-          <div>
-            <InputLabel style={{ marginBottom: '8px' }}>{labelText}</InputLabel>
-            <TextInput
-              style={{ marginBottom: '4px', width: '500px' }}
-              variant={variantTextInput}
-              field={field}
-              value={value}
-              placeholder={placeholder}
-            />
-            <HelperText variant={variantHelperText}>
-              {resultHelperText}
-            </HelperText>
-          </div>
+      const resultHelperText =
+        !!helperText && !touched[name] ? (
+          <>{helperText}</>
+        ) : hasError ? (
+          error && <>{error as string}</>
+        ) : (
+          !!touched[name] && <>{successText}</>
         );
-      }}
-    </Field>
-  );
-};
+
+      return (
+        <div {...nativeHtmlProps}>
+          <InputLabel className={styles.inputLabel}>{labelText}</InputLabel>
+          <TextInput
+            className={styles.textInput}
+            {...field}
+            variant={variantTextInput}
+            placeholder={placeholder}
+          />
+          <HelperText variant={variantHelperText}>
+            {resultHelperText}
+          </HelperText>
+        </div>
+      );
+    }}
+  </Field>
+);
