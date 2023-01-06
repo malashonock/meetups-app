@@ -33,17 +33,17 @@ export const getFileSizeString = (
   let result = convertBytesToMb(bytes).toFixedIfAny(maxDecimalPlaces);
 
   if (+result > 0) {
-    return `${result} Mb`;
+    return `${result} Мб`;
   }
 
   // take less aggregating conversion
   result = convertBytesToKb(bytes).toFixedIfAny(maxDecimalPlaces);
 
   if (+result > 0) {
-    return `${result} Kb`;
+    return `${result} Кб`;
   }
 
   // return without aggregation
   result = bytes.toFixedIfAny(maxDecimalPlaces);
-  return `${result} b`;
+  return `${result} байт`;
 };
