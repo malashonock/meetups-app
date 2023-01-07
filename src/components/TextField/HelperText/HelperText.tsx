@@ -7,15 +7,21 @@ import styles from './HelperText.module.scss';
 type HelperTextProps = {
   variant: TextFieldVariant;
 } & PropsWithChildren &
-  HTMLAttributes<HTMLElement>;
+  HTMLAttributes<HTMLParagraphElement>;
 
 export const HelperText = ({
   variant = TextFieldVariant.Default,
   children,
+  ...nativeHtmlProps
 }: HelperTextProps): JSX.Element => (
   <Typography
     component={TypographyComponent.Paragraph}
-    className={classNames(styles.container, styles[variant])}
+    {...nativeHtmlProps}
+    className={classNames(
+      nativeHtmlProps.className,
+      styles.container,
+      styles[variant],
+    )}
   >
     {children}
   </Typography>
