@@ -10,7 +10,7 @@
   align-items: center;
   margin-bottom: 15px;
 
-  @extend .font-family-1;
+  @extend .font-family-primary;
   @extend .font-weight-medium;
   @extend .font-size-s;  
 
@@ -28,7 +28,7 @@
   }
 
   &.active {
-    @extend .font-color-black;
+    @extend .font-color-dark;
     .number {
       background-color: $blue-02-color;
       @extend .font-color-white;
@@ -46,7 +46,7 @@
   }
 
   &.available {
-    @extend .font-color-black;
+    @extend .font-color-dark;
     .number {
       background-color: $blue-02-transparent;
       @extend .font-color-white;

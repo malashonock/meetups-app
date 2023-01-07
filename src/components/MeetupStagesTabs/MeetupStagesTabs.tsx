@@ -5,11 +5,10 @@ import { NavLink, Outlet } from 'react-router-dom';
 import { Typography, NavTabs } from 'components';
 
 import styles from './MeetupStagesTabs.module.scss';
-import { JsxEmit } from 'typescript';
 
 enum MeetupTabLink {
   Topics = 'topics',
-  OnModeration = 'onModeration',
+  OnModeration = 'moderation',
   Upcoming = 'upcoming',
   Finished = 'finished',
 }
