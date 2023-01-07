@@ -3,9 +3,8 @@
 @import '~style/mixins';
 
 .header {
-  height: 70px;
   display: flex;
-  align-items: center;
+  justify-content: center;
   margin-bottom: 65px;
 
   background: $purple-gradient-01-color;
@@ -16,14 +15,40 @@
   width: 80%;
   max-width: 1080px;
   display: flex;
+  flex-direction: column;
+}
+
+.navWrapper {
+  height: 70px;
+  width: 100%;
+  display: flex;
   align-items: center;
   justify-content: space-between;
+  column-gap: 70px;
   margin: 0 auto;
+}
+
+.logo {
+  height: 45px;
+}
+
+.navAdaptiveWrapper {
+  display: none;
+  justify-content: center;
+  padding: 20px;
+
+  @media (max-width: 690px) {
+    display: flex;
+  }
 }
 
 .nav {
   display: flex;
   column-gap: 70px;
+
+  @media (max-width: 820px) {
+    column-gap: 50px;
+  }
 
   &Link {
     position: relative;
@@ -57,6 +82,9 @@
   }
 }
 
-.logo {
-  height: 45px;
+.hiddenOnSmall {
+  @media (max-width: 690px) {
+    display: none;
+  }
 }
+
