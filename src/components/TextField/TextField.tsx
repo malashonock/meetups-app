@@ -13,60 +13,58 @@ export enum TextFieldVariant {
 
 type TextFieldProps = {
   name: string;
+  labelText: string;
   placeholder?: string;
   successText?: string;
   helperText?: string;
-  labelText: string;
 } & AllHTMLAttributes<HTMLElement>;
 
 export const TextField = ({
   name,
+  labelText,
   placeholder,
   successText,
-  labelText,
   helperText,
   ...nativeHtmlProps
 }: TextFieldProps): JSX.Element => (
   <Field name={name}>
-    {({ field, form: { touched, values }, meta: { error } }: FieldProps) => {
-      const hasError = !!error && !!touched[name];
-      let variantHelperText = TextFieldVariant.Default;
+    {({ field, field: { value }, meta: { error, touched } }: FieldProps) => {
+      const hasError = !!error && !!touched;
 
+      let helperTextVariant = TextFieldVariant.Default;
       if (hasError) {
-        variantHelperText = TextFieldVariant.Error;
+        helperTextVariant = TextFieldVariant.Error;
       } else {
-        if (successText && !!values[name] && !!touched[name]) {
-          variantHelperText = TextFieldVariant.Success;
+        if (successText && !!value && !!touched) {
+          helperTextVariant = TextFieldVariant.Success;
         }
       }
 
-      const variantTextInput =
+      const textInputVariant =
         (hasError
           ? TextFieldVariant.Error
-          : !!values[name] && TextFieldVariant.Success) ||
-        TextFieldVariant.Default;
+          : !!value && TextFieldVariant.Success) || TextFieldVariant.Default;
 
-      const resultHelperText =
-        !!helperText && !touched[name] ? (
-          <>{helperText}</>
-        ) : hasError ? (
-          error && <>{error as string}</>
-        ) : (
-          !!touched[name] && <>{successText}</>
-        );
+      const finalHelperText = (
+        <>
+          {!!helperText && !touched
+            ? helperText
+            : hasError
+            ? error
+            : !!touched && successText}
+        </>
+      );
 
       return (
         <div {...nativeHtmlProps}>
           <InputLabel className={styles.inputLabel}>{labelText}</InputLabel>
           <TextInput
-            className={styles.textInput}
             {...field}
-            variant={variantTextInput}
+            className={styles.textInput}
+            variant={textInputVariant}
             placeholder={placeholder}
           />
-          <HelperText variant={variantHelperText}>
-            {resultHelperText}
-          </HelperText>
+          <HelperText variant={helperTextVariant}>{finalHelperText}</HelperText>
         </div>
       );
     }}
