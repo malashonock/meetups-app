@@ -27,7 +27,7 @@ const author: ShortUser = {
 
 const meetupTopicNoExcerpt: Meetup = {
   id: 'AAA-AAA',
-  status: MeetupStatus.REQUEST,
+  status: MeetupStatus.DRAFT,
   author,
   subject: 'EF Core от практикующих',
   modified: new Date().toLocaleString(),
@@ -44,7 +44,7 @@ const meetupTopicWithExcerpt: Meetup = {
 
 const meetupOnModerationNoDate: Meetup = {
   ...meetupTopicWithExcerpt,
-  status: MeetupStatus.DRAFT,
+  status: MeetupStatus.REQUEST,
 };
 
 const meetupOnModeration: Meetup = {

@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { NavLink, Outlet } from 'react-router-dom';
 
 import { Typography, NavTabs } from 'components';
+import { TopicsTab } from './components';
 
 import styles from './MeetupStagesTabs.module.scss';
 
@@ -24,7 +25,7 @@ export const meetupTabToDescriptor: Record<MeetupTabLink, MeetupTabDescriptor> =
   {
     [MeetupTabLink.Topics]: {
       label: 'Темы',
-      component: <div>Tab 1 Content</div>,
+      component: <TopicsTab />,
     },
     [MeetupTabLink.OnModeration]: {
       label: 'На модерации',

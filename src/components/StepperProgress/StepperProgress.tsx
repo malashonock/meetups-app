@@ -18,7 +18,7 @@ export const StepperProgress = ({ currentStep }: StepperProgressProps) => {
   const { stepsDescriptor } = useContext(StepperContext) as StepperContextType;
 
   return (
-    <div className={styles['stepper-progress']}>
+    <div className={styles.stepperProgress}>
       <div className={styles.steps}>
         {stepsDescriptor.map(
           (step: StepDescriptor, i: number): JSX.Element => (

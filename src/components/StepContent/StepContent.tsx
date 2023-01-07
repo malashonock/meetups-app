@@ -26,9 +26,9 @@ export const StepContent = ({
     useContext(StepperContext) as StepperContextType;
 
   return (
-    <div className={styles['step']}>
-      <div className={styles['step-body']}>{children}</div>
-      <div className={styles['step-actions']}>
+    <div className={styles.step}>
+      <div className={styles.stepBody}>{children}</div>
+      <div className={styles.stepActions}>
         <Button
           disabled={isFirst}
           onClick={handlePreviousStep}

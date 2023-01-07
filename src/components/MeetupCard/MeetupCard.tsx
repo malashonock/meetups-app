@@ -39,10 +39,10 @@ export const MeetupCard = ({ meetup }: MeetupCardProps): JSX.Element => {
 
   const getVariant = (): MeetupCardVariant => {
     switch (status) {
-      case MeetupStatus.REQUEST:
+      case MeetupStatus.DRAFT:
       default:
         return MeetupCardVariant.Topic;
-      case MeetupStatus.DRAFT:
+      case MeetupStatus.REQUEST:
         return MeetupCardVariant.OnModeration;
       case MeetupStatus.CONFIRMED:
         return isOver ? MeetupCardVariant.Finished : MeetupCardVariant.Upcoming;
@@ -54,7 +54,7 @@ export const MeetupCard = ({ meetup }: MeetupCardProps): JSX.Element => {
   return (
     <article className={classNames(styles.card, styles[variant])}>
       <header className={styles.header}>
-        {status === MeetupStatus.REQUEST ? (
+        {status === MeetupStatus.DRAFT ? (
           <UserPreview user={author} />
         ) : (
           <ul className={styles.appointment}>
@@ -83,7 +83,7 @@ export const MeetupCard = ({ meetup }: MeetupCardProps): JSX.Element => {
         )}
         <div className={styles.controls}>
           <DeleteButton />
-          {status !== MeetupStatus.REQUEST && <EditButton />}
+          {status !== MeetupStatus.DRAFT && <EditButton />}
         </div>
       </header>
 
@@ -105,7 +105,7 @@ export const MeetupCard = ({ meetup }: MeetupCardProps): JSX.Element => {
       </div>
 
       <footer className={styles.footer}>
-        {status === MeetupStatus.REQUEST ? (
+        {status === MeetupStatus.DRAFT ? (
           goCount > 0 && <VotesCount votesCount={goCount} />
         ) : (
           <UserPreview user={author} />

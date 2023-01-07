@@ -175,7 +175,7 @@ export const Stepper = ({ steps, onFinish }: StepperProps) => {
       <div className={styles.stepper}>
         <StepperProgress currentStep={currentStep} />
         <div
-          className={styles['stepper-body']}
+          className={styles.stepperBody}
           style={
             {
               '--numOfSteps': steps.length,

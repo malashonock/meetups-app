@@ -1,8 +1,6 @@
-import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { withRouter } from 'storybook-addon-react-router-v6';
-
-import { MeetupStagesTabs, Tabs } from 'components';
+import { MeetupStagesTabs } from 'components';
 
 export default {
   title: 'Components/MeetupStagesTabs',
@@ -14,9 +12,9 @@ export default {
       browserPath: '/meetups/topics',
     },
   },
-} as ComponentMeta<typeof Tabs>;
+} as ComponentMeta<typeof MeetupStagesTabs>;
 
-const Template: ComponentStory<typeof Tabs> = () => (
+const Template: ComponentStory<typeof MeetupStagesTabs> = () => (
   <div style={{ width: '550px' }}>
     <MeetupStagesTabs />
   </div>
