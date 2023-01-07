@@ -2,7 +2,7 @@ import React, {
   Children,
   HTMLAttributes,
   ReactElement,
-  useEffect,
+  useLayoutEffect,
   useState,
 } from 'react';
 import classNames from 'classnames';
@@ -32,14 +32,14 @@ export const NavTabs = ({ className, children }: NavTabsProps) => {
   );
 
   /* Chooses which tab is active on initialization */
-  useEffect(() => {
+  useLayoutEffect(() => {
     const tabToOpen = location.pathname.split('/').slice(-1)[0];
     const indexOfTabToOpen = arrayChildren
       .map((child) => child.props.to)
       .indexOf(tabToOpen);
 
     setIndicatorPosition(indexOfTabToOpen !== -1 ? indexOfTabToOpen : 0);
-  });
+  }, []);
 
   return (
     <>

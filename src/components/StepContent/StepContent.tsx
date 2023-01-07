@@ -22,7 +22,7 @@ export const StepContent = ({
   step,
   children,
 }: PropsWithChildren<StepContentProps>) => {
-  const { stepsDescriptor, onFinish, handleNextStep, handlePreviousStep } =
+  const { stepsDescriptor, handleFinish, handleNextStep, handlePreviousStep } =
     useContext(StepperContext) as StepperContextType;
 
   return (
@@ -39,7 +39,7 @@ export const StepContent = ({
 
         {isLast ? (
           <Button
-            onClick={onFinish}
+            onClick={handleFinish}
             variant={ButtonVariant.Primary}
             disabled={!stepsDescriptor[step].confirmed}
           >

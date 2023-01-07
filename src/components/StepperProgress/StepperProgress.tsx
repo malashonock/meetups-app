@@ -26,7 +26,7 @@ export const StepperProgress = ({ currentStep }: StepperProgressProps) => {
               key={step.title}
               variant={step.variant}
               title={step.title}
-              number={i + 1}
+              stepNumber={i + 1}
             ></Step>
           ),
         )}

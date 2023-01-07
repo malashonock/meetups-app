@@ -8,17 +8,17 @@ import check from './check.svg';
 interface StepProps {
   variant: StepVariant;
   title: string;
-  number: number;
+  stepNumber: number;
 }
 
-export const Step = ({ variant, title, number }: StepProps) => {
+export const Step = ({ variant, title, stepNumber }: StepProps) => {
   return (
     <div className={classNames(styles.step, styles[variant])}>
       <div className={styles.number}>
         {variant === StepVariant.Confirmed ? (
           <img src={check} alt="Шаг завершён" />
         ) : (
-          number
+          stepNumber
         )}
       </div>
       {title}

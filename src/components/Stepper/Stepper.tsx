@@ -41,7 +41,7 @@ export type StepperContextType = {
   setStepsDescriptor: Dispatch<SetStateAction<StepDescriptor[]>>;
   handleNextStep: () => void;
   handlePreviousStep: () => void;
-  onFinish: () => void;
+  handleFinish: () => void;
 };
 
 interface StepperProps {
@@ -160,6 +160,8 @@ export const Stepper = ({ steps, onFinish }: StepperProps) => {
     }
   };
 
+  const handleFinish = onFinish;
+
   return (
     <StepperContext.Provider
       value={{
@@ -167,7 +169,7 @@ export const Stepper = ({ steps, onFinish }: StepperProps) => {
         setStepsDescriptor,
         handleNextStep,
         handlePreviousStep,
-        onFinish,
+        handleFinish,
       }}
     >
       <div className={styles.stepper}>
