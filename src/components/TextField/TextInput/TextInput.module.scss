@@ -10,7 +10,7 @@
   height: 40px;
   padding: 12px;
   outline: none !important;
-  @include smooth-transition($gray-07-color);
+  @include smooth-transition(all);
 
   @extend .font-family-primary;
   @extend .font-weight-regular;
