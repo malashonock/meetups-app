@@ -14,17 +14,17 @@ const user: ShortUser = {
   surname: 'Richards',
 };
 
-export const Header = (): JSX.Element => {
-  return (
-    <header className={styles.header}>
-      <div className={styles.container}>
-        <img src={logo} alt="Логотип" height={'45px'} />
-        <nav className={styles.nav}>
+export const Header = (): JSX.Element => (
+  <header className={styles.header}>
+    <div className={styles.container}>
+      <div className={styles.navWrapper}>
+        <img src={logo} className={styles.logo} alt="Логотип" />
+        <nav className={classNames(styles.nav, styles.hiddenOnSmall)}>
           <NavLink
             to="/meetups"
             className={({ isActive }) =>
-              classNames(styles['nav-link'], {
-                [styles['active']]: isActive,
+              classNames(styles.navLink, {
+                [styles.active]: isActive,
               })
             }
           >
@@ -33,7 +33,7 @@ export const Header = (): JSX.Element => {
           <NavLink
             to="/news"
             className={({ isActive }) =>
-              classNames(styles['nav-link'], {
+              classNames(styles.navLink, {
                 [styles.active]: isActive,
               })
             }
@@ -43,6 +43,31 @@ export const Header = (): JSX.Element => {
         </nav>
         <UserPreview variant={UserPreviewVariant.Header} user={user} />
       </div>
-    </header>
-  );
-};
+
+      <div className={styles.navAdaptiveWrapper}>
+        <nav className={styles.nav}>
+          <NavLink
+            to="/meetups"
+            className={({ isActive }) =>
+              classNames(styles.navLink, {
+                [styles.active]: isActive,
+              })
+            }
+          >
+            <Typography>Митапы</Typography>
+          </NavLink>
+          <NavLink
+            to="/news"
+            className={({ isActive }) =>
+              classNames(styles.navLink, {
+                [styles.active]: isActive,
+              })
+            }
+          >
+            <Typography>Новости</Typography>
+          </NavLink>
+        </nav>
+      </div>
+    </div>
+  </header>
+);

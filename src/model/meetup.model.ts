@@ -19,4 +19,7 @@ export interface Meetup {
   goCount: number;
   status: MeetupStatus;
   isOver: boolean;
+  image?: File;
 }
+
+export type NewMeetup = Omit<Meetup, 'id'>;

@@ -1,3 +1,4 @@
+@use 'sass:color';
 @import '~style/colors';
 @import '~style/typography';
 @import '~style/mixins';
@@ -14,12 +15,11 @@
     height: 144px;
     border-radius: 5px;
 
-    $shadow-color: rgba(105, 112, 127, 0.3);
-    box-shadow: 3px 5px 8px $shadow-color;
+    box-shadow: 3px 5px 8px $gray-shadow-03-color;
     @include smooth-transition(box-shadow);
 
     &:hover {
-      box-shadow: 3px 5px 8px adjust-color($shadow-color, $alpha: +0.1);
+      box-shadow: 3px 5px 8px color.adjust($gray-shadow-03-color, $alpha: +0.1);
       @include smooth-transition(box-shadow);
     }
 
@@ -46,21 +46,20 @@
     row-gap: 8px;
 
     background-color: $white-color;
-    $shadow-color: rgba(215, 221, 232, 0.15);
-    box-shadow: 0 4px 3px $shadow-color;
+    box-shadow: 0 4px 3px $gray-shadow-05-color;
     @include smooth-transition(box-shadow);
 
     &:hover {
-      box-shadow: 0 4px 3px adjust-color($shadow-color, $alpha: +0.1);
+      box-shadow: 0 4px 3px color.adjust($gray-shadow-05-color, $alpha: +0.1);
       @include smooth-transition(box-shadow);
     }
 
     .date {
-      @extend .font-family-1;
+      @extend .font-family-primary;
       @extend .font-weight-regular;
       @extend .font-size-xs;
       @extend .line-height-xs;
-      letter-spacing: 0.09px;
+      @extend .letter-spacing-larger-01;
       @extend .font-color-gray-03;
     }
 
@@ -70,16 +69,16 @@
     }
 
     .title {
-      @extend .font-family-2;
+      @extend .font-family-secondary;
       @extend .font-weight-medium;
       @extend .font-size-m;
       line-height: 100%;
-      letter-spacing: -0.3px;
-      @extend .font-color-black;
+      @extend .letter-spacing-smaller;
+      @extend .font-color-dark;
     }
 
     .text {
-      @extend .font-family-1;
+      @extend .font-family-primary;
       @extend .font-weight-regular;
       @extend .font-size-xs;
       @extend .line-height-xxl;

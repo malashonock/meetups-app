@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import { Header, meetupTabsLinks, meetupTabToDescriptor } from 'components';
-import { MeetupPage } from 'pages';
+import { MeetupPage, NotFoundPage } from 'pages';
 
 import styles from './App.module.scss';
 
@@ -27,7 +27,7 @@ function App() {
             ))}
           </Route>
           <Route path="news" element={<div>News</div>} />
-          <Route path="*" element={<div>404 | Page Not Found</div>} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
     </BrowserRouter>

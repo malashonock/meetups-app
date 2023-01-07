@@ -21,3 +21,6 @@ export * from './Stepper/Stepper';
 export * from './Step/Step';
 export * from './StepContent/StepContent';
 export * from './StepperProgress/StepperProgress';
+export * from './ImageDropbox/ImageDropbox';
+export * from './ImagePreview/ImagePreview';
+export * from './ImageUploader/ImageUploader';
