@@ -6,11 +6,11 @@
   box-sizing: border-box;
   border: 1px solid $gray-05-color;
   border-radius: 4px;
-  max-width: 100%;
+  width: 100%;
   height: 40px;
   padding: 12px;
   outline: none !important;
-  @include smooth-transition($gray-07-color);
+  @include smooth-transition(all);
 
   @extend .font-family-primary;
   @extend .font-weight-regular;
