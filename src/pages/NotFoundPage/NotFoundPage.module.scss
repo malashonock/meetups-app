@@ -19,9 +19,9 @@
   align-content: center;
 
   @media (max-width: 590px) {
-    transform: scale(0.6); 
+    transform: scale(0.6);
   }
-  
+
   @media (max-width: 370px) {
     transform: scale(0.5);
   }
@@ -31,7 +31,7 @@
   @extend .font-family-secondary;
   @extend .font-weight-medium;
   @extend .font-color-dark;
-  
+
   font-size: 250px;
   line-height: 82%;
 }
@@ -65,7 +65,7 @@
   height: 13rem;
 
   border-radius: 0 0 50% 50%;
-  
+
   transform: translateX(-50%);
 }
 
@@ -80,7 +80,7 @@
   border: 0.3rem solid $dark-color;
   background-color: $white-color;
   border-radius: 0.8rem;
-  
+
   transform: translateX(-50%);
 }
 
@@ -153,7 +153,7 @@
   &Left {
     left: 1.4rem;
   }
-  
+
   &Right {
     right: 1.4rem;
   }
@@ -180,5 +180,3 @@
   @extend .font-color-dark;
   @extend .text-align-center;
 }
-
-

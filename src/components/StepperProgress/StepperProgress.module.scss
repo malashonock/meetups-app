@@ -1,0 +1,14 @@
+@import '~style/colors';
+
+.stepperProgress {
+  width: 100%;
+}
+
+.steps {  
+  width: 100%;
+  display: flex;
+
+  border-bottom: 1px solid $gray-06-color;
+}
+
+

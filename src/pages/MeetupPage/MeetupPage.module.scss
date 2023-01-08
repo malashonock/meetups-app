@@ -1,0 +1,10 @@
+@import '~style/typography';
+
+.heading {
+  @extend .font-family-primary;
+  @extend .font-weight-bold;
+  @extend .font-size-xl;
+  @extend .line-height-m;
+  @extend .font-color-dark;
+  @extend .text-align-center;
+}
