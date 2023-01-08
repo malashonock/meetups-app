@@ -2,7 +2,7 @@
 @import '~style/typography';
 @import '~style/mixins';
 
-.tabs {  
+.tabs {
   width: 100%;
   display: flex;
 
@@ -13,20 +13,20 @@
   & > * {
     position: relative;
 
-    width: 100%; 
+    width: 100%;
   }
 }
 
 .tab-indicator {
   position: relative;
-  left: calc(calc(100%/var(--numOfTabs)) * var(--position));
+  left: calc(calc(100% / var(--numOfTabs)) * var(--position));
   bottom: 2px;
 
-  width: calc(100%/var(--numOfTabs));
+  width: calc(100% / var(--numOfTabs));
   height: 2px;
   margin-bottom: 30px;
 
-  background: $purple-color; 
+  background: $purple-color;
 
   @include smooth-transition(all);
 }
