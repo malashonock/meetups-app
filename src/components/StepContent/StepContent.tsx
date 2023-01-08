@@ -22,8 +22,13 @@ export const StepContent = ({
   step,
   children,
 }: PropsWithChildren<StepContentProps>) => {
-  const { stepsDescriptor, handleFinish, handleNextStep, handlePreviousStep } =
-    useContext(StepperContext) as StepperContextType;
+  const {
+    stepsDescriptor,
+    finishButtonContent,
+    handleFinish,
+    handleNextStep,
+    handlePreviousStep,
+  } = useContext(StepperContext) as StepperContextType;
 
   return (
     <div className={styles.step}>
@@ -43,7 +48,7 @@ export const StepContent = ({
             variant={ButtonVariant.Primary}
             disabled={!stepsDescriptor[step].confirmed}
           >
-            Создать
+            {finishButtonContent}
           </Button>
         ) : (
           <Button
