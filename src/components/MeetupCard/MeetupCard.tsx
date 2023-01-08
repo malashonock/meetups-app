@@ -17,7 +17,7 @@ interface MeetupCardProps {
   meetup: Meetup;
 }
 
-enum MeetupCardVariant {
+export enum MeetupCardVariant {
   Topic = 'topic',
   OnModeration = 'onModeration',
   Upcoming = 'upcoming',

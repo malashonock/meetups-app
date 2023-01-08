@@ -2,8 +2,12 @@ import React from 'react';
 import classNames from 'classnames';
 import { NavLink, Outlet } from 'react-router-dom';
 
-import { Typography, NavTabs } from 'components';
-import { TopicsTab } from './components';
+import {
+  Typography,
+  NavTabs,
+  MeetupTabContent,
+  MeetupCardVariant,
+} from 'components';
 
 import styles from './MeetupStagesTabs.module.scss';
 
@@ -25,19 +29,19 @@ export const meetupTabToDescriptor: Record<MeetupTabLink, MeetupTabDescriptor> =
   {
     [MeetupTabLink.Topics]: {
       label: 'Темы',
-      component: <TopicsTab />,
+      component: <MeetupTabContent variant={MeetupCardVariant.Topic} />,
     },
     [MeetupTabLink.OnModeration]: {
       label: 'На модерации',
-      component: <div>Tab 2 Content</div>,
+      component: <MeetupTabContent variant={MeetupCardVariant.OnModeration} />,
     },
     [MeetupTabLink.Upcoming]: {
       label: 'Будущие',
-      component: <div>Tab 3 Content</div>,
+      component: <MeetupTabContent variant={MeetupCardVariant.Upcoming} />,
     },
     [MeetupTabLink.Finished]: {
       label: 'Прошедшие',
-      component: <div>Tab 4 Content</div>,
+      component: <MeetupTabContent variant={MeetupCardVariant.Finished} />,
     },
   };
 

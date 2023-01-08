@@ -26,6 +26,10 @@ function App() {
               />
             ))}
           </Route>
+          <Route
+            path="/meetups/create"
+            element={<div>Create meetup page</div>}
+          />
           <Route path="news" element={<div>News</div>} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

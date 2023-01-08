@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { withRouter } from 'storybook-addon-react-router-v6';
 import { MeetupStagesTabs } from 'components';
+import { withRouter } from 'storybook-addon-react-router-v6';
 
 export default {
   title: 'Components/MeetupStagesTabs',
