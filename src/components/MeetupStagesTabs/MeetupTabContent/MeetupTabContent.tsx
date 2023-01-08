@@ -99,7 +99,7 @@ export const MeetupTabContent = ({ variant }: MeetupTabContentProps) => {
       </div>
       <div className={styles.topics}>
         {meetups.map((meetup) => (
-          <NavLink to={`/meetups/${meetup.id}/view`} key={meetup.id}>
+          <NavLink to={`/meetups/${meetup.id}`} key={meetup.id}>
             <MeetupCard meetup={meetup} />
           </NavLink>
         ))}

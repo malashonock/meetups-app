@@ -30,6 +30,8 @@ function App() {
             path="/meetups/create"
             element={<div>Create meetup page</div>}
           />
+          <Route path="/meetups/:id" element={<div>View meetup</div>} />
+          <Route path="/meetups/:id/edit" element={<div>Edit meetup</div>} />
           <Route path="news" element={<div>News</div>} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

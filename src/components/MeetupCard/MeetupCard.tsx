@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { useNavigate } from 'react-router';
 
 import {
   DeleteButton,
@@ -25,8 +26,21 @@ export enum MeetupCardVariant {
 }
 
 export const MeetupCard = ({ meetup }: MeetupCardProps): JSX.Element => {
-  const { status, author, start, place, subject, excerpt, goCount, isOver } =
-    meetup;
+  const {
+    status,
+    author,
+    start,
+    place,
+    subject,
+    excerpt,
+    goCount,
+    isOver,
+    id,
+  } = meetup;
+
+  const navigate = useNavigate();
+
+  const openEditMeetupPage = () => navigate(`/meetups/${id}/edit`);
 
   let formattedWeekDay: string | undefined;
   let formattedDate: string | undefined;
@@ -83,7 +97,14 @@ export const MeetupCard = ({ meetup }: MeetupCardProps): JSX.Element => {
         )}
         <div className={styles.controls}>
           <DeleteButton />
-          {status !== MeetupStatus.DRAFT && <EditButton />}
+          {status !== MeetupStatus.DRAFT && (
+            <EditButton
+              onClick={(e) => {
+                e.preventDefault();
+                openEditMeetupPage();
+              }}
+            />
+          )}
         </div>
       </header>
 
