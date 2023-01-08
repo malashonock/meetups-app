@@ -50,7 +50,7 @@ export const ImagePreview = ({
             component={TypographyComponent.Paragraph}
             className={styles.fileSize}
           >
-            File size: {getFileSizeString(size, 1)}
+            Размер файла: {getFileSizeString(size, 1)}
           </Typography>
         </div>
       )}
