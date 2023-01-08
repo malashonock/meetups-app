@@ -90,9 +90,25 @@ Default_RU_ManyNames.args = {
   user: user_RU_ManyNames,
 };
 
+/* Image variant */
+
+export const Image_EN_FirstName = DefaultTemplate.bind({});
+
+Image_EN_FirstName.args = {
+  variant: UserPreviewVariant.Image,
+  user: user_EN_FirstName,
+};
+
+export const Image_RU_FullName = DefaultTemplate.bind({});
+
+Image_RU_FullName.args = {
+  variant: UserPreviewVariant.Image,
+  user: user_RU_FullName,
+};
+
 /* Header template */
 const HeaderTemplate: ComponentStory<typeof UserPreview> = (args) => (
-  <div style={{ background: '#8065ec', padding: '10px' }}>
+  <div style={{ backgroundColor: '#8065ec', padding: '10px' }}>
     <UserPreview {...args} />
   </div>
 );

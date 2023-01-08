@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import { Header, meetupTabsLinks, meetupTabToDescriptor } from 'components';
-import { MeetupPage, NotFoundPage } from 'pages';
+import { MeetupPage, NotFoundPage, ViewMeetupPage } from 'pages';
 
 import styles from './App.module.scss';
 
@@ -30,7 +30,7 @@ function App() {
             path="/meetups/create"
             element={<div>Create meetup page</div>}
           />
-          <Route path="/meetups/:id" element={<div>View meetup</div>} />
+          <Route path="/meetups/:id" element={<ViewMeetupPage />} />
           <Route path="/meetups/:id/edit" element={<div>Edit meetup</div>} />
           <Route path="news" element={<div>News</div>} />
           <Route path="*" element={<NotFoundPage />} />

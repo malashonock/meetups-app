@@ -43,8 +43,8 @@
   }
 
   &.default {
-    --avatar-diameter: 30px;
-    column-gap: 9px;
+    --avatar-diameter: 40px;
+    column-gap: 10px;
 
     .avatar {
       background-color: $gray-04-color;
@@ -58,6 +58,18 @@
 
     .name {
       @extend .font-color-gray-01;
+    }
+
+    .initials {
+      @extend .font-color-white;
+    }
+  }
+
+  &.image {
+    --avatar-diameter: 50px;
+
+    .avatar {
+      background-color: $gray-04-color;
     }
 
     .initials {

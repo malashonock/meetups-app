@@ -1,10 +1,12 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { MeetupCard } from 'components';
 import { Meetup, MeetupStatus, ShortUser } from 'model';
+import { withRouter } from 'storybook-addon-react-router-v6';
 
 export default {
   title: 'Components/MeetupCard',
   component: MeetupCard,
+  decorators: [withRouter],
 } as ComponentMeta<typeof MeetupCard>;
 
 const Template: ComponentStory<typeof MeetupCard> = (args) => (
