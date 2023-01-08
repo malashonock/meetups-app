@@ -39,7 +39,6 @@
 
 /* Utility classes */
 
-/* Font family */
 .font-family {
   &-primary {
     font-family: 'Roboto', sans-serif;
@@ -49,7 +48,6 @@
   }
 }
 
-/* Font size */
 .font-size {
   &-5xs {
     font-size: 10px;
@@ -80,7 +78,6 @@
   }
 }
 
-/* Font weight */
 .font-weight {
   &-regular {
     font-weight: 400;
@@ -91,6 +88,10 @@
   &-bold {
     font-weight: 700;
   }
+}
+
+@mixin line-height($line-spacing) {
+  line-height: calc(100% + $line-spacing);
 }
 
 .line-height {
@@ -120,7 +121,6 @@
   }
 }
 
-/* Letter spacing */
 .letter-spacing {
   &-smaller {
     letter-spacing: -0.3px;
@@ -139,7 +139,6 @@
   }
 }
 
-/* Font color */
 .font-color {
   &-dark {
     color: $dark-color;
@@ -170,7 +169,6 @@
   }
 }
 
-/* Text align */
 .text-align {
   &-left {
     text-align: left;

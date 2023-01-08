@@ -92,7 +92,9 @@ Default_RU_ManyNames.args = {
 
 /* Header template */
 const HeaderTemplate: ComponentStory<typeof UserPreview> = (args) => (
-  <UserPreview {...args} />
+  <div style={{ background: '#8065ec', padding: '10px' }}>
+    <UserPreview {...args} />
+  </div>
 );
 
 export const Header_EN_FirstName = HeaderTemplate.bind({});

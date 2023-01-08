@@ -3,7 +3,8 @@
 @import './typography';
 @import './mixins';
 
-*, h1 {
+*,
+h1 {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
