@@ -3,7 +3,7 @@
 
 .indicator {
   position: relative;
-  left: calc(calc(100% / var(--numOfTabs)) * var(--position));
+  left: calc(100% / var(--numOfTabs) * var(--position));
   bottom: 2px;
 
   width: calc(100% / var(--numOfTabs));
