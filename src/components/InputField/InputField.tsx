@@ -44,21 +44,24 @@ export const InputField = ({
         meta: { error, touched },
       } = formikProps;
 
-      let variant = InputFieldVariant.Default;
+      let inputVariant: InputFieldVariant;
+      let helperTextVariant: InputFieldVariant;
+      inputVariant = helperTextVariant = InputFieldVariant.Default;
       let helperText = hintText;
 
       const hasError = !!error;
       const isTouched = !!touched;
 
       if (isTouched && hasError) {
-        variant = InputFieldVariant.Error;
+        inputVariant = helperTextVariant = InputFieldVariant.Error;
         helperText = error;
       }
 
       if (isTouched && !hasError) {
-        variant = InputFieldVariant.Success;
+        inputVariant = InputFieldVariant.Success;
 
         if (successText) {
+          helperTextVariant = InputFieldVariant.Success;
           helperText = successText;
         }
       }
@@ -72,11 +75,14 @@ export const InputField = ({
           ) : null}
           <InputComponent
             {...formikProps}
-            variant={variant}
-            className={classNames(styles.input, styles[variant])}
+            variant={inputVariant}
+            className={classNames(styles.input, styles[inputVariant])}
           />
           {helperText ? (
-            <HelperText className={styles.helperText} variant={variant}>
+            <HelperText
+              className={styles.helperText}
+              variant={helperTextVariant}
+            >
               {helperText}
             </HelperText>
           ) : null}
