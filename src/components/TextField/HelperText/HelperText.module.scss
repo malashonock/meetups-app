@@ -1,0 +1,43 @@
+@import '~style/colors';
+@import '~style/typography';
+@import '~style/mixins';
+
+.leadingIcon {
+  vertical-align: middle;
+  margin-right: 4px;
+  width: 16px;
+  height: 16px;
+}
+
+.container {
+  display: flex;
+
+  @extend .font-family-primary;
+  @extend .font-weight-regular;
+  @extend .font-size-3xs;
+  @extend .line-height-m;
+
+  &.error {
+    @extend .font-color-red;
+
+    &::before {
+      @extend .leadingIcon;
+
+      content: url(./assets/error.svg);
+    }
+  }
+
+  &.success {
+    @extend .font-color-green;
+
+    &::before {
+      @extend .leadingIcon;
+
+      content: url(./assets/success.svg);
+    }
+  }
+
+  &.default {
+    @extend .font-color-gray-02;
+  }
+}

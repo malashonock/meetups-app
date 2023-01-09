@@ -2,7 +2,7 @@
 @import '~style/typography';
 @import '~style/mixins';
 
-.tabs {  
+.tabs {
   width: 100%;
   display: flex;
   margin-top: 50px;
@@ -12,6 +12,6 @@
   cursor: pointer;
 
   & > * {
-    width: 100%; 
+    width: 100%;
   }
 }

@@ -1,16 +1,12 @@
 @import '~style/colors';
-@import '~style/typography';
-@import '~style/mixins';
 
 .stepperProgress {
   width: 100%;
 }
 
-.steps {  
+.steps {
   width: 100%;
   display: flex;
 
   border-bottom: 1px solid $gray-06-color;
 }
-
-

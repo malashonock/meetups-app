@@ -1,0 +1,9 @@
+@import '~style/typography';
+
+.label {
+  @extend .font-family-primary;
+  @extend .font-weight-medium;
+  @extend .font-size-xs;
+  @extend .line-height-xs;
+  @extend .font-color-gray-03;
+}
