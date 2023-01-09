@@ -2,6 +2,7 @@ import React, {
   Children,
   HTMLAttributes,
   ReactElement,
+  useEffect,
   useLayoutEffect,
   useState,
 } from 'react';
@@ -18,37 +19,20 @@ interface NavTabsProps extends HTMLAttributes<HTMLElement> {
 
 export const NavTabs = ({ className, children }: NavTabsProps) => {
   const location = useLocation();
-  const [indicatorPosition, setIndicatorPosition] = useState(0);
 
   const arrayChildren = Children.toArray(children) as ReactElement[];
 
-  const childrenWithOnClickFunction = React.Children.map(
-    children,
-    (child, index) => {
-      return React.cloneElement(child as ReactElement, {
-        onClick: () => setIndicatorPosition(index),
-      });
-    },
-  );
-
-  /* Chooses which tab is active on initialization */
-  useLayoutEffect(() => {
-    const tabToOpen = location.pathname.split('/').slice(-1)[0];
-    const indexOfTabToOpen = arrayChildren
-      .map((child) => child.props.to)
-      .indexOf(tabToOpen);
-
-    setIndicatorPosition(indexOfTabToOpen !== -1 ? indexOfTabToOpen : 0);
-  }, []);
+  const tabToOpen = location.pathname.split('/').slice(-1)[0];
+  const indexOfTabToOpen = arrayChildren
+    .map((child) => child.props.to)
+    .indexOf(tabToOpen);
 
   return (
     <>
-      <div className={classNames(styles.tabs, className)}>
-        {childrenWithOnClickFunction}
-      </div>
+      <div className={classNames(styles.tabs, className)}>{children}</div>
       <TabsIndicator
         tabsAmount={arrayChildren.length}
-        currentTab={indicatorPosition}
+        currentTab={indexOfTabToOpen < 0 ? 0 : indexOfTabToOpen}
       />
     </>
   );
