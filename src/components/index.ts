@@ -12,6 +12,7 @@ export * from './TextField/TextField';
 export * from './TextField/HelperText/HelperText';
 export * from './TextField/InputLabel/InputLabel';
 export * from './TextField/TextInput/TextInput';
+export * from './TextField/TextArea/TextArea';
 export * from './Tabs/Tabs';
 export * from './NavTabs/NavTabs';
 export * from './Tab/Tab';
