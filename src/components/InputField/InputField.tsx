@@ -31,7 +31,7 @@ type InputFieldProps = InputFieldExternalProps & {
 
 export const InputField = ({
   name,
-  children,
+  children: inputComponent,
   labelText,
   successText,
   hintText,
@@ -39,7 +39,6 @@ export const InputField = ({
 }: InputFieldProps): JSX.Element => (
   <Field name={name}>
     {(formikProps: FieldProps) => {
-      const InputComponent = children;
       const {
         field: { name },
         meta: { error, touched },
@@ -74,11 +73,11 @@ export const InputField = ({
               {labelText}
             </InputLabel>
           ) : null}
-          <InputComponent
-            {...formikProps}
-            variant={inputVariant}
-            className={classNames(styles.input, styles[inputVariant])}
-          />
+          {inputComponent({
+            ...formikProps,
+            variant: inputVariant,
+            className: classNames(styles.input, styles[inputVariant]),
+          })}
           {helperText ? (
             <HelperText
               className={styles.helperText}
