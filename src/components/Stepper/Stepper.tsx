@@ -39,6 +39,7 @@ export const StepperContext = createContext<StepperContextType | null>(null);
 export type StepperContextType = {
   stepsDescriptor: StepDescriptor[];
   setStepsDescriptor: Dispatch<SetStateAction<StepDescriptor[]>>;
+  finishButtonContent: JSX.Element | string;
   handleNextStep: () => void;
   handlePreviousStep: () => void;
   handleFinish: () => void;
@@ -47,9 +48,14 @@ export type StepperContextType = {
 interface StepperProps {
   steps: Step[];
   onFinish: () => void;
+  finishButtonContent?: JSX.Element | string;
 }
 
-export const Stepper = ({ steps, onFinish }: StepperProps) => {
+export const Stepper = ({
+  steps,
+  onFinish,
+  finishButtonContent = 'Создать',
+}: StepperProps) => {
   const [currentStep, setCurrentStep] = useState<number>(0);
 
   const [stepsDescriptor, setStepsDescriptor] = useState(
@@ -167,6 +173,7 @@ export const Stepper = ({ steps, onFinish }: StepperProps) => {
       value={{
         stepsDescriptor,
         setStepsDescriptor,
+        finishButtonContent,
         handleNextStep,
         handlePreviousStep,
         handleFinish,

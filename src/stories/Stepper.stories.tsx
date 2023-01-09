@@ -2,14 +2,6 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import { StepElementProps, Stepper } from 'components';
 
-export default {
-  title: 'Components/Stepper',
-  component: Stepper,
-  parameters: {
-    layout: 'centered',
-  },
-} as ComponentMeta<typeof Stepper>;
-
 /* Mocked steps */
 const steps = [
   {
@@ -43,6 +35,18 @@ const steps = [
   },
 ];
 
+export default {
+  title: 'Components/Stepper',
+  component: Stepper,
+  parameters: {
+    layout: 'centered',
+  },
+  args: {
+    steps: steps,
+    onFinish: () => alert('Something is done!'),
+  },
+} as ComponentMeta<typeof Stepper>;
+
 const Template: ComponentStory<typeof Stepper> = (args) => (
   <div style={{ width: '550px' }}>
     <Stepper {...args} />
@@ -51,7 +55,19 @@ const Template: ComponentStory<typeof Stepper> = (args) => (
 
 export const Default = Template.bind({});
 
-Default.args = {
-  steps: steps,
-  onFinish: () => alert('Something is done!'),
+export const WithCustomButton = Template.bind({});
+
+WithCustomButton.args = {
+  finishButtonContent: 'Подтвердить',
+};
+
+export const WithCustomComplexButton = Template.bind({});
+
+WithCustomComplexButton.args = {
+  finishButtonContent: (
+    <div style={{ display: 'flex', columnGap: '10px' }}>
+      <span>+</span>
+      <span>Добавить</span>
+    </div>
+  ),
 };
