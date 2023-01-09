@@ -1,0 +1,17 @@
+@import '~style/colors';
+@import '~style/typography';
+@import '~style/mixins';
+
+.tabs {
+  width: 100%;
+  display: flex;
+  margin-top: 50px;
+
+  border-bottom: 1px solid $gray-06-color;
+
+  cursor: pointer;
+
+  & > * {
+    width: 100%;
+  }
+}

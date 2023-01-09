@@ -1,0 +1,23 @@
+@import '~style/colors';
+@import '~style/typography';
+@import '~style/mixins';
+
+.tab {
+  position: relative;
+
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 15px;
+
+  @extend .font-family-primary;
+  @extend .font-weight-regular;
+  @extend .font-size-s;
+  @extend .line-height-s;
+  @extend .font-color-gray-02;
+
+  &.active {
+    @extend .font-weight-medium;
+    @extend .font-color-dark;
+  }
+}
