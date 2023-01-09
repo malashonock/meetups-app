@@ -1,0 +1,68 @@
+@import '~style/colors';
+@import '~style/typography';
+@import '~style/mixins';
+
+.wrapper {
+  box-sizing: border-box;
+  position: relative;
+  width: 100%;
+
+  .textArea {
+    box-sizing: border-box;
+    border: 1px solid $gray-05-color;
+    border-radius: 5px;
+    resize: none;
+    padding: 12px;
+    outline: none !important;
+    overflow: hidden;
+    height: inherit;
+    width: inherit;
+    @include smooth-transition(all);
+
+    @extend .font-family-primary;
+    @extend .font-weight-regular;
+    @extend .font-size-xs;
+    @extend .line-height-xs;
+    @extend .font-color-dark;
+
+    &::placeholder {
+      @extend .font-color-gray-02;
+    }
+
+    &:hover {
+      background-color: $gray-07-color;
+    }
+
+    &:focus {
+      border: 2px solid $purple-color;
+
+      &::placeholder {
+        @extend .font-color-gray-03;
+      }
+    }
+  }
+
+  .error {
+    border: 2px solid $red-02-color;
+  }
+
+  .success {
+    border: 2px solid $green-02-color;
+  }
+}
+
+.counter {
+  position: absolute;
+  right: 12px;
+  bottom: 14px;
+
+  @extend .font-family-primary;
+  @extend .font-weight-regular;
+  @extend .font-size-2xs;
+  @extend .font-color-gray-03;
+
+  .letterCount {
+    @extend .font-weight-medium;
+    @extend .font-color-gray-02;
+  }
+}
