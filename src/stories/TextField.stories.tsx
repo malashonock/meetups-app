@@ -57,3 +57,10 @@ WithSuccessAndHelperText.args = {
   successText: 'Good job!',
   helperText: 'First name will be used as your login',
 };
+
+export const TextArea = Template.bind({});
+TextArea.args = {
+  multiline: true,
+  maxLetterCount: 20,
+  helperText: 'First name will be used as your login',
+};
