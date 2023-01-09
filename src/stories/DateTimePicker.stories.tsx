@@ -18,24 +18,22 @@ interface FormValues {
   [name: string]: Date | null;
 }
 
-const Template: ComponentStory<typeof DateTimePicker> = ({
-  name,
-  placeholderText,
-}) => (
+const Template: ComponentStory<typeof DateTimePicker> = (args) => (
   <Formik<FormValues>
     initialValues={{
-      [name]: null,
+      [args.name]: null,
     }}
     validationSchema={yup.object().shape({
-      [name]: yup.date().required('Выберите дату и время'),
+      [args.name]: yup.date().typeError('Select date and time'),
     })}
     onSubmit={(values: FormValues, { setSubmitting }) => {
-      console.log(values[name]);
+      console.log(values[args.name]);
       setSubmitting(false); // onSubmit is sync, so need to call this
     }}
   >
     {({ values }) => (
       <Form
+        autoComplete="off"
         style={{
           width: '100%',
           display: 'flex',
@@ -44,7 +42,7 @@ const Template: ComponentStory<typeof DateTimePicker> = ({
           rowGap: '12px',
         }}
       >
-        <DateTimePicker name={name} placeholderText={placeholderText} />
+        <DateTimePicker {...args} />
         <Button type="submit">Submit (check console logs)</Button>
         <Typography
           component={TypographyComponent.Paragraph}
@@ -55,16 +53,33 @@ const Template: ComponentStory<typeof DateTimePicker> = ({
             'line-height-xs',
           )}
         >
-          Field value: {values[name]?.toISOString()}
+          Field value: {values[args.name]?.toISOString()}
         </Typography>
       </Form>
     )}
   </Formik>
 );
 
-export const Thumbnail = Template.bind({});
-Thumbnail.args = {
-  name: 'meetupDate',
+export const Default = Template.bind({});
+Default.args = {
+  name: 'startDate',
+  labelText: 'Start date',
 };
 
-export const Default = Template.bind({});
+export const WithSuccessText = Template.bind({});
+WithSuccessText.args = {
+  ...Default.args,
+  successText: 'Input accepted',
+};
+
+export const WithHintText = Template.bind({});
+WithHintText.args = {
+  ...Default.args,
+  hintText: 'Enter start date',
+};
+
+export const WithSuccessAndHintText = Template.bind({});
+WithSuccessAndHintText.args = {
+  ...WithSuccessText.args,
+  hintText: 'Enter start date',
+};

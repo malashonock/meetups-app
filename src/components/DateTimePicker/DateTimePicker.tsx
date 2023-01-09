@@ -1,23 +1,45 @@
-import { Field, FieldProps } from 'formik';
-import { HTMLAttributes } from 'react';
+import {
+  InputField,
+  InputFieldExternalProps,
+  InputRenderProps,
+} from 'components';
+import { ComponentProps } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './DateTimePicker.scss';
 
-type DateTimePickerProps = {
-  name: string;
+type DateTimePickerConstraints = Pick<
+  ComponentProps<typeof DatePicker>,
+  | 'filterDate'
+  | 'filterTime'
+  | 'startDate'
+  | 'endDate'
+  | 'minDate'
+  | 'minTime'
+  | 'maxDate'
+  | 'maxTime'
+  | 'allowSameDay'
+  | 'required'
+>;
+
+type DateTimePickerProps = InputFieldExternalProps & {
   placeholderText?: string;
-  // ...to be continued
-} & HTMLAttributes<HTMLDivElement>;
+  constraints?: DateTimePickerConstraints;
+};
 
 export const DateTimePicker = ({
-  name,
   placeholderText = 'd MMM yyyy HH:mm',
-  ...nativeHtmlAttributes
+  constraints = {},
+  ...inputFieldProps
 }: DateTimePickerProps): JSX.Element => (
-  <Field name={name}>
-    {({ field: { name, value }, form: { setFieldValue } }: FieldProps) => {
-      const handleChange = (date: Date): void => setFieldValue(name, date);
+  <InputField {...inputFieldProps}>
+    {({
+      field: { name, value },
+      form: { setFieldValue, handleBlur },
+      className,
+    }: InputRenderProps): JSX.Element => {
+      const handleChange = (date: Date | null): void =>
+        setFieldValue(name, date);
 
       const adjustTimeListHeight = () => {
         const dayNamesHeight = document.querySelector<HTMLDivElement>(
@@ -39,19 +61,21 @@ export const DateTimePicker = ({
       };
 
       return (
-        <div {...nativeHtmlAttributes}>
-          <DatePicker
-            name={name}
-            selected={value}
-            onChange={handleChange}
-            showTimeSelect
-            dateFormat="d MMM yyyy HH:mm"
-            timeFormat="HH:mm"
-            placeholderText={placeholderText}
-            onMonthChange={adjustTimeListHeight}
-          />
-        </div>
+        <DatePicker
+          className={className}
+          name={name}
+          selected={value}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          showTimeSelect
+          dateFormat="d MMM yyyy HH:mm"
+          timeFormat="HH:mm"
+          placeholderText={placeholderText}
+          onMonthChange={adjustTimeListHeight}
+          autoComplete="off"
+          {...constraints}
+        />
       );
     }}
-  </Field>
+  </InputField>
 );
