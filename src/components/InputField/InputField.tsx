@@ -17,16 +17,17 @@ export type InputRenderProps = FieldProps & {
   className?: string;
 };
 
-interface InputFieldProps {
+export interface InputFieldExternalProps {
   name: string;
-  children: FunctionComponent<InputRenderProps>;
   labelText?: string;
   successText?: string;
   hintText?: string;
-  containerAttributes?: Omit<HTMLAttributes<HTMLDivElement>, 'children'>;
 }
 
-export type InputFieldExternalProps = Omit<InputFieldProps, 'children'>;
+type InputFieldProps = InputFieldExternalProps & {
+  children: FunctionComponent<InputRenderProps>;
+  containerAttributes?: Omit<HTMLAttributes<HTMLDivElement>, 'children'>;
+};
 
 export const InputField = ({
   name,
