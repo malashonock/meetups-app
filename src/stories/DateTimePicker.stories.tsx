@@ -12,6 +12,9 @@ import * as yup from 'yup';
 export default {
   title: 'Components/DateTimePicker',
   component: DateTimePicker,
+  parameters: {
+    layout: 'centered',
+  },
 } as ComponentMeta<typeof DateTimePicker>;
 
 interface FormValues {
@@ -35,7 +38,8 @@ const Template: ComponentStory<typeof DateTimePicker> = (args) => (
       <Form
         autoComplete="off"
         style={{
-          width: '100%',
+          width: '500px',
+          maxWidth: '100%',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',

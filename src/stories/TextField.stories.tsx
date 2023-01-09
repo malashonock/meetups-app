@@ -41,7 +41,8 @@ const Template: ComponentStory<typeof TextField> = (args) => (
       <Form
         autoComplete="off"
         style={{
-          width: '100%',
+          width: '500px',
+          maxWidth: '100%',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
