@@ -1,12 +1,12 @@
 import { AllHTMLAttributes } from 'react';
 import classNames from 'classnames';
 
-import { TextFieldVariant } from 'components';
+import { InputFieldVariant } from 'components';
 
 import styles from './TextInput.module.scss';
 
 type TextInputProps = {
-  variant: TextFieldVariant;
+  variant: InputFieldVariant;
 } & AllHTMLAttributes<HTMLInputElement>;
 
 export const TextInput = ({

@@ -1,15 +1,14 @@
 import { AllHTMLAttributes } from 'react';
 import { Field, FieldProps } from 'formik';
 
-import { InputLabel, HelperText, TextInput } from 'components';
+import {
+  InputLabel,
+  HelperText,
+  TextInput,
+  InputFieldVariant,
+} from 'components';
 
 import styles from './TextField.module.scss';
-
-export enum TextFieldVariant {
-  Error = 'error',
-  Success = 'success',
-  Default = 'default',
-}
 
 type TextFieldProps = {
   name: string;
@@ -31,19 +30,19 @@ export const TextField = ({
     {({ field, field: { value }, meta: { error, touched } }: FieldProps) => {
       const hasError = !!error && !!touched;
 
-      let helperTextVariant = TextFieldVariant.Default;
+      let helperTextVariant = InputFieldVariant.Default;
       if (hasError) {
-        helperTextVariant = TextFieldVariant.Error;
+        helperTextVariant = InputFieldVariant.Error;
       } else {
         if (successText && !!value && !!touched) {
-          helperTextVariant = TextFieldVariant.Success;
+          helperTextVariant = InputFieldVariant.Success;
         }
       }
 
       const textInputVariant =
         (hasError
-          ? TextFieldVariant.Error
-          : !!value && TextFieldVariant.Success) || TextFieldVariant.Default;
+          ? InputFieldVariant.Error
+          : !!value && InputFieldVariant.Success) || InputFieldVariant.Default;
 
       const finalHelperText = (
         <>
@@ -57,7 +56,9 @@ export const TextField = ({
 
       return (
         <div {...nativeHtmlProps}>
-          <InputLabel className={styles.inputLabel}>{labelText}</InputLabel>
+          <InputLabel name={name} className={styles.inputLabel}>
+            {labelText}
+          </InputLabel>
           <TextInput
             {...field}
             className={styles.textInput}
