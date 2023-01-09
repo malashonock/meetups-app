@@ -67,7 +67,13 @@ export const InputField = ({
       }
 
       return (
-        <div {...containerAttributes}>
+        <div
+          {...containerAttributes}
+          className={classNames(
+            containerAttributes?.className,
+            styles.container,
+          )}
+        >
           {labelText ? (
             <InputLabel name={name} className={styles.inputLabel}>
               {labelText}

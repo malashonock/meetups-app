@@ -2,6 +2,11 @@
 @import '~style/typography';
 @import '~style/mixins';
 
+.container {
+  $full-width: 100% !default;
+  width: $full-width;
+}
+
 .input {
   box-sizing: border-box;
   border: 1px solid $gray-05-color;
