@@ -12,7 +12,6 @@ export * from './InputField/InputField';
 export * from './TextField/TextField';
 export * from './HelperText/HelperText';
 export * from './InputLabel/InputLabel';
-export * from './TextInput/TextInput';
 export * from './Tabs/Tabs';
 export * from './NavTabs/NavTabs';
 export * from './Tab/Tab';
