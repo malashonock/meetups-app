@@ -1,7 +1,7 @@
 import { AllHTMLAttributes } from 'react';
 import { Field, FieldProps } from 'formik';
 
-import { InputLabel, HelperText, TextInput } from 'components';
+import { InputLabel, HelperText, TextInput, TextArea } from 'components';
 
 import styles from './TextField.module.scss';
 
@@ -17,6 +17,8 @@ type TextFieldProps = {
   placeholder?: string;
   successText?: string;
   helperText?: string;
+  multiline?: boolean;
+  maxLetterCount?: number;
 } & AllHTMLAttributes<HTMLElement>;
 
 export const TextField = ({
@@ -25,6 +27,8 @@ export const TextField = ({
   placeholder,
   successText,
   helperText,
+  multiline,
+  maxLetterCount,
   ...nativeHtmlProps
 }: TextFieldProps): JSX.Element => (
   <Field name={name}>
@@ -39,7 +43,6 @@ export const TextField = ({
           helperTextVariant = TextFieldVariant.Success;
         }
       }
-
       const textInputVariant =
         (hasError
           ? TextFieldVariant.Error
@@ -55,15 +58,27 @@ export const TextField = ({
         </>
       );
 
+      const inputVariant = multiline ? (
+        <TextArea
+          {...field}
+          className={styles.wrapper}
+          variant={textInputVariant}
+          placeholder={placeholder}
+          maxLetterCount={maxLetterCount}
+        />
+      ) : (
+        <TextInput
+          {...field}
+          className={styles.textInput}
+          variant={textInputVariant}
+          placeholder={placeholder}
+        />
+      );
+
       return (
         <div {...nativeHtmlProps}>
           <InputLabel className={styles.inputLabel}>{labelText}</InputLabel>
-          <TextInput
-            {...field}
-            className={styles.textInput}
-            variant={textInputVariant}
-            placeholder={placeholder}
-          />
+          {inputVariant}
           <HelperText variant={helperTextVariant}>{finalHelperText}</HelperText>
         </div>
       );
