@@ -1,17 +1,23 @@
-import { ImageDropbox, ImagePreview, ImagePreviewMode } from 'components';
-import { Field, FieldProps } from 'formik';
+import {
+  ImageDropbox,
+  ImagePreview,
+  ImagePreviewMode,
+  InputField,
+  InputFieldExternalProps,
+} from 'components';
+import { FieldProps } from 'formik';
 import { FileWithUrl } from 'types';
 
-interface ImageUploaderProps {
+type ImageUploaderProps = InputFieldExternalProps & {
   name: string;
   variant?: ImagePreviewMode;
-}
+};
 
 export const ImageUploader = ({
-  name,
   variant = ImagePreviewMode.Thumbnail,
+  ...inputFieldProps
 }: ImageUploaderProps): JSX.Element => (
-  <Field name={name}>
+  <InputField {...inputFieldProps}>
     {({
       field: { name, value },
       form: { setFieldValue },
@@ -40,5 +46,5 @@ export const ImageUploader = ({
         <ImagePreview variant={variant} image={image} onClear={handleClear} />
       );
     }}
-  </Field>
+  </InputField>
 );
