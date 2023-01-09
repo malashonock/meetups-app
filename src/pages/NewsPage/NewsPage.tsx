@@ -40,7 +40,7 @@ export const NewsPage = () => {
       <ul className={styles.newsList}>
         {news.map((article: News) => (
           <li key={article.id} className={styles.newsItem}>
-            <NavLink to={`/news/${article.id}/view`}>
+            <NavLink to={`/news/${article.id}`}>
               <NewsCard news={article} />
             </NavLink>
           </li>
