@@ -1,5 +1,6 @@
 export interface FormattedDateTime {
   formattedWeekDay: string;
+  formattedFullWeekDay: string;
   formattedDate: string;
   formattedTime: string;
 }
@@ -12,6 +13,16 @@ const formattedWeekDays = [
   'Четв.',
   'Пятн.',
   'Субб.',
+];
+
+const formattedFullWeekDays = [
+  'Воскресение',
+  'Понедельник',
+  'Вторник',
+  'Среда',
+  'Четверг',
+  'Пятница',
+  'Суббота',
 ];
 
 const defaultLocale: Intl.LocalesArgument = 'ru-RU';
@@ -48,11 +59,13 @@ export const parseDateString = (
   } = options ?? {});
 
   const formattedWeekDay = formattedWeekDays[date.getDay()];
+  const formattedFullWeekDay = formattedFullWeekDays[date.getDay()];
   const formattedDate = date.toLocaleDateString(locale, dateOptions);
   const formattedTime = date.toLocaleTimeString(locale, timeOptions);
 
   return {
     formattedWeekDay,
+    formattedFullWeekDay,
     formattedDate,
     formattedTime,
   };

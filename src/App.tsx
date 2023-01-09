@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import { Header, meetupTabsLinks, meetupTabToDescriptor } from 'components';
@@ -13,25 +12,25 @@ function App() {
       <main className={styles.container}>
         <Routes>
           <Route path="/" element={<Navigate replace to="/meetups" />} />
-          <Route path="meetups" element={<MeetupPage />}>
-            <Route
-              index
-              element={<Navigate replace to={meetupTabsLinks[0]} />}
-            />
-            {meetupTabsLinks.map((tabLink) => (
+          <Route path="meetups">
+            <Route element={<MeetupPage />}>
               <Route
-                key={tabLink}
-                path={tabLink}
-                element={meetupTabToDescriptor[tabLink].component}
+                index
+                element={<Navigate replace to={meetupTabsLinks[0]} />}
               />
-            ))}
+              {meetupTabsLinks.map((tabLink) => (
+                <Route
+                  key={tabLink}
+                  path={tabLink}
+                  element={meetupTabToDescriptor[tabLink].component}
+                />
+              ))}
+            </Route>
+            <Route path="create" element={<div>Create meetup page</div>} />
+            <Route path=":id" element={<ViewMeetupPage />} />
+            <Route path=":id/edit" element={<div>Edit meetup</div>} />
           </Route>
-          <Route
-            path="/meetups/create"
-            element={<div>Create meetup page</div>}
-          />
-          <Route path="/meetups/:id" element={<ViewMeetupPage />} />
-          <Route path="/meetups/:id/edit" element={<div>Edit meetup</div>} />
+
           <Route path="news" element={<div>News</div>} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

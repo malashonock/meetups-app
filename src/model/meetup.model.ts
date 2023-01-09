@@ -20,6 +20,7 @@ export interface Meetup {
   status: MeetupStatus;
   isOver: boolean;
   image?: File;
+  votedUsers?: ShortUser[];
 }
 
 export type NewMeetup = Omit<Meetup, 'id'>;

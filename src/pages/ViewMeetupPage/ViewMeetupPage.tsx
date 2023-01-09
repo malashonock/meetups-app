@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate, useParams } from 'react-router';
 import classNames from 'classnames';
 
@@ -10,8 +10,7 @@ import {
   UserPreview,
   UserPreviewVariant,
 } from 'components';
-import { getMeetup, getVotedUsers } from 'api';
-import { Meetup, MeetupStatus, ShortUser } from 'model';
+import { MeetupStatus, ShortUser } from 'model';
 import { parseDateString } from 'helpers';
 
 import styles from './ViewMeetupPage.module.scss';
@@ -19,24 +18,23 @@ import defaultImage from './assets/default-image.jpg';
 import calendar from './assets/calendar.svg';
 import clock from './assets/clock.svg';
 import pin from './assets/pin.svg';
+import { useMeetup } from 'hooks/meetups/useMeetup';
+import { NotFoundPage } from 'pages/NotFoundPage/NotFoundPage';
 
 const MAX_PREVIEW_USERS = 8;
 
 export const ViewMeetupPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [meetup, setMeetup] = useState<Meetup | null>(null);
-  const [votedUsers, setVotedUsers] = useState<ShortUser[]>([]);
+  const { meetup, isLoading } = useMeetup(id!);
+  const votedUsers = meetup?.votedUsers ?? [];
 
-  useEffect(() => {
-    (async () => {
-      setMeetup(await getMeetup(id!));
-      setVotedUsers(await getVotedUsers(id!));
-    })();
-  }, [id]);
+  if (isLoading || meetup === undefined) {
+    return <div>Загрузка...</div>;
+  }
 
   if (meetup === null) {
-    return <div>Что-то пошло не так</div>;
+    return <NotFoundPage />;
   }
 
   const renderHeader = () => {
@@ -83,10 +81,10 @@ export const ViewMeetupPage = () => {
     let date, time;
 
     if (meetup.start) {
-      const { formattedWeekDay, formattedDate, formattedTime } =
+      const { formattedFullWeekDay, formattedDate, formattedTime } =
         parseDateString(meetup.start);
 
-      date = `${formattedWeekDay}, ${formattedDate}`;
+      date = `${formattedFullWeekDay}, ${formattedDate}`;
       time = `${formattedTime}`;
 
       if (meetup.finish) {
@@ -117,8 +115,6 @@ export const ViewMeetupPage = () => {
         </div>
       </div>
     );
-
-    // return <div>Что-то пошло не так</div>;
   };
 
   const renderAuthor = () => {
@@ -137,6 +133,7 @@ export const ViewMeetupPage = () => {
             <div className={styles.speakerWrapper}>
               {meetup.speakers.map((speaker) => (
                 <UserPreview
+                  key={speaker.id}
                   variant={UserPreviewVariant.Default}
                   user={speaker}
                 />
@@ -160,7 +157,11 @@ export const ViewMeetupPage = () => {
         <span className={styles.dataName}>Поддерживают</span>
         <div className={classNames(styles.dataContent, styles.votedUsers)}>
           {previewVotedUsers.map((user: ShortUser) => (
-            <UserPreview variant={UserPreviewVariant.Image} user={user} />
+            <UserPreview
+              key={user.id}
+              variant={UserPreviewVariant.Image}
+              user={user}
+            />
           ))}
           {votedUsers.length - MAX_PREVIEW_USERS > 0 && (
             <div className={styles.restCounter}>
