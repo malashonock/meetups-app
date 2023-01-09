@@ -14,7 +14,12 @@ export const TextField = ({
 }: TextFieldProps): JSX.Element => (
   <InputField {...inputFieldProps}>
     {({ field, className }: InputRenderProps): JSX.Element => (
-      <input type="text" {...field} className={className} />
+      <input
+        type="text"
+        {...field}
+        className={className}
+        placeholder={placeholderText}
+      />
     )}
   </InputField>
 );
