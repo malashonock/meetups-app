@@ -9,7 +9,7 @@
     width: calc(100% * var(--numOfSteps));
     display: flex;
     overflow: hidden;
-    transform: translateX(calc(calc(100% / var(--numOfSteps)) * var(--currentStep)));
+    transform: translateX(calc(100% / var(--numOfSteps) * var(--currentStep)));
   }
 }
 
