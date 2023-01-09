@@ -12,14 +12,14 @@ import {
 } from 'components';
 import { MeetupStatus, ShortUser } from 'model';
 import { parseDateString } from 'helpers';
+import { useMeetup } from 'hooks';
+import { NotFoundPage } from 'pages';
 
 import styles from './ViewMeetupPage.module.scss';
 import defaultImage from './assets/default-image.jpg';
 import calendar from './assets/calendar.svg';
 import clock from './assets/clock.svg';
 import pin from './assets/pin.svg';
-import { useMeetup } from 'hooks/meetups/useMeetup';
-import { NotFoundPage } from 'pages/NotFoundPage/NotFoundPage';
 
 const MAX_PREVIEW_USERS = 8;
 
