@@ -2,6 +2,7 @@ import {
   InputFieldExternalProps,
   InputField,
   InputRenderProps,
+  TextInput,
 } from 'components';
 
 type TextFieldProps = InputFieldExternalProps & {
@@ -14,8 +15,7 @@ export const TextField = ({
 }: TextFieldProps): JSX.Element => (
   <InputField {...inputFieldProps}>
     {({ field, className }: InputRenderProps): JSX.Element => (
-      <input
-        type="text"
+      <TextInput
         {...field}
         className={className}
         placeholder={placeholderText}

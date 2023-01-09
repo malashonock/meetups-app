@@ -9,6 +9,7 @@ export * from './EditButton/EditButton';
 export * from './Header/Header';
 export * from './Tooltip/Tooltip';
 export * from './InputField/InputField';
+export * from './TextInput/TextInput';
 export * from './TextField/TextField';
 export * from './HelperText/HelperText';
 export * from './InputLabel/InputLabel';
