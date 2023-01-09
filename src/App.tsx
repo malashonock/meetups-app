@@ -29,8 +29,10 @@ function App() {
           <Route path="news">
             <Route index element={<NewsPage />} />
             <Route path="create" element={<div>Create news article</div>} />
-            <Route path=":id/view" element={<div>View news article</div>} />
-            <Route path=":id/edit" element={<div>Edit news article</div>} />
+            <Route path=":id">
+              <Route index element={<div>View news article</div>} />
+              <Route path="edit" element={<div>Edit news article</div>} />
+            </Route>
           </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
