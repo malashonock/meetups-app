@@ -24,7 +24,6 @@ export const TextArea = ({
       <textarea
         {...nativeHtmlProps}
         maxLength={maxLetterCount}
-        aria-disabled
         className={classNames(
           nativeHtmlProps.className,
           styles.textArea,
