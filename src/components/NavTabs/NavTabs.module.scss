@@ -11,22 +11,6 @@
   cursor: pointer;
 
   & > * {
-    position: relative;
-
     width: 100%; 
   }
-}
-
-.tab-indicator {
-  position: relative;
-  left: calc(calc(100% / var(--numOfTabs)) * var(--position));
-  bottom: 2px;
-
-  width: calc(100% / var(--numOfTabs));
-  height: 2px;
-  margin-bottom: 30px;
-
-  background: $purple-color;
-
-  @include smooth-transition(all);
 }

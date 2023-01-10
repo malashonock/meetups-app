@@ -25,7 +25,7 @@ export const NavTabs = ({ className, children }: NavTabsProps) => {
       <div className={classNames(styles.tabs, className)}>{children}</div>
       <TabsIndicator
         tabsAmount={arrayChildren.length}
-        currentTab={indexOfTabToOpen !== -1 ? indexOfTabToOpen : 0}
+        currentTab={indexOfTabToOpen < 0 ? 0 : indexOfTabToOpen}
       />
     </>
   );

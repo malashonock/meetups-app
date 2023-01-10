@@ -2,6 +2,8 @@ import React, { PropsWithChildren, useContext } from 'react';
 
 import { TabsContext, TabsContextType } from 'components';
 
+import styles from './TabContent.module.scss';
+
 interface TabContentProps {
   value: string;
 }
@@ -13,7 +15,7 @@ export const TabContent = ({
   const { activeTabValue } = useContext(TabsContext) as TabsContextType;
 
   return (
-    <div style={{ display: activeTabValue === value ? 'block' : 'none' }}>
+    <div className={activeTabValue === value ? styles.visible : styles.hidden}>
       {children}
     </div>
   );
