@@ -7,6 +7,7 @@ import {
   Typography,
   TypographyComponent,
   UserPreview,
+  UserPreviewVariant,
   VotesCount,
 } from 'components';
 import { parseDateString } from 'helpers';
@@ -42,12 +43,12 @@ export const MeetupCard = ({ meetup }: MeetupCardProps): JSX.Element => {
 
   const openEditMeetupPage = () => navigate(`/meetups/${id}/edit`);
 
-  let formattedWeekDay: string | undefined;
+  let formattedWeekdayShort: string | undefined;
   let formattedDate: string | undefined;
   let formattedTime: string | undefined;
 
   if (start) {
-    ({ formattedWeekDay, formattedDate, formattedTime } =
+    ({ formattedWeekdayShort, formattedDate, formattedTime } =
       parseDateString(start));
   }
 
@@ -69,14 +70,14 @@ export const MeetupCard = ({ meetup }: MeetupCardProps): JSX.Element => {
     <article className={classNames(styles.card, styles[variant])}>
       <header className={styles.header}>
         {status === MeetupStatus.DRAFT ? (
-          <UserPreview user={author} />
+          <UserPreview user={author} variant={UserPreviewVariant.Card} />
         ) : (
           <ul className={styles.appointment}>
             {start !== undefined ? (
               <>
                 <li className={styles.appointmentItem} key="date">
                   <Typography className={styles.date}>
-                    {`${formattedWeekDay}, ${formattedDate}`}
+                    {`${formattedWeekdayShort}, ${formattedDate}`}
                   </Typography>
                 </li>
                 <li className={styles.appointmentItem} key="time">
@@ -129,7 +130,7 @@ export const MeetupCard = ({ meetup }: MeetupCardProps): JSX.Element => {
         {status === MeetupStatus.DRAFT ? (
           goCount > 0 && <VotesCount votesCount={goCount} />
         ) : (
-          <UserPreview user={author} />
+          <UserPreview user={author} variant={UserPreviewVariant.Card} />
         )}
       </footer>
     </article>

@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate, useParams } from 'react-router';
 import classNames from 'classnames';
 
@@ -16,7 +15,7 @@ import { useMeetup } from 'hooks';
 import { NotFoundPage } from 'pages';
 
 import styles from './ViewMeetupPage.module.scss';
-import defaultImage from './assets/default-image.jpg';
+import defaultImage from 'assets/images/default-image.jpg';
 import calendar from './assets/calendar.svg';
 import clock from './assets/clock.svg';
 import pin from './assets/pin.svg';
@@ -41,7 +40,12 @@ export const ViewMeetupPage = () => {
     if (meetup.status === MeetupStatus.DRAFT) {
       return (
         <div className={styles.data}>
-          <span className={styles.dataName}>Название</span>
+          <Typography
+            component={TypographyComponent.Span}
+            className={styles.dataName}
+          >
+            Название
+          </Typography>
           <div className={styles.dataContent}>
             <Typography
               className={styles.meetupHeading}
@@ -81,10 +85,10 @@ export const ViewMeetupPage = () => {
     let date, time;
 
     if (meetup.start) {
-      const { formattedFullWeekDay, formattedDate, formattedTime } =
+      const { formattedWeekdayLong, formattedDate, formattedTime } =
         parseDateString(meetup.start);
 
-      date = `${formattedFullWeekDay}, ${formattedDate}`;
+      date = `${formattedWeekdayLong}, ${formattedDate}`;
       time = `${formattedTime}`;
 
       if (meetup.finish) {
@@ -96,20 +100,31 @@ export const ViewMeetupPage = () => {
 
     return (
       <div className={styles.data}>
-        <span className={styles.dataName}>Время и место проведения</span>
+        <Typography
+          component={TypographyComponent.Span}
+          className={styles.dataName}
+        >
+          Время и место проведения
+        </Typography>
         <div className={styles.dataContent}>
           <div className={styles.timePlaceInfo}>
             <div className={styles.info}>
               <img className={styles.image} src={calendar} alt="Дата" />
-              <span>{date || '—'}</span>
+              <Typography component={TypographyComponent.Span}>
+                {date || '—'}
+              </Typography>
             </div>
             <div className={styles.info}>
               <img className={styles.image} src={clock} alt="Время" />
-              <span>{time || '—'}</span>
+              <Typography component={TypographyComponent.Span}>
+                {time || '—'}
+              </Typography>
             </div>
             <div className={styles.info}>
               <img className={styles.image} src={pin} alt="Место" />
-              <span>{meetup.place || '—'}</span>
+              <Typography component={TypographyComponent.Span}>
+                {meetup.place || '—'}
+              </Typography>
             </div>
           </div>
         </div>
@@ -117,33 +132,27 @@ export const ViewMeetupPage = () => {
     );
   };
 
-  const renderAuthor = () => {
-    return (
-      <div className={styles.data}>
-        <span className={styles.dataName}>
-          {meetup.status === MeetupStatus.DRAFT ? 'Автор' : 'Спикер'}
-        </span>
-        <div className={styles.dataContent}>
-          {meetup.status === MeetupStatus.DRAFT ? (
-            <UserPreview
-              variant={UserPreviewVariant.Default}
-              user={meetup.author}
-            />
-          ) : (
-            <div className={styles.speakerWrapper}>
-              {meetup.speakers.map((speaker) => (
-                <UserPreview
-                  key={speaker.id}
-                  variant={UserPreviewVariant.Default}
-                  user={speaker}
-                />
-              ))}
-            </div>
-          )}
-        </div>
+  const renderAuthor = () => (
+    <div className={styles.data}>
+      <Typography
+        component={TypographyComponent.Span}
+        className={styles.dataName}
+      >
+        {meetup.status === MeetupStatus.DRAFT ? 'Автор' : 'Спикер'}
+      </Typography>
+      <div className={styles.dataContent}>
+        {meetup.status === MeetupStatus.DRAFT ? (
+          <UserPreview user={meetup.author} />
+        ) : (
+          <div className={styles.speakerWrapper}>
+            {meetup.speakers.map((speaker) => (
+              <UserPreview key={speaker.id} user={speaker} />
+            ))}
+          </div>
+        )}
       </div>
-    );
-  };
+    </div>
+  );
 
   const renderVotedUsers = () => {
     if (votedUsers?.length === 0) {
@@ -154,7 +163,12 @@ export const ViewMeetupPage = () => {
 
     return (
       <div className={styles.data}>
-        <span className={styles.dataName}>Поддерживают</span>
+        <Typography
+          component={TypographyComponent.Span}
+          className={styles.dataName}
+        >
+          Поддерживают
+        </Typography>
         <div className={classNames(styles.dataContent, styles.votedUsers)}>
           {previewVotedUsers.map((user: ShortUser) => (
             <UserPreview
@@ -182,7 +196,7 @@ export const ViewMeetupPage = () => {
         {meetup.status === MeetupStatus.DRAFT && (
           <div className={styles.actionsWrapper}>
             <Button variant={ButtonVariant.Secondary}>Удалить</Button>
-            <Button variant={ButtonVariant.Primary}>Одобрить Тему</Button>
+            <Button variant={ButtonVariant.Primary}>Одобрить тему</Button>
           </div>
         )}
         {meetup.status === MeetupStatus.REQUEST && (
@@ -204,16 +218,26 @@ export const ViewMeetupPage = () => {
         className={styles.heading}
         component={TypographyComponent.Heading1}
       >
-        Просмотр {meetup.status === MeetupStatus.DRAFT ? 'Темы' : 'Митапа'}
+        Просмотр {meetup.status === MeetupStatus.DRAFT ? 'темы' : 'митапа'}
       </Typography>
       <div className={styles.dataWrapper}>
         {renderHeader()}
         {renderTimePlace()}
         {renderAuthor()}
         <div className={styles.data}>
-          <span className={styles.dataName}>Описание</span>
+          <Typography
+            component={TypographyComponent.Span}
+            className={styles.dataName}
+          >
+            Описание
+          </Typography>
           <div className={styles.dataContent}>
-            <p className={styles.excerpt}>{meetup.excerpt}</p>
+            <Typography
+              component={TypographyComponent.Paragraph}
+              className={styles.excerpt}
+            >
+              {meetup.excerpt}
+            </Typography>
           </div>
         </div>
         {renderVotedUsers()}

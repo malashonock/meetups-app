@@ -43,37 +43,17 @@ const user_RU_ManyNames = {
   surname: 'Берта-Мария Бендер-бей',
 };
 
-/* Default template */
 const DefaultTemplate: ComponentStory<typeof UserPreview> = (args) => (
   <UserPreview {...args} />
 );
+
+/* Default variant */
 
 export const Default_EN_FirstName = DefaultTemplate.bind({});
 
 Default_EN_FirstName.args = {
   variant: UserPreviewVariant.Default,
   user: user_EN_FirstName,
-};
-
-export const Default_EN_FullName = DefaultTemplate.bind({});
-
-Default_EN_FullName.args = {
-  variant: UserPreviewVariant.Default,
-  user: user_EN_FullName,
-};
-
-export const Default_EN_ManyNames = DefaultTemplate.bind({});
-
-Default_EN_ManyNames.args = {
-  variant: UserPreviewVariant.Default,
-  user: user_EN_ManyNames,
-};
-
-export const Default_RU_FirstName = DefaultTemplate.bind({});
-
-Default_RU_FirstName.args = {
-  variant: UserPreviewVariant.Default,
-  user: user_RU_FirstName,
 };
 
 export const Default_RU_FullName = DefaultTemplate.bind({});
@@ -83,10 +63,47 @@ Default_RU_FullName.args = {
   user: user_RU_FullName,
 };
 
-export const Default_RU_ManyNames = DefaultTemplate.bind({});
+/* Card variant */
 
-Default_RU_ManyNames.args = {
-  variant: UserPreviewVariant.Default,
+export const Card_EN_FirstName = DefaultTemplate.bind({});
+
+Card_EN_FirstName.args = {
+  variant: UserPreviewVariant.Card,
+  user: user_EN_FirstName,
+};
+
+export const Card_EN_FullName = DefaultTemplate.bind({});
+
+Card_EN_FullName.args = {
+  variant: UserPreviewVariant.Card,
+  user: user_EN_FullName,
+};
+
+export const Card_EN_ManyNames = DefaultTemplate.bind({});
+
+Card_EN_ManyNames.args = {
+  variant: UserPreviewVariant.Card,
+  user: user_EN_ManyNames,
+};
+
+export const Card_RU_FirstName = DefaultTemplate.bind({});
+
+Card_RU_FirstName.args = {
+  variant: UserPreviewVariant.Card,
+  user: user_RU_FirstName,
+};
+
+export const Card_RU_FullName = DefaultTemplate.bind({});
+
+Card_RU_FullName.args = {
+  variant: UserPreviewVariant.Card,
+  user: user_RU_FullName,
+};
+
+export const Card_RU_ManyNames = DefaultTemplate.bind({});
+
+Card_RU_ManyNames.args = {
+  variant: UserPreviewVariant.Card,
   user: user_RU_ManyNames,
 };
 
@@ -106,9 +123,10 @@ Image_RU_FullName.args = {
   user: user_RU_FullName,
 };
 
-/* Header template */
+/* Header template and variant */
+
 const HeaderTemplate: ComponentStory<typeof UserPreview> = (args) => (
-  <div style={{ backgroundColor: '#8065ec', padding: '10px' }}>
+  <div style={{ background: '#8065ec', padding: '10px' }}>
     <UserPreview {...args} />
   </div>
 );

@@ -1,13 +1,14 @@
 import classNames from 'classnames';
 
-import { getFirstLetter, getInitials } from 'helpers';
 import { Typography } from 'components';
+import { getInitials } from 'helpers';
 import { ShortUser } from 'model';
 
 import styles from './UserPreview.module.scss';
 
 export enum UserPreviewVariant {
   Default = 'default',
+  Card = 'card',
   Header = 'header',
   Image = 'image',
 }
