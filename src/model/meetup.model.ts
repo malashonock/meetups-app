@@ -1,9 +1,9 @@
 import { ShortUser } from 'model';
 
 export enum MeetupStatus {
-  REQUEST = 'request',
-  DRAFT = 'draft',
-  CONFIRMED = 'confirmed',
+  DRAFT = 'DRAFT',
+  REQUEST = 'REQUEST',
+  CONFIRMED = 'CONFIRMED',
 }
 
 export interface Meetup {
@@ -20,6 +20,7 @@ export interface Meetup {
   status: MeetupStatus;
   isOver: boolean;
   image?: File;
+  votedUsers?: ShortUser[];
 }
 
 export type NewMeetup = Omit<Meetup, 'id'>;

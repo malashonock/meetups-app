@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { useNavigate } from 'react-router';
 
 import {
   DeleteButton,
@@ -6,6 +7,7 @@ import {
   Typography,
   TypographyComponent,
   UserPreview,
+  UserPreviewVariant,
   VotesCount,
 } from 'components';
 import { parseDateString } from 'helpers';
@@ -17,7 +19,7 @@ interface MeetupCardProps {
   meetup: Meetup;
 }
 
-enum MeetupCardVariant {
+export enum MeetupCardVariant {
   Topic = 'topic',
   OnModeration = 'onModeration',
   Upcoming = 'upcoming',
@@ -25,24 +27,37 @@ enum MeetupCardVariant {
 }
 
 export const MeetupCard = ({ meetup }: MeetupCardProps): JSX.Element => {
-  const { status, author, start, place, subject, excerpt, goCount, isOver } =
-    meetup;
+  const {
+    status,
+    author,
+    start,
+    place,
+    subject,
+    excerpt,
+    goCount,
+    isOver,
+    id,
+  } = meetup;
 
-  let formattedWeekDay: string | undefined;
+  const navigate = useNavigate();
+
+  const openEditMeetupPage = () => navigate(`/meetups/${id}/edit`);
+
+  let formattedWeekdayShort: string | undefined;
   let formattedDate: string | undefined;
   let formattedTime: string | undefined;
 
   if (start) {
-    ({ formattedWeekDay, formattedDate, formattedTime } =
+    ({ formattedWeekdayShort, formattedDate, formattedTime } =
       parseDateString(start));
   }
 
   const getVariant = (): MeetupCardVariant => {
     switch (status) {
-      case MeetupStatus.REQUEST:
+      case MeetupStatus.DRAFT:
       default:
         return MeetupCardVariant.Topic;
-      case MeetupStatus.DRAFT:
+      case MeetupStatus.REQUEST:
         return MeetupCardVariant.OnModeration;
       case MeetupStatus.CONFIRMED:
         return isOver ? MeetupCardVariant.Finished : MeetupCardVariant.Upcoming;
@@ -54,15 +69,15 @@ export const MeetupCard = ({ meetup }: MeetupCardProps): JSX.Element => {
   return (
     <article className={classNames(styles.card, styles[variant])}>
       <header className={styles.header}>
-        {status === MeetupStatus.REQUEST ? (
-          <UserPreview user={author} />
+        {status === MeetupStatus.DRAFT ? (
+          <UserPreview user={author} variant={UserPreviewVariant.Card} />
         ) : (
           <ul className={styles.appointment}>
             {start !== undefined ? (
               <>
                 <li className={styles.appointmentItem} key="date">
                   <Typography className={styles.date}>
-                    {`${formattedWeekDay}, ${formattedDate}`}
+                    {`${formattedWeekdayShort}, ${formattedDate}`}
                   </Typography>
                 </li>
                 <li className={styles.appointmentItem} key="time">
@@ -83,7 +98,14 @@ export const MeetupCard = ({ meetup }: MeetupCardProps): JSX.Element => {
         )}
         <div className={styles.controls}>
           <DeleteButton />
-          {status !== MeetupStatus.REQUEST && <EditButton />}
+          {status !== MeetupStatus.DRAFT && (
+            <EditButton
+              onClick={(e) => {
+                e.preventDefault();
+                openEditMeetupPage();
+              }}
+            />
+          )}
         </div>
       </header>
 
@@ -105,10 +127,10 @@ export const MeetupCard = ({ meetup }: MeetupCardProps): JSX.Element => {
       </div>
 
       <footer className={styles.footer}>
-        {status === MeetupStatus.REQUEST ? (
+        {status === MeetupStatus.DRAFT ? (
           goCount > 0 && <VotesCount votesCount={goCount} />
         ) : (
-          <UserPreview user={author} />
+          <UserPreview user={author} variant={UserPreviewVariant.Card} />
         )}
       </footer>
     </article>
