@@ -25,6 +25,10 @@
     @extend .letter-spacing-larger-02;
   }
 
+  .initials {
+    @extend .font-color-white;
+  }
+
   &.header {
     --avatar-diameter: 40px;
     column-gap: 12px;
@@ -42,9 +46,9 @@
     }
   }
 
-  &.default {
+  &.card {
     --avatar-diameter: 30px;
-    column-gap: 9px;
+    column-gap: 10px;
 
     .avatar {
       background-color: $gray-04-color;
@@ -59,9 +63,33 @@
     .name {
       @extend .font-color-gray-01;
     }
+  }
 
+  &.default {
+    --avatar-diameter: 40px;
+    column-gap: 10px;
+
+    .avatar {
+      background-color: $gray-03-color;
+    }
+
+    .name,
     .initials {
-      @extend .font-color-white;
+      @extend .font-size-xs;
+      @extend .line-height-xs;
+    }
+
+    .name {
+      @extend .font-color-dark;
+      @extend .font-weight-medium;
+    }
+  }
+
+  &.image {
+    --avatar-diameter: 50px;
+
+    .avatar {
+      background-color: $gray-04-color;
     }
   }
 }
