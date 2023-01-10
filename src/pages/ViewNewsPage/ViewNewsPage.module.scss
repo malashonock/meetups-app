@@ -1,0 +1,91 @@
+@use 'sass:color';
+@import '~style/colors';
+@import '~style/typography';
+@import '~style/mixins';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 30px;
+}
+
+.section {
+  border-radius: 5px;
+  box-shadow: 0px 4px 7px color.adjust($gray-shadow-05-color, $alpha: +0.25);
+}
+
+.textSection {
+  @extend .section;
+
+  background-color: $white-color;
+}
+
+.heading {
+  @extend .font-family-primary;
+  @extend .font-weight-bold;
+  @extend .font-size-xl;
+  @extend .line-height-m;
+  @extend .font-color-dark;
+  @extend .text-align-center;
+}
+
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+}
+
+.imageWrapper {
+  overflow: hidden;
+
+  margin-bottom: -8px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+
+  .image {
+    width: 100%;
+    object-fit: cover;
+    object-position: center center;
+  }
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  row-gap: 41px;
+
+  padding: 24px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.title {
+  @extend .font-family-secondary;
+  @extend .font-weight-medium;
+  @extend .font-size-l;
+  @extend .line-height-xxl;
+  @extend .font-color-dark;
+  @extend .letter-spacing-smaller;
+}
+
+.text {
+  @extend .font-family-primary;
+  @extend .font-weight-regular;
+  @extend .font-size-s;
+  @extend .line-height-m;
+  @extend .font-color-dark;
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  padding: 16px 24px;
+}
+
+.actionGroup {
+  display: flex;
+  flex-direction: row;
+  column-gap: 10px;
+}

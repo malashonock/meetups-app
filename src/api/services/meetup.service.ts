@@ -1,3 +1,4 @@
+import { getVotedUsers } from 'api';
 import { httpClient } from 'helpers';
 import { Meetup, NewMeetup } from 'model';
 
@@ -8,7 +9,12 @@ export const getMeetups = async (): Promise<Meetup[]> => {
 
 export const getMeetup = async (id: string): Promise<Meetup> => {
   const { data: meetup } = await httpClient.get<Meetup>(`/meetups/${id}`);
-  return meetup;
+  const votedUsers = await getVotedUsers(id);
+
+  return  {
+    ...meetup,
+    votedUsers,
+  };
 };
 
 export const createMeetup = async (
