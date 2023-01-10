@@ -12,6 +12,7 @@ export * from './Tooltip/Tooltip';
 export * from './InputField/InputField';
 export * from './TextInput/TextInput';
 export * from './TextField/TextField';
+export * from './TextArea/TextArea';
 export * from './HelperText/HelperText';
 export * from './InputLabel/InputLabel';
 export * from './Tabs/Tabs';
