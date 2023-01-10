@@ -1,19 +1,23 @@
 import { PropsWithChildren, HTMLAttributes } from 'react';
 import classNames from 'classnames';
 
-import { Typography, TypographyComponent } from 'components';
-
 import styles from './InputLabel.module.scss';
 
+type InputLabelProps = {
+  name: string;
+} & PropsWithChildren &
+  HTMLAttributes<HTMLLabelElement>;
+
 export const InputLabel = ({
+  name,
   children,
   ...nativeHtmlProps
-}: PropsWithChildren & HTMLAttributes<HTMLLabelElement>): JSX.Element => (
-  <Typography
+}: InputLabelProps): JSX.Element => (
+  <label
     {...nativeHtmlProps}
-    component={TypographyComponent.Heading3}
+    htmlFor={name}
     className={classNames(nativeHtmlProps.className, styles.label)}
   >
     {children}
-  </Typography>
+  </label>
 );

@@ -47,20 +47,6 @@
   &__input-container {
     input[type='text'] {
       position: relative;
-      box-sizing: border-box;
-      width: 100%;
-
-      outline: none;
-      background: $white-color;
-      border: 1px solid rgba(49, 74, 215, 0.75);
-      border-radius: 5px;
-      padding: 11px;
-
-      @extend .font-family-primary;
-      @extend .font-weight-regular;
-      @extend .font-size-xs;
-      @extend .line-height-xs;
-      @extend .font-color-gray-01;
 
       background-image: url(./calendar.svg);
       background-repeat: no-repeat;
@@ -266,7 +252,7 @@
     @extend .font-size-3xs;
     @extend .line-height-0;
 
-    &:not(&--selected):hover:not(:active) {
+    &:not(&--selected):not(&--keyboard-selected):hover:not(:active) {
       background: color.change($gray-03-color, $alpha: 0.14) !important;
     }
 

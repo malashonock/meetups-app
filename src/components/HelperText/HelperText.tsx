@@ -1,16 +1,16 @@
 import { PropsWithChildren, HTMLAttributes } from 'react';
 import classNames from 'classnames';
 
-import { Typography, TypographyComponent, TextFieldVariant } from 'components';
+import { Typography, TypographyComponent, InputFieldVariant } from 'components';
 import styles from './HelperText.module.scss';
 
 type HelperTextProps = {
-  variant: TextFieldVariant;
+  variant: InputFieldVariant;
 } & PropsWithChildren &
   HTMLAttributes<HTMLParagraphElement>;
 
 export const HelperText = ({
-  variant = TextFieldVariant.Default,
+  variant = InputFieldVariant.Default,
   children,
   ...nativeHtmlProps
 }: HelperTextProps): JSX.Element => (

@@ -14,6 +14,9 @@ import * as yup from 'yup';
 export default {
   title: 'Components/ImageUploader',
   component: ImageUploader,
+  parameters: {
+    layout: 'centered',
+  },
 } as ComponentMeta<typeof ImageUploader>;
 
 interface FormValues {
@@ -40,7 +43,8 @@ const Template: ComponentStory<typeof ImageUploader> = ({ name, variant }) => (
     {({ values }) => (
       <Form
         style={{
-          width: '100%',
+          width: '500px',
+          maxWidth: '100%',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',

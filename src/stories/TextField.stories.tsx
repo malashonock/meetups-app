@@ -1,9 +1,10 @@
 import React from 'react';
+import classNames from 'classnames';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { object, string } from 'yup';
+import * as yup from 'yup';
 import { Formik, Form } from 'formik';
 
-import { TextField } from 'components';
+import { Button, TextField, Typography, TypographyComponent } from 'components';
 
 export default {
   title: 'Components/TextField',
@@ -15,26 +16,52 @@ export default {
     style: {},
     name: 'firstName',
     labelText: 'First name',
-    placeholder: 'Enter first name',
+    placeholderText: 'Enter first name',
   },
 } as ComponentMeta<typeof TextField>;
 
+interface FormValues {
+  [name: string]: String;
+}
+
 const Template: ComponentStory<typeof TextField> = (args) => (
-  <Formik
-    validationSchema={object().shape({
-      [args.name]: string().required(`${args.labelText} is required`),
-    })}
+  <Formik<FormValues>
     initialValues={{
       [args.name]: '',
     }}
-    onSubmit={(values, { setSubmitting }) => {
-      alert(JSON.stringify(values));
-      setSubmitting(false);
+    validationSchema={yup.object().shape({
+      [args.name]: yup.string().required(`${args.labelText} is required`),
+    })}
+    onSubmit={(values: FormValues, { setSubmitting }) => {
+      console.log(values[args.name]);
+      setSubmitting(false); // onSubmit is sync, so need to call this
     }}
   >
-    {() => (
-      <Form>
+    {({ values }) => (
+      <Form
+        autoComplete="off"
+        style={{
+          width: '500px',
+          maxWidth: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          rowGap: '12px',
+        }}
+      >
         <TextField {...args} />
+        <Button type="submit">Submit (check console logs)</Button>
+        <Typography
+          component={TypographyComponent.Paragraph}
+          className={classNames(
+            'font-family-primary',
+            'font-color-dark',
+            'font-size-xs',
+            'line-height-xs',
+          )}
+        >
+          Field value: {values[args.name]}
+        </Typography>
       </Form>
     )}
   </Formik>
@@ -44,16 +71,16 @@ export const ErrorTextOnly = Template.bind({});
 
 export const WithSuccessText = Template.bind({});
 WithSuccessText.args = {
-  successText: 'Good job!',
+  successText: 'Input accepted',
 };
 
-export const WithHelperText = Template.bind({});
-WithHelperText.args = {
-  helperText: 'First name will be used as your login',
+export const WithHintText = Template.bind({});
+WithHintText.args = {
+  hintText: 'First name will be used as your login',
 };
 
-export const WithSuccessAndHelperText = Template.bind({});
-WithSuccessAndHelperText.args = {
-  successText: 'Good job!',
-  helperText: 'First name will be used as your login',
+export const WithSuccessAndHintText = Template.bind({});
+WithSuccessAndHintText.args = {
+  ...WithSuccessText.args,
+  ...WithHintText.args,
 };
