@@ -3,13 +3,13 @@ import { AxiosError } from 'axios';
 import { Meetup } from 'model';
 import { useEffect, useState } from 'react';
 
-type UseMeetupResult = {
+type UseMeetupQueryResult = {
   meetup?: Meetup | null;
   isLoading: boolean;
   error: string | null;
 }
 
-export function useMeetup(id: string) : UseMeetupResult {
+export function useMeetupQuery(id: string) : UseMeetupQueryResult {
   const [meetup, setMeetup] = useState<Meetup | null>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);

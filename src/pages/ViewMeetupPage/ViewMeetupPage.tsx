@@ -11,7 +11,7 @@ import {
 } from 'components';
 import { MeetupStatus, ShortUser } from 'model';
 import { parseDateString } from 'helpers';
-import { useMeetup } from 'hooks';
+import { useMeetupQuery } from 'hooks';
 import { NotFoundPage } from 'pages';
 
 import styles from './ViewMeetupPage.module.scss';
@@ -25,7 +25,7 @@ const MAX_PREVIEW_USERS = 8;
 export const ViewMeetupPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { meetup, isLoading } = useMeetup(id!);
+  const { meetup, isLoading } = useMeetupQuery(id!);
   const votedUsers = meetup?.votedUsers ?? [];
 
   if (isLoading || meetup === undefined) {

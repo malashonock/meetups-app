@@ -4,6 +4,7 @@ import { Header, meetupTabsLinks, meetupTabToDescriptor } from 'components';
 import { MeetupPage, NotFoundPage, NewsPage, ViewMeetupPage } from 'pages';
 
 import styles from './App.module.scss';
+import { ViewNewsPage } from 'pages/ViewNewsPage/ViewNewsPage';
 
 function App() {
   return (
@@ -27,14 +28,16 @@ function App() {
               ))}
             </Route>
             <Route path="create" element={<div>Create meetup page</div>} />
-            <Route path=":id" element={<ViewMeetupPage />} />
-            <Route path=":id/edit" element={<div>Edit meetup</div>} />
+            <Route path=":id">
+              <Route index element={<ViewMeetupPage />} />
+              <Route path="edit" element={<div>Edit meetup</div>} />
+            </Route>
           </Route>
           <Route path="news">
             <Route index element={<NewsPage />} />
             <Route path="create" element={<div>Create news article</div>} />
             <Route path=":id">
-              <Route index element={<div>View news article</div>} />
+              <Route index element={<ViewNewsPage />} />
               <Route path="edit" element={<div>Edit news article</div>} />
             </Route>
           </Route>

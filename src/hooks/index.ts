@@ -1,1 +1,2 @@
-export * from './meetups/useMeetup';
+export * from './useMeetupQuery';
+export * from './useNewsArticleQuery';
