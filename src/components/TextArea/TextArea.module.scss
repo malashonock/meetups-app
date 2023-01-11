@@ -10,17 +10,19 @@
     resize: none;
     overflow: hidden;
     height: inherit;
+    padding-bottom: 30px;
   }
 }
 
 .counter {
   position: absolute;
-  right: 12px;
-  bottom: 12px;
+  right: 13px;
+  bottom: 13px;
 
   @extend .font-family-primary;
   @extend .font-weight-regular;
   @extend .font-size-2xs;
+  @extend .line-height-xs;
   @extend .font-color-gray-03;
 
   .letterCount {
