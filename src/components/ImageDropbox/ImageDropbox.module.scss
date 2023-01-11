@@ -1,0 +1,93 @@
+@import '~style/colors';
+@import '~style/typography';
+@import '~style/mixins';
+
+.container {
+  width: 100%;
+}
+
+.dropbox {
+  background: $white-color;
+  border: 1px dashed $gray-05-color;
+  border-radius: 5px;
+  padding: 14px;
+  padding-top: 24px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @extend .font-family-primary;
+  @extend .font-weight-regular;
+  @extend .text-align-center;
+
+  @include smooth-transition(all);
+
+  &.willAccept {
+    background-color: $green-04-color;
+    border-color: $green-03-color;
+    @include smooth-transition(all);
+  }
+
+  &.willReject {
+    background-color: $red-03-color;
+    border-color: $red-02-color;
+    @include smooth-transition(all);
+  }
+
+  .promptText {
+    margin-top: 8px;
+
+    @extend .font-size-2xs;
+    @extend .line-height-l;
+    @extend .font-color-gray-01;
+  }
+
+  .browseFileLink {
+    outline: none;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+
+    @extend .font-color-blue-02;
+    @extend .line-height-l;
+
+    @include smooth-transition(all);
+
+    &:hover,
+    &:active {
+      @extend .font-color-purple;
+      @include smooth-transition(all);
+    }
+
+    &:active {
+      transform: scale(0.99);
+      @include smooth-transition(all);
+    }
+
+    &::before {
+      content: ' ';
+      white-space: pre;
+    }
+  }
+
+  .constraints,
+  .errors {
+    margin-top: 12px;
+
+    @extend .font-size-5xs;
+    @extend .line-height-xs;
+  }
+
+  .constraints {
+    @extend .font-color-gray-03;
+  }
+
+  .errors {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+
+    @extend .font-color-red;
+  }
+}

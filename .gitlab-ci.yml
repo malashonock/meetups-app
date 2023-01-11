@@ -1,0 +1,71 @@
+image: node:18.12.1
+variables:
+  FF_USE_FASTZIP: 'true'
+  CYPRESS_INSTALL_BINARY: 0
+
+workflow:
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never
+    - if: $CI_COMMIT_BRANCH == 'master'
+    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME  == 'master'
+
+cache:
+  untracked: true
+  policy: push
+  key: ${CI_COMMIT_SHORT_SHA}
+  paths:
+    - node_modules/
+
+.pull_cached_node_modules:
+  cache:
+    untracked: true
+    key: ${CI_COMMIT_SHORT_SHA}
+    policy: pull
+
+stages:
+  - setup
+  - build
+  - lint
+  - test
+
+install:
+  stage: setup
+  script:
+    - npm install
+  artifacts:
+    expire_in: 10 min
+    paths:
+      - node_modules/ ### This will make the modules available to other dependent jobs
+
+build:
+  stage: build
+  script:
+    - npm run build
+
+test:
+  stage: test
+  only:
+    refs:
+      - main
+      - master
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+  script:
+    - npm run test:ci
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - junit.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage/cobertura-coverage.xml
+
+eslint:
+  stage: lint
+  script:
+    - npm run lint
+prettier:
+  stage: lint
+  script:
+    - npm run format:check

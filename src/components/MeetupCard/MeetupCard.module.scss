@@ -1,0 +1,91 @@
+@use 'sass:color';
+@import '~style/colors';
+@import '~style/typography';
+@import '~style/mixins';
+
+.card {
+  display: flex;
+  flex-direction: column;
+  row-gap: 12px;
+
+  padding: 17px 24px 22px 24px;
+  background-color: $white-color;
+  border-radius: 6px;
+
+  box-shadow: 0 4px 9px $gray-shadow-04-color;
+  @include smooth-transition(box-shadow);
+
+  &:hover {
+    box-shadow: 0 5px 10px color.adjust($gray-shadow-04-color, $alpha: +0.15);
+    @include smooth-transition(box-shadow);
+  }
+
+  .header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    .appointment {
+      $marker-indent: 8px;
+      $marker-diameter: 3px;
+
+      display: flex;
+      flex-direction: row;
+      column-gap: calc($marker-indent * 2);
+
+      list-style: none;
+
+      @extend .font-family-primary;
+      @extend .font-weight-regular;
+      @extend .font-size-s;
+      @extend .line-height-s;
+      @extend .font-color-gray-01;
+
+      > .appointmentItem {
+        position: relative;
+
+        &:not(:first-child)::before {
+          position: absolute;
+          left: calc(-1 * ($marker-indent + $marker-diameter / 2));
+          top: 50%;
+          transform: translateY(-50%);
+
+          content: '';
+          width: $marker-diameter;
+          height: $marker-diameter;
+          border-radius: 50%;
+          background-color: $gray-01-color;
+        }
+      }
+    }
+
+    .controls {
+      display: flex;
+      flex-direction: row;
+      column-gap: 34px;
+    }
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    row-gap: 12px;
+
+    .subject {
+      @extend .font-family-secondary;
+      @extend .font-weight-medium;
+      @extend .font-size-m;
+      @extend .line-height-xl;
+      @extend .font-color-dark;
+    }
+
+    .excerpt {
+      @extend .font-family-primary;
+      @extend .font-weight-regular;
+      @extend .font-size-xs;
+      @extend .line-height-xxl;
+      @extend .font-color-gray-02;
+    }
+  }
+}

@@ -1,0 +1,62 @@
+@import '~style/colors';
+@import '~style/typography';
+@import '~style/mixins';
+
+.step {
+  width: 100%; 
+  display: flex;
+  column-gap: 15px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+
+  @extend .font-family-primary;
+  @extend .font-weight-medium;
+  @extend .font-size-s;  
+
+  .number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 24px;
+    min-width: 24px;
+    border-radius: 100%;
+
+    @extend .font-weight-bold;
+    @extend .font-size-3xs;  
+    line-height: initial;
+  }
+
+  &.active {
+    @extend .font-color-dark;
+    .number {
+      background-color: $blue-02-color;
+      @extend .font-color-white;
+    }
+  }
+
+  &.disabled {
+    @extend .font-color-gray-02;
+    cursor: not-allowed;
+    
+    .number {
+      background-color: $gray-06-color;
+      @extend .font-color-gray-03;
+    }
+  }
+
+  &.available {
+    @extend .font-color-dark;
+    .number {
+      background-color: $blue-02-transparent;
+      @extend .font-color-white;
+    }
+  }
+
+  &.confirmed {
+    @extend .font-color-gray-02;
+    .number {
+      background-color: $green-05-color;
+    }
+  }
+}

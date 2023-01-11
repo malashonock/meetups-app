@@ -1,0 +1,23 @@
+@import '~normalize.css/normalize.css';
+@import './colors';
+@import './typography';
+@import './mixins';
+
+*,
+h1 {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+img {
+  display: block;
+}
+
+body {
+  background-color: $gray-07-color;
+}

@@ -1,0 +1,185 @@
+@import 'colors.scss';
+@import 'mixins.scss';
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('fonts/Roboto-Bold.woff2') format('woff2'),
+    url('fonts/Roboto-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('fonts/Roboto-Regular.woff2') format('woff2'),
+    url('fonts/Roboto-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('fonts/Roboto-Medium.woff2') format('woff2'),
+    url('fonts/Roboto-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Rubik';
+  src: url('fonts/Rubik-Regular.woff2') format('woff2'),
+    url('fonts/Rubik-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Utility classes */
+
+.font-family {
+  &-primary {
+    font-family: 'Roboto', sans-serif;
+  }
+  &-secondary {
+    font-family: 'Rubik', sans-serif;
+  }
+}
+
+.font-size {
+  &-5xs {
+    font-size: 10px;
+  }
+  &-4xs {
+    font-size: 11px;
+  }
+  &-3xs {
+    font-size: 12px;
+  }
+  &-2xs {
+    font-size: 13px;
+  }
+  &-xs {
+    font-size: 14px;
+  }
+  &-s {
+    font-size: 16px;
+  }
+  &-m {
+    font-size: 18px;
+  }
+  &-l {
+    font-size: 20px;
+  }
+  &-xl {
+    font-size: 24px;
+  }
+}
+
+.font-weight {
+  &-regular {
+    font-weight: 400;
+  }
+  &-medium {
+    font-weight: 500;
+  }
+  &-bold {
+    font-weight: 700;
+  }
+}
+
+@mixin line-height($line-spacing) {
+  line-height: calc(100% + $line-spacing);
+}
+
+.line-height {
+  &-0 {
+    line-height: 100%;
+  }
+  &-2xs {
+    @include line-height(1px);
+  }
+  &-xs {
+    @include line-height(2px);
+  }
+  &-s {
+    @include line-height(3px);
+  }
+  &-m {
+    @include line-height(4px);
+  }
+  &-l {
+    @include line-height(5px);
+  }
+  &-xl {
+    @include line-height(6px);
+  }
+  &-xxl {
+    @include line-height(7px);
+  }
+}
+
+.letter-spacing {
+  &-smaller {
+    letter-spacing: -0.3px;
+  }
+  &-normal {
+    letter-spacing: normal;
+  }
+  &-larger-01 {
+    letter-spacing: 0.09px;
+  }
+  &-larger-02 {
+    letter-spacing: 0.25px;
+  }
+  &-larger-03 {
+    letter-spacing: 0.4px;
+  }
+}
+
+.font-color {
+  &-dark {
+    color: $dark-color;
+  }
+  &-gray-01 {
+    color: $gray-01-color;
+  }
+  &-gray-02 {
+    color: $gray-02-color;
+  }
+  &-gray-03 {
+    color: $gray-03-color;
+  }
+  &-white {
+    color: $white-color;
+  }
+  &-purple {
+    color: $purple-color;
+  }
+  &-blue-01 {
+    color: $blue-01-color;
+  }
+  &-blue-02 {
+    color: $blue-02-color;
+  }
+  &-red {
+    color: $red-01-color;
+  }
+  &-green {
+    color: $green-01-color;
+  }
+}
+
+.text-align {
+  &-left {
+    text-align: left;
+  }
+  &-center {
+    text-align: center;
+  }
+  &-right {
+    text-align: right;
+  }
+}

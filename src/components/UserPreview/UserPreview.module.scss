@@ -1,0 +1,95 @@
+@import '~style/colors';
+@import '~style/typography';
+
+.user {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+
+  .avatar {
+    min-width: var(--avatar-diameter);
+    min-height: var(--avatar-diameter);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+  }
+
+  .name,
+  .initials {
+    @extend .font-family-primary;
+    @extend .font-weight-regular;
+    @extend .letter-spacing-larger-02;
+  }
+
+  .initials {
+    @extend .font-color-white;
+  }
+
+  &.header {
+    --avatar-diameter: 40px;
+    column-gap: 12px;
+    flex-direction: row-reverse;
+
+    .avatar {
+      background-color: $white-transparent-color;
+    }
+
+    .name,
+    .initials {
+      @extend .font-size-s;
+      @extend .line-height-s;
+      @extend .font-color-white;
+    }
+  }
+
+  &.card {
+    --avatar-diameter: 30px;
+    column-gap: 10px;
+
+    .avatar {
+      background-color: $gray-04-color;
+    }
+
+    .name,
+    .initials {
+      @extend .font-size-xs;
+      @extend .line-height-xs;
+    }
+
+    .name {
+      @extend .font-color-gray-01;
+    }
+  }
+
+  &.default {
+    --avatar-diameter: 40px;
+    column-gap: 10px;
+
+    .avatar {
+      background-color: $gray-03-color;
+    }
+
+    .name,
+    .initials {
+      @extend .font-size-xs;
+      @extend .line-height-xs;
+    }
+
+    .name {
+      @extend .font-color-dark;
+      @extend .font-weight-medium;
+    }
+  }
+
+  &.image {
+    --avatar-diameter: 50px;
+
+    .avatar {
+      background-color: $gray-04-color;
+    }
+  }
+}

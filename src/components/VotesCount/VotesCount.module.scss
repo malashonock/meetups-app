@@ -1,0 +1,22 @@
+@import '~style/typography';
+
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.icon {
+  width: 20px;
+  height: 21px;
+}
+
+.text {
+  @extend .font-family-primary;
+  @extend .font-weight-regular;
+  @extend .font-size-xs;
+  @extend .line-height-s;
+  @extend .letter-spacing-larger-02;
+  @extend .font-color-gray-03;
+}

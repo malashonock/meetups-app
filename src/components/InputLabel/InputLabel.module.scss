@@ -1,0 +1,11 @@
+@import '~style/typography';
+
+.label {
+  display: block;
+
+  @extend .font-family-primary;
+  @extend .font-weight-medium;
+  @extend .font-size-xs;
+  @extend .line-height-xs;
+  @extend .font-color-gray-03;
+}

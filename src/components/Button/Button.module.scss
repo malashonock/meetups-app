@@ -1,0 +1,90 @@
+@use 'sass:color';
+@import '~style/colors';
+@import '~style/typography';
+@import '~style/mixins';
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  max-width: 100%;
+  border-width: var(--border-width);
+  border-radius: 5px;
+  padding: calc(12px - var(--border-width));
+
+  @extend .font-family-primary;
+  @extend .font-weight-medium;
+  @extend .font-size-xs;
+  @extend .line-height-xs;
+  @extend .text-align-center;
+
+  cursor: pointer;
+
+  @include smooth-transition(all);
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  &.primary {
+    --border-width: 0px;
+
+    background: $purple-gradient-01-color;
+    @extend .font-color-white;
+
+    &:not(:disabled) {
+      &:hover {
+        box-shadow: 0px 4px 8px $gray-shadow-01-color;
+      }
+
+      &:active {
+        @include placeholder-gradient(
+          $blue-01-color
+        ); // switch off the gradient
+
+        box-shadow: 0px 2px 3px
+          color.adjust($gray-shadow-01-color, $alpha: -0.1);
+      }
+    }
+  }
+
+  &.secondary,
+  &.default {
+    --border-width: 1px;
+    border-style: solid;
+
+    background-color: transparent;
+  }
+
+  &.secondary {
+    border-color: $purple-color;
+    @extend .font-color-purple;
+
+    &:not(:disabled) {
+      &:hover {
+        background-color: $purple-transparent-02-color;
+      }
+
+      &:active {
+        background-color: $purple-transparent-01-color;
+      }
+    }
+  }
+
+  &.default {
+    border-color: $gray-05-color;
+    @extend .font-color-gray-02;
+
+    &:not(:disabled) {
+      &:hover {
+        background-color: $gray-transparent-02-color;
+      }
+
+      &:active {
+        background-color: $gray-transparent-01-color;
+      }
+    }
+  }
+}
