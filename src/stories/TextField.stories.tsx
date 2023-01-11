@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ComponentProps } from 'react';
 import classNames from 'classnames';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import * as yup from 'yup';
@@ -67,20 +67,64 @@ const Template: ComponentStory<typeof TextField> = (args) => (
   </Formik>
 );
 
-export const ErrorTextOnly = Template.bind({});
+type TextFieldProps = Partial<ComponentProps<typeof TextField>>;
 
-export const WithSuccessText = Template.bind({});
-WithSuccessText.args = {
+const singleLineFieldArgs: TextFieldProps = {
+  name: 'firstName',
+  labelText: 'First name',
+  placeholderText: 'Enter first name',
+};
+
+export const SingleLine_ErrorTextOnly = Template.bind({});
+SingleLine_ErrorTextOnly.args = {
+  ...singleLineFieldArgs,
+};
+
+export const SingleLine_WithSuccessText = Template.bind({});
+SingleLine_WithSuccessText.args = {
+  ...singleLineFieldArgs,
   successText: 'Input accepted',
 };
 
-export const WithHintText = Template.bind({});
-WithHintText.args = {
+export const SingleLine_WithHintText = Template.bind({});
+SingleLine_WithHintText.args = {
+  ...singleLineFieldArgs,
   hintText: 'First name will be used as your login',
 };
 
-export const WithSuccessAndHintText = Template.bind({});
-WithSuccessAndHintText.args = {
-  ...WithSuccessText.args,
-  ...WithHintText.args,
+export const SingleLine_WithSuccessAndHintText = Template.bind({});
+SingleLine_WithSuccessAndHintText.args = {
+  ...SingleLine_WithSuccessText.args,
+  ...SingleLine_WithHintText.args,
+};
+
+const multiLineFieldArgs: TextFieldProps = {
+  name: 'description',
+  labelText: 'Description',
+  placeholderText: 'Enter meetup description',
+  multiline: true,
+  maxLetterCount: 500,
+};
+
+export const MultiLine_ErrorTextOnly = Template.bind({});
+MultiLine_ErrorTextOnly.args = {
+  ...multiLineFieldArgs,
+};
+
+export const MultiLine_WithSuccessText = Template.bind({});
+MultiLine_WithSuccessText.args = {
+  ...multiLineFieldArgs,
+  successText: 'Input accepted',
+};
+
+export const MultiLine_WithHintText = Template.bind({});
+MultiLine_WithHintText.args = {
+  ...multiLineFieldArgs,
+  hintText: 'First name will be used as your login',
+};
+
+export const MultiLine_WithSuccessAndHintText = Template.bind({});
+MultiLine_WithSuccessAndHintText.args = {
+  ...MultiLine_WithSuccessText.args,
+  ...MultiLine_WithHintText.args,
 };
