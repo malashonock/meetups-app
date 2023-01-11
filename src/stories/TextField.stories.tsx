@@ -103,7 +103,7 @@ const multiLineFieldArgs: TextFieldProps = {
   labelText: 'Description',
   placeholderText: 'Enter meetup description',
   multiline: true,
-  maxLetterCount: 20,
+  maxLetterCount: 500,
 };
 
 export const MultiLine_ErrorTextOnly = Template.bind({});
