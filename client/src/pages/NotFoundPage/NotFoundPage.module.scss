@@ -52,7 +52,7 @@
   height: 11.4rem;
 
   border-radius: 50%;
-  background-color: $blue-01-color;
+  background-color: $blue-01;
 }
 
 .clip {
@@ -77,7 +77,7 @@
   width: 9.2rem;
   height: 12.4rem;
 
-  border: 0.3rem solid $dark-color;
+  border: 0.3rem solid $dark-02;
   background-color: $white-color;
   border-radius: 0.8rem;
 
@@ -106,7 +106,7 @@
   height: 0.8rem;
 
   border-radius: 50%;
-  background-color: $dark-color;
+  background-color: $dark-02;
 
   animation-name: eye;
   animation-duration: 4s;
@@ -168,7 +168,7 @@
   height: 0.2rem;
 
   border-radius: 0.1rem;
-  background-color: $dark-color;
+  background-color: $dark-02;
 
   transform: translateX(-50%);
 }

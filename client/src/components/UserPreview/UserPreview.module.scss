@@ -1,3 +1,4 @@
+@use 'sass:color';
 @import '~style/colors';
 @import '~style/typography';
 
@@ -35,7 +36,7 @@
     flex-direction: row-reverse;
 
     .avatar {
-      background-color: $white-transparent-color;
+      background-color: color.change($white-color, $alpha: 0.4);
     }
 
     .name,
@@ -51,7 +52,7 @@
     column-gap: 10px;
 
     .avatar {
-      background-color: $gray-04-color;
+      background-color: $gray-05;
     }
 
     .name,
@@ -70,7 +71,7 @@
     column-gap: 10px;
 
     .avatar {
-      background-color: $gray-03-color;
+      background-color: $gray-04;
     }
 
     .name,
@@ -89,7 +90,7 @@
     --avatar-diameter: 50px;
 
     .avatar {
-      background-color: $gray-04-color;
+      background-color: $gray-05;
     }
   }
 }

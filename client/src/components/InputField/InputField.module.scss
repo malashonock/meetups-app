@@ -14,10 +14,10 @@
   height: 40px;
   padding: 12px;
 
-  border: 1px solid $gray-05-color;
+  border: 1px solid $gray-06;
   border-radius: 4px;
   outline: none !important;
-  background-color: color.change($gray-07-color, $alpha: 0.4);
+  background-color: color.change($gray-09, $alpha: 0.4);
 
   @include smooth-transition(all);
 
@@ -32,11 +32,11 @@
   }
 
   &:hover {
-    background-color: $gray-07-color;
+    background-color: $gray-09;
   }
 
   &:focus {
-    border: 2px solid $purple-color;
+    border: 2px solid $purple;
 
     &::placeholder {
       @extend .font-color-gray-03;
@@ -45,11 +45,11 @@
 }
 
 .error {
-  border: 2px solid $red-02-color;
+  border: 2px solid $red-02;
 }
 
 .success {
-  border: 2px solid $green-02-color;
+  border: 2px solid $green-02;
 }
 
 .inputLabel {
