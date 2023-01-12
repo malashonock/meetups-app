@@ -16,11 +16,11 @@
     height: 144px;
     border-radius: 5px;
 
-    box-shadow: 3px 5px 8px $gray-shadow-03-color;
+    box-shadow: 3px 5px 8px color.change($gray-02, $alpha: 0.3);
     @include smooth-transition(box-shadow);
 
     &:hover {
-      box-shadow: 3px 5px 8px color.adjust($gray-shadow-03-color, $alpha: +0.1);
+      box-shadow: 3px 5px 8px color.change($gray-02, $alpha: 0.4);
       @include smooth-transition(box-shadow);
     }
 
@@ -49,11 +49,11 @@
     row-gap: 8px;
 
     background-color: $white-color;
-    box-shadow: 0 4px 3px $gray-shadow-05-color;
+    box-shadow: 0 4px 3px color.change($gray-07, $alpha: 0.15);
     @include smooth-transition(box-shadow);
 
     &:hover {
-      box-shadow: 0 4px 3px color.adjust($gray-shadow-05-color, $alpha: +0.1);
+      box-shadow: 0 4px 3px color.change($gray-07, $alpha: 0.25);
       @include smooth-transition(box-shadow);
     }
 

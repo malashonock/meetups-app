@@ -1,3 +1,4 @@
+@use 'sass:color';
 @import '~style/colors';
 @import '~style/typography';
 
@@ -35,7 +36,7 @@
     flex-direction: row-reverse;
 
     .avatar {
-      background-color: $white-transparent-color;
+      background-color: color.change($white-color, $alpha: 0.4);
     }
 
     .name,

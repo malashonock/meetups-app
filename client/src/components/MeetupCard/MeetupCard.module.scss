@@ -12,11 +12,11 @@
   background-color: $white-color;
   border-radius: 6px;
 
-  box-shadow: 0 4px 9px $gray-shadow-04-color;
+  box-shadow: 0 4px 9px color.change($gray-04-color, $alpha: 0.25);
   @include smooth-transition(box-shadow);
 
   &:hover {
-    box-shadow: 0 5px 10px color.adjust($gray-shadow-04-color, $alpha: +0.15);
+    box-shadow: 0 5px 10px color.change($gray-04-color, $alpha: 0.4);
     @include smooth-transition(box-shadow);
   }
 

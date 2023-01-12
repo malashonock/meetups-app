@@ -1,3 +1,4 @@
+@use 'sass:color';
 @import '~style/colors';
 @import '~style/typography';
 @import '~style/mixins';
@@ -64,7 +65,7 @@
 
   &.colored {
     background-color: $purple-color;
-    box-shadow: 0px 9px 24px $gray-shadow-02-color;
+    box-shadow: 0px 9px 24px color.change($dark-01, $alpha: 0.15);
 
     &::before {
       background-color: $purple-color;
@@ -89,11 +90,11 @@
   }
 
   &.white {
-    box-shadow: 0px 9px 24px $gray-shadow-02-color;
+    box-shadow: 0px 9px 24px color.change($dark-01, $alpha: 0.15);
   }
 
   &.outline {
-    box-shadow: 0px 2px 4px $black-shadow-color;
+    box-shadow: 0px 2px 4px color.change($black-color, $alpha: 0.1);
     border: 1px solid $gray-05-color;
 
     &::before {
