@@ -8,7 +8,7 @@
 
 .dropbox {
   background: $white-color;
-  border: 1px dashed $gray-05-color;
+  border: 1px dashed $gray-06;
   border-radius: 5px;
   padding: 14px;
   padding-top: 24px;
@@ -24,14 +24,14 @@
   @include smooth-transition(all);
 
   &.willAccept {
-    background-color: $green-04-color;
-    border-color: $green-03-color;
+    background-color: $green-05;
+    border-color: $green-03;
     @include smooth-transition(all);
   }
 
   &.willReject {
-    background-color: $red-03-color;
-    border-color: $red-02-color;
+    background-color: $red-03;
+    border-color: $red-02;
     @include smooth-transition(all);
   }
 

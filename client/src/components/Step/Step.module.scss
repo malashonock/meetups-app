@@ -31,7 +31,7 @@
   &.active {
     @extend .font-color-dark;
     .number {
-      background-color: $blue-02-color;
+      background-color: $blue-02;
       @extend .font-color-white;
     }
   }
@@ -41,7 +41,7 @@
     cursor: not-allowed;
     
     .number {
-      background-color: $gray-06-color;
+      background-color: $gray-08;
       @extend .font-color-gray-03;
     }
   }
@@ -49,7 +49,7 @@
   &.available {
     @extend .font-color-dark;
     .number {
-      background-color: color.change($blue-02-color, $alpha: 0.6);
+      background-color: color.change($blue-02, $alpha: 0.6);
       @extend .font-color-white;
     }
   }
@@ -57,7 +57,7 @@
   &.confirmed {
     @extend .font-color-gray-02;
     .number {
-      background-color: $green-05-color;
+      background-color: $green-04;
     }
   }
 }

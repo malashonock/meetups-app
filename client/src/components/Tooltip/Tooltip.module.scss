@@ -56,19 +56,19 @@
   }
 
   &.dark {
-    background-color: $dark-color;
+    background-color: $dark-02;
 
     &::before {
-      background-color: $dark-color;
+      background-color: $dark-02;
     }
   }
 
   &.colored {
-    background-color: $purple-color;
+    background-color: $purple;
     box-shadow: 0px 9px 24px color.change($dark-01, $alpha: 0.15);
 
     &::before {
-      background-color: $purple-color;
+      background-color: $purple;
     }
   }
 
@@ -95,10 +95,10 @@
 
   &.outline {
     box-shadow: 0px 2px 4px color.change($black-color, $alpha: 0.1);
-    border: 1px solid $gray-05-color;
+    border: 1px solid $gray-06;
 
     &::before {
-      border: 1px solid $gray-05-color;
+      border: 1px solid $gray-06;
     }
 
     &::after {

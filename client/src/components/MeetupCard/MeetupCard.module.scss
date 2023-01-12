@@ -12,11 +12,11 @@
   background-color: $white-color;
   border-radius: 6px;
 
-  box-shadow: 0 4px 9px color.change($gray-04-color, $alpha: 0.25);
+  box-shadow: 0 4px 9px color.change($gray-05, $alpha: 0.25);
   @include smooth-transition(box-shadow);
 
   &:hover {
-    box-shadow: 0 5px 10px color.change($gray-04-color, $alpha: 0.4);
+    box-shadow: 0 5px 10px color.change($gray-05, $alpha: 0.4);
     @include smooth-transition(box-shadow);
   }
 
@@ -55,7 +55,7 @@
           width: $marker-diameter;
           height: $marker-diameter;
           border-radius: 50%;
-          background-color: $gray-01-color;
+          background-color: $gray-01;
         }
       }
     }
