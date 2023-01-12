@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import { Header, meetupTabsLinks, meetupTabToDescriptor } from 'components';
-import { MeetupPage, NotFoundPage, NewsPage, ViewMeetupPage, ViewNewsPage } from 'pages';
+import { MeetupPage, NotFoundPage, NewsPage, ViewMeetupPage, ViewNewsPage, CreateNewsPage } from 'pages';
 
 import styles from './App.module.scss';
 
@@ -34,7 +34,7 @@ function App() {
           </Route>
           <Route path="news">
             <Route index element={<NewsPage />} />
-            <Route path="create" element={<div>Create news article</div>} />
+            <Route path="create" element={<CreateNewsPage />} />
             <Route path=":id">
               <Route index element={<ViewNewsPage />} />
               <Route path="edit" element={<div>Edit news article</div>} />
