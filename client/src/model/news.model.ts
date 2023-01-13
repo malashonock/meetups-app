@@ -3,7 +3,7 @@ export interface News {
   publicationDate: string; // Date string
   title: string;
   text: string;
-  imageUrl: string;
+  imageUrl: string | null;
 }
 
 export type NewNews = Omit<News, 
