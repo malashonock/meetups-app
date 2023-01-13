@@ -15,7 +15,7 @@ export const createNewsArticle = async (
   newArticleData: NewNews,
 ): Promise<News> => {
   const { data: createdArticle } = await httpClient.post<News>('/news', {
-    data: newArticleData,
+    ...newArticleData,
   });
   return createdArticle;
 };
@@ -24,7 +24,7 @@ export const updateNewsArticle = async (
   updatedArticleData: News,
 ): Promise<News> => {
   const { data: updatedArticle } = await httpClient.put<News>('/news', {
-    data: updatedArticleData,
+    ...updatedArticleData,
   });
   return updatedArticle;
 };

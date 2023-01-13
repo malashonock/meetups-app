@@ -21,7 +21,7 @@ export const createMeetup = async (
   newMeetupData: NewMeetup,
 ): Promise<Meetup> => {
   const { data: createdMeetup } = await httpClient.post<Meetup>('/meetups', {
-    data: newMeetupData,
+    ...newMeetupData,
   });
   return createdMeetup;
 };
@@ -30,7 +30,7 @@ export const updateMeetup = async (
   updatedMeetupData: Meetup,
 ): Promise<Meetup> => {
   const { data: updatedMeetup } = await httpClient.put<Meetup>('/meetups', {
-    data: updatedMeetupData,
+    ...updatedMeetupData,
   });
   return updatedMeetup;
 };

@@ -1,10 +1,12 @@
 import { httpClient } from 'helpers';
-import { Credentials, User } from 'model';
+import { Credentials, FullUser, User } from 'model';
 
-export const login = async (credentials: Credentials): Promise<void> => {
-  await httpClient.post('/login', {
-    data: credentials,
+export const login = async (credentials: Credentials): Promise<FullUser> => {
+  const { data: authenticatedUser } = await httpClient.post('/login', {
+    ...credentials,
   });
+
+  return authenticatedUser;
 };
 
 export const checkLogin = async (): Promise<User> => {
