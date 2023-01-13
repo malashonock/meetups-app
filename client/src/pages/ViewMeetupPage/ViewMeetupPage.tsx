@@ -11,8 +11,8 @@ import {
 } from 'components';
 import { MeetupStatus, ShortUser } from 'model';
 import { parseDateString } from 'helpers';
-import { useMeetupQuery } from 'hooks';
 import { NotFoundPage } from 'pages';
+import { useMeetupQuery } from 'hooks';
 
 import styles from './ViewMeetupPage.module.scss';
 import defaultImage from 'assets/images/default-image.jpg';

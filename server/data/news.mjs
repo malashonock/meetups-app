@@ -8,7 +8,7 @@ export const fixedNews = [
     text:
       '🙌 The SaM Solutions office in #Vilnius celebrates a one-year anniversary.' +
       ' 🎉 Congratulations to our colleagues! Keep it up! More new victories and achievements ahead. 💪 #SaMSolutions',
-    image: 'http://localhost:8080/assets/images/news1.jpg',
+    imageUrl: 'http://localhost:8080/assets/images/news1.jpg',
   },
 ];
 
@@ -17,7 +17,7 @@ const createNews = () => ({
   publicationDate: faker.date.between('2020-01-01', '2021-12-12'),
   title: faker.company.catchPhrase(),
   text: faker.lorem.paragraphs(3),
-  image: faker.image.people(320, 320, true),
+  imageUrl: faker.image.people(320, 320, true),
 });
 
 export const generateNews = (count) => {
