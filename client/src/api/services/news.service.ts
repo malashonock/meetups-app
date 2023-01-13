@@ -16,15 +16,13 @@ export const createNewsArticle = async (
 ): Promise<News> => {
   const formData = new FormData();
 
-  Object.entries(formData).forEach(([name, value]) => formData.append(name, value));
-
-  const { data: createdArticle } = await httpClient.post<News>('/news', {
-    ...formData,
-  }, {
-    headers: {
-      'Content-Type': 'muiltipart/form-data',
-    },
+  Object.entries(newArticleData).forEach(([name, value]) => {
+    if (value !== null) {
+      formData.append(name, value);
+    }
   });
+
+  const { data: createdArticle } = await httpClient.post<News>('/news', formData);
   return createdArticle;
 };
 
