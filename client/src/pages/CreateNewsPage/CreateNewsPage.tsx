@@ -14,6 +14,8 @@ import {
 
 import styles from './CreateNewsPage.module.scss';
 import { Form, Formik } from 'formik';
+import { NewNews, News } from 'model';
+import { createNewsArticle } from 'api';
 
 export const CreateNewsPage = (): JSX.Element => {
   const navigate = useNavigate();
@@ -21,7 +23,7 @@ export const CreateNewsPage = (): JSX.Element => {
   const handleBack = (): void => navigate(-1);
 
   return (
-    <Formik
+    <Formik<NewNews>
       initialValues={{
         title: '',
         text: '',
@@ -31,8 +33,9 @@ export const CreateNewsPage = (): JSX.Element => {
         title: yup.string().required('Введите заголовок новости'),
         text: yup.string().required('Введите текст новости'),
       })}
-      onSubmit={(values, { setSubmitting }): void => {
-        alert(JSON.stringify(values));
+      onSubmit={async (newArticleData, { setSubmitting }): Promise<void> => {
+        const createdArticle: News = await createNewsArticle(newArticleData);
+        alert(JSON.stringify(createdArticle));
         setSubmitting(false);
       }}
     >

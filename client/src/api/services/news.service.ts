@@ -14,8 +14,16 @@ export const getNewsArticle = async (id: string): Promise<News> => {
 export const createNewsArticle = async (
   newArticleData: NewNews,
 ): Promise<News> => {
+  const formData = new FormData();
+
+  Object.entries(formData).forEach(([name, value]) => formData.append(name, value));
+
   const { data: createdArticle } = await httpClient.post<News>('/news', {
-    data: newArticleData,
+    data: formData,
+  }, {
+    headers: {
+      'Content-Type': 'muiltipart/form-data',
+    },
   });
   return createdArticle;
 };
