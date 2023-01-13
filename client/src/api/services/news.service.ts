@@ -19,7 +19,7 @@ export const createNewsArticle = async (
   Object.entries(formData).forEach(([name, value]) => formData.append(name, value));
 
   const { data: createdArticle } = await httpClient.post<News>('/news', {
-    data: formData,
+    ...formData,
   }, {
     headers: {
       'Content-Type': 'muiltipart/form-data',
@@ -32,7 +32,7 @@ export const updateNewsArticle = async (
   updatedArticleData: News,
 ): Promise<News> => {
   const { data: updatedArticle } = await httpClient.put<News>('/news', {
-    data: updatedArticleData,
+    ...updatedArticleData,
   });
   return updatedArticle;
 };
