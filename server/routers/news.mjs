@@ -2,6 +2,24 @@ import express from 'express';
 import faker from 'faker';
 import { ensureAuthenticated } from '../ensureAthenticated.mjs';
 import { isModerator } from '../isModerator.mjs';
+import multer from 'multer';
+import url from 'url';
+import path from 'path';
+
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const storage = multer.diskStorage({
+  destination: path.join(__dirname, '../public/assets/images'),
+  filename: (req, file, cb) => {
+    const randomString = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, randomString + path.extname(file.originalname));
+  },
+});
+
+const upload = multer({
+  storage,
+})
 
 export const newsRoutes = (db) => {
   const newsRouter = express.Router();
@@ -22,24 +40,33 @@ export const newsRoutes = (db) => {
     res.json(news);
   });
 
-  newsRouter.post('/', ensureAuthenticated, isModerator, async (req, res) => {
+  newsRouter.post('/', ensureAuthenticated, isModerator, upload.single('image'), async (req, res) => {
     try {
       const {
         title,
         text,
-        image
       } = req.body;
-
+      
       if (!title || !text) {
         return res.status(400).json({ message: 'Invalid request data' });
       }
+
+      const image = req.file;
+      const imageUrl = image
+        ? new URL(
+          path.relative(
+            path.join(__dirname, '../public'),
+            image.path,
+          ),
+          'http://localhost:8080',
+        ) : '';
 
       const news = {
         id: faker.datatype.uuid(),
         publicationDate: new Date().toISOString(),
         title,
         text,
-        image: image || null
+        imageUrl: imageUrl.toString() || null
       };
 
       db.data.news.push(news);
