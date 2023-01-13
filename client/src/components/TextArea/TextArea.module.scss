@@ -10,11 +10,14 @@
     resize: none;
     overflow: hidden;
     height: inherit;
-    padding-bottom: 30px;
+
+    &.showCharCounter {
+      padding-bottom: 30px;
+    }
   }
 }
 
-.counter {
+.charCounter {
   position: absolute;
   right: 13px;
   bottom: 13px;
@@ -25,7 +28,7 @@
   @extend .line-height-xs;
   @extend .font-color-gray-03;
 
-  .letterCount {
+  .charCount {
     @extend .font-weight-medium;
     @extend .font-color-gray-02;
   }

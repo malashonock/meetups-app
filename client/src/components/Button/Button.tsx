@@ -20,7 +20,11 @@ export const Button = ({
 }: ButtonProps): JSX.Element => (
   <button
     {...nativeButtonProps}
-    className={classNames(styles.button, styles[variant])}
+    className={classNames(
+      nativeButtonProps.className,
+      styles.button, 
+      styles[variant],
+    )}
   >
     {children}
   </button>

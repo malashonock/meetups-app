@@ -101,30 +101,22 @@ SingleLine_WithSuccessAndHintText.args = {
 const multiLineFieldArgs: TextFieldProps = {
   name: 'description',
   labelText: 'Description',
-  placeholderText: 'Enter meetup description',
-  multiline: true,
-  maxLetterCount: 500,
-};
-
-export const MultiLine_ErrorTextOnly = Template.bind({});
-MultiLine_ErrorTextOnly.args = {
-  ...multiLineFieldArgs,
-};
-
-export const MultiLine_WithSuccessText = Template.bind({});
-MultiLine_WithSuccessText.args = {
-  ...multiLineFieldArgs,
   successText: 'Input accepted',
-};
-
-export const MultiLine_WithHintText = Template.bind({});
-MultiLine_WithHintText.args = {
-  ...multiLineFieldArgs,
+  placeholderText: 'Enter meetup description',
   hintText: 'First name will be used as your login',
+  multiline: true,
 };
 
-export const MultiLine_WithSuccessAndHintText = Template.bind({});
-MultiLine_WithSuccessAndHintText.args = {
-  ...MultiLine_WithSuccessText.args,
-  ...MultiLine_WithHintText.args,
+export const MultiLine_NoCharCounter = Template.bind({});
+MultiLine_NoCharCounter.args = {
+  ...multiLineFieldArgs,
+};
+
+export const MultiLine_WithCharCounter = Template.bind({});
+MultiLine_WithCharCounter.args = {
+  ...MultiLine_NoCharCounter.args,
+  ...{
+    showCharCounter: true,
+    maxCharCount: 500,
+  },
 };

@@ -1,10 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import { Header, meetupTabsLinks, meetupTabToDescriptor } from 'components';
-import { MeetupPage, NotFoundPage, NewsPage, ViewMeetupPage } from 'pages';
+import { MeetupPage, NotFoundPage, NewsPage, ViewMeetupPage, ViewNewsPage } from 'pages';
 
 import styles from './App.module.scss';
-import { ViewNewsPage } from 'pages/ViewNewsPage/ViewNewsPage';
 
 function App() {
   return (
