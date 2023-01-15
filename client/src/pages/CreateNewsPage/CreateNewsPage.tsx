@@ -33,8 +33,8 @@ export const CreateNewsPage = (): JSX.Element => {
         title: yup.string().required('Введите заголовок новости'),
         text: yup.string().required('Введите текст новости'),
       })}
-      onSubmit={async (newArticleData, { setSubmitting }): Promise<void> => {
-        const createdArticle: News = await createNewsArticle(newArticleData);
+      onSubmit={async (newArticleData: NewNews, { setSubmitting }): Promise<void> => {
+        await createNewsArticle(newArticleData);
         setSubmitting(false);
         navigate('/news');
       }}
