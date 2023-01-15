@@ -6,6 +6,7 @@ import { ReactComponent as UploadIcon } from './upload.svg';
 import { getFileSizeString } from 'helpers';
 import { FileWithUrl } from 'types';
 import styles from './ImageDropbox.module.scss';
+import { getFileWithUrl } from 'helpers/file';
 
 const ACCEPT_FORMATS = ['.jpg', '.jpeg', '.png'];
 
@@ -42,12 +43,7 @@ export const ImageDropbox = ({
 
   const handleAcceptedDrop = (acceptedFiles: File[]): void => {
     if (acceptedFiles.length > 0) {
-      const acceptedFile = acceptedFiles[0];
-
-      const image: FileWithUrl = Object.assign(acceptedFile, {
-        url: URL.createObjectURL(acceptedFile),
-      });
-
+      const image: FileWithUrl = getFileWithUrl(acceptedFiles[0]);
       onDrop(image);
     }
   };
