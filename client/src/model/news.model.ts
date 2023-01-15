@@ -6,10 +6,6 @@ export interface News {
   imageUrl: string | null;
 }
 
-export type NewNews = Omit<News, 
-  | 'id'
-  | 'publicationDate'
-  | 'imageUrl'
-> & {
-  image: File | null;
-} ;
+export type NewNews = Pick<News, 'title' | 'text'> & {
+    image: File | null;
+  };
