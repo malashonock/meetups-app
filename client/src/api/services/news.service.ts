@@ -27,11 +27,18 @@ export const createNewsArticle = async (
 };
 
 export const updateNewsArticle = async (
-  updatedArticleData: News,
+  id: string,
+  updatedArticleData: NewNews,
 ): Promise<News> => {
-  const { data: updatedArticle } = await httpClient.put<News>('/news', {
-    ...updatedArticleData,
+  const formData = new FormData();
+
+  Object.entries(updatedArticleData).forEach(([name, value]) => {
+    if (value !== null) {
+      formData.append(name, value);
+    }
   });
+
+  const { data: updatedArticle } = await httpClient.put<News>(`/news/${id}`, formData);
   return updatedArticle;
 };
 
