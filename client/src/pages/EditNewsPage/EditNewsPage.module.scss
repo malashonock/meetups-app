@@ -1,0 +1,73 @@
+@use 'sass:color';
+@import '~style/colors';
+@import '~style/typography';
+@import '~style/mixins';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 30px;
+}
+
+.section {
+  border-radius: 5px;
+  box-shadow: 0px 4px 7px color.change($gray-07, $alpha: 0.4);
+}
+
+.textSection {
+  @extend .section;
+
+  background-color: $white-color;
+}
+
+.heading {
+  @extend .font-family-primary;
+  @extend .font-weight-bold;
+  @extend .font-size-xl;
+  @extend .line-height-m;
+  @extend .font-color-dark;
+  @extend .text-align-center;
+}
+
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 24px;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  row-gap: 26px;
+
+  padding: 33px 40px 43px 40px;
+}
+
+.title {
+  @extend .font-family-secondary;
+  @extend .font-weight-medium;
+  @extend .font-size-l;
+  @extend .line-height-xxl;
+  @extend .font-color-dark;
+  @extend .letter-spacing-smaller;
+}
+
+.text {
+  @extend .font-family-primary;
+  @extend .font-weight-regular;
+  @extend .font-size-s;
+  @extend .line-height-m;
+  @extend .font-color-dark;
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  padding: 16px 40px;
+}
+
+.actionButton {
+  width: 152px;
+}
