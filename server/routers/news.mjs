@@ -3,22 +3,36 @@ import faker from 'faker';
 import { ensureAuthenticated } from '../ensureAthenticated.mjs';
 import { isModerator } from '../isModerator.mjs';
 import multer from 'multer';
-import url from 'url';
 import path from 'path';
+import fs from 'fs';
+import { getUrlFromPublicPath } from '../utils.mjs';
+import { PUBLIC_DIR } from '../constants.mjs';
 
-const __filename = url.fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const UPLOAD_DIR = path.join(PUBLIC_DIR, 'assets', 'images');
 
 const storage = multer.diskStorage({
-  destination: path.join(__dirname, '../public/assets/images'),
+  destination: UPLOAD_DIR,
   filename: (req, file, cb) => {
-    const randomString = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, randomString + path.extname(file.originalname));
+    let fileName = file.originalname === 'blob'
+      ? faker.datatype.uuid()
+      : file.originalname;
+
+    cb(null, fileName);
   },
 });
 
 const upload = multer({
   storage,
+  fileFilter: (req, file, cb) => {
+    const fileExists = fs.existsSync(path.join(UPLOAD_DIR, file.originalname));
+
+    if (fileExists) {
+      cb(null, false); // skip saving file
+      return;
+    }
+
+  cb(null, true); // save file
+  }
 })
 
 export const newsRoutes = (db) => {
@@ -40,72 +54,79 @@ export const newsRoutes = (db) => {
     res.json(news);
   });
 
-  newsRouter.post('/', ensureAuthenticated, isModerator, upload.single('image'), async (req, res) => {
-    try {
-      const {
-        title,
-        text,
-      } = req.body;
-      
-      if (!title || !text) {
-        return res.status(400).json({ message: 'Invalid request data' });
+  newsRouter.post(
+    '/',
+    ensureAuthenticated,
+    isModerator,
+    upload.single('image'),
+    async (req, res) => {
+      try {
+        const {
+          title,
+          text,
+        } = req.body;
+        
+        if (!title || !text) {
+          return res.status(400).json({ message: 'Invalid request data' });
+        }
+
+        const image = req.file;
+        const imageUrl = image ? getUrlFromPublicPath(image.path) : null;
+
+        const news = {
+          id: faker.datatype.uuid(),
+          publicationDate: new Date().toISOString(),
+          title,
+          text,
+          imageUrl,
+        };
+
+        db.data.news.push(news);
+
+        await db.write();
+        res.json(news);
+      } catch (e) {
+        res.status(500).json({ message: 'Server error' });
       }
-
-      const image = req.file;
-      const imageUrl = image
-        ? new URL(
-          path.relative(
-            path.join(__dirname, '../public'),
-            image.path,
-          ),
-          'http://localhost:8080',
-        ) : '';
-
-      const news = {
-        id: faker.datatype.uuid(),
-        publicationDate: new Date().toISOString(),
-        title,
-        text,
-        imageUrl: imageUrl.toString() || null
-      };
-
-      db.data.news.push(news);
-
-      await db.write();
-      res.json(news);
-    } catch (e) {
-      res.status(500).json({ message: 'Server error' });
     }
-  });
+  );
 
-  newsRouter.put('/:id', ensureAuthenticated, isModerator, async (req, res) => {
-    try {
-      const newsId = req.params.id;
-      const index = db.data.news.findIndex(n => n.id === newsId);
+  newsRouter.put(
+    '/:id',
+    ensureAuthenticated,
+    isModerator,
+    upload.single('image'),
+    async (req, res) => {
+      try {
+        const newsId = req.params.id;
+        const index = db.data.news.findIndex(n => n.id === newsId);
 
-      if (!(index >= 0)) {
-        return res.status(404).json({ message: 'News not found' });
+        if (!(index >= 0)) {
+          return res.status(404).json({ message: 'News not found' });
+        }
+
+        const news = db.data.news[index];
+
+        const title = req.body.title || news.title;
+        const text = req.body.text || news.text;
+
+        const image = req.file;
+        const imageUrl = image ? getUrlFromPublicPath(image.path) : news.imageUrl;
+
+        db.data.news[index] = {
+          ...db.data.news[index],
+          title,
+          text,
+          imageUrl,
+        };
+
+        await db.write();
+        res.json(db.data.news[index]);
+      } catch (e) {
+        res.status(500).json({ message: 'Server error' });
       }
-
-      const news = db.data.news[index];
-
-      const title = req.body.title || news.title;
-      const text = req.body.text || news.text;
-      const image = req.body.image || news.image;
-
-      db.data.news[index] = {
-        ...db.data.news[index],
-        title,
-        text,
-        image
-      };
-
-      await db.write();
-      res.json(db.data.news[index]);
-    } catch (e) {
-      res.status(500).json({ message: 'Server error' });
     }
-  });
+  );
 
   newsRouter.delete('/:id', ensureAuthenticated, isModerator, async (req, res) => {
     try {

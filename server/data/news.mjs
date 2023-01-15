@@ -1,4 +1,9 @@
 import faker from 'faker';
+import { downloadFile, getUrlFromPublicPath } from '../utils.mjs';
+import path from 'path';
+import { PUBLIC_DIR } from '../constants.mjs';
+
+const DOWNLOAD_DIR = path.join(PUBLIC_DIR, 'assets', 'images');
 
 export const fixedNews = [
   {
@@ -12,14 +17,25 @@ export const fixedNews = [
   },
 ];
 
-const createNews = () => ({
-  id: faker.datatype.uuid(),
-  publicationDate: faker.date.between('2020-01-01', '2021-12-12'),
-  title: faker.company.catchPhrase(),
-  text: faker.lorem.paragraphs(3),
-  imageUrl: faker.image.people(320, 320, true),
-});
+const createNews = async () => {
+  const imagePath = await downloadFile(faker.image.people(640, 480, true), DOWNLOAD_DIR);
+  const imageUrl = getUrlFromPublicPath(imagePath);
 
-export const generateNews = (count) => {
-  return Array.from({ length: count }, createNews);
+  const randomNews = {
+    id: faker.datatype.uuid(),
+    publicationDate: faker.date.between('2020-01-01', '2021-12-12'),
+    title: faker.company.catchPhrase(),
+    text: faker.lorem.paragraphs(3),
+    imageUrl,
+  };
+
+  return randomNews;
+};
+
+export const generateNews = async (count) => {
+  return await Promise.all(
+    Array.from({ length: count }, async () => {
+      return await createNews();
+    })
+  );
 };
