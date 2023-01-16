@@ -19,6 +19,7 @@
   @extend .line-height-xs;
   @extend .text-align-center;
 
+  outline: none;
   cursor: pointer;
 
   @include smooth-transition(all);

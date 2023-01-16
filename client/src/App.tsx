@@ -1,10 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import { Header, meetupTabsLinks, meetupTabToDescriptor } from 'components';
-import { MeetupPage, NotFoundPage, NewsPage, ViewMeetupPage } from 'pages';
+import { MeetupPage, NotFoundPage, NewsPage, ViewMeetupPage, ViewNewsPage, LoginPage } from 'pages';
 
 import styles from './App.module.scss';
-import { ViewNewsPage } from 'pages/ViewNewsPage/ViewNewsPage';
 
 function App() {
   return (
@@ -13,6 +12,7 @@ function App() {
       <main className={styles.container}>
         <Routes>
           <Route path="/" element={<Navigate replace to="/meetups" />} />
+          <Route path="login" element={<LoginPage />} />
           <Route path="meetups">
             <Route element={<MeetupPage />}>
               <Route

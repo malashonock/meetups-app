@@ -12,3 +12,7 @@ export interface User {
 }
 
 export type ShortUser = Pick<User, 'id' | 'name' | 'surname'>;
+
+export type FullUser = User & {
+  password: string;
+};
