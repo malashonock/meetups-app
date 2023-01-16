@@ -14,9 +14,15 @@ export const getNewsArticle = async (id: string): Promise<News> => {
 export const createNewsArticle = async (
   newArticleData: NewNews,
 ): Promise<News> => {
-  const { data: createdArticle } = await httpClient.post<News>('/news', {
-    ...newArticleData,
+  const formData = new FormData();
+
+  Object.entries(newArticleData).forEach(([name, value]) => {
+    if (value !== null) {
+      formData.append(name, value);
+    }
   });
+
+  const { data: createdArticle } = await httpClient.post<News>('/news', formData);
   return createdArticle;
 };
 

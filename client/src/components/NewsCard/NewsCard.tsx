@@ -1,14 +1,16 @@
 import { Typography, TypographyComponent } from 'components';
 import { parseDateString } from 'helpers';
 import { News } from 'model';
+
 import styles from './NewsCard.module.scss';
+import defaultImage from 'assets/images/default-background-blue.jpg';
 
 interface NewsCardProps {
   news: News;
 }
 
 export const NewsCard = ({ news }: NewsCardProps): JSX.Element => {
-  const { publicationDate, title, text, image } = news;
+  const { publicationDate, title, text, imageUrl } = news;
 
   const { formattedDate } = parseDateString(publicationDate, {
     dateOptions: { dateStyle: 'short' },
@@ -17,7 +19,7 @@ export const NewsCard = ({ news }: NewsCardProps): JSX.Element => {
   return (
     <article className={styles.news}>
       <figure className={styles.image}>
-        <img src={image} alt={title} />
+        <img src={imageUrl ?? defaultImage} alt={title} />
       </figure>
       <div className={styles.content}>
         <Typography

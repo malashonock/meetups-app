@@ -55,7 +55,7 @@ export const LoginPage = (): JSX.Element => {
                   <AnonymousUserIcon className={styles.image} />
                 </figure>
                   <TextField name="username" labelText="Имя пользователя" />
-                  <TextField name="password" labelText="Пароль" multiline />
+                  <TextField name="password" labelText="Пароль" />
                   <Button 
                     type="submit"
                     variant={ButtonVariant.Primary} 

@@ -30,14 +30,14 @@ export const ViewNewsPage = () => {
     return <NotFoundPage />;
   }
 
-  const { image, title, text } = newsArticle;
+  const { imageUrl, title, text } = newsArticle;
 
   const renderImage = (): JSX.Element => {
     return (
       <figure className={classNames(styles.section, styles.imageWrapper)}>
         <img
           className={styles.image}
-          src={image ?? defaultImage}
+          src={imageUrl ?? defaultImage}
           alt="Изображение новости"
         />
       </figure>
