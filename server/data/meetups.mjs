@@ -25,7 +25,6 @@ export const fixedMeetups = [
     place: "630 Goyette Causeway",
     goCount: 64,
     status: "CONFIRMED",
-    isOver: false,
     meta: {}
   },
 ];
@@ -48,7 +47,6 @@ const generateMeetup = (users) => {
     place: faker.address.streetAddress(),
     goCount,
     status: faker.random.arrayElement(["DRAFT", "REQUEST", "CONFIRMED"]),
-    isOver: false,
     meta: {}
   };
 };

@@ -33,7 +33,6 @@ export const meetupsRoutes = (db) => {
         place: req.body.place,
         goCount: 0,
         status: "REQUEST",
-        isOver: false,
         image: req.body.image,
       };
 

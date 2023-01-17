@@ -35,7 +35,6 @@ const meetupTopicNoExcerpt: Meetup = {
   modified: new Date().toLocaleString(),
   speakers: [],
   goCount: 23,
-  isOver: false,
 };
 
 const meetupTopicWithExcerpt: Meetup = {
@@ -62,7 +61,6 @@ const meetupUpcoming: Meetup = {
 
 const meetupFinished: Meetup = {
   ...meetupUpcoming,
-  isOver: true,
 };
 
 export const MeetupCard_Topic_NoExcerpt = Template.bind({});

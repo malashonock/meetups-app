@@ -10,7 +10,7 @@ import {
   UserPreviewVariant,
   VotesCount,
 } from 'components';
-import { parseDateString } from 'helpers';
+import { isPast, parseDateString } from 'helpers';
 import { Meetup, MeetupStatus } from 'model';
 
 import styles from './MeetupCard.module.scss';
@@ -35,7 +35,6 @@ export const MeetupCard = ({ meetup }: MeetupCardProps): JSX.Element => {
     subject,
     excerpt,
     goCount,
-    isOver,
     id,
   } = meetup;
 
@@ -60,7 +59,7 @@ export const MeetupCard = ({ meetup }: MeetupCardProps): JSX.Element => {
       case MeetupStatus.REQUEST:
         return MeetupCardVariant.OnModeration;
       case MeetupStatus.CONFIRMED:
-        return isOver ? MeetupCardVariant.Finished : MeetupCardVariant.Upcoming;
+        return start && isPast(start) ? MeetupCardVariant.Finished : MeetupCardVariant.Upcoming;
     }
   };
 

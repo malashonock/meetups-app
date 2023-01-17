@@ -18,7 +18,6 @@ export interface Meetup {
   place?: string;
   goCount: number;
   status: MeetupStatus;
-  isOver: boolean;
   image?: File;
   votedUsers?: ShortUser[];
 }

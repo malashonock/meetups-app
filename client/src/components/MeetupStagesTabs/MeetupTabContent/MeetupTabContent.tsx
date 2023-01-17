@@ -10,6 +10,7 @@ import {
 } from 'components';
 import { getMeetups } from 'api';
 import { Meetup, MeetupStatus } from 'model';
+import { isPast } from 'helpers';
 
 import styles from './MeetupTabContent.module.scss';
 
@@ -40,12 +41,20 @@ export const MeetupTabContent = ({ variant }: MeetupTabContentProps) => {
           );
           break;
         case MeetupCardVariant.Upcoming:
+          setMeetups(
+            meetups.filter(
+              (meetup) =>
+                meetup.status === MeetupStatus.CONFIRMED &&
+                !meetup.start || (meetup.start && !isPast(meetup.start)),
+            ),
+          );
+          break;
         case MeetupCardVariant.Finished:
           setMeetups(
             meetups.filter(
               (meetup) =>
                 meetup.status === MeetupStatus.CONFIRMED &&
-                meetup.isOver === (variant === MeetupCardVariant.Finished),
+                meetup.start && isPast(meetup.start),
             ),
           );
           break;
