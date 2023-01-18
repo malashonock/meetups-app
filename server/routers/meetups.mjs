@@ -3,6 +3,8 @@ import { ensureAuthenticated } from "../middleware/ensureAthenticated.mjs";
 import faker from "faker";
 import { isDateValid } from "../utils.mjs";
 import { compareDates } from "../utils.mjs";
+import { upload } from '../middleware/upload.mjs';
+import { getUrlFromPublicPath } from '../utils.mjs';
 
 export const meetupsRoutes = (db) => {
   const meetupsRouter = express.Router();
@@ -10,53 +12,61 @@ export const meetupsRoutes = (db) => {
     res.send(db.data.meetups);
   });
 
-  meetupsRouter.post("/", ensureAuthenticated, async (req, res) => {
-    //TODO: validate model data
-    try {
-      const response = {
-        id: faker.datatype.uuid(),
-        modified: req.body.modified,
-        start: req.body.start,
-        finish: req.body.finish,
-        author: {
-          id: req.body.author.id,
-          name: req.body.author.name,
-          surname: req.body.author.surname,
-        },
-        speakers: req.body.speakers.map((s) => ({
-          id: faker.datatype.uuid(),
-          name: s.name,
-          surname: s.surname,
-        })),
-        subject: req.body.subject,
-        excerpt: req.body.excerpt,
-        place: req.body.place,
-        goCount: 0,
-        status: "REQUEST",
-        image: req.body.image,
-      };
+  meetupsRouter.post(
+    "/", 
+    ensureAuthenticated, 
+    upload.single('image'), 
+    async (req, res) => {
+      //TODO: validate model data
+      try {
+        const image = req.file;
+        const imageUrl = image ? getUrlFromPublicPath(image.path) : null;
 
-      if (
-        (isDateValid(req.body.start) || req.body.start === undefined) &&
-        (isDateValid(req.body.finish) || req.body.finish === undefined) &&
-        compareDates(req.body.start, req.body.finish)
-      ) {
-        db.data.participants[response.id] = [];
-        db.data.votedUsers[response.id] = [];
-        const meetup = db.data.meetups.push(response);
-        await db.write();
-        res.send(response);
-      } else {
-        res
-          .status(500)
-          .send(
-            "Error. Dates must be valid and start date must be earlier than finish date!"
-          );
+        const response = {
+          id: faker.datatype.uuid(),
+          modified: req.body.modified,
+          start: req.body.start,
+          finish: req.body.finish,
+          author: {
+            id: req.body.author.id,
+            name: req.body.author.name,
+            surname: req.body.author.surname,
+          },
+          speakers: req.body.speakers.map((s) => ({
+            id: faker.datatype.uuid(),
+            name: s.name,
+            surname: s.surname,
+          })),
+          subject: req.body.subject,
+          excerpt: req.body.excerpt,
+          place: req.body.place,
+          goCount: 0,
+          status: "REQUEST",
+          imageUrl,
+        };
+
+        if (
+          (isDateValid(req.body.start) || req.body.start === undefined) &&
+          (isDateValid(req.body.finish) || req.body.finish === undefined) &&
+          compareDates(req.body.start, req.body.finish)
+        ) {
+          db.data.participants[response.id] = [];
+          db.data.votedUsers[response.id] = [];
+          const meetup = db.data.meetups.push(response);
+          await db.write();
+          res.send(response);
+        } else {
+          res
+            .status(500)
+            .send(
+              "Error. Dates must be valid and start date must be earlier than finish date!"
+            );
+        }
+      } catch (err) {
+        res.status(500).send(err);
       }
-    } catch (err) {
-      res.status(500).send(err);
     }
-  });
+  );
 
   meetupsRouter.put("/", ensureAuthenticated, async (req, res) => {
         const index = db.data.meetups.findIndex((it) => it.id === req.body.id);
