@@ -20,9 +20,48 @@ export const getMeetup = async (id: string): Promise<Meetup> => {
 export const createMeetup = async (
   newMeetupData: NewMeetup,
 ): Promise<Meetup> => {
-  const { data: createdMeetup } = await httpClient.post<Meetup>('/meetups', {
-    ...newMeetupData,
+  const formData = new FormData();
+
+  Object.entries(newMeetupData).forEach(([name, value]) => {
+    let valueToSend: string | File;
+
+    switch (typeof value) {
+      case 'string':
+        if (name === 'author') {
+          valueToSend = JSON.stringify({
+            id: 'uuu-bbb',
+            name: 'chief',
+            surname: 'Blick',
+          });
+          break;
+        }
+
+        valueToSend = value;
+        break;
+      case 'object':
+        if (value instanceof File) {
+          valueToSend = value;
+          break;
+        }
+
+        if (value instanceof Date) {
+          valueToSend = value.toISOString();
+          break;
+        }
+
+        valueToSend = JSON.stringify(value);
+        break;
+      default:
+        valueToSend = value.toString();
+        break;
+    }
+
+    if (value !== null) {
+      formData.append(name, valueToSend);
+    }
   });
+
+  const { data: createdMeetup } = await httpClient.post<Meetup>('/meetups', formData);
   return createdMeetup;
 };
 
