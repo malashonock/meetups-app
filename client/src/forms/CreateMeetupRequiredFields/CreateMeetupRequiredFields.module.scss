@@ -1,0 +1,80 @@
+@use 'sass:color';
+@import '~style/colors';
+@import '~style/typography';
+@import '~style/mixins';
+
+.container {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  padding-bottom: 15px;
+}
+
+.section {
+  border-radius: 5px;
+  box-shadow: 0px 6px 12px color.change($black, $alpha: 0.1);
+}
+
+.textSection {
+  @extend .section;
+
+  background-color: $white;
+}
+
+.heading {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+}
+
+.title {
+  @extend .font-family-primary;
+  @extend .font-weight-bold;
+  @extend .font-size-xl;
+  @extend .line-height-m;
+  @extend .font-color-dark;
+  @extend .text-align-center;
+}
+
+.subTitle {
+  @extend .font-family-primary;
+  @extend .font-weight-regular;
+  @extend .font-size-xs;
+  @extend .line-height-3xl;
+  @extend .font-color-gray-01;
+  @extend .text-align-center;
+}
+
+.contentWrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 24px;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+
+  padding: 24px 40px 32px 40px;
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  padding: 16px 40px;
+}
+
+.actionButton {
+  &.back {
+    width: 105px;
+  }
+
+  &.next {
+    width: 152px;
+    box-shadow: 0px 6px 12px color.change($blue-02, $alpha: 0.25);
+  }
+}
