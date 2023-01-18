@@ -68,6 +68,7 @@ export const DateTimePicker = ({
           name={name}
           selected={value}
           onChange={handleChange}
+          onSelect={handleChange} // hack to make onChange fire
           onBlur={handleBlur}
           showTimeSelect
           dateFormat="d MMM yyyy HH:mm"
