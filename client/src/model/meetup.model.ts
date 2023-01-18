@@ -14,12 +14,27 @@ export interface Meetup {
   author: ShortUser;
   speakers: ShortUser[];
   subject: string;
-  excerpt?: string;
+  excerpt: string;
   place?: string;
   goCount: number;
   status: MeetupStatus;
-  image?: File;
+  imageUrl: string | null;
   votedUsers?: ShortUser[];
 }
 
-export type NewMeetup = Omit<Meetup, 'id'>;
+export type NewMeetup = Omit<Meetup,
+  | 'id'
+  | 'modified'
+  | 'start'
+  | 'finish'
+  | 'imageUrl'
+  | 'author'
+  | 'speakers'
+> & {
+  modified: Date | null;
+  start: Date | null;
+  finish: Date | null;
+  image: File | null;
+  author: string; // TODO: implement as ShortUser
+  speakers: string[]; // TODO implement as ShortUser[]
+};
