@@ -19,28 +19,36 @@ export const meetupsRoutes = (db) => {
     async (req, res) => {
       //TODO: validate model data
       try {
+        const {
+          modified,
+          start,
+          finish,
+          author,
+          speakers,
+          subject,
+          excerpt,
+          place,
+          goCount,
+        } = req.body;
+
         const image = req.file;
         const imageUrl = image ? getUrlFromPublicPath(image.path) : null;
 
         const response = {
           id: faker.datatype.uuid(),
-          modified: req.body.modified,
-          start: req.body.start,
-          finish: req.body.finish,
-          author: {
-            id: req.body.author.id,
-            name: req.body.author.name,
-            surname: req.body.author.surname,
-          },
-          speakers: req.body.speakers.map((s) => ({
-            id: faker.datatype.uuid(),
-            name: s.name,
-            surname: s.surname,
-          })),
-          subject: req.body.subject,
-          excerpt: req.body.excerpt,
-          place: req.body.place,
-          goCount: 0,
+          modified,
+          start,
+          finish,
+          author: JSON.parse(author),
+          speakers: JSON.parse(speakers)
+            .map((speaker) => ({
+              id: faker.datatype.uuid(),
+              ...speaker,
+            })),
+          subject,
+          excerpt,
+          place,
+          goCount: Number(goCount),
           status: "REQUEST",
           imageUrl,
         };
