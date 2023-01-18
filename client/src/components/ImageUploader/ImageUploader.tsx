@@ -11,13 +11,15 @@ import { FileWithUrl } from 'types';
 type ImageUploaderProps = InputFieldExternalProps & {
   name: string;
   variant?: ImagePreviewMode;
+  containerAttributes?: Omit<React.HTMLAttributes<HTMLDivElement>, "children">;
 };
 
 export const ImageUploader = ({
   variant = ImagePreviewMode.Thumbnail,
+  containerAttributes,
   ...inputFieldProps
 }: ImageUploaderProps): JSX.Element => (
-  <InputField {...inputFieldProps}>
+  <InputField containerAttributes={containerAttributes} {...inputFieldProps}>
     {({
       field: { name, value },
       form: { setFieldValue },
