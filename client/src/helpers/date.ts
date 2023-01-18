@@ -78,3 +78,6 @@ export function isPast(dateOrString: Date | string): boolean {
   const date = dateOrString instanceof Date ? dateOrString : new Date(dateOrString);
   return date <= now;
 }
+
+export const SECONDS_IN_MINUTE = 60;
+export const MILLISECONDS_IN_SECOND = 1_000;
