@@ -54,7 +54,7 @@
     }
   }
 
-  &.confirmed {
+  &.passed {
     @extend .font-color-gray-02;
     .number {
       background-color: $green-04;

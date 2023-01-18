@@ -1,14 +1,13 @@
 .stepper {
   width: 100%;
+  padding: 0 20px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  margin-top: 50px;
 
   &Body {
-    width: calc(100% * var(--numOfSteps));
+    width: 100%;
     display: flex;
-    overflow: hidden;
-    transform: translateX(calc(100% / var(--numOfSteps) * var(--currentStep)));
+    flex-direction: row;
   }
 }
