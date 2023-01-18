@@ -1,7 +1,17 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import { Header, meetupTabsLinks, meetupTabToDescriptor } from 'components';
-import { LoginPage, MeetupPage, NotFoundPage, NewsPage, ViewMeetupPage, ViewNewsPage, CreateNewsPage } from 'pages';
+
+import {
+  LoginPage, 
+  MeetupPage, 
+  NotFoundPage, 
+  NewsPage, 
+  ViewMeetupPage, 
+  ViewNewsPage, 
+  CreateNewsPage, 
+  CreateMeetupPage
+} from 'pages';
 
 import styles from './App.module.scss';
 import { EditNewsPage } from 'pages/EditNewsPage/EditNewsPage';
@@ -28,7 +38,7 @@ function App() {
                 />
               ))}
             </Route>
-            <Route path="create" element={<div>Create meetup page</div>} />
+            <Route path="create" element={<CreateMeetupPage />} />
             <Route path=":id">
               <Route index element={<ViewMeetupPage />} />
               <Route path="edit" element={<div>Edit meetup</div>} />
