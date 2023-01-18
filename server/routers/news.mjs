@@ -1,7 +1,7 @@
 import express from 'express';
 import faker from 'faker';
-import { ensureAuthenticated } from '../ensureAthenticated.mjs';
-import { isModerator } from '../isModerator.mjs';
+import { ensureAuthenticated } from '../middleware/ensureAthenticated.mjs';
+import { isModerator } from '../middleware/isModerator.mjs';
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';

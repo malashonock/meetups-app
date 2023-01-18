@@ -1,5 +1,5 @@
 import express from "express";
-import { ensureAuthenticated } from "../ensureAthenticated.mjs";
+import { ensureAuthenticated } from "../middleware/ensureAthenticated.mjs";
 import faker from "faker";
 import { isDateValid } from "../utils.mjs";
 import { compareDates } from "../utils.mjs";

@@ -1,6 +1,6 @@
 import express from "express";
 import passport from "passport";
-import { ensureAuthenticated } from "../ensureAthenticated.mjs";
+import { ensureAuthenticated } from "../middleware/ensureAthenticated.mjs";
 export const loginRoutes = express.Router();
 
 // cookie-based authentication
