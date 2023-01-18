@@ -1,5 +1,10 @@
 import faker from "faker";
 import {fixedUsers, getRandomUser} from "./users.mjs";
+import { downloadFile, getUrlFromPublicPath } from '../utils.mjs';
+import path from 'path';
+import { PUBLIC_DIR } from '../constants.mjs';
+
+const DOWNLOAD_DIR = path.join(PUBLIC_DIR, 'assets', 'images');
 
 const convertToShortUser = (user) => {
   const { id, name, surname } = user
@@ -25,16 +30,20 @@ export const fixedMeetups = [
     place: "630 Goyette Causeway",
     goCount: 64,
     status: "CONFIRMED",
+    imageUrl: 'http://localhost:8080/assets/images/news1.jpg',
     meta: {}
   },
 ];
 
-const generateMeetup = (users) => {
+const generateMeetup = async (users) => {
   const start = faker.date.future();
   const goCount = faker.datatype.number({ min: 1, max: users.length - 10 });
   const finish = new Date(
     start.getTime() + faker.datatype.number({ min: 15, max: 240 }) * 60 * 1000
   );
+  const imagePath = await downloadFile(faker.image.people(640, 480, true), DOWNLOAD_DIR);
+  const imageUrl = getUrlFromPublicPath(imagePath);
+
   return {
     id: faker.datatype.uuid(),
     modified: faker.date.past(),
@@ -47,12 +56,17 @@ const generateMeetup = (users) => {
     place: faker.address.streetAddress(),
     goCount,
     status: faker.random.arrayElement(["DRAFT", "REQUEST", "CONFIRMED"]),
+    imageUrl,
     meta: {}
   };
 };
 
-export const generateMeetups = (count, users) => {
-  return Array.from({ length: count }, () => generateMeetup(users));
+export const generateMeetups = async (count, users) => {
+  return await Promise.all(
+    Array.from({ length: count }, async () => {
+      return await generateMeetup(users);
+    })
+  );
 };
 
 export const generateShortUsers = (meetups, users) => {
