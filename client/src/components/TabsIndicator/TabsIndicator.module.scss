@@ -3,12 +3,11 @@
 
 .indicator {
   position: relative;
-  left: calc(100% / var(--numOfTabs) * var(--position));
+  left: calc(100% / var(--tabsCount) * var(--activeTabIndex));
   bottom: 2px;
 
-  width: calc(100% / var(--numOfTabs));
+  width: calc(100% / var(--tabsCount));
   height: 2px;
-  margin-bottom: 30px;
 
   background: $purple;
 
