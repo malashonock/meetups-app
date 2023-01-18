@@ -38,7 +38,7 @@
 
   &Content {
     padding: 25px;
-    background: $white-color;
+    background: $white;
     box-shadow: 0px 4px 7px color.change($gray-07, $alpha: 0.4);
     border-radius: 5px;
   }
@@ -48,7 +48,7 @@
   display: flex;
   flex-direction: column;
 
-  background: $white-color;
+  background: $white;
   box-shadow: 0px 4px 7px color.change($gray-07, $alpha: 0.4);
   border-radius: 5px;
 
@@ -65,7 +65,7 @@
   @extend .font-family-secondary;
   @extend .font-weight-medium;
   @extend .font-size-l;
-  @extend .line-height-xxl;
+  @extend .line-height-2xl;
   @extend .font-color-dark;
   @extend .letter-spacing-smaller;
 }

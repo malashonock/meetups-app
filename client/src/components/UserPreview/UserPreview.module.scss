@@ -36,7 +36,7 @@
     flex-direction: row-reverse;
 
     .avatar {
-      background-color: color.change($white-color, $alpha: 0.4);
+      background-color: color.change($white, $alpha: 0.4);
     }
 
     .name,

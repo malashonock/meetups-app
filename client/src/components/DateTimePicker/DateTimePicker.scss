@@ -4,9 +4,9 @@
 @import '~style/mixins';
 
 .react-datepicker {
-  background: $white-color;
+  background: $white;
   border: 1px solid $gray-06;
-  box-shadow: 0px 8px 16px color.change($black-color, $alpha: 0.1);
+  box-shadow: 0px 8px 16px color.change($black, $alpha: 0.1);
   border-radius: 4px;
   box-sizing: border-box;
 
@@ -39,7 +39,7 @@
     }
 
     &::after {
-      border-bottom-color: $white-color !important;
+      border-bottom-color: $white !important;
       z-index: 0 !important;
     }
   }
@@ -67,7 +67,7 @@
 
   &__header {
     padding: 0;
-    background-color: $white-color;
+    background-color: $white;
     border: none;
 
     * {
@@ -125,12 +125,12 @@
 
     &:hover &-icon::before,
     &:active &-icon::before {
-      border-color: $white-color;
+      border-color: $white;
     }
 
     &:active &-icon {
       &::before {
-        filter: drop-shadow(0 0 0.5px $white-color);
+        filter: drop-shadow(0 0 0.5px $white);
         @include smooth-transition(filter);
       }
     }
@@ -265,7 +265,7 @@
     }
 
     &:active {
-      text-shadow: 0 0 1px $white-color;
+      text-shadow: 0 0 1px $white;
     }
   }
 }
