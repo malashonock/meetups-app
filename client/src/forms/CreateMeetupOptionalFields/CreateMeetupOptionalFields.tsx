@@ -40,6 +40,30 @@ export const CreateMeetupOptionalFields = ({
     image,
   };
 
+  const validate = ({
+    start,
+    finish,
+  }: CreateMeetupOptionalValues): FormikErrors<CreateMeetupOptionalValues> => {
+    const errors: FormikErrors<CreateMeetupOptionalValues> = {};
+
+    if (start === null && finish !== null) {
+      errors.start = 'Заполните дату начала митапа';
+    }
+
+    if (
+      start !== null &&
+      finish !== null &&
+      finish <
+        new Date(
+          start.getTime() + 15 * SECONDS_IN_MINUTE * MILLISECONDS_IN_SECOND,
+        )
+    ) {
+      errors.finish = 'Дата окончания не может быть меньше даты начала';
+    }
+
+    return errors;
+  };
+
   const handleSubmit = (
     values: CreateMeetupOptionalValues,
     { setSubmitting }: FormikHelpers<CreateMeetupOptionalValues>,
@@ -55,29 +79,7 @@ export const CreateMeetupOptionalFields = ({
   return (
     <Formik<CreateMeetupOptionalValues>
       initialValues={initialValues}
-      validate={({
-        start,
-        finish,
-      }: CreateMeetupOptionalValues): FormikErrors<CreateMeetupOptionalValues> => {
-        const errors: FormikErrors<CreateMeetupOptionalValues> = {};
-
-        if (start === null && finish !== null) {
-          errors.start = 'Заполните дату начала митапа';
-        }
-
-        if (
-          start !== null &&
-          finish !== null &&
-          finish <
-            new Date(
-              start.getTime() + 15 * SECONDS_IN_MINUTE * MILLISECONDS_IN_SECOND,
-            )
-        ) {
-          errors.finish = 'Дата окончания не может быть меньше даты начала';
-        }
-
-        return errors;
-      }}
+      validate={validate}
       onSubmit={handleSubmit}
     >
       {({ errors, values, isSubmitting }) => {
