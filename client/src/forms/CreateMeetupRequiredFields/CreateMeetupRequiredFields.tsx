@@ -1,24 +1,23 @@
-import classNames from "classnames";
-import { Formik, Form } from "formik";
+import classNames from 'classnames';
+import { Formik, Form, FormikHelpers } from 'formik';
 import * as yup from 'yup';
 
-import { 
-  Button, 
-  ButtonVariant, 
-  StepperContext, 
-  TextField, 
-  Typography, 
-  TypographyComponent 
-} from "components";
-import { NewMeetup } from "model";
-import { NewMeetupState } from "pages";
+import {
+  Button,
+  ButtonVariant,
+  StepperContext,
+  TextField,
+  Typography,
+  TypographyComponent,
+} from 'components';
+import { NewMeetup } from 'model';
+import { NewMeetupState } from 'pages';
 
 import styles from './CreateMeetupRequiredFields.module.scss';
 
-type CreateMeetupRequiredValues = Pick<NewMeetup, 
-  | 'author' 
-  | 'subject' 
-  | 'excerpt'
+type CreateMeetupRequiredValues = Pick<
+  NewMeetup,
+  'author' | 'subject' | 'excerpt'
 >;
 
 export const CreateMeetupRequiredFields = ({
@@ -29,6 +28,18 @@ export const CreateMeetupRequiredFields = ({
   handleNextStep,
 }: StepperContext<NewMeetupState>): JSX.Element => {
   const { author, subject, excerpt } = newMeetupData;
+
+  const handleSubmit = (
+    values: CreateMeetupRequiredValues,
+    { setSubmitting }: FormikHelpers<CreateMeetupRequiredValues>,
+  ): void => {
+    setNewMeetupData({
+      ...newMeetupData,
+      ...values,
+    });
+    setSubmitting(false);
+    handleNextStep();
+  };
 
   return (
     <Formik<CreateMeetupRequiredValues>
@@ -42,14 +53,7 @@ export const CreateMeetupRequiredFields = ({
         subject: yup.string().required('Необходимо заполнить тему митапа'),
         excerpt: yup.string().required('Необходимо заполнить описание митапа'),
       })}
-      onSubmit={(values: CreateMeetupRequiredValues, { setSubmitting }) => {
-        setNewMeetupData({
-          ...newMeetupData,
-          ...values,
-        });
-        setSubmitting(false);
-        handleNextStep();
-      }}
+      onSubmit={handleSubmit}
     >
       {({ touched, errors, isSubmitting }) => {
         const isTouched = Object.entries(touched).length > 0;
@@ -76,7 +80,8 @@ export const CreateMeetupRequiredFields = ({
                 className={styles.subTitle}
                 component={TypographyComponent.Paragraph}
               >
-                Заполните поля ниже наиболее подробно, это даст полную информацию о предстоящем событии.
+                Заполните поля ниже наиболее подробно, это даст полную
+                информацию о предстоящем событии.
               </Typography>
             </div>
             <div className={styles.contentWrapper}>
@@ -108,5 +113,5 @@ export const CreateMeetupRequiredFields = ({
         );
       }}
     </Formik>
-  )
+  );
 };

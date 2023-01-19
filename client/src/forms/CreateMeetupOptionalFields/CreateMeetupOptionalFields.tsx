@@ -1,29 +1,27 @@
-import classNames from "classnames";
-import { Formik, Form, FormikErrors } from "formik";
+import classNames from 'classnames';
+import { Formik, Form, FormikErrors, FormikHelpers } from 'formik';
 import * as yup from 'yup';
 
-import { 
-  Button, 
-  ButtonVariant, 
-  DateTimePicker, 
-  ImagePreviewMode, 
-  ImageUploader, 
-  StepperContext, 
-  TextField, 
-  Typography, 
-  TypographyComponent 
-} from "components";
-import { NewMeetup } from "model";
-import { NewMeetupState } from "pages";
-import { MILLISECONDS_IN_SECOND, SECONDS_IN_MINUTE } from "helpers";
+import {
+  Button,
+  ButtonVariant,
+  DateTimePicker,
+  ImagePreviewMode,
+  ImageUploader,
+  StepperContext,
+  TextField,
+  Typography,
+  TypographyComponent,
+} from 'components';
+import { NewMeetup } from 'model';
+import { NewMeetupState } from 'pages';
+import { MILLISECONDS_IN_SECOND, SECONDS_IN_MINUTE } from 'helpers';
 
 import styles from './CreateMeetupOptionalFields.module.scss';
 
-type CreateMeetupOptionalValues = Pick<NewMeetup,
-  | 'start' 
-  | 'finish' 
-  | 'place' 
-  | 'image'
+type CreateMeetupOptionalValues = Pick<
+  NewMeetup,
+  'start' | 'finish' | 'place' | 'image'
 >;
 
 export const CreateMeetupOptionalFields = ({
@@ -35,6 +33,18 @@ export const CreateMeetupOptionalFields = ({
 }: StepperContext<NewMeetupState>): JSX.Element => {
   const { start, finish, place, image } = newMeetupData;
 
+  const handleSubmit = (
+    values: CreateMeetupOptionalValues,
+    { setSubmitting }: FormikHelpers<CreateMeetupOptionalValues>,
+  ): void => {
+    setNewMeetupData({
+      ...newMeetupData,
+      ...values,
+    });
+    setSubmitting(false);
+    handleFinish();
+  };
+
   return (
     <Formik<CreateMeetupOptionalValues>
       initialValues={{
@@ -43,7 +53,10 @@ export const CreateMeetupOptionalFields = ({
         place,
         image,
       }}
-      validate={({ start, finish }: CreateMeetupOptionalValues): FormikErrors<CreateMeetupOptionalValues> => {
+      validate={({
+        start,
+        finish,
+      }: CreateMeetupOptionalValues): FormikErrors<CreateMeetupOptionalValues> => {
         const errors: FormikErrors<CreateMeetupOptionalValues> = {};
 
         if (start === null && finish !== null) {
@@ -51,23 +64,19 @@ export const CreateMeetupOptionalFields = ({
         }
 
         if (
-          start !== null
-          && finish !== null
-          && finish < new Date(start.getTime() + 15 * SECONDS_IN_MINUTE * MILLISECONDS_IN_SECOND)
+          start !== null &&
+          finish !== null &&
+          finish <
+            new Date(
+              start.getTime() + 15 * SECONDS_IN_MINUTE * MILLISECONDS_IN_SECOND,
+            )
         ) {
           errors.finish = 'Дата окончания не может быть меньше даты начала';
         }
 
         return errors;
       }}
-      onSubmit={(values: CreateMeetupOptionalValues, { setSubmitting }) => {
-        setNewMeetupData({
-          ...newMeetupData,
-          ...values,
-        });
-        setSubmitting(false);
-        handleFinish();
-      }}
+      onSubmit={handleSubmit}
     >
       {({ errors, values, isSubmitting }) => {
         const hasErrors = Object.entries(errors).length > 0;
@@ -84,13 +93,17 @@ export const CreateMeetupOptionalFields = ({
           // save step values if they are valid
           if (canSubmit) {
             // mute console error
-            setTimeout(() => setNewMeetupData({
-              ...newMeetupData,
-              ...values,
-            }), 0);
+            setTimeout(
+              () =>
+                setNewMeetupData({
+                  ...newMeetupData,
+                  ...values,
+                }),
+              0,
+            );
           }
           handlePreviousStep();
-        }
+        };
 
         return (
           <Form className={styles.container}>
@@ -105,7 +118,8 @@ export const CreateMeetupOptionalFields = ({
                 className={styles.subTitle}
                 component={TypographyComponent.Paragraph}
               >
-                Заполните поля ниже наиболее подробно, это даст полную информацию о предстоящем событии.
+                Заполните поля ниже наиболее подробно, это даст полную
+                информацию о предстоящем событии.
               </Typography>
             </div>
             <div className={styles.contentWrapper}>
@@ -120,10 +134,9 @@ export const CreateMeetupOptionalFields = ({
                   variant={ImagePreviewMode.Thumbnail}
                   labelText={values.image ? 'Загруженные изображения' : ''}
                   containerAttributes={{
-                    className: classNames(
-                      styles.imageUploader,
-                      { [styles.imageUploaded]: values.image !== null },
-                    ),
+                    className: classNames(styles.imageUploader, {
+                      [styles.imageUploaded]: values.image !== null,
+                    }),
                   }}
                 />
               </div>
@@ -151,5 +164,5 @@ export const CreateMeetupOptionalFields = ({
         );
       }}
     </Formik>
-  )
+  );
 };
