@@ -15,7 +15,7 @@ import {
 } from 'components';
 import { NewNews, News } from 'model';
 import { getNewsArticle, getStaticFile, updateNewsArticle } from 'api';
-import { getFileWithUrl } from 'helpers/file';
+import { getFileWithUrl } from 'helpers';
 
 import styles from './EditNewsPage.module.scss';
 
