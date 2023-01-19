@@ -1,9 +1,12 @@
-import { getStaticFile } from 'api';
-import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
+import { AxiosError } from 'axios';
+
+import { getStaticFile } from 'api';
+import { getFileWithUrl } from 'helpers';
+import { FileWithUrl } from 'types';
 
 interface UseStaticFileQueryResult {
-  file?: File;
+  file?: FileWithUrl;
   error?: string;
   isLoading: boolean;
   isSuccess: boolean;
@@ -13,7 +16,7 @@ interface UseStaticFileQueryResult {
 export const useStaticFileQuery = (
   url: string | null | undefined,
 ): UseStaticFileQueryResult => {
-  const [file, setFile] = useState<File | undefined>();
+  const [file, setFile] = useState<FileWithUrl | undefined>();
   const [error, setError] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
@@ -30,7 +33,8 @@ export const useStaticFileQuery = (
       setIsLoading(true);
 
       try {
-        setFile(await getStaticFile(url));
+        const file = await getStaticFile(url);
+        setFile(getFileWithUrl(file, url));
         setIsSuccess(true);
       } catch (error) {
         setIsError(true);
