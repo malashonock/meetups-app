@@ -6,6 +6,8 @@ import { MeetupStatus, NewMeetup } from 'model';
 import { createMeetup } from 'api';
 import { CreateMeetupOptionalFields, CreateMeetupRequiredFields } from 'forms';
 
+import styles from './CreateMeetupPage.module.scss';
+
 export type NewMeetupState = [
   newMeetupData: NewMeetup,
   setNewMeetupData: Dispatch<SetStateAction<NewMeetup>>,
@@ -41,28 +43,27 @@ export const CreateMeetupPage = (): JSX.Element => {
   }, [finished]);
 
   return (
-    <Stepper<NewMeetupState> 
-      steps={[
-        {
-          title: 'Обязательные поля',
-          render: (context: StepperContext<NewMeetupState>): JSX.Element => (
-            <CreateMeetupRequiredFields {...context} />
-          ),
-        },
-        {
-          title: 'Дополнительные поля',
-          render: (context: StepperContext<NewMeetupState>): JSX.Element => (
-            <CreateMeetupOptionalFields {...context} />
-          ),
-        },
-      ]}
-      dataContext={[
-        newMeetupData,
-        setNewMeetupData,
-      ]}
-      onFinish={async () => {
-        setFinished(true);
-      }}
-    />
+    <div className={styles.container}>
+      <Stepper<NewMeetupState>
+        steps={[
+          {
+            title: 'Обязательные поля',
+            render: (context: StepperContext<NewMeetupState>): JSX.Element => (
+              <CreateMeetupRequiredFields {...context} />
+            ),
+          },
+          {
+            title: 'Дополнительные поля',
+            render: (context: StepperContext<NewMeetupState>): JSX.Element => (
+              <CreateMeetupOptionalFields {...context} />
+            ),
+          },
+        ]}
+        dataContext={[newMeetupData, setNewMeetupData]}
+        onFinish={async () => {
+          setFinished(true);
+        }}
+      />
+    </div>
   );
 };

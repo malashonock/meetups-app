@@ -4,7 +4,7 @@ import styles from './MeetupPage.module.scss';
 
 export const MeetupPage = () => {
   return (
-    <div>
+    <div className={styles.container}>
       <Typography
         component={TypographyComponent.Heading1}
         className={styles.heading}

@@ -14,7 +14,7 @@ import {
 
 import styles from './CreateNewsPage.module.scss';
 import { Form, Formik, FormikProps } from 'formik';
-import { NewNews, News } from 'model';
+import { NewNews } from 'model';
 import { createNewsArticle } from 'api';
 
 export const CreateNewsPage = (): JSX.Element => {
@@ -33,7 +33,10 @@ export const CreateNewsPage = (): JSX.Element => {
         title: yup.string().required('Введите заголовок новости'),
         text: yup.string().required('Введите текст новости'),
       })}
-      onSubmit={async (newArticleData: NewNews, { setSubmitting }): Promise<void> => {
+      onSubmit={async (
+        newArticleData: NewNews,
+        { setSubmitting },
+      ): Promise<void> => {
         await createNewsArticle(newArticleData);
         setSubmitting(false);
         navigate('/news');
@@ -57,7 +60,11 @@ export const CreateNewsPage = (): JSX.Element => {
                 <div className={classNames(styles.textSection, styles.main)}>
                   <TextField name="title" labelText="Заголовок" />
                   <TextField name="text" labelText="Текст" multiline />
-                  <ImageUploader name="image" labelText="Изображение" variant={ImagePreviewMode.Large} />
+                  <ImageUploader
+                    name="image"
+                    labelText="Изображение"
+                    variant={ImagePreviewMode.Large}
+                  />
                 </div>
                 <div className={classNames(styles.textSection, styles.actions)}>
                   <Button
@@ -65,12 +72,12 @@ export const CreateNewsPage = (): JSX.Element => {
                     variant={ButtonVariant.Default}
                     onClick={handleBack}
                     className={styles.actionButton}
-                    >
+                  >
                     Назад
                   </Button>
-                  <Button 
+                  <Button
                     type="submit"
-                    variant={ButtonVariant.Primary} 
+                    variant={ButtonVariant.Primary}
                     className={styles.actionButton}
                     disabled={!canSubmit}
                   >

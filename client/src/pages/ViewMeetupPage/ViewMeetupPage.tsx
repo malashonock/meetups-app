@@ -213,7 +213,7 @@ export const ViewMeetupPage = () => {
   };
 
   return (
-    <section className={styles.container}>
+    <section className={classNames(styles.container, styles[meetup.status])}>
       <Typography
         className={styles.heading}
         component={TypographyComponent.Heading1}
