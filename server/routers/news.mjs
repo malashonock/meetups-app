@@ -56,8 +56,8 @@ export const newsRoutes = (db) => {
 
   newsRouter.post(
     '/',
-    ensureAuthenticated,
-    isModerator,
+    // ensureAuthenticated,
+    // isModerator,
     upload.single('image'),
     async (req, res) => {
       try {
@@ -93,8 +93,8 @@ export const newsRoutes = (db) => {
 
   newsRouter.put(
     '/:id',
-    ensureAuthenticated,
-    isModerator,
+    // ensureAuthenticated,
+    // isModerator,
     upload.single('image'),
     async (req, res) => {
       try {
