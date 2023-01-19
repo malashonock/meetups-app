@@ -60,8 +60,6 @@ export const EditNewsPage = (): JSX.Element => {
     })();
   }, [news?.imageUrl]);
 
-  const handleBack = (): void => navigate(-1);
-
   if (!news || !id || (news.imageUrl && !image)) {
     return <div>Загрузка...</div>;
   }
@@ -72,6 +70,8 @@ export const EditNewsPage = (): JSX.Element => {
     image,
   };
 
+  const handleBack = (): void => navigate(-1);
+
   const handleSubmit = async (
     updatedArticleData: NewNews,
     { setSubmitting }: FormikHelpers<NewNews>,
@@ -81,59 +81,66 @@ export const EditNewsPage = (): JSX.Element => {
     navigate('/news');
   };
 
+  const renderForm = ({
+    touched,
+    dirty,
+    errors,
+    isSubmitting,
+  }: FormikProps<NewNews>): JSX.Element => {
+    const isTouched = Object.entries(touched).length > 0;
+    const hasErrors = Object.entries(errors).length > 0;
+    const canSubmit = isTouched && dirty && !hasErrors && !isSubmitting;
+
+    return (
+      <Form>
+        <section className={styles.container}>
+          <Typography
+            className={styles.heading}
+            component={TypographyComponent.Heading1}
+          >
+            Редактирование новости
+          </Typography>
+          <div className={styles.contentWrapper}>
+            <div className={classNames(styles.textSection, styles.main)}>
+              <ImageUploader
+                name="image"
+                labelText="Изображение"
+                variant={ImagePreviewMode.Large}
+              />
+              <TextField name="title" labelText="Заголовок" />
+              <TextField name="text" labelText="Текст" multiline />
+            </div>
+            <div className={classNames(styles.textSection, styles.actions)}>
+              <Button
+                type="button"
+                variant={ButtonVariant.Default}
+                onClick={handleBack}
+                className={styles.actionButton}
+              >
+                Отмена
+              </Button>
+              <Button
+                type="submit"
+                variant={ButtonVariant.Primary}
+                className={styles.actionButton}
+                disabled={!canSubmit}
+              >
+                Сохранить
+              </Button>
+            </div>
+          </div>
+        </section>
+      </Form>
+    );
+  };
+
   return (
     <Formik<NewNews>
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
-      {({ touched, dirty, errors, isSubmitting }: FormikProps<NewNews>) => {
-        const isTouched = Object.entries(touched).length > 0;
-        const hasErrors = Object.entries(errors).length > 0;
-        const canSubmit = isTouched && dirty && !hasErrors && !isSubmitting;
-
-        return (
-          <Form>
-            <section className={styles.container}>
-              <Typography
-                className={styles.heading}
-                component={TypographyComponent.Heading1}
-              >
-                Редактирование новости
-              </Typography>
-              <div className={styles.contentWrapper}>
-                <div className={classNames(styles.textSection, styles.main)}>
-                  <ImageUploader
-                    name="image"
-                    labelText="Изображение"
-                    variant={ImagePreviewMode.Large}
-                  />
-                  <TextField name="title" labelText="Заголовок" />
-                  <TextField name="text" labelText="Текст" multiline />
-                </div>
-                <div className={classNames(styles.textSection, styles.actions)}>
-                  <Button
-                    type="button"
-                    variant={ButtonVariant.Default}
-                    onClick={handleBack}
-                    className={styles.actionButton}
-                  >
-                    Отмена
-                  </Button>
-                  <Button
-                    type="submit"
-                    variant={ButtonVariant.Primary}
-                    className={styles.actionButton}
-                    disabled={!canSubmit}
-                  >
-                    Сохранить
-                  </Button>
-                </div>
-              </div>
-            </section>
-          </Form>
-        );
-      }}
+      {renderForm}
     </Formik>
   );
 };
