@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import classNames from 'classnames';
 import { Form, Formik, FormikHelpers, FormikProps } from 'formik';
@@ -13,9 +12,9 @@ import {
   Typography,
   TypographyComponent,
 } from 'components';
-import { NewNews, News } from 'model';
-import { getNewsArticle, getStaticFile, updateNewsArticle } from 'api';
-import { getFileWithUrl } from 'helpers';
+import { NewNews } from 'model';
+import { updateNewsArticle } from 'api';
+import { useNewsArticleQuery, useStaticFileQuery } from 'hooks';
 
 import styles from './EditNewsPage.module.scss';
 
@@ -28,46 +27,17 @@ export const EditNewsPage = (): JSX.Element => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [news, setNews] = useState<News | null>(null);
-  const [image, setImage] = useState<File | null>(null);
+  const { newsArticle } = useNewsArticleQuery(id);
+  const { file: imageFile } = useStaticFileQuery(newsArticle?.imageUrl);
 
-  // fetch news article by id
-  useEffect((): void => {
-    (async () => {
-      if (!id) {
-        return;
-      }
-
-      setNews(await getNewsArticle(id));
-    })();
-  }, [id]);
-
-  // fetch image by url
-  useEffect((): void => {
-    (async () => {
-      if (!news) {
-        return;
-      }
-
-      const { imageUrl } = news;
-
-      if (!imageUrl) {
-        return;
-      }
-
-      const image = await getStaticFile(imageUrl);
-      setImage(getFileWithUrl(image, imageUrl));
-    })();
-  }, [news?.imageUrl]);
-
-  if (!news || !id || (news.imageUrl && !image)) {
+  if (!id || !newsArticle || (newsArticle?.imageUrl && !imageFile)) {
     return <div>Загрузка...</div>;
   }
 
   const initialValues: NewNews = {
-    title: news.title || '',
-    text: news.text || '',
-    image,
+    title: newsArticle.title || '',
+    text: newsArticle.text || '',
+    image: imageFile ?? null,
   };
 
   const handleBack = (): void => navigate(-1);
