@@ -22,6 +22,12 @@ export const CreateNewsPage = (): JSX.Element => {
   const navigate = useNavigate();
 
   const handleBack = (): void => navigate(-1);
+  
+    const initialValues: NewNews = {
+      title: '',
+      text: '',
+      image: null,
+    };
 
   const handleSubmit = async (
     newArticleData: NewNews,
@@ -34,11 +40,7 @@ export const CreateNewsPage = (): JSX.Element => {
 
   return (
     <Formik<NewNews>
-      initialValues={{
-        title: '',
-        text: '',
-        image: null,
-      }}
+      initialValues={initialValues}
       validationSchema={yup.object().shape({
         title: yup.string().required('Введите заголовок новости'),
         text: yup.string().required('Введите текст новости'),
