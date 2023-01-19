@@ -1,4 +1,3 @@
-@use 'sass:color';
 @import '~style/colors';
 @import '~style/typography';
 @import '~style/mixins';
@@ -111,7 +110,7 @@
     height: 40px;
     padding: 5px;
 
-    background: color.change($white, $alpha: 0.85);
+    background: rgba($white, $alpha: 0.85);
     border-radius: 5px;
   }
 }

@@ -1,10 +1,9 @@
-@use 'sass:color';
 @import '~style/colors';
 @import '~style/typography';
 @import '~style/mixins';
 
 .step {
-  width: 100%; 
+  width: 100%;
   display: flex;
   column-gap: 15px;
   justify-content: center;
@@ -13,7 +12,7 @@
 
   @extend .font-family-primary;
   @extend .font-weight-medium;
-  @extend .font-size-s;  
+  @extend .font-size-s;
 
   .number {
     display: flex;
@@ -24,7 +23,7 @@
     border-radius: 100%;
 
     @extend .font-weight-bold;
-    @extend .font-size-3xs;  
+    @extend .font-size-3xs;
     line-height: initial;
   }
 
@@ -39,7 +38,7 @@
   &.disabled {
     @extend .font-color-gray-02;
     cursor: not-allowed;
-    
+
     .number {
       background-color: $gray-08;
       @extend .font-color-gray-03;
@@ -49,7 +48,7 @@
   &.available {
     @extend .font-color-dark;
     .number {
-      background-color: color.change($blue-02, $alpha: 0.6);
+      background-color: rgba($blue-02, $alpha: 0.6);
       @extend .font-color-white;
     }
   }
