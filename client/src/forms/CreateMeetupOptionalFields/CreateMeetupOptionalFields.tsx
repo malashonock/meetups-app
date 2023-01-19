@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { Formik, Form, FormikErrors, FormikHelpers } from 'formik';
+import { Formik, Form, FormikErrors, FormikHelpers, FormikProps } from 'formik';
 import * as yup from 'yup';
 
 import {
@@ -76,97 +76,103 @@ export const CreateMeetupOptionalFields = ({
     handleFinish();
   };
 
+  const renderForm = ({
+    errors,
+    values,
+    isSubmitting,
+  }: FormikProps<CreateMeetupOptionalValues>): JSX.Element => {
+    const hasErrors = Object.entries(errors).length > 0;
+    const isPassed = !hasErrors;
+    const canSubmit = isPassed && !isSubmitting;
+
+    // sync stepper state
+    if (isPassed !== activeStep.passed) {
+      // mute console error
+      setTimeout(() => setStepPassed(activeStep.index, canSubmit), 0);
+    }
+
+    const handleBack = (): void => {
+      // save step values if they are valid
+      if (canSubmit) {
+        // mute console error
+        setTimeout(
+          () =>
+            setNewMeetupData({
+              ...newMeetupData,
+              ...values,
+            }),
+          0,
+        );
+      }
+      handlePreviousStep();
+    };
+
+    return (
+      <Form className={styles.container}>
+        <div className={styles.heading}>
+          <Typography
+            className={styles.title}
+            component={TypographyComponent.Heading1}
+          >
+            Новый митап
+          </Typography>
+          <Typography
+            className={styles.subTitle}
+            component={TypographyComponent.Paragraph}
+          >
+            Заполните поля ниже наиболее подробно, это даст полную информацию о
+            предстоящем событии.
+          </Typography>
+        </div>
+        <div className={styles.contentWrapper}>
+          <div className={classNames(styles.textSection, styles.main)}>
+            <div className={styles.dates}>
+              <DateTimePicker name="start" labelText="Начало" />
+              <DateTimePicker name="finish" labelText="Окончание" />
+            </div>
+            <TextField name="place" labelText="Место проведения" />
+            <ImageUploader
+              name="image"
+              variant={ImagePreviewMode.Thumbnail}
+              labelText={values.image ? 'Загруженные изображения' : ''}
+              containerAttributes={{
+                className: classNames(styles.imageUploader, {
+                  [styles.imageUploaded]: values.image !== null,
+                }),
+              }}
+            />
+          </div>
+          <div className={classNames(styles.textSection, styles.actions)}>
+            <Button
+              type="button"
+              onClick={handleBack}
+              variant={ButtonVariant.Default}
+              className={classNames(styles.actionButton, styles.back)}
+              disabled={!canSubmit}
+            >
+              Назад
+            </Button>
+            <Button
+              type="submit"
+              variant={ButtonVariant.Primary}
+              className={classNames(styles.actionButton, styles.next)}
+              disabled={!canSubmit}
+            >
+              Создать
+            </Button>
+          </div>
+        </div>
+      </Form>
+    );
+  };
+
   return (
     <Formik<CreateMeetupOptionalValues>
       initialValues={initialValues}
       validate={validate}
       onSubmit={handleSubmit}
     >
-      {({ errors, values, isSubmitting }) => {
-        const hasErrors = Object.entries(errors).length > 0;
-        const isPassed = !hasErrors;
-        const canSubmit = isPassed && !isSubmitting;
-
-        // sync stepper state
-        if (isPassed !== activeStep.passed) {
-          // mute console error
-          setTimeout(() => setStepPassed(activeStep.index, canSubmit), 0);
-        }
-
-        const handleBack = (): void => {
-          // save step values if they are valid
-          if (canSubmit) {
-            // mute console error
-            setTimeout(
-              () =>
-                setNewMeetupData({
-                  ...newMeetupData,
-                  ...values,
-                }),
-              0,
-            );
-          }
-          handlePreviousStep();
-        };
-
-        return (
-          <Form className={styles.container}>
-            <div className={styles.heading}>
-              <Typography
-                className={styles.title}
-                component={TypographyComponent.Heading1}
-              >
-                Новый митап
-              </Typography>
-              <Typography
-                className={styles.subTitle}
-                component={TypographyComponent.Paragraph}
-              >
-                Заполните поля ниже наиболее подробно, это даст полную
-                информацию о предстоящем событии.
-              </Typography>
-            </div>
-            <div className={styles.contentWrapper}>
-              <div className={classNames(styles.textSection, styles.main)}>
-                <div className={styles.dates}>
-                  <DateTimePicker name="start" labelText="Начало" />
-                  <DateTimePicker name="finish" labelText="Окончание" />
-                </div>
-                <TextField name="place" labelText="Место проведения" />
-                <ImageUploader
-                  name="image"
-                  variant={ImagePreviewMode.Thumbnail}
-                  labelText={values.image ? 'Загруженные изображения' : ''}
-                  containerAttributes={{
-                    className: classNames(styles.imageUploader, {
-                      [styles.imageUploaded]: values.image !== null,
-                    }),
-                  }}
-                />
-              </div>
-              <div className={classNames(styles.textSection, styles.actions)}>
-                <Button
-                  type="button"
-                  onClick={handleBack}
-                  variant={ButtonVariant.Default}
-                  className={classNames(styles.actionButton, styles.back)}
-                  disabled={!canSubmit}
-                >
-                  Назад
-                </Button>
-                <Button
-                  type="submit"
-                  variant={ButtonVariant.Primary}
-                  className={classNames(styles.actionButton, styles.next)}
-                  disabled={!canSubmit}
-                >
-                  Создать
-                </Button>
-              </div>
-            </div>
-          </Form>
-        );
-      }}
+      {renderForm}
     </Formik>
   );
 };
