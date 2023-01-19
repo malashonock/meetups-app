@@ -2,9 +2,10 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Stepper, StepperContext } from 'components';
+import { CreateMeetupOptionalFields } from './CreateMeetupOptionalFields/CreateMeetupOptionalFields';
+import { CreateMeetupRequiredFields } from './CreateMeetupRequiredFields/CreateMeetupRequiredFields';
 import { MeetupStatus, NewMeetup } from 'model';
 import { createMeetup } from 'api';
-import { CreateMeetupOptionalFields, CreateMeetupRequiredFields } from 'forms';
 
 import styles from './CreateMeetupPage.module.scss';
 
