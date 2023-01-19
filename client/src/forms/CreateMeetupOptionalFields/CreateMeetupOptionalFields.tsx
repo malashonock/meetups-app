@@ -33,6 +33,13 @@ export const CreateMeetupOptionalFields = ({
 }: StepperContext<NewMeetupState>): JSX.Element => {
   const { start, finish, place, image } = newMeetupData;
 
+  const initialValues: CreateMeetupOptionalValues = {
+    start,
+    finish,
+    place,
+    image,
+  };
+
   const handleSubmit = (
     values: CreateMeetupOptionalValues,
     { setSubmitting }: FormikHelpers<CreateMeetupOptionalValues>,
@@ -47,12 +54,7 @@ export const CreateMeetupOptionalFields = ({
 
   return (
     <Formik<CreateMeetupOptionalValues>
-      initialValues={{
-        start,
-        finish,
-        place,
-        image,
-      }}
+      initialValues={initialValues}
       validate={({
         start,
         finish,

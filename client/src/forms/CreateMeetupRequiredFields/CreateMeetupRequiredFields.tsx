@@ -29,6 +29,12 @@ export const CreateMeetupRequiredFields = ({
 }: StepperContext<NewMeetupState>): JSX.Element => {
   const { author, subject, excerpt } = newMeetupData;
 
+  const initialValues: CreateMeetupRequiredValues = {
+    author,
+    subject,
+    excerpt,
+  };
+
   const handleSubmit = (
     values: CreateMeetupRequiredValues,
     { setSubmitting }: FormikHelpers<CreateMeetupRequiredValues>,
@@ -43,11 +49,7 @@ export const CreateMeetupRequiredFields = ({
 
   return (
     <Formik<CreateMeetupRequiredValues>
-      initialValues={{
-        author,
-        subject,
-        excerpt,
-      }}
+      initialValues={initialValues}
       validationSchema={yup.object().shape({
         author: yup.string().required('Необходимо указать спикера'),
         subject: yup.string().required('Необходимо заполнить тему митапа'),
