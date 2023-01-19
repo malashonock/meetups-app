@@ -4,45 +4,57 @@ import { Meetup } from 'model';
 import { useEffect, useState } from 'react';
 
 type UseMeetupQueryResult = {
-  meetup?: Meetup | null;
+  meetup?: Meetup;
+  error?: string;
   isLoading: boolean;
-  error: string | null;
-}
+  isSuccess: boolean;
+  isError: boolean;
+};
 
-export function useMeetupQuery(id: string) : UseMeetupQueryResult {
-  const [meetup, setMeetup] = useState<Meetup | null>();
+export const useMeetupQuery = (
+  id: string | null | undefined,
+): UseMeetupQueryResult => {
+  const [meetup, setMeetup] = useState<Meetup | undefined>();
+  const [error, setError] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
 
   useEffect(() => {
     (async () => {
+      if (!id) {
+        setIsError(true);
+        setError('Не задан id митапа!');
+        return;
+      }
+
       setIsLoading(true);
+
       try {
         setMeetup(await getMeetup(id));
-      }
-      catch(e) {
-        const error = e as AxiosError;
-        const status = error.response?.status;
+        setIsSuccess(true);
+      } catch (error) {
+        setIsError(true);
 
-        switch(status){
+        const status = (error as AxiosError).response?.status;
+        switch (status) {
           case 404:
             setError('Митап не найден!');
-            setMeetup(null);
             break;
           default:
             setError('Что-то пошло не так!');
         }
-      }
-      finally {
+      } finally {
         setIsLoading(false);
       }
     })();
   }, [id]);
 
-
   return {
     meetup,
-    isLoading,
     error,
+    isLoading,
+    isSuccess,
+    isError,
   };
-}
+};
