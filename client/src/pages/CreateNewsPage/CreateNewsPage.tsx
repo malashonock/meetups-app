@@ -12,15 +12,25 @@ import {
   TypographyComponent,
 } from 'components';
 
-import styles from './CreateNewsPage.module.scss';
-import { Form, Formik, FormikProps } from 'formik';
-import { NewNews, News } from 'model';
+import { Form, Formik, FormikHelpers, FormikProps } from 'formik';
+import { NewNews } from 'model';
 import { createNewsArticle } from 'api';
+
+import styles from './CreateNewsPage.module.scss';
 
 export const CreateNewsPage = (): JSX.Element => {
   const navigate = useNavigate();
 
   const handleBack = (): void => navigate(-1);
+
+  const handleSubmit = async (
+    newArticleData: NewNews,
+    { setSubmitting }: FormikHelpers<NewNews>,
+  ): Promise<void> => {
+    await createNewsArticle(newArticleData);
+    setSubmitting(false);
+    navigate('/news');
+  };
 
   return (
     <Formik<NewNews>
@@ -33,11 +43,7 @@ export const CreateNewsPage = (): JSX.Element => {
         title: yup.string().required('Введите заголовок новости'),
         text: yup.string().required('Введите текст новости'),
       })}
-      onSubmit={async (newArticleData: NewNews, { setSubmitting }): Promise<void> => {
-        await createNewsArticle(newArticleData);
-        setSubmitting(false);
-        navigate('/news');
-      }}
+      onSubmit={handleSubmit}
     >
       {({ touched, errors, isSubmitting }: FormikProps<NewNews>) => {
         const isTouched = Object.entries(touched).length > 0;
@@ -57,7 +63,11 @@ export const CreateNewsPage = (): JSX.Element => {
                 <div className={classNames(styles.textSection, styles.main)}>
                   <TextField name="title" labelText="Заголовок" />
                   <TextField name="text" labelText="Текст" multiline />
-                  <ImageUploader name="image" labelText="Изображение" variant={ImagePreviewMode.Large} />
+                  <ImageUploader
+                    name="image"
+                    labelText="Изображение"
+                    variant={ImagePreviewMode.Large}
+                  />
                 </div>
                 <div className={classNames(styles.textSection, styles.actions)}>
                   <Button
@@ -65,12 +75,12 @@ export const CreateNewsPage = (): JSX.Element => {
                     variant={ButtonVariant.Default}
                     onClick={handleBack}
                     className={styles.actionButton}
-                    >
+                  >
                     Назад
                   </Button>
-                  <Button 
+                  <Button
                     type="submit"
-                    variant={ButtonVariant.Primary} 
+                    variant={ButtonVariant.Primary}
                     className={styles.actionButton}
                     disabled={!canSubmit}
                   >

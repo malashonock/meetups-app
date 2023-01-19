@@ -13,7 +13,7 @@ import {
 } from 'components';
 
 import styles from './EditNewsPage.module.scss';
-import { Form, Formik, FormikProps } from 'formik';
+import { Form, Formik, FormikHelpers, FormikProps } from 'formik';
 import { NewNews, News } from 'model';
 import { getNewsArticle, getStaticFile, updateNewsArticle } from 'api';
 import { useEffect, useState } from 'react';
@@ -57,7 +57,7 @@ export const EditNewsPage = (): JSX.Element => {
 
   const handleBack = (): void => navigate(-1);
 
-  if (!news || !id || (news.imageUrl && !image)){
+  if (!news || !id || (news.imageUrl && !image)) {
     return <div>Загрузка...</div>;
   }
 
@@ -65,7 +65,16 @@ export const EditNewsPage = (): JSX.Element => {
     title: news.title || '',
     text: news.text || '',
     image,
-  }
+  };
+
+  const handleSubmit = async (
+    updatedArticleData: NewNews,
+    { setSubmitting }: FormikHelpers<NewNews>,
+  ): Promise<void> => {
+    await updateNewsArticle(id, updatedArticleData);
+    setSubmitting(false);
+    navigate('/news');
+  };
 
   return (
     <Formik<NewNews>
@@ -74,11 +83,7 @@ export const EditNewsPage = (): JSX.Element => {
         title: yup.string().required('Введите заголовок новости'),
         text: yup.string().required('Введите текст новости'),
       })}
-      onSubmit={async (updatedArticleData: NewNews, { setSubmitting }): Promise<void> => {
-        await updateNewsArticle(id, updatedArticleData);
-        setSubmitting(false);
-        navigate('/news');
-      }}
+      onSubmit={handleSubmit}
     >
       {({ touched, dirty, errors, isSubmitting }: FormikProps<NewNews>) => {
         const isTouched = Object.entries(touched).length > 0;
@@ -96,7 +101,11 @@ export const EditNewsPage = (): JSX.Element => {
               </Typography>
               <div className={styles.contentWrapper}>
                 <div className={classNames(styles.textSection, styles.main)}>
-                  <ImageUploader name="image" labelText="Изображение" variant={ImagePreviewMode.Large} />
+                  <ImageUploader
+                    name="image"
+                    labelText="Изображение"
+                    variant={ImagePreviewMode.Large}
+                  />
                   <TextField name="title" labelText="Заголовок" />
                   <TextField name="text" labelText="Текст" multiline />
                 </div>
@@ -106,12 +115,12 @@ export const EditNewsPage = (): JSX.Element => {
                     variant={ButtonVariant.Default}
                     onClick={handleBack}
                     className={styles.actionButton}
-                    >
+                  >
                     Отмена
                   </Button>
-                  <Button 
+                  <Button
                     type="submit"
-                    variant={ButtonVariant.Primary} 
+                    variant={ButtonVariant.Primary}
                     className={styles.actionButton}
                     disabled={!canSubmit}
                   >
