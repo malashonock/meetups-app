@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import classNames from 'classnames';
-import { Form, Formik, FormikProps } from 'formik';
+import { Form, Formik, FormikHelpers, FormikProps } from 'formik';
 
 import {
   Button,
@@ -50,9 +50,11 @@ export const EditMeetupPage = (): JSX.Element => {
 
   const handleSubmit = async (
     updatedMeetupData: MeetupFields,
+    { setTouched }: FormikHelpers<MeetupFields>,
   ): Promise<void> => {
     await updateMeetup(id, updatedMeetupData, meetup.status);
     setReloadCount(reloadCount + 1); // refresh component without full page reload
+    setTouched({});
   };
 
   const renderForm = ({
