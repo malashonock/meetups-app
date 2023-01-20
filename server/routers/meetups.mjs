@@ -78,7 +78,8 @@ export const meetupsRoutes = (db) => {
 
   meetupsRouter.put(
     "/:id", 
-    ensureAuthenticated,
+    // ensureAuthenticated,
+    upload.single('image'), 
     async (req, res) => {
       try {
         const meetupId = req.params.id;
