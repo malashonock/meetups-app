@@ -46,7 +46,16 @@ export const EditMeetupPage = (): JSX.Element => {
   };
 
   const handleBack = (): void => navigate(-1);
-  const gotoPreview = (): void => navigate(`/meetups/${id}`);
+
+  const gotoPreview = (isDirty: boolean): void => {
+    if (
+      window.confirm(
+        'Несохраненные изменения будут потеряны. Все равно перейти к странице просмотра?',
+      )
+    ) {
+      navigate(`/meetups/${id}`);
+    }
+  };
 
   const handleSubmit = async (
     updatedMeetupData: MeetupFields,
@@ -105,7 +114,7 @@ export const EditMeetupPage = (): JSX.Element => {
                 <Button
                   type="button"
                   variant={ButtonVariant.Secondary}
-                  onClick={gotoPreview}
+                  onClick={() => gotoPreview(dirty)}
                   className={styles.actionButton}
                 >
                   Предпросмотр
