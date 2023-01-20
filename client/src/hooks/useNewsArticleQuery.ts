@@ -13,6 +13,7 @@ interface UseNewsArticleQueryResult {
 
 export const useNewsArticleQuery = (
   id: string | null | undefined,
+  ...dependencies: unknown[]
 ): UseNewsArticleQueryResult => {
   const [newsArticle, setNewsArticle] = useState<NewsDto | undefined>();
   const [error, setError] = useState<string | undefined>();
@@ -48,7 +49,7 @@ export const useNewsArticleQuery = (
         setIsLoading(false);
       }
     })();
-  }, [id]);
+  }, [id, ...dependencies]);
 
   return {
     newsArticle,

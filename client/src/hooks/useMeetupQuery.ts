@@ -13,6 +13,7 @@ type UseMeetupQueryResult = {
 
 export const useMeetupQuery = (
   id: string | null | undefined,
+  ...dependencies: unknown[]
 ): UseMeetupQueryResult => {
   const [meetup, setMeetup] = useState<MeetupDto | undefined>();
   const [error, setError] = useState<string | undefined>();
@@ -48,7 +49,7 @@ export const useMeetupQuery = (
         setIsLoading(false);
       }
     })();
-  }, [id]);
+  }, [id, ...dependencies]);
 
   return {
     meetup,
