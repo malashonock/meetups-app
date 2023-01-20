@@ -76,12 +76,37 @@ export const meetupsRoutes = (db) => {
     }
   );
 
-  meetupsRouter.put("/", ensureAuthenticated, async (req, res) => {
-        const index = db.data.meetups.findIndex((it) => it.id === req.body.id);
-        db.data.meetups[index] = {...db.data.meetups[index], ...req.body};
+  meetupsRouter.put(
+    "/:id", 
+    ensureAuthenticated,
+    async (req, res) => {
+      try {
+        const meetupId = req.params.id;
+        const index = db.data.meetups.findIndex(m => m.id === meetupId);
+
+        if (!(index >= 0)) {
+          return res.status(404).json({ message: 'Meetup not found' });
+        }
+
+        const meetup = db.data.meetups[index];
+        const newMeetupData = req.body;
+
+        const image = req.file;
+        const imageUrl = image ? getUrlFromPublicPath(image.path) : meetup.imageUrl;
+
+        db.data.meetups[index] = {
+          ...db.data.meetups[index],
+          ...newMeetupData,
+          imageUrl,
+        };
+
         await db.write();
-        res.send(db.data.meetups[index]);
-    });
+        res.json(db.data.meetups[index]);
+      } catch (e) {
+        res.status(500).json({ message: 'Server error' });
+      }
+    }
+  );
 
   meetupsRouter.get("/:id", async (req, res) => {
     const meetup = db.data.meetups.find((m) => m.id === req.params.id);
