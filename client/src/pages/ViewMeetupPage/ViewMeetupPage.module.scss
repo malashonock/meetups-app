@@ -55,9 +55,19 @@
   background: $white;
   box-shadow: 0px 4px 7px rgba($gray-07, $alpha: 0.4);
   border-radius: 5px;
+}
+
+.imageWrapper {
+  overflow: hidden;
+
+  border-radius: 5px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 
   .image {
     width: 100%;
+    object-fit: cover;
+    object-position: center center;
   }
 }
 

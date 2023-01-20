@@ -36,8 +36,20 @@ export const ViewMeetupPage = () => {
     return <NotFoundPage />;
   }
 
+  const {
+    start,
+    finish,
+    place,
+    status,
+    subject,
+    excerpt,
+    author,
+    speakers,
+    imageUrl,
+  } = meetup;
+
   const renderHeader = () => {
-    if (meetup.status === MeetupStatus.REQUEST) {
+    if (status === MeetupStatus.REQUEST) {
       return (
         <div className={styles.data}>
           <Typography
@@ -51,7 +63,7 @@ export const ViewMeetupPage = () => {
               className={styles.meetupHeading}
               component={TypographyComponent.Heading2}
             >
-              {meetup.subject}
+              {subject}
             </Typography>
           </div>
         </div>
@@ -60,17 +72,19 @@ export const ViewMeetupPage = () => {
 
     return (
       <div className={styles.headerData}>
-        <img
-          className={styles.image}
-          src={defaultImage}
-          alt="Изображение митапа"
-        />
+        <figure className={styles.imageWrapper}>
+          <img
+            className={styles.image}
+            src={imageUrl ?? defaultImage}
+            alt="Изображение митапа"
+          />
+        </figure>
         <div className={styles.headerDataContent}>
           <Typography
             className={styles.meetupHeading}
             component={TypographyComponent.Heading2}
           >
-            {meetup.subject}
+            {subject}
           </Typography>
         </div>
       </div>
@@ -78,21 +92,21 @@ export const ViewMeetupPage = () => {
   };
 
   const renderTimePlace = () => {
-    if (meetup.status === MeetupStatus.REQUEST) {
+    if (status === MeetupStatus.REQUEST) {
       return null;
     }
 
     let date, time;
 
-    if (meetup.start) {
+    if (start) {
       const { formattedWeekdayLong, formattedDate, formattedTime } =
-        parseDateString(meetup.start);
+        parseDateString(start);
 
       date = `${formattedWeekdayLong}, ${formattedDate}`;
       time = `${formattedTime}`;
 
-      if (meetup.finish) {
-        const { formattedTime } = parseDateString(meetup.finish);
+      if (finish) {
+        const { formattedTime } = parseDateString(finish);
 
         time = time + ` — ${formattedTime}`;
       }
@@ -123,7 +137,7 @@ export const ViewMeetupPage = () => {
             <div className={styles.info}>
               <img className={styles.image} src={pin} alt="Место" />
               <Typography component={TypographyComponent.Span}>
-                {meetup.place || '—'}
+                {place || '—'}
               </Typography>
             </div>
           </div>
@@ -138,14 +152,14 @@ export const ViewMeetupPage = () => {
         component={TypographyComponent.Span}
         className={styles.dataName}
       >
-        {meetup.status === MeetupStatus.REQUEST ? 'Автор' : 'Спикер'}
+        {status === MeetupStatus.REQUEST ? 'Автор' : 'Спикер'}
       </Typography>
       <div className={styles.dataContent}>
-        {meetup.status === MeetupStatus.REQUEST ? (
-          <UserPreview user={meetup.author} />
+        {status === MeetupStatus.REQUEST ? (
+          <UserPreview user={author} />
         ) : (
           <div className={styles.speakerWrapper}>
-            {meetup.speakers.map((speaker) => (
+            {speakers.map((speaker) => (
               <UserPreview key={speaker.id} user={speaker} />
             ))}
           </div>
@@ -193,19 +207,19 @@ export const ViewMeetupPage = () => {
         <Button variant={ButtonVariant.Default} onClick={() => navigate(-1)}>
           Назад
         </Button>
-        {meetup.status === MeetupStatus.REQUEST && (
+        {status === MeetupStatus.REQUEST && (
           <div className={styles.actionsWrapper}>
             <Button variant={ButtonVariant.Secondary}>Удалить</Button>
             <Button variant={ButtonVariant.Primary}>Одобрить тему</Button>
           </div>
         )}
-        {meetup.status === MeetupStatus.DRAFT && (
+        {status === MeetupStatus.DRAFT && (
           <div className={styles.actionsWrapper}>
             <Button variant={ButtonVariant.Secondary}>Удалить</Button>
             <Button variant={ButtonVariant.Primary}>Опубликовать</Button>
           </div>
         )}
-        {meetup.status === MeetupStatus.CONFIRMED && (
+        {status === MeetupStatus.CONFIRMED && (
           <Button variant={ButtonVariant.Secondary}>Удалить</Button>
         )}
       </div>
@@ -213,12 +227,12 @@ export const ViewMeetupPage = () => {
   };
 
   return (
-    <section className={classNames(styles.container, styles[meetup.status])}>
+    <section className={classNames(styles.container, styles[status])}>
       <Typography
         className={styles.heading}
         component={TypographyComponent.Heading1}
       >
-        Просмотр {meetup.status === MeetupStatus.REQUEST ? 'темы' : 'митапа'}
+        Просмотр {status === MeetupStatus.REQUEST ? 'темы' : 'митапа'}
       </Typography>
       <div className={styles.dataWrapper}>
         {renderHeader()}
@@ -236,7 +250,7 @@ export const ViewMeetupPage = () => {
               component={TypographyComponent.Paragraph}
               className={styles.excerpt}
             >
-              {meetup.excerpt}
+              {excerpt}
             </Typography>
           </div>
         </div>
