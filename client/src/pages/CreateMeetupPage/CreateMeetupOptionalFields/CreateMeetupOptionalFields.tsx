@@ -15,10 +15,7 @@ import {
 import { NewMeetupState } from 'pages';
 
 import styles from './CreateMeetupOptionalFields.module.scss';
-import {
-  CreateMeetupOptionalValues,
-  validateMeetupOptionalFields,
-} from 'validation';
+import { MeetupOptionalFields, validateMeetupOptionalFields } from 'validation';
 
 export const CreateMeetupOptionalFields = ({
   dataContext: [newMeetupData, setNewMeetupData],
@@ -29,7 +26,7 @@ export const CreateMeetupOptionalFields = ({
 }: StepperContext<NewMeetupState>): JSX.Element => {
   const { start, finish, place, image } = newMeetupData;
 
-  const initialValues: CreateMeetupOptionalValues = {
+  const initialValues: MeetupOptionalFields = {
     start,
     finish,
     place,
@@ -37,8 +34,8 @@ export const CreateMeetupOptionalFields = ({
   };
 
   const handleSubmit = (
-    values: CreateMeetupOptionalValues,
-    { setSubmitting }: FormikHelpers<CreateMeetupOptionalValues>,
+    values: MeetupOptionalFields,
+    { setSubmitting }: FormikHelpers<MeetupOptionalFields>,
   ): void => {
     setNewMeetupData({
       ...newMeetupData,
@@ -52,7 +49,7 @@ export const CreateMeetupOptionalFields = ({
     errors,
     values,
     isSubmitting,
-  }: FormikProps<CreateMeetupOptionalValues>): JSX.Element => {
+  }: FormikProps<MeetupOptionalFields>): JSX.Element => {
     const hasErrors = Object.entries(errors).length > 0;
     const isPassed = !hasErrors;
     const canSubmit = isPassed && !isSubmitting;
@@ -139,7 +136,7 @@ export const CreateMeetupOptionalFields = ({
   };
 
   return (
-    <Formik<CreateMeetupOptionalValues>
+    <Formik<MeetupOptionalFields>
       initialValues={initialValues}
       validate={validateMeetupOptionalFields}
       onSubmit={handleSubmit}

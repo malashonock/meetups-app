@@ -10,10 +10,7 @@ import {
   TypographyComponent,
 } from 'components';
 import { NewMeetupState } from 'pages';
-import {
-  CreateMeetupRequiredValues,
-  meetupRequiredFieldsSchema,
-} from 'validation';
+import { MeetupRequiredFields, meetupRequiredFieldsSchema } from 'validation';
 
 import styles from './CreateMeetupRequiredFields.module.scss';
 
@@ -26,15 +23,15 @@ export const CreateMeetupRequiredFields = ({
 }: StepperContext<NewMeetupState>): JSX.Element => {
   const { author, subject, excerpt } = newMeetupData;
 
-  const initialValues: CreateMeetupRequiredValues = {
+  const initialValues: MeetupRequiredFields = {
     author,
     subject,
     excerpt,
   };
 
   const handleSubmit = (
-    values: CreateMeetupRequiredValues,
-    { setSubmitting }: FormikHelpers<CreateMeetupRequiredValues>,
+    values: MeetupRequiredFields,
+    { setSubmitting }: FormikHelpers<MeetupRequiredFields>,
   ): void => {
     setNewMeetupData({
       ...newMeetupData,
@@ -48,7 +45,7 @@ export const CreateMeetupRequiredFields = ({
     touched,
     errors,
     isSubmitting,
-  }: FormikProps<CreateMeetupRequiredValues>): JSX.Element => {
+  }: FormikProps<MeetupRequiredFields>): JSX.Element => {
     const isTouched = Object.entries(touched).length > 0;
     const hasErrors = Object.entries(errors).length > 0;
     const isPassed = (isTouched || activeStep.passed) && !hasErrors;
@@ -107,7 +104,7 @@ export const CreateMeetupRequiredFields = ({
   };
 
   return (
-    <Formik<CreateMeetupRequiredValues>
+    <Formik<MeetupRequiredFields>
       initialValues={initialValues}
       validationSchema={meetupRequiredFieldsSchema}
       onSubmit={handleSubmit}
