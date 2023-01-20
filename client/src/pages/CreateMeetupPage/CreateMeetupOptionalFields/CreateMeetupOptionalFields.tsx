@@ -18,17 +18,12 @@ import { NewMeetup } from 'model';
 import styles from './CreateMeetupOptionalFields.module.scss';
 
 export const CreateMeetupOptionalFields = ({
-  dataContext: { values, errors, isSubmitting, setTouched },
+  dataContext: { values, errors, isSubmitting },
   activeStep,
   setStepPassed,
   handlePreviousStep,
   handleFinish,
 }: StepperContext<FormikProps<NewMeetup>>): JSX.Element => {
-  // Clear validation state on mount
-  useEffect(() => {
-    setTouched({});
-  }, []);
-
   const hasErrors = Object.entries(errors).length > 0;
   const isPassed = !hasErrors;
   const canSubmit = isPassed && !isSubmitting;
