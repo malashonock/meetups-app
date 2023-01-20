@@ -1,6 +1,12 @@
 import { getVotedUsers } from 'api';
 import { httpClient } from 'api';
-import { MeetupDto, MeetupFields, MeetupFormData, MeetupStatus } from 'model';
+import {
+  MeetupDto,
+  MeetupFields,
+  MeetupFormData,
+  MeetupStatus,
+  ShortUser,
+} from 'model';
 
 export const getMeetups = async (): Promise<MeetupDto[]> => {
   const { data: meetups } = await httpClient.get<MeetupDto[]>('/meetups');
@@ -20,7 +26,7 @@ export const getMeetup = async (id: string): Promise<MeetupDto> => {
 export const createMeetup = async (
   newMeetupFields: MeetupFields,
 ): Promise<MeetupFormData> => {
-  const formData = buildMeetupFormData(newMeetupFields);
+  const formData = buildMeetupFormData(newMeetupFields, MeetupStatus.DRAFT);
 
   const { data: createdMeetup } = await httpClient.post<MeetupFormData>(
     '/meetups',
@@ -33,8 +39,9 @@ export const createMeetup = async (
 export const updateMeetup = async (
   id: string,
   updatedMeetupFields: MeetupFields,
+  meetupStatus: MeetupStatus,
 ): Promise<MeetupFormData> => {
-  const formData = buildMeetupFormData(updatedMeetupFields);
+  const formData = buildMeetupFormData(updatedMeetupFields, meetupStatus);
 
   const { data: updatedMeetup } = await httpClient.put<MeetupFormData>(
     `/meetups/${id}`,
@@ -48,20 +55,25 @@ export const deleteMeetup = async (id: string): Promise<void> => {
   await httpClient.delete(`/meetups/${id}`);
 };
 
-const buildMeetupFormData = (meetupFields: MeetupFields): FormData => {
+const buildMeetupFormData = (
+  meetupFields: MeetupFields,
+  meetupStatus: MeetupStatus,
+): FormData => {
   // enhance form field values with missing data
+  const stubUser: ShortUser = {
+    id: 'uuu-bbb',
+    name: 'chief',
+    surname: 'Blick',
+  };
+
   const newMeetupData: MeetupFormData = {
     ...meetupFields,
     ...{
-      status: MeetupStatus.REQUEST,
+      status: meetupStatus,
       modified: new Date(),
-      author: {
-        id: 'uuu-bbb',
-        name: 'chief',
-        surname: 'Blick',
-      },
+      author: stubUser,
       goCount: 0,
-      speakers: [],
+      speakers: [stubUser],
       votedUsers: [],
     },
   };
@@ -69,14 +81,14 @@ const buildMeetupFormData = (meetupFields: MeetupFields): FormData => {
   const formData = new FormData();
 
   Object.entries(newMeetupData).forEach(([name, value]) => {
-    let valueToSend: string | File;
+    let valueToSend: string | File | Blob;
 
     switch (typeof value) {
       case 'string':
         valueToSend = value;
         break;
       case 'object':
-        if (value instanceof File) {
+        if (value instanceof File || value instanceof Blob) {
           valueToSend = value;
           break;
         }
