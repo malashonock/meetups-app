@@ -11,10 +11,11 @@ import {
   ViewNewsPage,
   CreateNewsPage,
   CreateMeetupPage,
+  EditNewsPage,
+  EditMeetupPage,
 } from 'pages';
 
 import styles from './App.module.scss';
-import { EditNewsPage } from 'pages/EditNewsPage/EditNewsPage';
 
 function App() {
   return (
@@ -41,7 +42,7 @@ function App() {
             <Route path="create" element={<CreateMeetupPage />} />
             <Route path=":id">
               <Route index element={<ViewMeetupPage />} />
-              <Route path="edit" element={<div>Edit meetup</div>} />
+              <Route path="edit" element={<EditMeetupPage />} />
             </Route>
           </Route>
           <Route path="news">
