@@ -1,28 +1,28 @@
 import { httpClient } from 'api';
-import { NewNews, News } from 'model';
+import { NewsFields, NewsDto } from 'model';
 
-export const getNews = async (): Promise<News[]> => {
-  const { data: articles } = await httpClient.get<News[]>('/news');
+export const getNews = async (): Promise<NewsDto[]> => {
+  const { data: articles } = await httpClient.get<NewsDto[]>('/news');
   return articles;
 };
 
-export const getNewsArticle = async (id: string): Promise<News> => {
-  const { data: article } = await httpClient.get<News>(`/news/${id}`);
+export const getNewsArticle = async (id: string): Promise<NewsDto> => {
+  const { data: article } = await httpClient.get<NewsDto>(`/news/${id}`);
   return article;
 };
 
 export const createNewsArticle = async (
-  newArticleData: NewNews,
-): Promise<News> => {
+  newArticleData: NewsFields,
+): Promise<NewsDto> => {
   const formData = new FormData();
 
   Object.entries(newArticleData).forEach(([name, value]) => {
-    if (value !== null) {
+    if (value !== null && value !== undefined) {
       formData.append(name, value);
     }
   });
 
-  const { data: createdArticle } = await httpClient.post<News>(
+  const { data: createdArticle } = await httpClient.post<NewsDto>(
     '/news',
     formData,
   );
@@ -31,8 +31,8 @@ export const createNewsArticle = async (
 
 export const updateNewsArticle = async (
   id: string,
-  updatedArticleData: NewNews,
-): Promise<News> => {
+  updatedArticleData: NewsFields,
+): Promise<NewsDto> => {
   const formData = new FormData();
 
   Object.entries(updatedArticleData).forEach(([name, value]) => {
@@ -41,7 +41,7 @@ export const updateNewsArticle = async (
     }
   });
 
-  const { data: updatedArticle } = await httpClient.put<News>(
+  const { data: updatedArticle } = await httpClient.put<NewsDto>(
     `/news/${id}`,
     formData,
   );

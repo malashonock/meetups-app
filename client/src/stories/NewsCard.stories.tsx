@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { NewsCard } from 'components';
-import { News } from 'model';
+import { NewsDto } from 'model';
 import testImage from './assets/news-img.jpg';
 
 export default {
@@ -20,7 +20,7 @@ const Template: ComponentStory<typeof NewsCard> = (args) => (
   </div>
 );
 
-const newsArticle: News = {
+const newsArticle: NewsDto = {
   id: 'AAA-AAA',
   publicationDate: new Date().toISOString(),
   title: 'Our Vilnius office celebrates 1 year!',

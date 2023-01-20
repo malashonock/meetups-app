@@ -11,7 +11,7 @@ import {
   Typography,
   TypographyComponent,
 } from 'components';
-import { NewNews } from 'model';
+import { NewsFields } from 'model';
 import { newsSchema } from 'validation';
 import { createNewsArticle } from 'api';
 
@@ -20,7 +20,7 @@ import styles from './CreateNewsPage.module.scss';
 export const CreateNewsPage = (): JSX.Element => {
   const navigate = useNavigate();
 
-  const initialValues: NewNews = {
+  const initialValues: NewsFields = {
     title: '',
     text: '',
     image: null,
@@ -29,8 +29,8 @@ export const CreateNewsPage = (): JSX.Element => {
   const handleBack = (): void => navigate(-1);
 
   const handleSubmit = async (
-    newArticleData: NewNews,
-    { setSubmitting }: FormikHelpers<NewNews>,
+    newArticleData: NewsFields,
+    { setSubmitting }: FormikHelpers<NewsFields>,
   ): Promise<void> => {
     await createNewsArticle(newArticleData);
     setSubmitting(false);
@@ -41,7 +41,7 @@ export const CreateNewsPage = (): JSX.Element => {
     touched,
     errors,
     isSubmitting,
-  }: FormikProps<NewNews>): JSX.Element => {
+  }: FormikProps<NewsFields>): JSX.Element => {
     const isTouched = Object.entries(touched).length > 0;
     const hasErrors = Object.entries(errors).length > 0;
     const canSubmit = isTouched && !hasErrors && !isSubmitting;
@@ -90,7 +90,7 @@ export const CreateNewsPage = (): JSX.Element => {
   };
 
   return (
-    <Formik<NewNews>
+    <Formik<NewsFields>
       initialValues={initialValues}
       validationSchema={newsSchema}
       onSubmit={handleSubmit}
