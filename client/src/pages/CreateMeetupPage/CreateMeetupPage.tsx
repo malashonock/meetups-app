@@ -1,21 +1,68 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Form, Formik, FormikErrors, FormikHelpers, FormikProps } from 'formik';
+import * as yup from 'yup';
 
-import { Stepper, StepperContext } from 'components';
+import { StepConfig, Stepper, StepperContext } from 'components';
 import { CreateMeetupOptionalFields } from './CreateMeetupOptionalFields/CreateMeetupOptionalFields';
 import { CreateMeetupRequiredFields } from './CreateMeetupRequiredFields/CreateMeetupRequiredFields';
 import { MeetupStatus, NewMeetup } from 'model';
 import { createMeetup } from 'api';
+import { MILLISECONDS_IN_SECOND, SECONDS_IN_MINUTE } from 'helpers';
 
 import styles from './CreateMeetupPage.module.scss';
 
-export type NewMeetupState = [
-  newMeetupData: NewMeetup,
-  setNewMeetupData: Dispatch<SetStateAction<NewMeetup>>,
+const createMeetupSteps: StepConfig<FormikProps<NewMeetup>>[] = [
+  {
+    title: 'Обязательные поля',
+    render: (context: StepperContext<FormikProps<NewMeetup>>): JSX.Element => (
+      <CreateMeetupRequiredFields {...context} />
+    ),
+  },
+  {
+    title: 'Дополнительные поля',
+    render: (context: StepperContext<FormikProps<NewMeetup>>): JSX.Element => (
+      <CreateMeetupOptionalFields {...context} />
+    ),
+  },
 ];
 
+const meetupRequiredFieldsSchema = yup.object().shape({
+  author: yup.string().required('Необходимо указать спикера'),
+  subject: yup.string().required('Необходимо заполнить тему митапа'),
+  excerpt: yup.string().required('Необходимо заполнить описание митапа'),
+});
+
+const validateMeetupOptionalFields = ({
+  start,
+  finish,
+}: NewMeetup): FormikErrors<NewMeetup> => {
+  const errors: FormikErrors<NewMeetup> = {};
+
+  if (start === null && finish !== null) {
+    errors.start = 'Заполните дату начала митапа';
+  }
+
+  if (
+    start !== null &&
+    finish !== null &&
+    finish <
+      new Date(
+        start.getTime() + 15 * SECONDS_IN_MINUTE * MILLISECONDS_IN_SECOND,
+      )
+  ) {
+    errors.finish = 'Дата окончания не может быть меньше даты начала';
+  }
+
+  return errors;
+};
+
 export const CreateMeetupPage = (): JSX.Element => {
-  const [newMeetupData, setNewMeetupData] = useState<NewMeetup>({
+  const navigate = useNavigate();
+
+  const [finished, setFinished] = useState(false);
+
+  const initialValues: NewMeetup = {
     author: '',
     modified: new Date(),
     start: null,
@@ -28,43 +75,35 @@ export const CreateMeetupPage = (): JSX.Element => {
     goCount: 0,
     place: '',
     image: null,
-  });
+  };
 
-  const [finished, setFinished] = useState(false);
+  const handleFinish = (): void => setFinished(true);
 
-  const navigate = useNavigate();
-
-  useEffect(() => {
+  const handleSubmit = async (newMeetupData: NewMeetup): Promise<void> => {
     if (finished) {
-      (async () => {
-        await createMeetup(newMeetupData);
-        navigate('/meetups');
-      })();
+      await createMeetup(newMeetupData);
+      navigate('/meetups');
     }
-  }, [finished]);
+  };
 
   return (
-    <div className={styles.container}>
-      <Stepper<NewMeetupState>
-        steps={[
-          {
-            title: 'Обязательные поля',
-            render: (context: StepperContext<NewMeetupState>): JSX.Element => (
-              <CreateMeetupRequiredFields {...context} />
-            ),
-          },
-          {
-            title: 'Дополнительные поля',
-            render: (context: StepperContext<NewMeetupState>): JSX.Element => (
-              <CreateMeetupOptionalFields {...context} />
-            ),
-          },
-        ]}
-        dataContext={[newMeetupData, setNewMeetupData]}
-        onFinish={async () => {
-          setFinished(true);
-        }}
-      />
-    </div>
+    <Formik
+      initialValues={initialValues}
+      validationSchema={meetupRequiredFieldsSchema}
+      validate={validateMeetupOptionalFields}
+      onSubmit={handleSubmit}
+    >
+      {(formikProps: FormikProps<NewMeetup>) => {
+        return (
+          <Form className={styles.container}>
+            <Stepper<FormikProps<NewMeetup>>
+              steps={createMeetupSteps}
+              dataContext={formikProps}
+              onFinish={handleFinish}
+            />
+          </Form>
+        );
+      }}
+    </Formik>
   );
 };
