@@ -12,7 +12,7 @@ import { MILLISECONDS_IN_SECOND, SECONDS_IN_MINUTE } from 'helpers';
 
 import styles from './CreateMeetupPage.module.scss';
 
-const createMeetupSteps: StepConfig<FormikProps<NewMeetup>>[] = [
+const createMeetupSteps = (): StepConfig<FormikProps<NewMeetup>>[] => [
   {
     title: 'Обязательные поля',
     render: (context: StepperContext<FormikProps<NewMeetup>>): JSX.Element => (
@@ -93,17 +93,15 @@ export const CreateMeetupPage = (): JSX.Element => {
       validate={validateMeetupOptionalFields}
       onSubmit={handleSubmit}
     >
-      {(formikProps: FormikProps<NewMeetup>) => {
-        return (
-          <Form className={styles.container}>
-            <Stepper<FormikProps<NewMeetup>>
-              steps={createMeetupSteps}
-              dataContext={formikProps}
-              onFinish={handleFinish}
-            />
-          </Form>
-        );
-      }}
+      {(formikProps: FormikProps<NewMeetup>) => (
+        <Form className={styles.container}>
+          <Stepper<FormikProps<NewMeetup>>
+            steps={createMeetupSteps()}
+            dataContext={formikProps}
+            onFinish={handleFinish}
+          />
+        </Form>
+      )}
     </Formik>
   );
 };
