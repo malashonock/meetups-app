@@ -14,7 +14,7 @@ export const meetupsRoutes = (db) => {
 
   meetupsRouter.post(
     "/", 
-    ensureAuthenticated, 
+    // ensureAuthenticated, 
     upload.single('image'), 
     async (req, res) => {
       //TODO: validate model data
