@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { Formik, Form, FormikErrors, FormikHelpers, FormikProps } from 'formik';
+import { Formik, Form, FormikHelpers, FormikProps } from 'formik';
 
 import {
   Button,
@@ -13,7 +13,6 @@ import {
   TypographyComponent,
 } from 'components';
 import { NewMeetupState } from 'pages';
-import { MILLISECONDS_IN_SECOND, SECONDS_IN_MINUTE } from 'helpers';
 
 import styles from './CreateMeetupOptionalFields.module.scss';
 import {

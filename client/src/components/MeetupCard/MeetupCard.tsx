@@ -11,12 +11,12 @@ import {
   VotesCount,
 } from 'components';
 import { isPast, parseDateString } from 'helpers';
-import { Meetup, MeetupStatus } from 'model';
+import { MeetupDto, MeetupStatus } from 'model';
 
 import styles from './MeetupCard.module.scss';
 
 interface MeetupCardProps {
-  meetup: Meetup;
+  meetup: MeetupDto;
 }
 
 export enum MeetupCardVariant {

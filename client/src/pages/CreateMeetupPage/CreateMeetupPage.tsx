@@ -4,22 +4,20 @@ import { useNavigate } from 'react-router-dom';
 import { Stepper, StepperContext } from 'components';
 import { CreateMeetupOptionalFields } from './CreateMeetupOptionalFields/CreateMeetupOptionalFields';
 import { CreateMeetupRequiredFields } from './CreateMeetupRequiredFields/CreateMeetupRequiredFields';
-import { MeetupStatus, NewMeetup } from 'model';
+import { MeetupStatus, MeetupFields } from 'model';
 import { createMeetup } from 'api';
 
 import styles from './CreateMeetupPage.module.scss';
 
 export type NewMeetupState = [
-  newMeetupData: NewMeetup,
-  setNewMeetupData: Dispatch<SetStateAction<NewMeetup>>,
+  newMeetupData: MeetupFields,
+  setNewMeetupData: Dispatch<SetStateAction<MeetupFields>>,
 ];
 
 export const CreateMeetupPage = (): JSX.Element => {
-  const [newMeetupData, setNewMeetupData] = useState<NewMeetup>({
+  const [newMeetupData, setNewMeetupData] = useState<MeetupFields>({
     author: '',
     modified: new Date(),
-    start: null,
-    finish: null,
     status: MeetupStatus.REQUEST,
     subject: '',
     excerpt: '',
@@ -27,7 +25,6 @@ export const CreateMeetupPage = (): JSX.Element => {
     votedUsers: [],
     goCount: 0,
     place: '',
-    image: null,
   });
 
   const [finished, setFinished] = useState(false);

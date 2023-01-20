@@ -9,7 +9,7 @@ import {
   MeetupCardVariant,
 } from 'components';
 import { getMeetups } from 'api';
-import { Meetup, MeetupStatus } from 'model';
+import { MeetupDto, MeetupStatus } from 'model';
 import { isPast } from 'helpers';
 
 import styles from './MeetupTabContent.module.scss';
@@ -19,7 +19,7 @@ interface MeetupTabContentProps {
 }
 
 export const MeetupTabContent = ({ variant }: MeetupTabContentProps) => {
-  const [meetups, setMeetups] = useState<Meetup[]>([]);
+  const [meetups, setMeetups] = useState<MeetupDto[]>([]);
 
   const navigate = useNavigate();
 

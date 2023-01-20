@@ -8,9 +8,9 @@ export enum MeetupStatus {
 
 export interface Meetup {
   id: string;
-  modified: string; // DateTime string
-  start?: string; // DateTime string
-  finish?: string; // DateTime string
+  modified: Date;
+  start?: Date;
+  finish?: Date;
   author: ShortUser;
   speakers: ShortUser[];
   subject: string;
@@ -18,23 +18,23 @@ export interface Meetup {
   place?: string;
   goCount: number;
   status: MeetupStatus;
-  imageUrl: string | null;
+  image?: File | null;
   votedUsers?: ShortUser[];
 }
 
-export type NewMeetup = Omit<Meetup,
-  | 'id'
-  | 'modified'
-  | 'start'
-  | 'finish'
-  | 'imageUrl'
-  | 'author'
-  | 'speakers'
+// Data structure exchanged with server
+export type MeetupDto = Omit<
+  Meetup,
+  'modified' | 'start' | 'finish' | 'image'
 > & {
-  modified: Date | null;
-  start: Date | null;
-  finish: Date | null;
-  image: File | null;
+  modified: string; // DateTime string
+  start?: string; // DateTime string
+  finish?: string; // DateTime string
+  imageUrl: string | null;
+};
+
+// Data structure used in create/edit forms
+export type MeetupFields = Omit<Meetup, 'id' | 'author' | 'speakers'> & {
   author: string; // TODO: implement as ShortUser
   speakers: string[]; // TODO implement as ShortUser[]
 };

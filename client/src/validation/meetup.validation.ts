@@ -1,16 +1,16 @@
 import { FormikErrors } from 'formik';
 import * as yup from 'yup';
 
-import { NewMeetup } from 'model';
+import { MeetupFields } from 'model';
 import { SECONDS_IN_MINUTE, MILLISECONDS_IN_SECOND } from 'helpers';
 
 export type CreateMeetupRequiredValues = Pick<
-  NewMeetup,
+  MeetupFields,
   'author' | 'subject' | 'excerpt'
 >;
 
 export type CreateMeetupOptionalValues = Pick<
-  NewMeetup,
+  MeetupFields,
   'start' | 'finish' | 'place' | 'image'
 >;
 
@@ -26,13 +26,13 @@ export const validateMeetupOptionalFields = ({
 }: CreateMeetupOptionalValues): FormikErrors<CreateMeetupOptionalValues> => {
   const errors: FormikErrors<CreateMeetupOptionalValues> = {};
 
-  if (start === null && finish !== null) {
+  if (!start && finish) {
     errors.start = 'Заполните дату начала митапа';
   }
 
   if (
-    start !== null &&
-    finish !== null &&
+    start &&
+    finish &&
     finish <
       new Date(
         start.getTime() + 15 * SECONDS_IN_MINUTE * MILLISECONDS_IN_SECOND,
