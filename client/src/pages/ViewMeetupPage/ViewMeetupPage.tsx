@@ -37,7 +37,7 @@ export const ViewMeetupPage = () => {
   }
 
   const renderHeader = () => {
-    if (meetup.status === MeetupStatus.DRAFT) {
+    if (meetup.status === MeetupStatus.REQUEST) {
       return (
         <div className={styles.data}>
           <Typography
@@ -78,7 +78,7 @@ export const ViewMeetupPage = () => {
   };
 
   const renderTimePlace = () => {
-    if (meetup.status === MeetupStatus.DRAFT) {
+    if (meetup.status === MeetupStatus.REQUEST) {
       return null;
     }
 
@@ -138,10 +138,10 @@ export const ViewMeetupPage = () => {
         component={TypographyComponent.Span}
         className={styles.dataName}
       >
-        {meetup.status === MeetupStatus.DRAFT ? 'Автор' : 'Спикер'}
+        {meetup.status === MeetupStatus.REQUEST ? 'Автор' : 'Спикер'}
       </Typography>
       <div className={styles.dataContent}>
-        {meetup.status === MeetupStatus.DRAFT ? (
+        {meetup.status === MeetupStatus.REQUEST ? (
           <UserPreview user={meetup.author} />
         ) : (
           <div className={styles.speakerWrapper}>
@@ -193,13 +193,13 @@ export const ViewMeetupPage = () => {
         <Button variant={ButtonVariant.Default} onClick={() => navigate(-1)}>
           Назад
         </Button>
-        {meetup.status === MeetupStatus.DRAFT && (
+        {meetup.status === MeetupStatus.REQUEST && (
           <div className={styles.actionsWrapper}>
             <Button variant={ButtonVariant.Secondary}>Удалить</Button>
             <Button variant={ButtonVariant.Primary}>Одобрить тему</Button>
           </div>
         )}
-        {meetup.status === MeetupStatus.REQUEST && (
+        {meetup.status === MeetupStatus.DRAFT && (
           <div className={styles.actionsWrapper}>
             <Button variant={ButtonVariant.Secondary}>Удалить</Button>
             <Button variant={ButtonVariant.Primary}>Опубликовать</Button>
@@ -218,7 +218,7 @@ export const ViewMeetupPage = () => {
         className={styles.heading}
         component={TypographyComponent.Heading1}
       >
-        Просмотр {meetup.status === MeetupStatus.DRAFT ? 'темы' : 'митапа'}
+        Просмотр {meetup.status === MeetupStatus.REQUEST ? 'темы' : 'митапа'}
       </Typography>
       <div className={styles.dataWrapper}>
         {renderHeader()}

@@ -32,20 +32,20 @@ export const MeetupTabContent = ({ variant }: MeetupTabContentProps) => {
       switch (variant) {
         case MeetupCardVariant.Topic:
           setMeetups(
-            meetups.filter((meetup) => meetup.status === MeetupStatus.DRAFT),
+            meetups.filter((meetup) => meetup.status === MeetupStatus.REQUEST),
           );
           break;
         case MeetupCardVariant.OnModeration:
           setMeetups(
-            meetups.filter((meetup) => meetup.status === MeetupStatus.REQUEST),
+            meetups.filter((meetup) => meetup.status === MeetupStatus.DRAFT),
           );
           break;
         case MeetupCardVariant.Upcoming:
           setMeetups(
             meetups.filter(
               (meetup) =>
-                meetup.status === MeetupStatus.CONFIRMED &&
-                !meetup.start || (meetup.start && !isPast(meetup.start)),
+                (meetup.status === MeetupStatus.CONFIRMED && !meetup.start) ||
+                (meetup.start && !isPast(meetup.start)),
             ),
           );
           break;
@@ -54,7 +54,8 @@ export const MeetupTabContent = ({ variant }: MeetupTabContentProps) => {
             meetups.filter(
               (meetup) =>
                 meetup.status === MeetupStatus.CONFIRMED &&
-                meetup.start && isPast(meetup.start),
+                meetup.start &&
+                isPast(meetup.start),
             ),
           );
           break;

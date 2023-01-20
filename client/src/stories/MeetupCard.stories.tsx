@@ -29,7 +29,7 @@ const author: ShortUser = {
 
 const meetupTopic: Meetup = {
   id: 'AAA-AAA',
-  status: MeetupStatus.DRAFT,
+  status: MeetupStatus.REQUEST,
   author,
   subject: 'EF Core от практикующих',
   excerpt:
