@@ -1,5 +1,5 @@
 export * from './LoginPage/LoginPage';
-export * from './MeetupPage/MeetupPage';
+export * from './MeetupsPage/MeetupsPage';
 export * from './ViewMeetupPage/ViewMeetupPage';
 export * from './CreateMeetupPage/CreateMeetupPage';
 export * from './NewsPage/NewsPage';

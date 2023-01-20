@@ -3,14 +3,14 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Header, meetupTabsLinks, meetupTabToDescriptor } from 'components';
 
 import {
-  LoginPage, 
-  MeetupPage, 
-  NotFoundPage, 
-  NewsPage, 
-  ViewMeetupPage, 
-  ViewNewsPage, 
-  CreateNewsPage, 
-  CreateMeetupPage
+  LoginPage,
+  MeetupsPage,
+  NotFoundPage,
+  NewsPage,
+  ViewMeetupPage,
+  ViewNewsPage,
+  CreateNewsPage,
+  CreateMeetupPage,
 } from 'pages';
 
 import styles from './App.module.scss';
@@ -25,7 +25,7 @@ function App() {
           <Route path="/" element={<Navigate replace to="/meetups" />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="meetups">
-            <Route element={<MeetupPage />}>
+            <Route element={<MeetupsPage />}>
               <Route
                 index
                 element={<Navigate replace to={meetupTabsLinks[0]} />}
