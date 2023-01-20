@@ -33,7 +33,6 @@ export const CreateNewsPage = (): JSX.Element => {
     { setSubmitting }: FormikHelpers<NewsFields>,
   ): Promise<void> => {
     await createNewsArticle(newArticleData);
-    setSubmitting(false);
     navigate('/news');
   };
 
