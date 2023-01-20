@@ -1,6 +1,6 @@
 import { getVotedUsers } from 'api';
 import { httpClient } from 'api';
-import { MeetupDto, MeetupFields } from 'model';
+import { MeetupDto, MeetupFields, MeetupFormData, MeetupStatus } from 'model';
 
 export const getMeetups = async (): Promise<MeetupDto[]> => {
   const { data: meetups } = await httpClient.get<MeetupDto[]>('/meetups');
@@ -18,8 +18,54 @@ export const getMeetup = async (id: string): Promise<MeetupDto> => {
 };
 
 export const createMeetup = async (
-  newMeetupData: MeetupFields,
-): Promise<MeetupDto> => {
+  newMeetupFields: MeetupFields,
+): Promise<MeetupFormData> => {
+  const formData = buildMeetupFormData(newMeetupFields);
+
+  const { data: createdMeetup } = await httpClient.post<MeetupFormData>(
+    '/meetups',
+    formData,
+  );
+
+  return createdMeetup;
+};
+
+export const updateMeetup = async (
+  id: string,
+  updatedMeetupFields: MeetupFields,
+): Promise<MeetupFormData> => {
+  const formData = buildMeetupFormData(updatedMeetupFields);
+
+  const { data: updatedMeetup } = await httpClient.put<MeetupFormData>(
+    `/meetups/${id}`,
+    formData,
+  );
+
+  return updatedMeetup;
+};
+
+export const deleteMeetup = async (id: string): Promise<void> => {
+  await httpClient.delete(`/meetups/${id}`);
+};
+
+const buildMeetupFormData = (meetupFields: MeetupFields): FormData => {
+  // enhance form field values with missing data
+  const newMeetupData: MeetupFormData = {
+    ...meetupFields,
+    ...{
+      status: MeetupStatus.REQUEST,
+      modified: new Date(),
+      author: {
+        id: 'uuu-bbb',
+        name: 'chief',
+        surname: 'Blick',
+      },
+      goCount: 0,
+      speakers: [],
+      votedUsers: [],
+    },
+  };
+
   const formData = new FormData();
 
   Object.entries(newMeetupData).forEach(([name, value]) => {
@@ -27,15 +73,6 @@ export const createMeetup = async (
 
     switch (typeof value) {
       case 'string':
-        if (name === 'author') {
-          valueToSend = JSON.stringify({
-            id: 'uuu-bbb',
-            name: 'chief',
-            surname: 'Blick',
-          });
-          break;
-        }
-
         valueToSend = value;
         break;
       case 'object':
@@ -61,22 +98,5 @@ export const createMeetup = async (
     }
   });
 
-  const { data: createdMeetup } = await httpClient.post<MeetupDto>(
-    '/meetups',
-    formData,
-  );
-  return createdMeetup;
-};
-
-export const updateMeetup = async (
-  updatedMeetupData: MeetupDto,
-): Promise<MeetupDto> => {
-  const { data: updatedMeetup } = await httpClient.put<MeetupDto>('/meetups', {
-    ...updatedMeetupData,
-  });
-  return updatedMeetup;
-};
-
-export const deleteMeetup = async (id: string): Promise<void> => {
-  await httpClient.delete(`/meetups/${id}`);
+  return formData;
 };

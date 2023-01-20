@@ -22,7 +22,7 @@ export interface Meetup {
   votedUsers?: ShortUser[];
 }
 
-// Data structure exchanged with server
+// Data structures exchanged with server
 export type MeetupDto = Omit<
   Meetup,
   'modified' | 'start' | 'finish' | 'image'
@@ -33,8 +33,12 @@ export type MeetupDto = Omit<
   imageUrl: string | null;
 };
 
+export type MeetupFormData = Omit<Meetup, 'id'>;
+
 // Data structure used in create/edit forms
-export type MeetupFields = Omit<Meetup, 'id' | 'author' | 'speakers'> & {
+export type MeetupFields = Pick<
+  Meetup,
+  'subject' | 'excerpt' | 'start' | 'finish' | 'place' | 'image'
+> & {
   author: string; // TODO: implement as ShortUser
-  speakers: string[]; // TODO implement as ShortUser[]
 };
