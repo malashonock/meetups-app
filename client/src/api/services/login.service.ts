@@ -1,4 +1,4 @@
-import { httpClient } from 'helpers';
+import { httpClient } from 'api';
 import { Credentials, FullUser, User } from 'model';
 
 export const login = async (credentials: Credentials): Promise<FullUser> => {
