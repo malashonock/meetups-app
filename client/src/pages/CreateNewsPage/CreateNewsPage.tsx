@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router';
 import classNames from 'classnames';
-import { Form, Formik, FormikHelpers, FormikProps } from 'formik';
+import { Form, Formik, FormikProps } from 'formik';
 
 import {
   Button,
@@ -28,10 +28,7 @@ export const CreateNewsPage = (): JSX.Element => {
 
   const handleBack = (): void => navigate(-1);
 
-  const handleSubmit = async (
-    newArticleData: NewsFields,
-    { setSubmitting }: FormikHelpers<NewsFields>,
-  ): Promise<void> => {
+  const handleSubmit = async (newArticleData: NewsFields): Promise<void> => {
     await createNewsArticle(newArticleData);
     navigate('/news');
   };
