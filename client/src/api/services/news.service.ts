@@ -1,4 +1,4 @@
-import { httpClient } from 'helpers';
+import { httpClient } from 'api';
 import { NewNews, News } from 'model';
 
 export const getNews = async (): Promise<News[]> => {
@@ -22,16 +22,29 @@ export const createNewsArticle = async (
     }
   });
 
-  const { data: createdArticle } = await httpClient.post<News>('/news', formData);
+  const { data: createdArticle } = await httpClient.post<News>(
+    '/news',
+    formData,
+  );
   return createdArticle;
 };
 
 export const updateNewsArticle = async (
-  updatedArticleData: News,
+  id: string,
+  updatedArticleData: NewNews,
 ): Promise<News> => {
-  const { data: updatedArticle } = await httpClient.put<News>('/news', {
-    ...updatedArticleData,
+  const formData = new FormData();
+
+  Object.entries(updatedArticleData).forEach(([name, value]) => {
+    if (value !== null) {
+      formData.append(name, value);
+    }
   });
+
+  const { data: updatedArticle } = await httpClient.put<News>(
+    `/news/${id}`,
+    formData,
+  );
   return updatedArticle;
 };
 

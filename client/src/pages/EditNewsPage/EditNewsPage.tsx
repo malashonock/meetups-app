@@ -1,5 +1,6 @@
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import classNames from 'classnames';
+import { Form, Formik, FormikHelpers, FormikProps } from 'formik';
 import * as yup from 'yup';
 
 import {
@@ -11,46 +12,54 @@ import {
   Typography,
   TypographyComponent,
 } from 'components';
-
-import { Form, Formik, FormikHelpers, FormikProps } from 'formik';
 import { NewNews } from 'model';
-import { createNewsArticle } from 'api';
+import { updateNewsArticle } from 'api';
+import { useNewsArticleQuery, useStaticFileQuery } from 'hooks';
 
-import styles from './CreateNewsPage.module.scss';
+import styles from './EditNewsPage.module.scss';
 
 const validationSchema = yup.object().shape({
   title: yup.string().required('Введите заголовок новости'),
   text: yup.string().required('Введите текст новости'),
 });
 
-export const CreateNewsPage = (): JSX.Element => {
+export const EditNewsPage = (): JSX.Element => {
+  const { id } = useParams();
   const navigate = useNavigate();
 
+  const { newsArticle } = useNewsArticleQuery(id);
+  const { file: imageFile } = useStaticFileQuery(newsArticle?.imageUrl);
+
+  if (!id || !newsArticle || (newsArticle?.imageUrl && !imageFile)) {
+    return <div>Загрузка...</div>;
+  }
+
   const initialValues: NewNews = {
-    title: '',
-    text: '',
-    image: null,
+    title: newsArticle.title || '',
+    text: newsArticle.text || '',
+    image: imageFile ?? null,
   };
 
   const handleBack = (): void => navigate(-1);
 
   const handleSubmit = async (
-    newArticleData: NewNews,
+    updatedArticleData: NewNews,
     { setSubmitting }: FormikHelpers<NewNews>,
   ): Promise<void> => {
-    await createNewsArticle(newArticleData);
+    await updateNewsArticle(id, updatedArticleData);
     setSubmitting(false);
     navigate('/news');
   };
 
   const renderForm = ({
     touched,
+    dirty,
     errors,
     isSubmitting,
   }: FormikProps<NewNews>): JSX.Element => {
     const isTouched = Object.entries(touched).length > 0;
     const hasErrors = Object.entries(errors).length > 0;
-    const canSubmit = isTouched && !hasErrors && !isSubmitting;
+    const canSubmit = isTouched && dirty && !hasErrors && !isSubmitting;
 
     return (
       <Form>
@@ -59,17 +68,17 @@ export const CreateNewsPage = (): JSX.Element => {
             className={styles.heading}
             component={TypographyComponent.Heading1}
           >
-            Создание новости
+            Редактирование новости
           </Typography>
           <div className={styles.contentWrapper}>
             <div className={classNames(styles.textSection, styles.main)}>
-              <TextField name="title" labelText="Заголовок" />
-              <TextField name="text" labelText="Текст" multiline />
               <ImageUploader
                 name="image"
                 labelText="Изображение"
                 variant={ImagePreviewMode.Large}
               />
+              <TextField name="title" labelText="Заголовок" />
+              <TextField name="text" labelText="Текст" multiline />
             </div>
             <div className={classNames(styles.textSection, styles.actions)}>
               <Button
@@ -78,7 +87,7 @@ export const CreateNewsPage = (): JSX.Element => {
                 onClick={handleBack}
                 className={styles.actionButton}
               >
-                Назад
+                Отмена
               </Button>
               <Button
                 type="submit"
@@ -86,7 +95,7 @@ export const CreateNewsPage = (): JSX.Element => {
                 className={styles.actionButton}
                 disabled={!canSubmit}
               >
-                Создать
+                Сохранить
               </Button>
             </div>
           </div>

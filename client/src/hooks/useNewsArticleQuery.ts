@@ -11,7 +11,9 @@ interface UseNewsArticleQueryResult {
   isError: boolean;
 }
 
-export function useNewsArticleQuery(id: string) : UseNewsArticleQueryResult {
+export const useNewsArticleQuery = (
+  id: string | null | undefined,
+): UseNewsArticleQueryResult => {
   const [newsArticle, setNewsArticle] = useState<News | undefined>();
   const [error, setError] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -20,20 +22,24 @@ export function useNewsArticleQuery(id: string) : UseNewsArticleQueryResult {
 
   useEffect(() => {
     (async () => {
+      if (!id) {
+        setIsError(true);
+        setError('Не задан id новости!');
+        return;
+      }
+
       setIsLoading(true);
 
       try {
         setNewsArticle(await getNewsArticle(id));
         setIsSuccess(true);
-      }
-      catch(error) {
+      } catch (error) {
         setIsError(true);
 
         const status = (error as AxiosError).response?.status;
-        switch(status){
+        switch (status) {
           case 404:
             setError('Новость не найдена!');
-            setNewsArticle(undefined);
             break;
           default:
             setError('Что-то пошло не так!');
@@ -44,7 +50,6 @@ export function useNewsArticleQuery(id: string) : UseNewsArticleQueryResult {
     })();
   }, [id]);
 
-
   return {
     newsArticle,
     error,
@@ -52,4 +57,4 @@ export function useNewsArticleQuery(id: string) : UseNewsArticleQueryResult {
     isSuccess,
     isError,
   };
-}
+};

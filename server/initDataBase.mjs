@@ -6,7 +6,7 @@ export const initDataBase = async () => {
   const db = new Low(adapter);
   await db.read();
   if (!db.data) {
-    db.data = generateInitialData();
+    db.data = await generateInitialData();
     await db.write();
   }
 

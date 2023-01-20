@@ -64,12 +64,17 @@ export const ViewNewsPage = () => {
   const renderActions = (): JSX.Element => {
     return (
       <div className={classNames(styles.textSection, styles.actions)}>
-        <Button variant={ButtonVariant.Default} onClick={handleBack}>
+        <Button
+          variant={ButtonVariant.Default}
+          className={styles.actionButton}
+          onClick={handleBack}
+        >
           Назад
         </Button>
         <div className={styles.actionGroup}>
           <Button 
-            variant={ButtonVariant.Secondary} 
+            variant={ButtonVariant.Secondary}
+            className={styles.actionButton}
             onClick={handleEdit}
           >
             Редактировать
