@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import { Formik, Form, FormikHelpers, FormikProps } from 'formik';
-import * as yup from 'yup';
 
 import {
   Button,
@@ -10,21 +9,13 @@ import {
   Typography,
   TypographyComponent,
 } from 'components';
-import { NewMeetup } from 'model';
 import { NewMeetupState } from 'pages';
+import {
+  CreateMeetupRequiredValues,
+  meetupRequiredFieldsSchema,
+} from 'validation';
 
 import styles from './CreateMeetupRequiredFields.module.scss';
-
-type CreateMeetupRequiredValues = Pick<
-  NewMeetup,
-  'author' | 'subject' | 'excerpt'
->;
-
-const validationSchema = yup.object().shape({
-  author: yup.string().required('Необходимо указать спикера'),
-  subject: yup.string().required('Необходимо заполнить тему митапа'),
-  excerpt: yup.string().required('Необходимо заполнить описание митапа'),
-});
 
 export const CreateMeetupRequiredFields = ({
   dataContext: [newMeetupData, setNewMeetupData],
@@ -118,7 +109,7 @@ export const CreateMeetupRequiredFields = ({
   return (
     <Formik<CreateMeetupRequiredValues>
       initialValues={initialValues}
-      validationSchema={validationSchema}
+      validationSchema={meetupRequiredFieldsSchema}
       onSubmit={handleSubmit}
     >
       {renderForm}

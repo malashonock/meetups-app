@@ -1,7 +1,6 @@
 import { useNavigate, useParams } from 'react-router';
 import classNames from 'classnames';
 import { Form, Formik, FormikHelpers, FormikProps } from 'formik';
-import * as yup from 'yup';
 
 import {
   Button,
@@ -13,15 +12,11 @@ import {
   TypographyComponent,
 } from 'components';
 import { NewNews } from 'model';
+import { newsSchema } from 'validation';
 import { updateNewsArticle } from 'api';
 import { useNewsArticleQuery, useStaticFileQuery } from 'hooks';
 
 import styles from './EditNewsPage.module.scss';
-
-const validationSchema = yup.object().shape({
-  title: yup.string().required('Введите заголовок новости'),
-  text: yup.string().required('Введите текст новости'),
-});
 
 export const EditNewsPage = (): JSX.Element => {
   const { id } = useParams();
@@ -107,7 +102,7 @@ export const EditNewsPage = (): JSX.Element => {
   return (
     <Formik<NewNews>
       initialValues={initialValues}
-      validationSchema={validationSchema}
+      validationSchema={newsSchema}
       onSubmit={handleSubmit}
     >
       {renderForm}

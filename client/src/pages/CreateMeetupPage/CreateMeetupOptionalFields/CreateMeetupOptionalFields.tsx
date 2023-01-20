@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import { Formik, Form, FormikErrors, FormikHelpers, FormikProps } from 'formik';
-import * as yup from 'yup';
 
 import {
   Button,
@@ -13,16 +12,14 @@ import {
   Typography,
   TypographyComponent,
 } from 'components';
-import { NewMeetup } from 'model';
 import { NewMeetupState } from 'pages';
 import { MILLISECONDS_IN_SECOND, SECONDS_IN_MINUTE } from 'helpers';
 
 import styles from './CreateMeetupOptionalFields.module.scss';
-
-type CreateMeetupOptionalValues = Pick<
-  NewMeetup,
-  'start' | 'finish' | 'place' | 'image'
->;
+import {
+  CreateMeetupOptionalValues,
+  validateMeetupOptionalFields,
+} from 'validation';
 
 export const CreateMeetupOptionalFields = ({
   dataContext: [newMeetupData, setNewMeetupData],
@@ -38,30 +35,6 @@ export const CreateMeetupOptionalFields = ({
     finish,
     place,
     image,
-  };
-
-  const validate = ({
-    start,
-    finish,
-  }: CreateMeetupOptionalValues): FormikErrors<CreateMeetupOptionalValues> => {
-    const errors: FormikErrors<CreateMeetupOptionalValues> = {};
-
-    if (start === null && finish !== null) {
-      errors.start = 'Заполните дату начала митапа';
-    }
-
-    if (
-      start !== null &&
-      finish !== null &&
-      finish <
-        new Date(
-          start.getTime() + 15 * SECONDS_IN_MINUTE * MILLISECONDS_IN_SECOND,
-        )
-    ) {
-      errors.finish = 'Дата окончания не может быть меньше даты начала';
-    }
-
-    return errors;
   };
 
   const handleSubmit = (
@@ -169,7 +142,7 @@ export const CreateMeetupOptionalFields = ({
   return (
     <Formik<CreateMeetupOptionalValues>
       initialValues={initialValues}
-      validate={validate}
+      validate={validateMeetupOptionalFields}
       onSubmit={handleSubmit}
     >
       {renderForm}

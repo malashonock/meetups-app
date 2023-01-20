@@ -11,6 +11,7 @@ import {
   TypographyComponent,
 } from 'components';
 import { Credentials, FullUser } from 'model';
+import { loginSchema } from 'validation';
 import { login } from 'api';
 
 import { ReactComponent as AnonymousUserIcon } from 'assets/images/anonymous-user.svg';
@@ -25,10 +26,7 @@ export const LoginPage = (): JSX.Element => {
         username: '',
         password: '',
       }}
-      validationSchema={yup.object().shape({
-        username: yup.string().required('Введите имя пользователя'),
-        password: yup.string().required('Введите пароль'),
-      })}
+      validationSchema={loginSchema}
       onSubmit={async (credentials, { setSubmitting }): Promise<void> => {
         const authenticatedUser: FullUser = await login(credentials);
         setSubmitting(false);
@@ -51,14 +49,16 @@ export const LoginPage = (): JSX.Element => {
               </Typography>
               <div className={styles.contentWrapper}>
                 <div className={classNames(styles.textSection, styles.main)}>
-                <figure className={classNames(styles.section, styles.imageWrapper)}>
-                  <AnonymousUserIcon className={styles.image} />
-                </figure>
+                  <figure
+                    className={classNames(styles.section, styles.imageWrapper)}
+                  >
+                    <AnonymousUserIcon className={styles.image} />
+                  </figure>
                   <TextField name="username" labelText="Имя пользователя" />
                   <TextField name="password" labelText="Пароль" />
-                  <Button 
+                  <Button
                     type="submit"
-                    variant={ButtonVariant.Primary} 
+                    variant={ButtonVariant.Primary}
                     className={styles.actionButton}
                     disabled={!canSubmit}
                   >
@@ -69,8 +69,7 @@ export const LoginPage = (): JSX.Element => {
             </section>
           </Form>
         );
-      }
-      }
+      }}
     </Formik>
   );
 };
