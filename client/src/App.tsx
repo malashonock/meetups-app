@@ -22,7 +22,7 @@ import { Nullable } from 'types';
 
 export const RootContext = createContext<Nullable<RootStore>>(null);
 
-function App() {
+export const App = (): JSX.Element => {
   return (
     <RootContext.Provider value={new RootStore()}>
       <BrowserRouter>
@@ -65,6 +65,4 @@ function App() {
       </BrowserRouter>
     </RootContext.Provider>
   );
-}
-
-export default App;
+};
