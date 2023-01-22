@@ -1,9 +1,8 @@
-import { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 
-import { RootContext } from 'App';
 import { IconButton, Tooltip, TooltipVariant } from 'components';
+import { useAuthStore } from 'hooks';
 
 import styles from './AuthToggle.module.scss';
 import { ReactComponent as LoginIcon } from './assets/login.svg';
@@ -11,8 +10,7 @@ import { ReactComponent as LogoutIcon } from './assets/logout.svg';
 
 export const AuthToggle = observer((): JSX.Element => {
   const navigate = useNavigate();
-  const authStore = useContext(RootContext)?.authStore;
-  const loggedUser = authStore?.loggedUser;
+  const { authStore, loggedUser } = useAuthStore();
 
   const handleLogout = async (): Promise<void> => {
     await authStore?.logOut();
