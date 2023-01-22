@@ -1,7 +1,7 @@
 import { action, makeObservable, observable } from 'mobx';
 import { makePersistable } from 'mobx-persist-store';
 
-import { Credentials, User } from 'model';
+import { Credentials, FullUser, User } from 'model';
 import * as API from 'api';
 import { RootStore } from 'stores';
 import { Nullable } from 'types';
@@ -27,7 +27,8 @@ export class AuthStore {
 
   async logIn(credentials: Credentials): Promise<void> {
     try {
-      this.loggedUser = await API.login(credentials);
+      const { password, ...userData } = await API.login(credentials);
+      this.loggedUser = userData as User;
     } catch (error) {
       console.log(error);
     }
