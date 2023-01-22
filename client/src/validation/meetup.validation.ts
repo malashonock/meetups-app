@@ -2,7 +2,7 @@ import { FormikErrors } from 'formik';
 import * as yup from 'yup';
 
 import { MeetupFields } from 'model';
-import { SECONDS_IN_MINUTE, MILLISECONDS_IN_SECOND } from 'helpers';
+import { SECONDS_IN_MINUTE, MILLISECONDS_IN_SECOND } from 'utils';
 
 export type MeetupRequiredFields = Pick<
   MeetupFields,

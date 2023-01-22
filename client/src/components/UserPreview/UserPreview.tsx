@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 
 import { Typography } from 'components';
-import { getInitials } from 'helpers';
+import { getInitials } from 'utils';
 import { ShortUser } from 'model';
 
 import styles from './UserPreview.module.scss';

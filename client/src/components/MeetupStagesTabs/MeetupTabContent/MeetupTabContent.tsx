@@ -10,7 +10,7 @@ import {
 } from 'components';
 import { getMeetups } from 'api';
 import { MeetupDto, MeetupStatus } from 'model';
-import { isPast } from 'helpers';
+import { isPast } from 'utils';
 
 import styles from './MeetupTabContent.module.scss';
 
