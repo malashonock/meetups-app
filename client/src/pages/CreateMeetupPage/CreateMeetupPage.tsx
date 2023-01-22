@@ -8,15 +8,19 @@ import { MeetupFields } from 'model';
 import { createMeetup } from 'api';
 
 import styles from './CreateMeetupPage.module.scss';
+import { useAuthStore } from 'hooks';
+import { observer } from 'mobx-react-lite';
 
 export type NewMeetupState = [
   newMeetupData: MeetupFields,
   setNewMeetupData: Dispatch<SetStateAction<MeetupFields>>,
 ];
 
-export const CreateMeetupPage = (): JSX.Element => {
+export const CreateMeetupPage = observer((): JSX.Element => {
+  const { loggedUser } = useAuthStore();
+
   const [newMeetupData, setNewMeetupData] = useState<MeetupFields>({
-    author: '',
+    author: loggedUser ? `${loggedUser.name} ${loggedUser.surname}` : '',
     subject: '',
     excerpt: '',
     place: '',
@@ -59,4 +63,4 @@ export const CreateMeetupPage = (): JSX.Element => {
       />
     </div>
   );
-};
+});
