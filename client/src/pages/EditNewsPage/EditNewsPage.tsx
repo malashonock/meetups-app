@@ -1,4 +1,5 @@
 import { useNavigate, useParams } from 'react-router';
+import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import { Form, Formik, FormikHelpers, FormikProps } from 'formik';
 
@@ -11,28 +12,27 @@ import {
   Typography,
   TypographyComponent,
 } from 'components';
+import { NotFoundPage } from 'pages';
 import { NewsFields } from 'model';
+import { useNewsArticle } from 'hooks';
 import { newsSchema } from 'validation';
-import { updateNewsArticle } from 'api';
-import { useNewsArticleQuery, useStaticFileQuery } from 'hooks';
 
 import styles from './EditNewsPage.module.scss';
 
-export const EditNewsPage = (): JSX.Element => {
+export const EditNewsPage = observer((): JSX.Element => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const { newsArticle } = useNewsArticleQuery(id);
-  const { file: imageFile } = useStaticFileQuery(newsArticle?.imageUrl);
+  const newsArticle = useNewsArticle(id);
 
-  if (!id || !newsArticle || (newsArticle?.imageUrl && !imageFile)) {
-    return <div>Загрузка...</div>;
+  if (!newsArticle) {
+    return <NotFoundPage />;
   }
 
   const initialValues: NewsFields = {
     title: newsArticle.title || '',
     text: newsArticle.text || '',
-    image: imageFile ?? null,
+    image: newsArticle.image,
   };
 
   const handleBack = (): void => navigate(-1);
@@ -41,7 +41,7 @@ export const EditNewsPage = (): JSX.Element => {
     updatedArticleData: NewsFields,
     { setSubmitting }: FormikHelpers<NewsFields>,
   ): Promise<void> => {
-    await updateNewsArticle(id, updatedArticleData);
+    await newsArticle.update(updatedArticleData);
     setSubmitting(false);
     navigate('/news');
   };
@@ -108,4 +108,4 @@ export const EditNewsPage = (): JSX.Element => {
       {renderForm}
     </Formik>
   );
-};
+});

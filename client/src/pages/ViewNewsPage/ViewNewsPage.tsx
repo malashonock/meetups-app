@@ -1,4 +1,5 @@
 import { useLocation, useNavigate, useParams } from 'react-router';
+import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 
 import {
@@ -7,37 +8,33 @@ import {
   Typography,
   TypographyComponent,
 } from 'components';
-import { useNewsArticleQuery } from 'hooks';
 import { NotFoundPage } from 'pages';
+import { useNewsArticle } from 'hooks';
 
 import styles from './ViewNewsPage.module.scss';
 import defaultImage from 'assets/images/default-background-blue.jpg';
 
-export const ViewNewsPage = () => {
-  const { id } = useParams();
+export const ViewNewsPage = observer(() => {
   const navigate = useNavigate();
+  const { id } = useParams();
   const { pathname } = useLocation();
-  const { newsArticle, isLoading } = useNewsArticleQuery(id!);
+  const newsArticle = useNewsArticle(id);
 
   const handleBack = (): void => navigate(-1);
   const handleEdit = (): void => navigate(pathname + '/edit');
 
-  if (isLoading || newsArticle === undefined) {
-    return <div>Загрузка...</div>;
-  }
-
-  if (newsArticle === null) {
+  if (!newsArticle) {
     return <NotFoundPage />;
   }
 
-  const { imageUrl, title, text } = newsArticle;
+  const { image, title, text } = newsArticle;
 
   const renderImage = (): JSX.Element => {
     return (
       <figure className={classNames(styles.section, styles.imageWrapper)}>
         <img
           className={styles.image}
-          src={imageUrl ?? defaultImage}
+          src={image?.url ?? defaultImage}
           alt="Изображение новости"
         />
       </figure>
@@ -72,7 +69,7 @@ export const ViewNewsPage = () => {
           Назад
         </Button>
         <div className={styles.actionGroup}>
-          <Button 
+          <Button
             variant={ButtonVariant.Secondary}
             className={styles.actionButton}
             onClick={handleEdit}
@@ -99,4 +96,4 @@ export const ViewNewsPage = () => {
       </div>
     </section>
   );
-};
+});

@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router';
+import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import { Form, Formik, FormikProps } from 'formik';
 
@@ -12,12 +13,13 @@ import {
   TypographyComponent,
 } from 'components';
 import { NewsFields } from 'model';
+import { useNewsStore } from 'hooks';
 import { newsSchema } from 'validation';
-import { createNewsArticle } from 'api';
 
 import styles from './CreateNewsPage.module.scss';
 
-export const CreateNewsPage = (): JSX.Element => {
+export const CreateNewsPage = observer((): JSX.Element => {
+  const { newsStore } = useNewsStore();
   const navigate = useNavigate();
 
   const initialValues: NewsFields = {
@@ -29,7 +31,7 @@ export const CreateNewsPage = (): JSX.Element => {
   const handleBack = (): void => navigate(-1);
 
   const handleSubmit = async (newArticleData: NewsFields): Promise<void> => {
-    await createNewsArticle(newArticleData);
+    await newsStore?.createNewsArticle(newArticleData);
     navigate('/news');
   };
 
@@ -94,4 +96,4 @@ export const CreateNewsPage = (): JSX.Element => {
       {renderForm}
     </Formik>
   );
-};
+});
