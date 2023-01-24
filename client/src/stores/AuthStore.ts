@@ -1,5 +1,5 @@
 import { flow, makeObservable, observable } from 'mobx';
-import { makePersistable } from 'mobx-persist-store';
+// import { makePersistable } from 'mobx-persist-store';
 
 import { Credentials, User } from 'model';
 import * as API from 'api';
@@ -16,11 +16,11 @@ export class AuthStore {
       logOut: flow,
     });
 
-    makePersistable(this, {
-      name: 'auth',
-      properties: ['loggedUser'],
-      storage: window.localStorage,
-    });
+    // makePersistable(this, {
+    //   name: 'auth',
+    //   properties: ['loggedUser'],
+    //   storage: window.localStorage,
+    // });
 
     this.loggedUser = null;
   }
