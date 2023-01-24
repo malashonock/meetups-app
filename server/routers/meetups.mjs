@@ -28,7 +28,6 @@ export const meetupsRoutes = (db) => {
           subject,
           excerpt,
           place,
-          goCount,
         } = req.body;
 
         const image = req.file;
@@ -40,15 +39,14 @@ export const meetupsRoutes = (db) => {
           start,
           finish,
           author: JSON.parse(author),
-          speakers: JSON.parse(speakers)
+          speakers: speakers ? JSON.parse(speakers)
             .map((speaker) => ({
               id: faker.datatype.uuid(),
               ...speaker,
-            })),
+            })) : [],
           subject,
           excerpt,
           place,
-          goCount: Number(goCount),
           status: "REQUEST",
           imageUrl,
         };
@@ -76,7 +74,7 @@ export const meetupsRoutes = (db) => {
     }
   );
 
-  meetupsRouter.put(
+  meetupsRouter.patch(
     "/:id", 
     // ensureAuthenticated,
     upload.single('image'), 
@@ -93,7 +91,7 @@ export const meetupsRoutes = (db) => {
         const newMeetupData = req.body;
 
         const author = JSON.parse(newMeetupData.author);
-        const speakers = JSON.parse(newMeetupData.speakers);
+        const speakers = newMeetupData.speakers ? JSON.parse(newMeetupData.speakers) : meetup.speakers;
 
         const image = req.file;
         const imageUrl = image ? getUrlFromPublicPath(image.path) : meetup.imageUrl;

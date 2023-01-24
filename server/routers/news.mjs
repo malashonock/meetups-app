@@ -61,7 +61,7 @@ export const newsRoutes = (db) => {
     }
   );
 
-  newsRouter.put(
+  newsRouter.patch(
     '/:id',
     // ensureAuthenticated,
     // isModerator,
