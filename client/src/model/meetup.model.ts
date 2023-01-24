@@ -1,4 +1,5 @@
 import { ShortUser } from 'model';
+import { FileWithUrl, Nullable } from 'types';
 
 export enum MeetupStatus {
   DRAFT = 'DRAFT',
@@ -6,39 +7,50 @@ export enum MeetupStatus {
   CONFIRMED = 'CONFIRMED',
 }
 
-export interface Meetup {
+export interface IMeetup {
   id: string;
   modified: Date;
   start?: Date;
   finish?: Date;
   author: ShortUser;
   speakers: ShortUser[];
+  votedUsers: ShortUser[];
+  participants: ShortUser[];
   subject: string;
   excerpt: string;
   place?: string;
-  goCount: number;
   status: MeetupStatus;
-  image?: File | null;
-  votedUsers?: ShortUser[];
+  image: Nullable<FileWithUrl>;
 }
 
 // Data structures exchanged with server
-export type MeetupDto = Omit<
-  Meetup,
-  'modified' | 'start' | 'finish' | 'image'
-> & {
-  modified: string; // DateTime string
-  start?: string; // DateTime string
-  finish?: string; // DateTime string
-  imageUrl: string | null;
-};
-
-export type MeetupFormData = Omit<Meetup, 'id'>;
+export interface MeetupDto {
+  id: string;
+  modified: string; // ISO datetime string
+  start?: string; // ISO datetime string
+  finish?: string; // ISO datetime string
+  author: ShortUser;
+  speakers: ShortUser[];
+  subject: string;
+  excerpt: string;
+  place?: string;
+  status: MeetupStatus;
+  imageUrl: Nullable<string>;
+}
 
 // Data structure used in create/edit forms
+export type MeetupBody = Omit<
+  MeetupDto,
+  'id' | 'imageUrl' | 'author' | 'speakers'
+> & {
+  image: File | Blob | null;
+  author: string; // stringified object
+  speakers: string; // stringified object array
+};
+
 export type MeetupFields = Pick<
-  Meetup,
+  IMeetup,
   'subject' | 'excerpt' | 'start' | 'finish' | 'place' | 'image'
 > & {
-  author: string; // TODO: implement as ShortUser
+  author: string; // TODO: replace with ShortUser
 };

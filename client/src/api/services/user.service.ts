@@ -11,9 +11,18 @@ export const getUser = async (id: string): Promise<User> => {
   return user;
 };
 
-export const getVotedUsers = async (id: string): Promise<ShortUser[]> => {
+export const getVotedUsers = async (meetupId: string): Promise<ShortUser[]> => {
   const { data: votedUsers } = await httpClient.get<ShortUser[]>(
-    `/meetups/${id}/votedusers`,
+    `/meetups/${meetupId}/votedusers`,
   );
   return votedUsers;
+};
+
+export const getParticipants = async (
+  meetupId: string,
+): Promise<ShortUser[]> => {
+  const { data: participants } = await httpClient.get<ShortUser[]>(
+    `/meetups/${meetupId}/participants`,
+  );
+  return participants;
 };
