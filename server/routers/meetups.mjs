@@ -90,14 +90,14 @@ export const meetupsRoutes = (db) => {
         const meetup = db.data.meetups[index];
         const newMeetupData = req.body;
 
-        const author = JSON.parse(newMeetupData.author);
+        const author = newMeetupData.author ? JSON.parse(newMeetupData.author) : meetup.author;
         const speakers = newMeetupData.speakers ? JSON.parse(newMeetupData.speakers) : meetup.speakers;
 
         const image = req.file;
         const imageUrl = image ? getUrlFromPublicPath(image.path) : meetup.imageUrl;
 
         db.data.meetups[index] = {
-          ...db.data.meetups[index],
+          ...meetup,
           ...newMeetupData,
           ...{
             author,
