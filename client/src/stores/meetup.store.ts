@@ -101,7 +101,7 @@ export class Meetup implements IMeetup {
   }
 
   async publish(): Promise<void> {
-    if (this.status !== MeetupStatus.REQUEST) {
+    if (this.status !== MeetupStatus.DRAFT) {
       return;
     }
 

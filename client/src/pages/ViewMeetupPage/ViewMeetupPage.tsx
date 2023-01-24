@@ -47,9 +47,17 @@ export const ViewMeetupPage = observer(() => {
 
   const handleBack = (): void => navigate(-1);
 
-  const handleApprove = async (): Promise<void> => {
+  const handleApproveTopic = async (): Promise<void> => {
     await meetup?.approve();
     navigate(`/meetups/${id}/edit`);
+  };
+
+  const handlePublishMeetup = async (): Promise<void> => {
+    await meetup?.publish();
+
+    const tab = start && isPast(start) ? 'finished' : 'upcoming';
+
+    navigate(`/meetups/${tab}`);
   };
 
   const renderHeader = () => {
@@ -106,7 +114,7 @@ export const ViewMeetupPage = observer(() => {
       const { formattedWeekdayLong, formattedDate, formattedTime } =
         parseDate(start);
 
-      date = `${formattedWeekdayLong}, ${formattedDate}`;
+      date = `${formattedWeekdayLong}, ${formattedDate}, ${start.getFullYear()}`;
       time = `${formattedTime}`;
 
       if (finish) {
@@ -227,7 +235,7 @@ export const ViewMeetupPage = observer(() => {
               <Button
                 className={styles.actionButton}
                 variant={ButtonVariant.Primary}
-                onClick={handleApprove}
+                onClick={handleApproveTopic}
               >
                 Одобрить тему
               </Button>
@@ -237,6 +245,7 @@ export const ViewMeetupPage = observer(() => {
             <Button
               className={styles.actionButton}
               variant={ButtonVariant.Primary}
+              onClick={handlePublishMeetup}
             >
               Опубликовать
             </Button>
