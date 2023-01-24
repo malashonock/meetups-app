@@ -39,15 +39,6 @@ export interface MeetupDto {
 }
 
 // Data structure used in create/edit forms
-export type MeetupBody = Omit<
-  MeetupDto,
-  'id' | 'imageUrl' | 'author' | 'speakers'
-> & {
-  image: File | Blob | null;
-  author: string; // stringified object
-  speakers: string; // stringified object array
-};
-
 export type MeetupFields = Pick<
   IMeetup,
   'subject' | 'excerpt' | 'start' | 'finish' | 'place' | 'image'

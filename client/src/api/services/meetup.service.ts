@@ -3,7 +3,6 @@ import { httpClient } from 'api';
 import {
   MeetupDto,
   MeetupFields,
-  MeetupBody,
   MeetupStatus,
   ShortUser,
   IMeetup,
@@ -53,9 +52,7 @@ export const deleteMeetup = async (id: string): Promise<void> => {
   await httpClient.delete(`/meetups/${id}`);
 };
 
-export const getMeetupFromJson = async (
-  meetupData: MeetupDto,
-): Promise<IMeetup> => {
+const getMeetupFromJson = async (meetupData: MeetupDto): Promise<IMeetup> => {
   const { id, modified, start, finish, imageUrl } = meetupData;
 
   const image = imageUrl ? await getStaticFile(imageUrl) : null;
@@ -73,7 +70,7 @@ export const getMeetupFromJson = async (
   };
 };
 
-export const buildMeetupFormData = (
+const buildMeetupFormData = (
   meetupFields: Partial<MeetupFields>,
   meetupStatus?: MeetupStatus,
 ): FormData => {
