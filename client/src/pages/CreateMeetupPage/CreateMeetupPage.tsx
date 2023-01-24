@@ -1,15 +1,14 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 
 import { Stepper, StepperContext } from 'components';
 import { CreateMeetupOptionalFields } from './CreateMeetupOptionalFields/CreateMeetupOptionalFields';
 import { CreateMeetupRequiredFields } from './CreateMeetupRequiredFields/CreateMeetupRequiredFields';
 import { MeetupFields } from 'model';
-import { createMeetup } from 'api';
 
 import styles from './CreateMeetupPage.module.scss';
-import { useAuthStore } from 'hooks';
-import { observer } from 'mobx-react-lite';
+import { useAuthStore, useMeetupStore } from 'hooks';
 
 export type NewMeetupState = [
   newMeetupData: MeetupFields,
@@ -18,12 +17,14 @@ export type NewMeetupState = [
 
 export const CreateMeetupPage = observer((): JSX.Element => {
   const { loggedUser } = useAuthStore();
+  const { meetupStore } = useMeetupStore();
 
   const [newMeetupData, setNewMeetupData] = useState<MeetupFields>({
     author: loggedUser ? `${loggedUser.name} ${loggedUser.surname}` : '',
     subject: '',
     excerpt: '',
     place: '',
+    image: null,
   });
 
   const [finished, setFinished] = useState(false);
@@ -33,7 +34,7 @@ export const CreateMeetupPage = observer((): JSX.Element => {
   useEffect(() => {
     if (finished) {
       (async () => {
-        await createMeetup(newMeetupData);
+        await meetupStore?.createMeetup(newMeetupData);
         navigate('/meetups');
       })();
     }

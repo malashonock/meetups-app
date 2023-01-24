@@ -1,4 +1,5 @@
 import { useNavigate, useParams } from 'react-router';
+import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 
 import {
@@ -10,9 +11,9 @@ import {
   UserPreviewVariant,
 } from 'components';
 import { MeetupStatus, ShortUser } from 'model';
-import { parseDateString } from 'utils';
+import { parseDate } from 'utils';
 import { NotFoundPage } from 'pages';
-import { useMeetupQuery } from 'hooks';
+import { useMeetup } from 'hooks';
 
 import styles from './ViewMeetupPage.module.scss';
 import defaultImage from 'assets/images/default-image.jpg';
@@ -22,17 +23,13 @@ import pin from './assets/pin.svg';
 
 const MAX_PREVIEW_USERS = 8;
 
-export const ViewMeetupPage = () => {
+export const ViewMeetupPage = observer(() => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { meetup, isLoading } = useMeetupQuery(id!);
+  const meetup = useMeetup(id!);
   const votedUsers = meetup?.votedUsers ?? [];
 
-  if (isLoading || meetup === undefined) {
-    return <div>Загрузка...</div>;
-  }
-
-  if (meetup === null) {
+  if (!meetup) {
     return <NotFoundPage />;
   }
 
@@ -45,7 +42,7 @@ export const ViewMeetupPage = () => {
     excerpt,
     author,
     speakers,
-    imageUrl,
+    image,
   } = meetup;
 
   const renderHeader = () => {
@@ -75,7 +72,7 @@ export const ViewMeetupPage = () => {
         <figure className={styles.imageWrapper}>
           <img
             className={styles.image}
-            src={imageUrl ?? defaultImage}
+            src={image?.url ?? defaultImage}
             alt="Изображение митапа"
           />
         </figure>
@@ -100,13 +97,13 @@ export const ViewMeetupPage = () => {
 
     if (start) {
       const { formattedWeekdayLong, formattedDate, formattedTime } =
-        parseDateString(start);
+        parseDate(start);
 
       date = `${formattedWeekdayLong}, ${formattedDate}`;
       time = `${formattedTime}`;
 
       if (finish) {
-        const { formattedTime } = parseDateString(finish);
+        const { formattedTime } = parseDate(finish);
 
         time = time + ` — ${formattedTime}`;
       }
@@ -259,4 +256,4 @@ export const ViewMeetupPage = () => {
       </div>
     </section>
   );
-};
+});

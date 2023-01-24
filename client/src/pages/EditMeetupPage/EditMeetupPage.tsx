@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
+import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import { Form, Formik, FormikHelpers, FormikProps } from 'formik';
 
@@ -13,36 +13,34 @@ import {
   Typography,
   TypographyComponent,
 } from 'components';
+import { NotFoundPage } from 'pages';
 import { MeetupFields } from 'model';
 import {
   meetupRequiredFieldsSchema,
   validateMeetupOptionalFields,
 } from 'validation';
-import { updateMeetup } from 'api';
-import { useMeetupQuery, useStaticFileQuery } from 'hooks';
+import { useMeetup } from 'hooks';
 
 import styles from './EditMeetupPage.module.scss';
 
-export const EditMeetupPage = (): JSX.Element => {
+export const EditMeetupPage = observer((): JSX.Element => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [reloadCount, setReloadCount] = useState(0);
 
-  const { meetup } = useMeetupQuery(id, reloadCount);
-  const { file: imageFile } = useStaticFileQuery(meetup?.imageUrl, reloadCount);
+  const meetup = useMeetup(id);
 
-  if (!id || !meetup || (meetup?.imageUrl && !imageFile)) {
-    return <div>Загрузка...</div>;
+  if (!meetup) {
+    return <NotFoundPage />;
   }
 
   const initialValues: MeetupFields = {
     subject: meetup.subject || '',
     excerpt: meetup.excerpt || '',
     author: 'chief Blick', // TODO: replace with ShortUser
-    start: meetup.start ? new Date(meetup.start) : undefined,
-    finish: meetup.finish ? new Date(meetup.finish) : undefined,
+    start: meetup.start,
+    finish: meetup.finish,
     place: meetup.place || '',
-    image: imageFile ?? null,
+    image: meetup.image,
   };
 
   const handleBack = (): void => navigate(-1);
@@ -61,8 +59,7 @@ export const EditMeetupPage = (): JSX.Element => {
     updatedMeetupData: MeetupFields,
     { setTouched }: FormikHelpers<MeetupFields>,
   ): Promise<void> => {
-    await updateMeetup(id, updatedMeetupData, meetup.status);
-    setReloadCount(reloadCount + 1); // refresh component without full page reload
+    await meetup.update(updatedMeetupData);
     setTouched({});
   };
 
@@ -145,4 +142,4 @@ export const EditMeetupPage = (): JSX.Element => {
       {renderForm}
     </Formik>
   );
-};
+});
