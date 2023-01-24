@@ -1,6 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { MeetupCard } from 'components';
-import { MeetupDto, MeetupStatus, ShortUser } from 'model';
+import { MeetupStatus, ShortUser } from 'model';
+import { Meetup } from 'stores';
 import { withRouter } from 'storybook-addon-react-router-v6';
 
 export default {
@@ -27,38 +28,39 @@ const author: ShortUser = {
   surname: 'Jackson',
 };
 
-const meetupTopic: MeetupDto = {
+const meetupTopic: Meetup = new Meetup({
   id: 'AAA-AAA',
   status: MeetupStatus.REQUEST,
   author,
   subject: 'EF Core от практикующих',
   excerpt:
     'Основные темы, которые буду рассказывать: Database-first (EF Core), Db migrations, Software triggers, DbSet pre-filter (tenant-solution)',
-  modified: new Date().toLocaleString(),
+  modified: new Date(),
   speakers: [],
-  goCount: 23,
-  imageUrl: null,
-};
+  votedUsers: [],
+  participants: [],
+  image: null,
+});
 
-const meetupOnModerationNoDate: MeetupDto = {
+const meetupOnModerationNoDate: Meetup = new Meetup({
   ...meetupTopic,
   status: MeetupStatus.REQUEST,
-};
+});
 
-const meetupOnModeration: MeetupDto = {
+const meetupOnModeration: Meetup = new Meetup({
   ...meetupOnModerationNoDate,
-  start: new Date(2022, 3, 23, 15, 0).toISOString(),
-};
+  start: new Date(2022, 3, 23, 15, 0),
+});
 
-const meetupUpcoming: MeetupDto = {
+const meetupUpcoming: Meetup = new Meetup({
   ...meetupOnModeration,
   status: MeetupStatus.CONFIRMED,
   place: 'комн. 601b',
-};
+});
 
-const meetupFinished: MeetupDto = {
+const meetupFinished: Meetup = new Meetup({
   ...meetupUpcoming,
-};
+});
 
 export const MeetupCard_Topic_NoExcerpt = Template.bind({});
 
