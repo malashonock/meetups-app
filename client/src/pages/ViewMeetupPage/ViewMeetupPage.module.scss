@@ -90,6 +90,16 @@
   row-gap: 15px;
 }
 
+.notFilled {
+  &Text {
+    @extend .font-color-red;
+  }
+
+  &Outline {
+    border: 2px solid $red-02;
+  }
+}
+
 .info {
   display: flex;
   align-items: center;

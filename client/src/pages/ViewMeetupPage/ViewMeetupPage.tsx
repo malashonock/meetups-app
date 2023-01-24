@@ -61,6 +61,8 @@ export const ViewMeetupPage = observer(() => {
     navigate(`/meetups/${id}/edit`);
   };
 
+  const canPublish = meetup?.start && meetup?.finish && meetup?.place;
+
   const handlePublishMeetup = async (): Promise<void> => {
     await meetup?.publish();
 
@@ -137,30 +139,36 @@ export const ViewMeetupPage = observer(() => {
       <div className={styles.data}>
         <Typography
           component={TypographyComponent.Span}
-          className={styles.dataName}
+          className={classNames(styles.dataName, {
+            [styles.notFilledText]: !canPublish,
+          })}
         >
-          Время и место проведения
+          {canPublish
+            ? 'Время и место проведения'
+            : 'Перед публикацией заполните время и место проведения митапа'}
         </Typography>
-        <div className={styles.dataContent}>
-          <div className={styles.timePlaceInfo}>
-            <div className={styles.info}>
-              <img className={styles.image} src={calendar} alt="Дата" />
-              <Typography component={TypographyComponent.Span}>
-                {date || '—'}
-              </Typography>
-            </div>
-            <div className={styles.info}>
-              <img className={styles.image} src={clock} alt="Время" />
-              <Typography component={TypographyComponent.Span}>
-                {time || '—'}
-              </Typography>
-            </div>
-            <div className={styles.info}>
-              <img className={styles.image} src={pin} alt="Место" />
-              <Typography component={TypographyComponent.Span}>
-                {place || '—'}
-              </Typography>
-            </div>
+        <div
+          className={classNames(styles.dataContent, styles.timePlaceInfo, {
+            [styles.notFilledOutline]: !canPublish,
+          })}
+        >
+          <div className={styles.info}>
+            <img className={styles.image} src={calendar} alt="Дата" />
+            <Typography component={TypographyComponent.Span}>
+              {date || '—'}
+            </Typography>
+          </div>
+          <div className={styles.info}>
+            <img className={styles.image} src={clock} alt="Время" />
+            <Typography component={TypographyComponent.Span}>
+              {time || '—'}
+            </Typography>
+          </div>
+          <div className={styles.info}>
+            <img className={styles.image} src={pin} alt="Место" />
+            <Typography component={TypographyComponent.Span}>
+              {place || '—'}
+            </Typography>
           </div>
         </div>
       </div>
@@ -256,6 +264,7 @@ export const ViewMeetupPage = observer(() => {
               className={styles.actionButton}
               variant={ButtonVariant.Primary}
               onClick={handlePublishMeetup}
+              disabled={!canPublish}
             >
               Опубликовать
             </Button>
