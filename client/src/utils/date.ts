@@ -42,11 +42,12 @@ export interface DateParserOptions {
   timeOptions?: Intl.DateTimeFormatOptions;
 }
 
-export const parseDateString = (
-  dateString: string,
+export const parseDate = (
+  dateOrString: Date | string,
   options?: DateParserOptions,
 ): FormattedDateTime => {
-  const date = new Date(dateString);
+  const date =
+    typeof dateOrString === 'string' ? new Date(dateOrString) : dateOrString;
 
   let locale: Intl.LocalesArgument | undefined;
   let dateOptions: Intl.DateTimeFormatOptions | undefined;
