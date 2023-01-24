@@ -11,7 +11,7 @@ import {
   UserPreviewVariant,
 } from 'components';
 import { MeetupStatus, ShortUser } from 'model';
-import { parseDate } from 'utils';
+import { isPast, parseDate } from 'utils';
 import { NotFoundPage } from 'pages';
 import { useMeetup } from 'hooks';
 
@@ -26,7 +26,7 @@ const MAX_PREVIEW_USERS = 8;
 export const ViewMeetupPage = observer(() => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const meetup = useMeetup(id!);
+  const meetup = useMeetup(id);
   const votedUsers = meetup?.votedUsers ?? [];
 
   if (!meetup) {
@@ -46,6 +46,11 @@ export const ViewMeetupPage = observer(() => {
   } = meetup;
 
   const handleBack = (): void => navigate(-1);
+
+  const handleApprove = async (): Promise<void> => {
+    await meetup?.approve();
+    navigate(`/meetups/${id}/edit`);
+  };
 
   const renderHeader = () => {
     if (status === MeetupStatus.REQUEST) {
@@ -222,6 +227,7 @@ export const ViewMeetupPage = observer(() => {
               <Button
                 className={styles.actionButton}
                 variant={ButtonVariant.Primary}
+                onClick={handleApprove}
               >
                 Одобрить тему
               </Button>
