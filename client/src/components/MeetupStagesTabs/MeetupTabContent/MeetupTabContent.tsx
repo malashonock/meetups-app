@@ -45,8 +45,8 @@ export const MeetupTabContent = observer(
           setSelectedMeetups(
             meetups?.filter(
               (meetup) =>
-                (meetup.status === MeetupStatus.CONFIRMED && !meetup.start) ||
-                (meetup.start && !isPast(meetup.start)),
+                meetup.status === MeetupStatus.CONFIRMED &&
+                (!meetup.start || (meetup.start && !isPast(meetup.start))),
             ),
           );
           break;
