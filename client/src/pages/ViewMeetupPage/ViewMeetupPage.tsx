@@ -45,6 +45,8 @@ export const ViewMeetupPage = observer(() => {
     image,
   } = meetup;
 
+  const handleBack = (): void => navigate(-1);
+
   const renderHeader = () => {
     if (status === MeetupStatus.REQUEST) {
       return (
@@ -201,24 +203,39 @@ export const ViewMeetupPage = observer(() => {
   const renderActions = () => {
     return (
       <div className={classNames(styles.dataContent, styles.actions)}>
-        <Button variant={ButtonVariant.Default} onClick={() => navigate(-1)}>
+        <Button
+          className={styles.actionButton}
+          variant={ButtonVariant.Default}
+          onClick={handleBack}
+        >
           Назад
         </Button>
-        {status === MeetupStatus.REQUEST && (
-          <div className={styles.actionsWrapper}>
-            <Button variant={ButtonVariant.Secondary}>Удалить</Button>
-            <Button variant={ButtonVariant.Primary}>Одобрить тему</Button>
-          </div>
-        )}
-        {status === MeetupStatus.DRAFT && (
-          <div className={styles.actionsWrapper}>
-            <Button variant={ButtonVariant.Secondary}>Удалить</Button>
-            <Button variant={ButtonVariant.Primary}>Опубликовать</Button>
-          </div>
-        )}
-        {status === MeetupStatus.CONFIRMED && (
-          <Button variant={ButtonVariant.Secondary}>Удалить</Button>
-        )}
+        <div className={styles.actionsWrapper}>
+          {status === MeetupStatus.REQUEST && (
+            <>
+              <Button
+                className={styles.actionButton}
+                variant={ButtonVariant.Secondary}
+              >
+                Удалить
+              </Button>
+              <Button
+                className={styles.actionButton}
+                variant={ButtonVariant.Primary}
+              >
+                Одобрить тему
+              </Button>
+            </>
+          )}
+          {status === MeetupStatus.DRAFT && (
+            <Button
+              className={styles.actionButton}
+              variant={ButtonVariant.Primary}
+            >
+              Опубликовать
+            </Button>
+          )}
+        </div>
       </div>
     );
   };
