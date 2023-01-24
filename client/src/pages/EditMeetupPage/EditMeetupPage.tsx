@@ -47,6 +47,7 @@ export const EditMeetupPage = observer((): JSX.Element => {
 
   const gotoPreview = (isDirty: boolean): void => {
     if (
+      !isDirty ||
       window.confirm(
         'Несохраненные изменения будут потеряны. Все равно перейти к странице просмотра?',
       )
