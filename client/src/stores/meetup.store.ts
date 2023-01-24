@@ -25,12 +25,12 @@ export class MeetupStore {
   async createMeetup(meetupData: MeetupFields): Promise<void> {
     const newMeetupData = await API.createMeetup(meetupData);
     runInAction(() => {
-      this.meetups.push(new Meetup(newMeetupData));
+      this.meetups.push(new Meetup(newMeetupData, this));
     });
   }
 
-  onMeetupDeleted(deletedMeetup: Meetup) {
-    this.meetups.splice(this.meetups.indexOf(deletedMeetup));
+  onMeetupDeleted(deletedMeetup: Meetup): void {
+    this.meetups.splice(this.meetups.indexOf(deletedMeetup), 1);
   }
 
   findMeetup(id: string): Optional<Meetup> {

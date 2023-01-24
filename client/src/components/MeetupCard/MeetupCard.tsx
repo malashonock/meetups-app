@@ -1,3 +1,4 @@
+import { MouseEvent } from 'react';
 import classNames from 'classnames';
 import { useNavigate } from 'react-router';
 import { observer } from 'mobx-react-lite';
@@ -35,7 +36,22 @@ export const MeetupCard = observer(
 
     const navigate = useNavigate();
 
-    const openEditMeetupPage = () => navigate(`/meetups/${id}/edit`);
+    const handleEditMeetup = (event: MouseEvent<HTMLButtonElement>): void => {
+      event.preventDefault();
+      navigate(`/meetups/${id}/edit`);
+    };
+
+    const handleDeleteMeetup = async (
+      event: MouseEvent<HTMLButtonElement>,
+    ): Promise<void> => {
+      event.preventDefault();
+
+      if (!window.confirm('Вы уверены, что хотите удалить митап?')) {
+        return;
+      }
+
+      await meetup?.delete();
+    };
 
     let formattedWeekdayShort: string | undefined;
     let formattedDate: string | undefined;
@@ -93,14 +109,9 @@ export const MeetupCard = observer(
             </ul>
           )}
           <div className={styles.controls}>
-            <DeleteButton />
+            <DeleteButton onClick={handleDeleteMeetup} />
             {status !== MeetupStatus.REQUEST && (
-              <EditButton
-                onClick={(e) => {
-                  e.preventDefault();
-                  openEditMeetupPage();
-                }}
-              />
+              <EditButton onClick={handleEditMeetup} />
             )}
           </div>
         </header>

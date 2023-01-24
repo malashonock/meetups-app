@@ -14,7 +14,7 @@ export const meetupsRoutes = (db) => {
 
   meetupsRouter.post(
     "/", 
-    ensureAuthenticated, 
+    // ensureAuthenticated, 
     upload.single('image'), 
     async (req, res) => {
       //TODO: validate model data
@@ -122,7 +122,7 @@ export const meetupsRoutes = (db) => {
     res.send(meetup);
   });
 
-  meetupsRouter.delete("/:id", ensureAuthenticated, async (req, res) => {
+  meetupsRouter.delete("/:id"/* , ensureAuthenticated */, async (req, res) => {
     const index = db.data.meetups.findIndex((it) => it.id === req.params.id);
     if (index >= 0) {
       db.data.meetups.splice(index, 1);

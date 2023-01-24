@@ -47,6 +47,15 @@ export const ViewMeetupPage = observer(() => {
 
   const handleBack = (): void => navigate(-1);
 
+  const handleDeleteTopic = async (): Promise<void> => {
+    if (!window.confirm('Вы уверены, что хотите удалить тему?')) {
+      return;
+    }
+
+    await meetup?.delete();
+    navigate(`/meetups/topics`);
+  };
+
   const handleApproveTopic = async (): Promise<void> => {
     await meetup?.approve();
     navigate(`/meetups/${id}/edit`);
@@ -229,6 +238,7 @@ export const ViewMeetupPage = observer(() => {
               <Button
                 className={styles.actionButton}
                 variant={ButtonVariant.Secondary}
+                onClick={handleDeleteTopic}
               >
                 Удалить
               </Button>

@@ -61,7 +61,7 @@ export const MeetupTabContent = observer(
           );
           break;
       }
-    }, [variant, meetups]);
+    }, [variant, meetups, meetups?.length]);
 
     const getCounterEnding = (num: number, variant: MeetupCardVariant) => {
       const lastNumber = num % 10;
