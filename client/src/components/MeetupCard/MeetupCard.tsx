@@ -14,7 +14,9 @@ import {
 } from 'components';
 import { isPast, parseDate } from 'utils';
 import { MeetupStatus } from 'model';
-import { Meetup } from 'stores';
+import { Meetup, User } from 'stores';
+import { useUserStore } from 'hooks';
+import { Optional } from 'types';
 
 import styles from './MeetupCard.module.scss';
 
@@ -31,8 +33,19 @@ export enum MeetupCardVariant {
 
 export const MeetupCard = observer(
   ({ meetup }: MeetupCardProps): JSX.Element => {
-    const { status, author, start, place, subject, excerpt, votedUsers, id } =
-      meetup;
+    const {
+      status,
+      author: authorData,
+      start,
+      place,
+      subject,
+      excerpt,
+      votedUsers,
+      id,
+    } = meetup;
+
+    const { userStore } = useUserStore();
+    const author: Optional<User> = userStore?.findUser(authorData);
 
     const navigate = useNavigate();
 
@@ -82,7 +95,9 @@ export const MeetupCard = observer(
       <article className={classNames(styles.card, styles[getVariant()])}>
         <header className={styles.header}>
           {status === MeetupStatus.REQUEST ? (
-            <UserPreview user={author} variant={UserPreviewVariant.Card} />
+            author !== undefined && (
+              <UserPreview user={author} variant={UserPreviewVariant.Card} />
+            )
           ) : (
             <ul className={styles.appointment}>
               {start !== undefined ? (
@@ -134,11 +149,11 @@ export const MeetupCard = observer(
         </div>
 
         <footer className={styles.footer}>
-          {status === MeetupStatus.REQUEST ? (
-            votesCount > 0 && <VotesCount votesCount={votesCount} />
-          ) : (
-            <UserPreview user={author} variant={UserPreviewVariant.Card} />
-          )}
+          {status === MeetupStatus.REQUEST
+            ? votesCount > 0 && <VotesCount votesCount={votesCount} />
+            : author !== undefined && (
+                <UserPreview user={author} variant={UserPreviewVariant.Card} />
+              )}
         </footer>
       </article>
     );

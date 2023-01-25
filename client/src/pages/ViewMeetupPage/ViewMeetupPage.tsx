@@ -10,10 +10,12 @@ import {
   UserPreview,
   UserPreviewVariant,
 } from 'components';
-import { MeetupStatus, ShortUser } from 'model';
+import { MeetupStatus } from 'model';
 import { isPast, parseDate } from 'utils';
 import { NotFoundPage } from 'pages';
-import { useMeetup } from 'hooks';
+import { User } from 'stores';
+import { useMeetup, useUserStore } from 'hooks';
+import { Optional } from 'types';
 
 import styles from './ViewMeetupPage.module.scss';
 import defaultImage from 'assets/images/default-image.jpg';
@@ -27,7 +29,7 @@ export const ViewMeetupPage = observer(() => {
   const navigate = useNavigate();
   const { id } = useParams();
   const meetup = useMeetup(id);
-  const votedUsers = meetup?.votedUsers ?? [];
+  const { userStore } = useUserStore();
 
   if (!meetup) {
     return <NotFoundPage />;
@@ -40,10 +42,15 @@ export const ViewMeetupPage = observer(() => {
     status,
     subject,
     excerpt,
-    author,
-    speakers,
+    author: authorData,
+    votedUsers: votedUsersData,
+    speakers: speakersData,
     image,
   } = meetup;
+
+  const author: Optional<User> = userStore?.findUser(authorData);
+  const speakers = userStore?.findUsers(speakersData);
+  const votedUsers = userStore?.findUsers(votedUsersData);
 
   const handleBack = (): void => navigate(-1);
 
@@ -185,10 +192,10 @@ export const ViewMeetupPage = observer(() => {
       </Typography>
       <div className={styles.dataContent}>
         {status === MeetupStatus.REQUEST ? (
-          <UserPreview user={author} />
+          author !== undefined && <UserPreview user={author} />
         ) : (
           <div className={styles.speakerWrapper}>
-            {speakers.map((speaker) => (
+            {speakers?.map((speaker) => (
               <UserPreview key={speaker.id} user={speaker} />
             ))}
           </div>
@@ -202,7 +209,7 @@ export const ViewMeetupPage = observer(() => {
       return null;
     }
 
-    const previewVotedUsers = votedUsers.slice(0, MAX_PREVIEW_USERS);
+    const previewVotedUsers = votedUsers?.slice(0, MAX_PREVIEW_USERS);
 
     return (
       <div className={styles.data}>
@@ -213,16 +220,16 @@ export const ViewMeetupPage = observer(() => {
           Поддерживают
         </Typography>
         <div className={classNames(styles.dataContent, styles.votedUsers)}>
-          {previewVotedUsers.map((user: ShortUser) => (
+          {previewVotedUsers?.map((votedUser: User) => (
             <UserPreview
-              key={user.id}
+              key={votedUser.id}
               variant={UserPreviewVariant.Image}
-              user={user}
+              user={votedUser}
             />
           ))}
-          {votedUsers.length - MAX_PREVIEW_USERS > 0 && (
+          {(votedUsers?.length ?? 0) - MAX_PREVIEW_USERS > 0 && (
             <div className={styles.restCounter}>
-              +{votedUsers.length - MAX_PREVIEW_USERS}
+              +{(votedUsers?.length ?? 0) - MAX_PREVIEW_USERS}
             </div>
           )}
         </div>
