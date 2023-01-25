@@ -4,7 +4,6 @@ import ReactSelect from 'react-select';
 import {
   InputField,
   InputFieldExternalProps,
-  InputFieldVariant,
   InputRenderProps,
 } from 'components';
 import { ArrayElementType, Nullable, Optional } from 'types';
@@ -106,16 +105,11 @@ export const SelectField = <TValue extends unknown>({
                   [styles.focused]: state.isFocused,
                 }),
               placeholder: () => styles.placeholder,
+              menu: () => styles.menu,
               option: (state) =>
                 classNames(styles.option, {
                   [styles.selected]: state.isSelected,
                 }),
-              menu: () => styles.menu,
-            }}
-            styles={{
-              option: (baseStyles, state) => ({
-                ...baseStyles,
-              }),
             }}
           />
         </div>
