@@ -80,6 +80,7 @@ export const StringValue_SingleChoice = Template.bind({});
 StringValue_SingleChoice.args = {
   name: 'author',
   labelText: 'Author',
+  placeholderText: 'Select author...',
   selectProps: {
     options: [
       { value: getUserName(user1), label: getUserName(user1) },
@@ -91,6 +92,7 @@ StringValue_SingleChoice.args = {
 export const StringValue_MultiChoice = Template.bind({});
 StringValue_MultiChoice.args = {
   ...StringValue_SingleChoice.args,
+  placeholderText: 'Select authors...',
   selectProps: {
     ...StringValue_SingleChoice.args.selectProps,
     isMulti: true,
@@ -101,6 +103,7 @@ export const ObjectValue_SingleChoice = Template.bind({});
 ObjectValue_SingleChoice.args = {
   name: 'author',
   labelText: 'Author',
+  placeholderText: 'Select author...',
   selectProps: {
     options: [
       { value: user1, label: getUserName(user1) },
@@ -112,6 +115,7 @@ ObjectValue_SingleChoice.args = {
 export const ObjectValue_MultiChoice = Template.bind({});
 ObjectValue_MultiChoice.args = {
   ...ObjectValue_SingleChoice.args,
+  placeholderText: 'Select authors...',
   selectProps: {
     ...ObjectValue_SingleChoice.args.selectProps,
     isMulti: true,

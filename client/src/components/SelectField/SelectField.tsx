@@ -57,10 +57,11 @@ export const SelectField = <TValue extends unknown>({
 
       return (
         <ReactSelect
+          {...selectProps}
           name={field.name}
           onChange={setFieldValueFromOption}
           onBlur={handleBlur}
-          {...selectProps}
+          placeholder={placeholderText}
         />
       );
     }}
