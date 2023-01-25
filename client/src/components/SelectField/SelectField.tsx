@@ -16,8 +16,9 @@ export interface SelectOption<TValue> {
   label: string;
 }
 
-export type SelectFieldProps = InputFieldExternalProps & {
+export type SelectFieldProps<TValue> = InputFieldExternalProps & {
   selectProps?: ComponentProps<ReactSelect>;
+  comparerFn?: (value1: TValue, value2: TValue) => boolean;
   placeholderText?: string;
   containerAttributes?: Omit<React.HTMLAttributes<HTMLDivElement>, 'children'>;
 };
@@ -25,9 +26,10 @@ export type SelectFieldProps = InputFieldExternalProps & {
 export const SelectField = <TValue extends unknown>({
   placeholderText,
   selectProps,
+  comparerFn,
   containerAttributes,
   ...inputFieldProps
-}: SelectFieldProps): JSX.Element => (
+}: SelectFieldProps<TValue>): JSX.Element => (
   <InputField containerAttributes={containerAttributes} {...inputFieldProps}>
     {({
       field,
@@ -43,9 +45,11 @@ export const SelectField = <TValue extends unknown>({
         const findOptionByValue = (
           value: TValue,
         ): Optional<SelectOption<TValue>> => {
-          return allOptions.find(
-            (option: SelectOption<TValue>) => option.value === value,
-          );
+          return allOptions.find((option: SelectOption<TValue>): boolean => {
+            return comparerFn
+              ? comparerFn(option.value, value)
+              : option.value === value;
+          });
         };
 
         if (selectProps?.isMulti && Array.isArray(valueOrValues)) {
