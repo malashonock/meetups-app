@@ -1,5 +1,5 @@
 import { httpClient } from 'api';
-import { Credentials, FullUser, User } from 'model';
+import { Credentials, FullUser, IUser } from 'model';
 
 interface AuthResponse<T> {
   user: T;
@@ -15,10 +15,10 @@ export const login = async (credentials: Credentials): Promise<FullUser> => {
   return authenticatedUser;
 };
 
-export const checkLogin = async (): Promise<User> => {
+export const checkLogin = async (): Promise<IUser> => {
   const {
     data: { user: authenticatedUser },
-  } = await httpClient.get<AuthResponse<User>>('/login');
+  } = await httpClient.get<AuthResponse<IUser>>('/login');
   return authenticatedUser;
 };
 
