@@ -1,8 +1,7 @@
 import { useContext } from 'react';
 
 import { RootContext } from 'App';
-import { User } from 'model';
-import { AuthStore } from 'stores';
+import { AuthStore, User } from 'stores';
 import { Nullable } from 'types';
 
 export interface UseAuthStoreResult {

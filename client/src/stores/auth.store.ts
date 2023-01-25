@@ -1,9 +1,9 @@
-import { flow, makeObservable, observable } from 'mobx';
+import { flow, makeObservable, observable, runInAction } from 'mobx';
 // import { makePersistable } from 'mobx-persist-store';
 
-import { Credentials, User } from 'model';
+import { Credentials } from 'model';
 import * as API from 'api';
-import { RootStore } from 'stores';
+import { RootStore, User } from 'stores';
 import { Nullable } from 'types';
 
 export class AuthStore {
@@ -25,21 +25,17 @@ export class AuthStore {
     this.loggedUser = null;
   }
 
-  *logIn(credentials: Credentials) {
-    try {
-      const { password, ...userData } = yield API.login(credentials);
-      this.loggedUser = userData as User;
-    } catch (error) {
-      console.log(error);
-    }
+  async logIn(credentials: Credentials): Promise<void> {
+    const { id, ...userData } = await API.login(credentials);
+    runInAction(() => {
+      this.loggedUser = this.rootStore.userStore.findUser(id) ?? null;
+    });
   }
 
-  *logOut() {
-    try {
-      yield API.logout();
+  async logOut(): Promise<void> {
+    await API.logout();
+    runInAction(() => {
       this.loggedUser = null;
-    } catch (error) {
-      console.log(error);
-    }
+    });
   }
 }
