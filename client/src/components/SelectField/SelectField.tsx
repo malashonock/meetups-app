@@ -8,6 +8,9 @@ import {
 } from 'components';
 import { ArrayElementType, Nullable, Optional } from 'types';
 
+import styles from './SelectField.module.scss';
+import classNames from 'classnames';
+
 export interface SelectOption<TValue> {
   value: TValue;
   label: string;
@@ -29,7 +32,7 @@ export const SelectField = <TValue extends unknown>({
     {({
       field,
       form: { setFieldValue, handleBlur },
-      className,
+      variant,
     }: InputRenderProps<TValue>): JSX.Element => {
       const getOptionsFromFieldValues = (
         valueOrValues: Nullable<TValue> | TValue[],
@@ -88,14 +91,33 @@ export const SelectField = <TValue extends unknown>({
       };
 
       return (
-        <ReactSelect
-          {...selectProps}
-          name={field.name}
-          value={getOptionsFromFieldValues(field.value)}
-          onChange={setFieldValueFromOption}
-          onBlur={handleBlur}
-          placeholder={placeholderText}
-        />
+        <div {...containerAttributes}>
+          <ReactSelect
+            {...selectProps}
+            name={field.name}
+            value={getOptionsFromFieldValues(field.value)}
+            onChange={setFieldValueFromOption}
+            onBlur={handleBlur}
+            placeholder={placeholderText}
+            classNames={{
+              control: (state) =>
+                classNames(styles.input, variant ? styles[variant] : '', {
+                  [styles.focused]: state.isFocused,
+                }),
+              placeholder: () => styles.placeholder,
+              option: (state) =>
+                classNames(styles.option, {
+                  [styles.selected]: state.isSelected,
+                }),
+              menu: () => styles.menu,
+            }}
+            styles={{
+              option: (baseStyles, state) => ({
+                ...baseStyles,
+              }),
+            }}
+          />
+        </div>
       );
     }}
   </InputField>
