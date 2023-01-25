@@ -5,10 +5,12 @@ import classNames from 'classnames';
 import {
   Button,
   SelectField,
+  SelectOption,
   Typography,
   TypographyComponent,
 } from 'components';
 import { ShortUser } from 'model';
+import { Nullable, Optional } from 'types';
 
 export default {
   title: 'Components/SelectField',
@@ -22,10 +24,20 @@ interface FormValues {
   [name: string]: string | object | null;
 }
 
+const getFirstOption = <TValue extends unknown>(
+  options?: SelectOption<TValue>[],
+): Nullable<TValue> => {
+  return options && options.length > 0 ? options[0].value : null;
+};
+
 const Template: ComponentStory<typeof SelectField> = (args) => (
   <Formik<FormValues>
     initialValues={{
-      [args.name]: null,
+      [args.name]: getFirstOption<FormValues[typeof args.name]>(
+        args.selectProps?.options as Optional<
+          SelectOption<FormValues[typeof args.name]>[]
+        >,
+      ),
     }}
     onSubmit={(values: FormValues, { setSubmitting }) => {
       console.log(values[args.name]);

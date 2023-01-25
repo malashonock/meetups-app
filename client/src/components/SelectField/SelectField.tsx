@@ -6,16 +6,16 @@ import {
   InputFieldExternalProps,
   InputRenderProps,
 } from 'components';
-import { ArrayElementType, Nullable } from 'types';
+import { ArrayElementType, Nullable, Optional } from 'types';
 
-interface SelectOption<TValue> {
-  value: Nullable<TValue>;
+export interface SelectOption<TValue> {
+  value: TValue;
   label: string;
 }
 
-type SelectFieldProps = InputFieldExternalProps & {
-  placeholderText?: string;
+export type SelectFieldProps = InputFieldExternalProps & {
   selectProps?: ComponentProps<ReactSelect>;
+  placeholderText?: string;
   containerAttributes?: Omit<React.HTMLAttributes<HTMLDivElement>, 'children'>;
 };
 
@@ -31,24 +31,56 @@ export const SelectField = <TValue extends unknown>({
       form: { setFieldValue, handleBlur },
       className,
     }: InputRenderProps<TValue>): JSX.Element => {
-      const setFieldValueFromOption = (optionOrOptions: unknown): void => {
-        // if select can contain only one value, value is of type TValue?
-        // if select can contain multiple values, value is of type TValue?[]
-        let value: Nullable<TValue> | Nullable<ArrayElementType<TValue>>[];
+      const getOptionsFromFieldValues = (
+        valueOrValues: Nullable<TValue> | TValue[],
+      ): Nullable<SelectOption<TValue>> | SelectOption<TValue>[] => {
+        const allOptions = (selectProps?.options ||
+          []) as SelectOption<TValue>[];
 
-        if (Array.isArray(optionOrOptions)) {
-          const options = optionOrOptions as SelectOption<
+        const findOptionByValue = (
+          value: TValue,
+        ): Optional<SelectOption<TValue>> => {
+          return allOptions.find(
+            (option: SelectOption<TValue>) => option.value === value,
+          );
+        };
+
+        if (selectProps?.isMulti && Array.isArray(valueOrValues)) {
+          const values = valueOrValues as TValue[];
+          return values
+            .map((value: TValue): Optional<SelectOption<TValue>> => {
+              if (selectProps.options) {
+                const matchingOption = findOptionByValue(value);
+                return matchingOption;
+              }
+            })
+            .filter(
+              (value: Optional<SelectOption<TValue>>): boolean => !!value,
+            ) as SelectOption<TValue>[];
+        } else {
+          const value = valueOrValues as TValue;
+          return findOptionByValue(value) || null;
+        }
+      };
+
+      const setFieldValueFromOption = (
+        selectedOptionOrOptions: unknown,
+      ): void => {
+        let value: Nullable<TValue> | ArrayElementType<TValue>[];
+
+        if (selectProps?.isMulti) {
+          const options = selectedOptionOrOptions as SelectOption<
             ArrayElementType<TValue>
           >[];
           value = options.map(
             ({
               value,
-            }: SelectOption<ArrayElementType<TValue>>): Nullable<
+            }: SelectOption<
               ArrayElementType<TValue>
-            > => value,
+            >): ArrayElementType<TValue> => value,
           );
         } else {
-          const option = optionOrOptions as SelectOption<TValue>;
+          const option = selectedOptionOrOptions as SelectOption<TValue>;
           value = option.value;
         }
 
@@ -59,6 +91,7 @@ export const SelectField = <TValue extends unknown>({
         <ReactSelect
           {...selectProps}
           name={field.name}
+          value={getOptionsFromFieldValues(field.value)}
           onChange={setFieldValueFromOption}
           onBlur={handleBlur}
           placeholder={placeholderText}
