@@ -1,5 +1,4 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { flowResult } from 'mobx';
 import { observer } from 'mobx-react-lite';
 
 import { IconButton, Tooltip, TooltipVariant } from 'components';
@@ -14,7 +13,7 @@ export const AuthToggle = observer((): JSX.Element => {
   const { authStore, loggedUser } = useAuthStore();
 
   const handleLogout = async (): Promise<void> => {
-    await flowResult(authStore?.logOut());
+    await authStore?.logOut();
     navigate('/');
   };
 

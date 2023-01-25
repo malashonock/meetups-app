@@ -1,4 +1,4 @@
-import { flow, makeObservable, observable, runInAction } from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
 // import { makePersistable } from 'mobx-persist-store';
 
 import { Credentials } from 'model';
@@ -10,11 +10,7 @@ export class AuthStore {
   loggedUser: Nullable<User>;
 
   constructor(public rootStore: RootStore) {
-    makeObservable(this, {
-      loggedUser: observable,
-      logIn: flow,
-      logOut: flow,
-    });
+    makeAutoObservable(this);
 
     // makePersistable(this, {
     //   name: 'auth',
