@@ -12,7 +12,7 @@ export enum InputFieldVariant {
   Default = 'default',
 }
 
-export type InputRenderProps = FieldProps & {
+export type InputRenderProps<T = string> = FieldProps<T> & {
   variant?: InputFieldVariant;
   className?: string;
 };
@@ -24,19 +24,19 @@ export interface InputFieldExternalProps {
   hintText?: string;
 }
 
-type InputFieldProps = InputFieldExternalProps & {
-  children: FunctionComponent<InputRenderProps>;
+type InputFieldProps<T = string> = InputFieldExternalProps & {
+  children: FunctionComponent<InputRenderProps<T>>;
   containerAttributes?: Omit<HTMLAttributes<HTMLDivElement>, 'children'>;
 };
 
-export const InputField = ({
+export const InputField = <T extends unknown = string>({
   name,
   children: inputComponent,
   labelText,
   successText,
   hintText,
   containerAttributes,
-}: InputFieldProps): JSX.Element => (
+}: InputFieldProps<T>): JSX.Element => (
   <Field name={name}>
     {(formikProps: FieldProps) => {
       const {

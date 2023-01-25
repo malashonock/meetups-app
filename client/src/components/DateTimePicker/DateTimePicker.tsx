@@ -1,10 +1,13 @@
+import { ComponentProps } from 'react';
+import DatePicker from 'react-datepicker';
+
 import {
   InputField,
   InputFieldExternalProps,
   InputRenderProps,
 } from 'components';
-import { ComponentProps } from 'react';
-import DatePicker from 'react-datepicker';
+import { Maybe } from 'types';
+
 import 'react-datepicker/dist/react-datepicker.css';
 import './DateTimePicker.scss';
 
@@ -24,7 +27,7 @@ type DateTimePickerConstraints = Pick<
 
 type DateTimePickerProps = InputFieldExternalProps & {
   placeholderText?: string;
-  containerAttributes?: Omit<React.HTMLAttributes<HTMLDivElement>, "children">;
+  containerAttributes?: Omit<React.HTMLAttributes<HTMLDivElement>, 'children'>;
   constraints?: DateTimePickerConstraints;
 };
 
@@ -39,7 +42,7 @@ export const DateTimePicker = ({
       field: { name, value },
       form: { setFieldValue, handleBlur },
       className,
-    }: InputRenderProps): JSX.Element => {
+    }: InputRenderProps<Maybe<Date>>): JSX.Element => {
       const handleChange = (date: Date | null): void =>
         setFieldValue(name, date);
 
