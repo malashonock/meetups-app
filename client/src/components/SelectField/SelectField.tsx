@@ -4,6 +4,7 @@ import ReactSelect from 'react-select';
 import {
   InputField,
   InputFieldExternalProps,
+  InputFieldVariant,
   InputRenderProps,
 } from 'components';
 import { ArrayElementType, Nullable, Optional } from 'types';
