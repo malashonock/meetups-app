@@ -23,12 +23,14 @@ export const meetupsRoutes = (db) => {
           modified,
           start,
           finish,
-          author,
-          speakers,
+          author: authorAsJson,
           subject,
           excerpt,
           place,
         } = req.body;
+
+        const author = JSON.parse(authorAsJson);
+        const speakers = [author];
 
         const image = req.file;
         const imageUrl = image ? getUrlFromPublicPath(image.path) : null;
@@ -38,12 +40,8 @@ export const meetupsRoutes = (db) => {
           modified,
           start,
           finish,
-          author: JSON.parse(author),
-          speakers: speakers ? JSON.parse(speakers)
-            .map((speaker) => ({
-              id: faker.datatype.uuid(),
-              ...speaker,
-            })) : [],
+          author,
+          speakers,
           subject,
           excerpt,
           place,
