@@ -40,7 +40,7 @@ export const DateTimePicker = ({
   <InputField containerAttributes={containerAttributes} {...inputFieldProps}>
     {({
       field: { name, value },
-      form: { setFieldValue, handleBlur },
+      form: { setFieldValue, handleBlur, setFieldTouched },
       className,
     }: InputRenderProps<Maybe<Date>>): JSX.Element => {
       const handleChange = (date: Date | null): void =>
@@ -71,8 +71,8 @@ export const DateTimePicker = ({
           name={name}
           selected={value}
           onChange={handleChange}
-          onSelect={handleChange} // hack to make onChange fire
           onBlur={handleBlur}
+          onCalendarClose={() => setFieldTouched(name, true)}
           showTimeSelect
           dateFormat="d MMM yyyy HH:mm"
           timeFormat="HH:mm"
