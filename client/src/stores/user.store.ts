@@ -4,7 +4,7 @@ import * as API from 'api';
 import { RootStore } from 'stores';
 import { IUser, UserRole } from 'model';
 import { getFirstLetter } from 'utils';
-import { Nullable, Optional } from 'types';
+import { Maybe, Nullable, Optional } from 'types';
 
 export class UserStore {
   users: User[];
@@ -24,10 +24,16 @@ export class UserStore {
     });
   }
 
-  findUser(idOrUser: string | { id: string }): Optional<User> {
+  findUser(idOrUser: Maybe<string> | Maybe<{ id: string }>): Optional<User> {
+    if (!idOrUser) {
+      return undefined;
+    }
+
     return this.users.find((user: User) => {
       const id =
-        typeof idOrUser === 'object' && Object.hasOwn(idOrUser, 'id')
+        idOrUser &&
+        typeof idOrUser === 'object' &&
+        Object.hasOwn(idOrUser, 'id')
           ? (idOrUser as { id: string }).id
           : (idOrUser as string);
 
@@ -41,7 +47,9 @@ export class UserStore {
     }
 
     const ids =
-      typeof idsOrUsers[0] === 'object' && Object.hasOwn(idsOrUsers[0], 'id')
+      idsOrUsers[0] &&
+      typeof idsOrUsers[0] === 'object' &&
+      Object.hasOwn(idsOrUsers[0], 'id')
         ? (idsOrUsers as Array<{ id: string }>).map(({ id }): string => id)
         : (idsOrUsers as string[]);
 
@@ -83,5 +91,15 @@ export class User {
     return `${getFirstLetter(this.name)}${getFirstLetter(
       this.surname,
     )}`.toLocaleUpperCase();
+  }
+
+  toJSON(): IUser {
+    return {
+      id: this.id,
+      name: this.name,
+      surname: this.surname,
+      post: this.post,
+      roles: this.roles,
+    };
   }
 }
