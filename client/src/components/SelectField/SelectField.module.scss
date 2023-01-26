@@ -25,9 +25,9 @@
   }
 
   &:hover {
+    cursor: pointer;
     background-color: $gray-09 !important;
     border-color: $gray-06 !important;
-    cursor: pointer;
   }
 
   &.focused {
@@ -38,14 +38,14 @@
       @extend .font-color-gray-03;
     }
   }
-}
 
-.error {
-  border: 2px solid $red-02;
-}
+  &.error {
+    border: 2px solid $red-02 !important;
+  }
 
-.success {
-  border: 2px solid $green-02;
+  &.success {
+    border: 2px solid $green-02 !important;
+  }
 }
 
 .menu,
