@@ -1,9 +1,9 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 
 import * as API from 'api';
-import { RootStore } from 'stores';
+import { RootStore, User } from 'stores';
 import { FileWithUrl, Nullable, Optional } from 'types';
-import { IMeetup, MeetupFields, MeetupStatus, ShortUser } from 'model';
+import { IMeetup, MeetupFields, MeetupStatus } from 'model';
 
 export class MeetupStore {
   meetups: Meetup[];
@@ -22,11 +22,15 @@ export class MeetupStore {
     });
   }
 
-  async createMeetup(meetupData: MeetupFields): Promise<void> {
+  async createMeetup(meetupData: MeetupFields): Promise<Meetup> {
     const newMeetupData = await API.createMeetup(meetupData);
+    const newMeetup = new Meetup(newMeetupData, this);
+
     runInAction(() => {
-      this.meetups.push(new Meetup(newMeetupData, this));
+      this.meetups.push(newMeetup);
     });
+
+    return newMeetup;
   }
 
   onMeetupDeleted(deletedMeetup: Meetup): void {
@@ -49,10 +53,10 @@ export class Meetup implements IMeetup {
   place?: string;
   subject: string;
   excerpt: string;
-  author: ShortUser;
-  speakers: ShortUser[];
-  votedUsers: ShortUser[];
-  participants: ShortUser[];
+  author: Nullable<User>;
+  speakers: User[];
+  votedUsers: User[];
+  participants: User[];
   image: Nullable<FileWithUrl>;
 
   constructor(meetupData: IMeetup, meetupStore?: MeetupStore) {
@@ -70,12 +74,22 @@ export class Meetup implements IMeetup {
       place: this.place,
       subject: this.subject,
       excerpt: this.excerpt,
-      author: this.author,
-      speakers: this.speakers,
-      votedUsers: this.votedUsers,
-      participants: this.participants,
       image: this.image,
     } = meetupData);
+
+    const {
+      author: authorData,
+      speakers: speakersData,
+      votedUsers: votedUsersData,
+      participants: participantsData,
+    } = meetupData;
+
+    const userStore = this.meetupStore?.rootStore.userStore;
+
+    this.author = userStore?.findUser(authorData) ?? null;
+    this.speakers = userStore?.findUsers(speakersData) ?? [];
+    this.votedUsers = userStore?.findUsers(votedUsersData) ?? [];
+    this.participants = userStore?.findUsers(participantsData) ?? [];
   }
 
   async update(meetupData: Partial<MeetupFields>): Promise<void> {

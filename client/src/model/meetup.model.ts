@@ -12,7 +12,7 @@ export interface IMeetup {
   modified: Date;
   start?: Date;
   finish?: Date;
-  author: ShortUser;
+  author: Nullable<ShortUser>;
   speakers: ShortUser[];
   votedUsers: ShortUser[];
   participants: ShortUser[];
@@ -41,7 +41,5 @@ export interface MeetupDto {
 // Data structure used in create/edit forms
 export type MeetupFields = Pick<
   IMeetup,
-  'subject' | 'excerpt' | 'start' | 'finish' | 'place' | 'image'
-> & {
-  author: string; // TODO: replace with ShortUser
-};
+  'subject' | 'excerpt' | 'author' | 'start' | 'finish' | 'place' | 'image'
+>;
