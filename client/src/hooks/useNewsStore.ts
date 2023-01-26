@@ -8,7 +8,7 @@ import { Optional } from 'types';
 export interface UseNewsStoreResult {
   newsStore?: NewsStore;
   news?: News[];
-  createNewsArticle?: (newsArticleData: NewsFields) => Promise<void>;
+  createNewsArticle?: (newsArticleData: NewsFields) => Promise<News>;
   findNewsArticle?: (id: string) => Optional<News>;
 }
 
