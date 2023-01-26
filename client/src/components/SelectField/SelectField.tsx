@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react';
+import { ComponentProps, FocusEvent } from 'react';
 import ReactSelect from 'react-select';
 
 import {
@@ -31,11 +31,7 @@ export const SelectField = <TValue extends unknown>({
   ...inputFieldProps
 }: SelectFieldProps<TValue>): JSX.Element => (
   <InputField containerAttributes={containerAttributes} {...inputFieldProps}>
-    {({
-      field,
-      form: { setFieldValue, handleBlur },
-      variant,
-    }: InputRenderProps<TValue>): JSX.Element => {
+    {({ field, form, variant }: InputRenderProps<TValue>): JSX.Element => {
       const getOptionsFromFieldValues = (
         valueOrValues: Nullable<TValue> | TValue[],
       ): Nullable<SelectOption<TValue>> | SelectOption<TValue>[] => {
@@ -91,7 +87,21 @@ export const SelectField = <TValue extends unknown>({
           value = option.value;
         }
 
-        setFieldValue(field.name, value);
+        form.setFieldValue(field.name, value);
+      };
+
+      const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
+        // the input that fires blur event has no name
+        // without it, formik doesn't recognize that blur occurred
+        const eventWithName: FocusEvent<HTMLInputElement> = {
+          ...event,
+          target: {
+            ...event.target,
+            name: field.name,
+          },
+        };
+
+        form.handleBlur(eventWithName);
       };
 
       return (
