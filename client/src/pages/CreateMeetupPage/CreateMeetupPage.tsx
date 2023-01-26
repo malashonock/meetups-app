@@ -6,9 +6,9 @@ import { Stepper, StepperContext } from 'components';
 import { CreateMeetupOptionalFields } from './CreateMeetupOptionalFields/CreateMeetupOptionalFields';
 import { CreateMeetupRequiredFields } from './CreateMeetupRequiredFields/CreateMeetupRequiredFields';
 import { MeetupFields } from 'model';
+import { useAuthStore, useMeetupStore } from 'hooks';
 
 import styles from './CreateMeetupPage.module.scss';
-import { useAuthStore, useMeetupStore } from 'hooks';
 
 export type NewMeetupState = [
   newMeetupData: MeetupFields,
@@ -20,7 +20,7 @@ export const CreateMeetupPage = observer((): JSX.Element => {
   const { meetupStore } = useMeetupStore();
 
   const [newMeetupData, setNewMeetupData] = useState<MeetupFields>({
-    author: loggedUser ? `${loggedUser.name} ${loggedUser.surname}` : '',
+    author: loggedUser ?? null,
     subject: '',
     excerpt: '',
     place: '',
@@ -34,8 +34,8 @@ export const CreateMeetupPage = observer((): JSX.Element => {
   useEffect(() => {
     if (finished) {
       (async () => {
-        await meetupStore?.createMeetup(newMeetupData);
-        navigate('/meetups');
+        const newMeetup = await meetupStore?.createMeetup(newMeetupData);
+        navigate(newMeetup ? `/meetups/${newMeetup.id}` : '/meetups');
       })();
     }
   }, [finished]);
