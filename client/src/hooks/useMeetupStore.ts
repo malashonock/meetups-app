@@ -8,7 +8,7 @@ import { Optional } from 'types';
 export interface UseMeetupStoreResult {
   meetupStore?: MeetupStore;
   meetups?: Meetup[];
-  createMeetup?: (meetupData: MeetupFields) => Promise<void>;
+  createMeetup?: (meetupData: MeetupFields) => Promise<Meetup>;
   findMeetup?: (id: string) => Optional<Meetup>;
 }
 
