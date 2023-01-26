@@ -1,6 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Form, Formik } from 'formik';
 import classNames from 'classnames';
+import * as yup from 'yup';
 
 import {
   Button,
@@ -26,8 +27,10 @@ interface FormValues {
 
 const getFirstOption = <TValue extends unknown>(
   options?: SelectOption<TValue>[],
-): Nullable<TValue> => {
-  return options && options.length > 0 ? options[0].value : null;
+  isMulti?: boolean,
+): Nullable<TValue> | TValue[] => {
+  const fallback = isMulti ? [] : null;
+  return options && options.length > 0 ? options[0].value : fallback;
 };
 
 const Template: ComponentStory<typeof SelectField> = (args) => (
@@ -37,8 +40,19 @@ const Template: ComponentStory<typeof SelectField> = (args) => (
         args.selectProps?.options as Optional<
           SelectOption<FormValues[typeof args.name]>[]
         >,
+        args.selectProps?.isMulti,
       ),
     }}
+    validationSchema={yup.object().shape({
+      [args.name]: yup.lazy((value) =>
+        Array.isArray(value)
+          ? yup
+              .array()
+              .of(yup.mixed())
+              .min(1, `At least 1 ${args.name} must be specified`)
+          : yup.mixed().required(`${args.labelText} is required`),
+      ),
+    })}
     onSubmit={(values: FormValues, { setSubmitting }) => {
       console.log(values[args.name]);
       setSubmitting(false); // onSubmit is sync, so need to call this
