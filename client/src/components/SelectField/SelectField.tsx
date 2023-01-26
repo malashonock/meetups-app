@@ -18,7 +18,7 @@ export interface SelectOption<TValue> {
 
 export type SelectFieldProps<TValue> = InputFieldExternalProps & {
   selectProps?: ComponentProps<ReactSelect>;
-  comparerFn?: (value1: TValue, value2: TValue) => boolean;
+  comparerFn?: (value1: Nullable<TValue>, value2: Nullable<TValue>) => boolean;
   placeholderText?: string;
   containerAttributes?: Omit<React.HTMLAttributes<HTMLDivElement>, 'children'>;
 };
@@ -42,9 +42,10 @@ export const SelectField = <TValue extends unknown>({
           value: TValue,
         ): Optional<SelectOption<TValue>> => {
           return allOptions.find((option: SelectOption<TValue>): boolean => {
-            return comparerFn
+            const isMatch = comparerFn
               ? comparerFn(option.value, value)
               : option.value === value;
+            return isMatch;
           });
         };
 
