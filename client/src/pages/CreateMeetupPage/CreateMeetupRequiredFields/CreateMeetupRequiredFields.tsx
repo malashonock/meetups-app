@@ -4,6 +4,8 @@ import { Formik, Form, FormikHelpers, FormikProps } from 'formik';
 import {
   Button,
   ButtonVariant,
+  SelectField,
+  SelectOption,
   StepperContext,
   TextField,
   Typography,
@@ -11,6 +13,9 @@ import {
 } from 'components';
 import { NewMeetupState } from 'pages';
 import { MeetupRequiredFields, meetupRequiredFieldsSchema } from 'validation';
+import { useUserStore } from 'hooks';
+import { User } from 'stores';
+import { Nullable } from 'types';
 
 import styles from './CreateMeetupRequiredFields.module.scss';
 
@@ -22,6 +27,8 @@ export const CreateMeetupRequiredFields = ({
   handleNextStep,
 }: StepperContext<NewMeetupState>): JSX.Element => {
   const { author, subject, excerpt } = newMeetupData;
+
+  const { users } = useUserStore();
 
   const initialValues: MeetupRequiredFields = {
     author,
@@ -77,7 +84,22 @@ export const CreateMeetupRequiredFields = ({
         <div className={styles.contentWrapper}>
           <div className={classNames(styles.textSection, styles.main)}>
             <TextField name="subject" labelText="Название" />
-            <TextField name="author" labelText="Спикер" />
+            <SelectField<User>
+              name="author"
+              labelText="Спикер"
+              placeholderText="Выберите спикера..."
+              selectProps={{
+                options: users?.map(
+                  (user: User): SelectOption<User> => ({
+                    value: user,
+                    label: user.fullName,
+                  }),
+                ),
+              }}
+              comparerFn={(u1: Nullable<User>, u2: Nullable<User>) =>
+                u1?.id === u2?.id
+              }
+            />
             <TextField name="excerpt" labelText="Описание" multiline />
           </div>
           <div className={classNames(styles.textSection, styles.actions)}>

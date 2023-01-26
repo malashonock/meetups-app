@@ -9,6 +9,8 @@ import {
   DateTimePicker,
   ImagePreviewMode,
   ImageUploader,
+  SelectField,
+  SelectOption,
   TextField,
   Typography,
   TypographyComponent,
@@ -19,7 +21,9 @@ import {
   meetupRequiredFieldsSchema,
   validateMeetupOptionalFields,
 } from 'validation';
-import { useMeetup } from 'hooks';
+import { User } from 'stores';
+import { useMeetup, useUserStore } from 'hooks';
+import { Nullable } from 'types';
 
 import styles from './EditMeetupPage.module.scss';
 
@@ -28,6 +32,7 @@ export const EditMeetupPage = observer((): JSX.Element => {
   const navigate = useNavigate();
 
   const meetup = useMeetup(id);
+  const { users } = useUserStore();
 
   if (!meetup) {
     return <NotFoundPage />;
@@ -36,7 +41,7 @@ export const EditMeetupPage = observer((): JSX.Element => {
   const initialValues: MeetupFields = {
     subject: meetup.subject || '',
     excerpt: meetup.excerpt || '',
-    author: 'chief Blick', // TODO: replace with ShortUser
+    author: meetup.author,
     start: meetup.start,
     finish: meetup.finish,
     place: meetup.place || '',
@@ -45,23 +50,18 @@ export const EditMeetupPage = observer((): JSX.Element => {
 
   const handleBack = (): void => navigate(-1);
 
-  const gotoPreview = (isDirty: boolean): void => {
-    if (
-      !isDirty ||
-      window.confirm(
-        'Несохраненные изменения будут потеряны. Все равно перейти к странице просмотра?',
-      )
-    ) {
-      navigate(`/meetups/${id}`);
-    }
+  const gotoPreview = (): void => {
+    navigate(`/meetups/${id}`);
   };
 
   const handleSubmit = async (
     updatedMeetupData: MeetupFields,
-    { setTouched }: FormikHelpers<MeetupFields>,
+    { setTouched, resetForm }: FormikHelpers<MeetupFields>,
   ): Promise<void> => {
     await meetup.update(updatedMeetupData);
-    setTouched({});
+    resetForm({
+      values: updatedMeetupData,
+    });
   };
 
   const renderForm = ({
@@ -96,7 +96,22 @@ export const EditMeetupPage = observer((): JSX.Element => {
                 <DateTimePicker name="finish" labelText="Окончание" />
               </div>
               <TextField name="place" labelText="Место проведения" />
-              <TextField name="author" labelText="Спикер" />
+              <SelectField<User>
+                name="author"
+                labelText="Спикер"
+                placeholderText="Выберите спикера..."
+                selectProps={{
+                  options: users?.map(
+                    (user: User): SelectOption<User> => ({
+                      value: user,
+                      label: user.fullName,
+                    }),
+                  ),
+                }}
+                comparerFn={(u1: Nullable<User>, u2: Nullable<User>) =>
+                  u1?.id === u2?.id
+                }
+              />
               <TextField name="excerpt" labelText="Описание" multiline />
             </div>
             <div className={classNames(styles.textSection, styles.actions)}>
@@ -112,8 +127,9 @@ export const EditMeetupPage = observer((): JSX.Element => {
                 <Button
                   type="button"
                   variant={ButtonVariant.Secondary}
-                  onClick={() => gotoPreview(dirty)}
+                  onClick={gotoPreview}
                   className={styles.actionButton}
+                  disabled={dirty}
                 >
                   Предпросмотр
                 </Button>
