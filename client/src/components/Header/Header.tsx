@@ -12,9 +12,11 @@ import { useAuthStore } from 'hooks';
 
 import styles from './Header.module.scss';
 import logo from 'assets/images/logo.svg';
+import { useTranslation } from 'react-i18next';
 
 export const Header = observer((): JSX.Element => {
   const { loggedUser } = useAuthStore();
+  const { t } = useTranslation();
 
   return (
     <header className={styles.header}>
@@ -30,7 +32,7 @@ export const Header = observer((): JSX.Element => {
                 })
               }
             >
-              <Typography>Митапы</Typography>
+              <Typography>{t('meetups')}</Typography>
             </NavLink>
             <NavLink
               to="/news"
@@ -40,7 +42,7 @@ export const Header = observer((): JSX.Element => {
                 })
               }
             >
-              <Typography>Новости</Typography>
+              <Typography>{t('news')}</Typography>
             </NavLink>
           </nav>
           <div className={styles.auth}>
@@ -64,7 +66,7 @@ export const Header = observer((): JSX.Element => {
                 })
               }
             >
-              <Typography>Митапы</Typography>
+              <Typography>{t('meetups')}</Typography>
             </NavLink>
             <NavLink
               to="/news"
@@ -74,7 +76,7 @@ export const Header = observer((): JSX.Element => {
                 })
               }
             >
-              <Typography>Новости</Typography>
+              <Typography>{t('news')}</Typography>
             </NavLink>
           </nav>
         </div>
