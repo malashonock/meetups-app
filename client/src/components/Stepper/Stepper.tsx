@@ -79,15 +79,19 @@ export const Stepper = <T extends unknown>({
     const visited = stepState.visited || active;
     const passed =
       (visited && noValidate) || passedStepsIndices.includes(index);
+    const isNextStep = index === activeStepIndex + 1;
+    const isActiveStepPassed = passedStepsIndices.includes(activeStepIndex);
 
-    const status = active
-      ? StepStatus.Active
-      : passed
-      ? StepStatus.Passed
-      : index === activeStepIndex + 1 &&
-        passedStepsIndices.includes(activeStepIndex)
-      ? StepStatus.Available
-      : StepStatus.Disabled;
+    let status: StepStatus;
+    if (active) {
+      status = StepStatus.Active;
+    } else if (passed) {
+      status = StepStatus.Passed;
+    } else if (isNextStep && isActiveStepPassed) {
+      status = StepStatus.Available;
+    } else {
+      status = StepStatus.Disabled;
+    }
 
     return {
       ...stepState,
