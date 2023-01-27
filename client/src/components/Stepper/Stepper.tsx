@@ -102,22 +102,21 @@ export const Stepper = <T extends unknown>({
     setStepsState([...updatedStepsState]);
   }, [activeStepIndex, passedStepsIndices]);
 
-  const setStepPassed = (index: number, state: boolean): void => {
-    switch (state) {
-      case true:
-        if (!passedStepsIndices.includes(index)) {
-          setPassedStepsIndices([...passedStepsIndices, index]);
-        }
-        break;
-      case false:
-        if (passedStepsIndices.includes(index)) {
-          setPassedStepsIndices(
-            passedStepsIndices.filter(
-              (passedStepIndex) => passedStepIndex !== index,
-            ),
-          );
-        }
-        break;
+  const setStepPassed = (stepIndex: number, state: boolean): void => {
+    const isStepAlreadyPassed = passedStepsIndices.includes(stepIndex);
+
+    if (state === true && !isStepAlreadyPassed) {
+      // add step to the list of passed steps
+      setPassedStepsIndices([...passedStepsIndices, stepIndex]);
+    }
+
+    if (state === false && isStepAlreadyPassed) {
+      // remove step from the list of passed steps
+      setPassedStepsIndices(
+        passedStepsIndices.filter(
+          (passedStepIndex) => passedStepIndex !== stepIndex,
+        ),
+      );
     }
   };
 
