@@ -1,39 +1,34 @@
-import { useContext } from 'react';
-
 import {
   TabsIndicator,
   Step,
   StepperContext,
-  StepperContextType,
-  StepDescriptor,
+  StepState,
 } from 'components';
 
 import styles from './StepperProgress.module.scss';
 
-interface StepperProgressProps {
-  currentStep: number;
-}
-
-export const StepperProgress = ({ currentStep }: StepperProgressProps) => {
-  const { stepsDescriptor } = useContext(StepperContext) as StepperContextType;
+export const StepperProgress = <T extends unknown>({
+  stepsState,
+  activeStep,
+}: StepperContext<T>): JSX.Element => {
 
   return (
     <div className={styles.stepperProgress}>
       <div className={styles.steps}>
-        {stepsDescriptor.map(
-          (step: StepDescriptor, i: number): JSX.Element => (
+        {stepsState.map(
+          ({ title, status }: StepState<T>, stepIndex: number) => (
             <Step
-              key={step.title}
-              variant={step.variant}
-              title={step.title}
-              stepNumber={i + 1}
-            ></Step>
+              key={title}
+              title={title}
+              status={status}
+              stepNumber={stepIndex + 1}
+            />
           ),
         )}
       </div>
       <TabsIndicator
-        tabsAmount={stepsDescriptor.length}
-        currentTab={currentStep}
+        tabsCount={stepsState.length}
+        activeTabIndex={activeStep.index}
       />
     </div>
   );

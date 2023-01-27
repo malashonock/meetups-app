@@ -23,7 +23,7 @@ const typographyUtilities: string[] = [
   'line-height-m',
   'line-height-l',
   'line-height-xl',
-  'line-height-xxl',
+  'line-height-2xl',
   'letter-spacing-smaller',
   'letter-spacing-normal',
   'letter-spacing-larger-01',

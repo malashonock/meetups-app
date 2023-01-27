@@ -116,8 +116,11 @@
   &-xl {
     @include line-height(6px);
   }
-  &-xxl {
+  &-2xl {
     @include line-height(7px);
+  }
+  &-3xl {
+    @include line-height(8px);
   }
 }
 
@@ -153,7 +156,7 @@
     color: $gray-04;
   }
   &-white {
-    color: $white-color;
+    color: $white;
   }
   &-purple {
     color: $purple;

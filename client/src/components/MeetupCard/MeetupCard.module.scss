@@ -1,4 +1,3 @@
-@use 'sass:color';
 @import '~style/colors';
 @import '~style/typography';
 @import '~style/mixins';
@@ -9,14 +8,14 @@
   row-gap: 12px;
 
   padding: 17px 24px 22px 24px;
-  background-color: $white-color;
+  background-color: $white;
   border-radius: 6px;
 
-  box-shadow: 0 4px 9px color.change($gray-05, $alpha: 0.25);
+  box-shadow: 0 4px 9px rgba($gray-05, $alpha: 0.25);
   @include smooth-transition(box-shadow);
 
   &:hover {
-    box-shadow: 0 5px 10px color.change($gray-05, $alpha: 0.4);
+    box-shadow: 0 5px 10px rgba($gray-05, $alpha: 0.4);
     @include smooth-transition(box-shadow);
   }
 
@@ -84,7 +83,7 @@
       @extend .font-family-primary;
       @extend .font-weight-regular;
       @extend .font-size-xs;
-      @extend .line-height-xxl;
+      @extend .line-height-2xl;
       @extend .font-color-gray-02;
     }
   }

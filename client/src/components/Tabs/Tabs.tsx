@@ -57,8 +57,8 @@ export function Tabs({ children }: PropsWithChildren) {
         {children}
       </div>
       <TabsIndicator
-        tabsAmount={arrayChildren.length}
-        currentTab={indicatorPosition - 1}
+        tabsCount={arrayChildren.length}
+        activeTabIndex={indicatorPosition - 1}
       />
     </>
   );

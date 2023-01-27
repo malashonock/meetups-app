@@ -68,8 +68,8 @@
     "prepare": "cd .. && husky install client/.husky"
   },
   "lint-staged": {
-    "**/*": "prettier --write --ignore-unknown",
-    "*.{ts,tsx}": "eslint --fix"
+    "**/*": "npx prettier --write --ignore-unknown",
+    "*.{ts,tsx}": "npx eslint --fix"
   },
   "eslintConfig": {
     "extends": [

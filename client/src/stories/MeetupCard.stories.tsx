@@ -27,25 +27,21 @@ const author: ShortUser = {
   surname: 'Jackson',
 };
 
-const meetupTopicNoExcerpt: Meetup = {
+const meetupTopic: Meetup = {
   id: 'AAA-AAA',
   status: MeetupStatus.DRAFT,
   author,
   subject: 'EF Core от практикующих',
+  excerpt:
+    'Основные темы, которые буду рассказывать: Database-first (EF Core), Db migrations, Software triggers, DbSet pre-filter (tenant-solution)',
   modified: new Date().toLocaleString(),
   speakers: [],
   goCount: 23,
-  isOver: false,
-};
-
-const meetupTopicWithExcerpt: Meetup = {
-  ...meetupTopicNoExcerpt,
-  excerpt:
-    'Основные темы, которые буду рассказывать: Database-first (EF Core), Db migrations, Software triggers, DbSet pre-filter (tenant-solution)',
+  imageUrl: null,
 };
 
 const meetupOnModerationNoDate: Meetup = {
-  ...meetupTopicWithExcerpt,
+  ...meetupTopic,
   status: MeetupStatus.REQUEST,
 };
 
@@ -62,19 +58,18 @@ const meetupUpcoming: Meetup = {
 
 const meetupFinished: Meetup = {
   ...meetupUpcoming,
-  isOver: true,
 };
 
 export const MeetupCard_Topic_NoExcerpt = Template.bind({});
 
 MeetupCard_Topic_NoExcerpt.args = {
-  meetup: meetupTopicNoExcerpt,
+  meetup: meetupTopic,
 };
 
 export const MeetupCard_Topic_WithExcerpt = Template.bind({});
 
 MeetupCard_Topic_WithExcerpt.args = {
-  meetup: meetupTopicWithExcerpt,
+  meetup: meetupTopic,
 };
 
 export const MeetupCard_OnModerationNoDate = Template.bind({});

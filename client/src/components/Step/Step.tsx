@@ -1,21 +1,21 @@
 import classNames from 'classnames';
 
-import { StepVariant } from 'components';
+import { StepStatus } from 'components';
 
 import styles from './Step.module.scss';
 import check from './check.svg';
 
 interface StepProps {
-  variant: StepVariant;
+  status: StepStatus;
   title: string;
   stepNumber: number;
 }
 
-export const Step = ({ variant, title, stepNumber }: StepProps) => {
+export const Step = ({ status, title, stepNumber }: StepProps) => {
   return (
-    <div className={classNames(styles.step, styles[variant])}>
+    <div className={classNames(styles.step, styles[status])}>
       <div className={styles.number}>
-        {variant === StepVariant.Confirmed ? (
+        {status === StepStatus.Passed ? (
           <img src={check} alt="Шаг завершён" />
         ) : (
           stepNumber

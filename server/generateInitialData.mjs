@@ -4,7 +4,7 @@ import {fixedNews, generateNews} from './data/news.mjs';
 
 export const generateInitialData = async () => {
   const users = [...fixedUsers, ...generateUsers(100)];
-  const meetups = [...fixedMeetups, ...generateMeetups(20, users)];
+  const meetups = [...fixedMeetups, ...(await generateMeetups(20, users))];
   const participants = generateShortUsers(meetups, users);
   const votedUsers = generateShortUsers(meetups, users);
   const news = [...fixedNews, ...(await generateNews(10))]

@@ -24,15 +24,17 @@ type DateTimePickerConstraints = Pick<
 
 type DateTimePickerProps = InputFieldExternalProps & {
   placeholderText?: string;
+  containerAttributes?: Omit<React.HTMLAttributes<HTMLDivElement>, "children">;
   constraints?: DateTimePickerConstraints;
 };
 
 export const DateTimePicker = ({
   placeholderText = 'd MMM yyyy HH:mm',
   constraints = {},
+  containerAttributes,
   ...inputFieldProps
 }: DateTimePickerProps): JSX.Element => (
-  <InputField {...inputFieldProps}>
+  <InputField containerAttributes={containerAttributes} {...inputFieldProps}>
     {({
       field: { name, value },
       form: { setFieldValue, handleBlur },
@@ -66,6 +68,7 @@ export const DateTimePicker = ({
           name={name}
           selected={value}
           onChange={handleChange}
+          onSelect={handleChange} // hack to make onChange fire
           onBlur={handleBlur}
           showTimeSelect
           dateFormat="d MMM yyyy HH:mm"

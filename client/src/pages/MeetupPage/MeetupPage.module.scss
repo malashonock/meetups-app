@@ -1,5 +1,9 @@
 @import '~style/typography';
 
+.container {
+  margin-top: 70px;
+}
+
 .heading {
   @extend .font-family-primary;
   @extend .font-weight-bold;

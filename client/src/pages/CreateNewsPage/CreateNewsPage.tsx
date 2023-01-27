@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router';
 import classNames from 'classnames';
+import { Form, Formik, FormikHelpers, FormikProps } from 'formik';
 import * as yup from 'yup';
 
 import {
@@ -11,8 +12,6 @@ import {
   Typography,
   TypographyComponent,
 } from 'components';
-
-import { Form, Formik, FormikHelpers, FormikProps } from 'formik';
 import { NewNews } from 'model';
 import { createNewsArticle } from 'api';
 
