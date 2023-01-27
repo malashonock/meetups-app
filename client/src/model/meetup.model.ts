@@ -22,19 +22,17 @@ export interface Meetup {
   votedUsers?: ShortUser[];
 }
 
-export type NewMeetup = Omit<Meetup,
-  | 'id'
-  | 'modified'
-  | 'start'
-  | 'finish'
-  | 'imageUrl'
-  | 'author'
-  | 'speakers'
-> & {
+export interface NewMeetup {
   modified: Date | null;
   start: Date | null;
   finish: Date | null;
   image: File | null;
   author: string; // TODO: implement as ShortUser
   speakers: string[]; // TODO implement as ShortUser[]
-};
+  subject: string;
+  excerpt: string;
+  place?: string;
+  goCount: number;
+  status: MeetupStatus;
+  votedUsers?: ShortUser[];
+}
