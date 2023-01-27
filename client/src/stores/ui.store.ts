@@ -4,8 +4,8 @@ import { makePersistable } from 'mobx-persist-store';
 import { RootStore } from 'stores';
 
 export enum Locale {
-  RU = 'ru-RU',
-  EN = 'en-EN',
+  RU = 'ru',
+  EN = 'en',
 }
 
 export class UiStore {
