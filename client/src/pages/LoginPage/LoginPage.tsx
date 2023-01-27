@@ -1,10 +1,8 @@
-import { useContext } from 'react';
 import { useNavigate } from 'react-router';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import { Form, Formik, FormikHelpers, FormikProps } from 'formik';
 
-import { RootContext } from 'App';
 import {
   Button,
   ButtonVariant,
@@ -13,6 +11,7 @@ import {
   TypographyComponent,
 } from 'components';
 import { Credentials } from 'model';
+import { useAuthStore } from 'hooks';
 import { loginSchema } from 'validation';
 
 import { ReactComponent as AnonymousUserIcon } from 'assets/images/anonymous-user.svg';
@@ -20,7 +19,7 @@ import styles from './LoginPage.module.scss';
 
 export const LoginPage = observer((): JSX.Element => {
   const navigate = useNavigate();
-  const authStore = useContext(RootContext)?.authStore;
+  const { authStore } = useAuthStore();
 
   const initialValues: Credentials = {
     username: '',

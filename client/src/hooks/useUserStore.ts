@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 
 import { User, UserStore } from 'stores';
-import { RootContext } from 'App';
+import { RootContext } from 'components';
 import { Optional } from 'types';
 
 export interface UseUserStoreResult {

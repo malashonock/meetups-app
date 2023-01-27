@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 
 import { Meetup, MeetupStore } from 'stores';
-import { RootContext } from 'App';
+import { RootContext } from 'components';
 import { MeetupFields } from 'model';
 import { Optional } from 'types';
 
