@@ -72,33 +72,34 @@ export const Stepper = <T extends unknown>({
   }, [activeStepIndex]);
 
   // sync steps state with changes in active step selection or validation status
+  const updateStepState = (stepState: StepState<T>): StepState<T> => {
+    const { index, noValidate } = stepState;
+
+    const active = index === activeStepIndex;
+    const visited = stepState.visited || active;
+    const passed =
+      (visited && noValidate) || passedStepsIndices.includes(index);
+
+    const status = active
+      ? StepStatus.Active
+      : passed
+      ? StepStatus.Passed
+      : index === activeStepIndex + 1 &&
+        passedStepsIndices.includes(activeStepIndex)
+      ? StepStatus.Available
+      : StepStatus.Disabled;
+
+    return {
+      ...stepState,
+      status,
+      passed,
+      visited,
+    };
+  };
+
   useEffect((): void => {
-    setStepsState([
-      ...stepsState.map((stepState: StepState<T>): StepState<T> => {
-        const { index, noValidate } = stepState;
-
-        const active = index === activeStepIndex;
-        const visited = stepState.visited || active;
-        const passed =
-          (visited && noValidate) || passedStepsIndices.includes(index);
-
-        const status = active
-          ? StepStatus.Active
-          : passed
-          ? StepStatus.Passed
-          : index === activeStepIndex + 1 &&
-            passedStepsIndices.includes(activeStepIndex)
-          ? StepStatus.Available
-          : StepStatus.Disabled;
-
-        return {
-          ...stepState,
-          status,
-          passed,
-          visited,
-        };
-      }),
-    ]);
+    const updatedStepsState = stepsState.map(updateStepState);
+    setStepsState([...updatedStepsState]);
   }, [activeStepIndex, passedStepsIndices]);
 
   const setStepPassed = (index: number, state: boolean): void => {
