@@ -33,3 +33,4 @@ export * from './ImageUploader/ImageUploader';
 export * from './AuthToggle/AuthToggle';
 export * from './SelectField/SelectField';
 export * from './RootStoreProvider/RootStoreProvider';
+export * from './LanguageSelect/LanguageSelect';

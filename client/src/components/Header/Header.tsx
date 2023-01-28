@@ -4,6 +4,7 @@ import classNames from 'classnames';
 
 import {
   AuthToggle,
+  LanguageSelect,
   Typography,
   UserPreview,
   UserPreviewVariant,
@@ -45,7 +46,8 @@ export const Header = observer((): JSX.Element => {
               <Typography>{t('news')}</Typography>
             </NavLink>
           </nav>
-          <div className={styles.auth}>
+          <div className={styles.userInfo}>
+            <LanguageSelect />
             {loggedUser ? (
               <UserPreview
                 variant={UserPreviewVariant.Header}
