@@ -1,5 +1,6 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
+import { useTranslation } from 'react-i18next';
 
 import {
   Button,
@@ -15,6 +16,7 @@ import styles from './NewsPage.module.scss';
 
 export const NewsPage = observer(() => {
   const { news } = useNewsStore();
+  const { t } = useTranslation();
 
   const navigate = useNavigate();
 
@@ -27,10 +29,14 @@ export const NewsPage = observer(() => {
           component={TypographyComponent.Heading1}
           className={styles.heading}
         >
-          Новости
+          {t('news')}
         </Typography>
-        <Button variant={ButtonVariant.Secondary} onClick={handleCreateNews}>
-          + Создать новость
+        <Button
+          variant={ButtonVariant.Secondary}
+          onClick={handleCreateNews}
+          className={styles.createNewsBtn}
+        >
+          {t('newsPage.createNewsBtn')}
         </Button>
       </div>
       <ul className={styles.newsList}>

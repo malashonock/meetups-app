@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from 'react-router';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 import {
   Button,
@@ -14,7 +15,7 @@ import { MeetupStatus } from 'model';
 import { isPast, parseDate } from 'utils';
 import { NotFoundPage } from 'pages';
 import { User } from 'stores';
-import { useMeetup, useUserStore } from 'hooks';
+import { useMeetup, useUiStore, useUserStore } from 'hooks';
 import { Optional } from 'types';
 
 import styles from './ViewMeetupPage.module.scss';
@@ -30,6 +31,8 @@ export const ViewMeetupPage = observer(() => {
   const { id } = useParams();
   const meetup = useMeetup(id);
   const { userStore } = useUserStore();
+  const { i18n, t } = useTranslation();
+  const { locale } = useUiStore();
 
   if (!meetup) {
     return <NotFoundPage />;
@@ -55,7 +58,12 @@ export const ViewMeetupPage = observer(() => {
   const handleBack = (): void => navigate(-1);
 
   const handleDeleteTopic = async (): Promise<void> => {
-    if (!window.confirm('Вы уверены, что хотите удалить тему?')) {
+    if (
+      !window.confirm(
+        t('viewMeetupPage.deleteTopicPrompt') ||
+          'Are you sure you want to delete the topic?',
+      )
+    ) {
       return;
     }
 
@@ -86,7 +94,7 @@ export const ViewMeetupPage = observer(() => {
             component={TypographyComponent.Span}
             className={styles.dataName}
           >
-            Название
+            {t('viewMeetupPage.topic')}
           </Typography>
           <div className={styles.dataContent}>
             <Typography
@@ -106,7 +114,7 @@ export const ViewMeetupPage = observer(() => {
           <img
             className={styles.image}
             src={image?.url ?? defaultImage}
-            alt="Изображение митапа"
+            alt={t('viewMeetupPage.imgAlt') || 'Meetup image'}
           />
         </figure>
         <div className={styles.headerDataContent}>
@@ -129,14 +137,16 @@ export const ViewMeetupPage = observer(() => {
     let date, time;
 
     if (start) {
-      const { formattedWeekdayLong, formattedDate, formattedTime } =
-        parseDate(start);
+      const { formattedWeekdayLong, formattedDate, formattedTime } = parseDate(
+        start,
+        { locale, i18n },
+      );
 
       date = `${formattedWeekdayLong}, ${formattedDate}, ${start.getFullYear()}`;
       time = `${formattedTime}`;
 
       if (finish) {
-        const { formattedTime } = parseDate(finish);
+        const { formattedTime } = parseDate(finish, { locale, i18n });
 
         time = time + ` — ${formattedTime}`;
       }
@@ -151,8 +161,8 @@ export const ViewMeetupPage = observer(() => {
           })}
         >
           {canPublish
-            ? 'Время и место проведения'
-            : 'Перед публикацией заполните время и место проведения митапа'}
+            ? t('viewMeetupPage.timePlaceInfo.valid')
+            : t('viewMeetupPage.timePlaceInfo.invalid')}
         </Typography>
         <div
           className={classNames(styles.dataContent, styles.timePlaceInfo, {
@@ -160,19 +170,31 @@ export const ViewMeetupPage = observer(() => {
           })}
         >
           <div className={styles.info}>
-            <img className={styles.image} src={calendar} alt="Дата" />
+            <img
+              className={styles.image}
+              src={calendar}
+              alt={t('viewMeetupPage.date') || 'Date'}
+            />
             <Typography component={TypographyComponent.Span}>
               {date || '—'}
             </Typography>
           </div>
           <div className={styles.info}>
-            <img className={styles.image} src={clock} alt="Время" />
+            <img
+              className={styles.image}
+              src={clock}
+              alt={t('viewMeetupPage.time') || 'Time'}
+            />
             <Typography component={TypographyComponent.Span}>
               {time || '—'}
             </Typography>
           </div>
           <div className={styles.info}>
-            <img className={styles.image} src={pin} alt="Место" />
+            <img
+              className={styles.image}
+              src={pin}
+              alt={t('viewMeetupPage.location') || 'Location'}
+            />
             <Typography component={TypographyComponent.Span}>
               {place || '—'}
             </Typography>
@@ -188,7 +210,9 @@ export const ViewMeetupPage = observer(() => {
         component={TypographyComponent.Span}
         className={styles.dataName}
       >
-        {status === MeetupStatus.REQUEST ? 'Автор' : 'Спикер'}
+        {status === MeetupStatus.REQUEST
+          ? t('viewMeetupPage.author')
+          : t('viewMeetupPage.speakers')}
       </Typography>
       <div className={styles.dataContent}>
         {status === MeetupStatus.REQUEST ? (
@@ -217,7 +241,7 @@ export const ViewMeetupPage = observer(() => {
           component={TypographyComponent.Span}
           className={styles.dataName}
         >
-          Поддерживают
+          {t('viewMeetupPage.supporters')}
         </Typography>
         <div className={classNames(styles.dataContent, styles.votedUsers)}>
           {previewVotedUsers?.map((votedUser: User) => (
@@ -245,7 +269,7 @@ export const ViewMeetupPage = observer(() => {
           variant={ButtonVariant.Default}
           onClick={handleBack}
         >
-          Назад
+          {t('formButtons.back')}
         </Button>
         <div className={styles.actionsWrapper}>
           {status === MeetupStatus.REQUEST && (
@@ -255,14 +279,14 @@ export const ViewMeetupPage = observer(() => {
                 variant={ButtonVariant.Secondary}
                 onClick={handleDeleteTopic}
               >
-                Удалить
+                {t('formButtons.delete')}
               </Button>
               <Button
                 className={styles.actionButton}
                 variant={ButtonVariant.Primary}
                 onClick={handleApproveTopic}
               >
-                Одобрить тему
+                {t('viewMeetupPage.approveTopicBtn')}
               </Button>
             </>
           )}
@@ -273,7 +297,7 @@ export const ViewMeetupPage = observer(() => {
               onClick={handlePublishMeetup}
               disabled={!canPublish}
             >
-              Опубликовать
+              {t('formButtons.publish')}
             </Button>
           )}
         </div>
@@ -287,7 +311,7 @@ export const ViewMeetupPage = observer(() => {
         className={styles.heading}
         component={TypographyComponent.Heading1}
       >
-        Просмотр {status === MeetupStatus.REQUEST ? 'темы' : 'митапа'}
+        {t('viewMeetupPage.title', { context: status })}
       </Typography>
       <div className={styles.dataWrapper}>
         {renderHeader()}
@@ -298,7 +322,7 @@ export const ViewMeetupPage = observer(() => {
             component={TypographyComponent.Span}
             className={styles.dataName}
           >
-            Описание
+            {t('viewMeetupPage.descriptions')}
           </Typography>
           <div className={styles.dataContent}>
             <Typography

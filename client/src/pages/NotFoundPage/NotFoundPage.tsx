@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 import {
   Button,
@@ -12,6 +13,7 @@ import styles from './NotFoundPage.module.scss';
 
 export const NotFoundPage = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <section className={styles.wrapper}>
@@ -19,7 +21,7 @@ export const NotFoundPage = () => {
         component={TypographyComponent.Heading1}
         className={styles.text}
       >
-        Запрашиваемая страница на найдена
+        {t('notFoundPage.title')}
       </Typography>
 
       <div className={styles.picture}>
@@ -50,7 +52,7 @@ export const NotFoundPage = () => {
       </div>
 
       <Button variant={ButtonVariant.Primary} onClick={() => navigate('/')}>
-        Перейти на главную
+        {t('notFoundPage.redirectLink')}
       </Button>
     </section>
   );
