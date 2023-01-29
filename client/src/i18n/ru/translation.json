@@ -1,4 +1,194 @@
 {
   "meetups": "Митапы",
-  "news": "Новости"
+  "news": "Новости",
+  "loginTooltip": {
+    "title": "Вход",
+    "text": "Войти в свою учетную запись"
+  },
+  "logoutTooltip": {
+    "title": "Выход",
+    "text": "Выйти из своей учетной записи"
+  },
+  "imageDropbox": {
+    "fileTypeHint": "Допустимые типы файлов:",
+    "fileSizeHint": "Размер файла превышает",
+    "bytes": "байт",
+    "acceptedExtensions": "Разрешенные форматы: {{extensions}}",
+    "maxFileSize": "Максимальный размер файла: {{maxFileSize}}",
+    "promptText": "Перетащите изображение сюда<br />или <3>загрузите</3>"
+  },
+  "imagePreview": {
+    "imgAlt": "Загруженное изображение",
+    "fileSize": "Размер файла: {{fileSize}}"
+  },
+  "meetupCard": {
+    "deletePrompt": "Вы уверены, что хотите удалить митап?"
+  },
+  "meetupTabContent": {
+    "meetupCount_topic_one": "{{count}} тема предложена",
+    "meetupCount_topic_few": "{{count}} темы предложено",
+    "meetupCount_topic_many": "{{count}} тем предложено",
+    "meetupCount_onModeration_one": "{{count}} митап на модерации",
+    "meetupCount_onModeration_few": "{{count}} митапа на модерации",
+    "meetupCount_onModeration_many": "{{count}} митапов на модерации",
+    "meetupCount_upcoming_one": "{{count}} митап опубликован",
+    "meetupCount_upcoming_few": "{{count}} митапа опубликовано",
+    "meetupCount_upcoming_many": "{{count}} митапов опубликовано",
+    "meetupCount_finished_one": "{{count}} митап прошёл",
+    "meetupCount_finished_few": "{{count}} митапа прошло",
+    "meetupCount_finished_many": "{{count}} митапов прошло",
+    "createMeetupBtn": "+ Создать митап"
+  },
+  "meetupTabs": {
+    "tabTitle_topics": "Темы",
+    "tabTitle_moderation": "На модерации",
+    "tabTitle_upcoming": "Будущие",
+    "tabTitle_finished": "Прошедшие"
+  },
+  "stepper": {
+    "passedImgAlt": "Шаг завершён"
+  },
+  "votesCount": {
+    "text_one": "{{count}} поддерживаeт",
+    "text_few": "{{count}} поддерживают",
+    "text_many": "{{count}} поддерживают"
+  },
+  "loginPage": {
+    "title": "Войти на сайт"
+  },
+  "createMeetupPage": {
+    "title": "Новый митап",
+    "subTitle": "Заполните поля ниже наиболее подробно, это даст полную информацию о предстоящем событии.",
+    "requiredFields": {
+      "tabTitle": "Обязательные поля"
+    },
+    "optionalFields": {
+      "tabTitle": "Дополнительные поля"
+    }
+  },
+  "createNewsPage": {
+    "title": "Создание новости"
+  },
+  "editMeetupPage": {
+    "title": "Редактирование митапа"
+  },
+  "editNewsPage": {
+    "title": "Редактирование новости"
+  },
+  "viewMeetupPage": {
+    "title": "Просмотр митапа",
+    "title_REQUEST": "Просмотр темы",
+    "topic": "Название",
+    "description": "Описание",
+    "imgAlt": "Изображение митапа",
+    "timePlaceInfo": {
+      "valid": "Время и место проведения",
+      "invalid": "Перед публикацией заполните время и место проведения митапа"
+    },
+    "date": "Дата",
+    "time": "Время",
+    "location": "Место",
+    "author": "Автор",
+    "speakers": "Спикеры",
+    "supporters": "Поддерживают",
+    "approveTopicBtn": "Одобрить тему",
+    "deleteTopicPrompt": "Вы уверены, что хотите удалить тему?"
+  },
+  "viewNewsPage": {
+    "title": "Просмотр новости",
+    "imgAlt": "Изображение новости"
+  },
+  "newsPage": {
+    "createNewsBtn": "+ Создать новость"
+  },
+  "notFoundPage": {
+    "title": "Запрашиваемая страница на найдена",
+    "redirectLink": "Перейти на главную"
+  },
+  "formFields": {
+    "meetup": {
+      "topic": {
+        "label": "Тема",
+        "errorText": "Необходимо заполнить тему митапа"
+      },
+      "speaker": {
+        "label": "Спикер",
+        "placeholder": "Выберите спикера...",
+        "errorText": "Необходимо указать спикера"
+      },
+      "description": {
+        "label": "Описание",
+        "errorText": "Необходимо заполнить описание митапа"
+      },
+      "datetimeStart": {
+        "label": "Начало",
+        "errorText": "Заполните дату начала митапа"
+      },
+      "datetimeFinish": {
+        "label": "Окончание",
+        "errorText": "Дата окончания не может быть меньше даты начала"
+      },
+      "location": {
+        "label": "Место проведения"
+      },
+      "image": {
+        "label": "Изображение"
+      }
+    },
+    "news": {
+      "title": {
+        "label": "Заголовок",
+        "errorText": "Введите заголовок новости"
+      },
+      "text": {
+        "label": "Текст",
+        "errorText": "Введите текст новости"
+      },
+      "image": {
+        "label": "Изображение"
+      }
+    },
+    "login": {
+      "username": {
+        "label": "Имя пользователя",
+        "errorText": "Введите имя пользователя"
+      },
+      "password": {
+        "label": "Пароль",
+        "errorText": "Введите пароль"
+      }
+    }
+  },
+  "formButtons": {
+    "back": "Назад",
+    "cancel": "Отмена",
+    "delete": "Удалить",
+    "next": "Далее",
+    "edit": "Редактировать",
+    "save": "Сохранить",
+    "create": "Создать",
+    "preview": "Предпросмотр",
+    "publish": "Опубликовать",
+    "login": "Войти"
+  },
+  "dateTimePicker": {
+    "defaultPlaceholder": "д МММ гггг чч:мм"
+  },
+  "formattedWeekdays": {
+    "short": ["Воскр.", "Пон.", "Вт.", "Ср.", "Четв.", "Пятн.", "Субб."],
+    "long": [
+      "Воскресенье",
+      "Понедельник",
+      "Вторник",
+      "Среда",
+      "Четверг",
+      "Пятница",
+      "Суббота"
+    ]
+  },
+  "fileSizeString": {
+    "Mb": "{{fileSize}} Мб",
+    "Kb": "{{fileSize}} Кб",
+    "bytes": "{{fileSize}} байт"
+  }
 }

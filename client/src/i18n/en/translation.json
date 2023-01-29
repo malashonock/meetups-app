@@ -1,4 +1,189 @@
 {
   "meetups": "Meetups",
-  "news": "News"
+  "news": "News",
+  "loginTooltip": {
+    "title": "Log in",
+    "text": "Log in your account"
+  },
+  "logoutTooltip": {
+    "title": "Log out",
+    "text": "Log out of your account"
+  },
+  "imageDropbox": {
+    "fileTypeHint": "Accepted file types:",
+    "fileSizeHint": "File is larger than",
+    "bytes": "bytes",
+    "acceptedExtensions": "Accepted file extensions: {{extensions}}",
+    "maxFileSize": "Maximum file size: {{maxFileSize}}",
+    "promptText": "Drop image here<br />or <3>upload</3>"
+  },
+  "imagePreview": {
+    "imgAlt": "Uploaded image",
+    "fileSize": "File size: {{fileSize}}"
+  },
+  "meetupCard": {
+    "deletePrompt": "Are you sure you want to delete the meetup?"
+  },
+  "meetupTabContent": {
+    "meetupCount_topic_one": "{{count}} topic suggested",
+    "meetupCount_topic_other": "{{count}} topics suggested",
+    "meetupCount_onModeration_one": "{{count}} meetup on moderation",
+    "meetupCount_onModeration_other": "{{count}} meetups on moderation",
+    "meetupCount_upcoming_one": "{{count}} meetup scheduled",
+    "meetupCount_upcoming_other": "{{count}} meetups scheduled",
+    "meetupCount_finished_one": "{{count}} meetup passed",
+    "meetupCount_finished_other": "{{count}} meetups passed",
+    "createMeetupBtn": "+ Create meetup"
+  },
+  "meetupTabs": {
+    "tabTitle_topics": "Topics",
+    "tabTitle_moderation": "On moderation",
+    "tabTitle_upcoming": "Upcoming",
+    "tabTitle_finished": "Finished"
+  },
+  "stepper": {
+    "passedImgAlt": "Step completed"
+  },
+  "votesCount": {
+    "text_one": "{{count}} supports",
+    "text_other": "{{count}} support"
+  },
+  "loginPage": {
+    "title": "Log in"
+  },
+  "createMeetupPage": {
+    "title": "New meetup",
+    "subTitle": "Please fill out the fields below in as much detail as you can, this will provide full information about the upcoming event.",
+    "requiredFields": {
+      "tabTitle": "Required fields"
+    },
+    "optionalFields": {
+      "tabTitle": "Optional fields"
+    }
+  },
+  "createNewsPage": {
+    "title": "Create news"
+  },
+  "editMeetupPage": {
+    "title": "Edit meetup"
+  },
+  "editNewsPage": {
+    "title": "Edit news"
+  },
+  "viewMeetupPage": {
+    "title": "View meetup",
+    "title_REQUEST": "View topic",
+    "topic": "Topic",
+    "description": "Description",
+    "imgAlt": "Meetup image",
+    "timePlaceInfo": {
+      "valid": "Meetup time and location",
+      "invalid": "Fill out meetup time and location before publication"
+    },
+    "date": "Date",
+    "time": "Time",
+    "location": "Location",
+    "author": "Author",
+    "speakers": "Speakers",
+    "supporters": "Supporters",
+    "approveTopicBtn": "Approve topic",
+    "deleteTopicPrompt": "Are you sure you want to delete the topic?"
+  },
+  "viewNewsPage": {
+    "title": "View news",
+    "imgAlt": "News image"
+  },
+  "newsPage": {
+    "createNewsBtn": "+ Create news"
+  },
+  "notFoundPage": {
+    "title": "The requested page was not found",
+    "redirectLink": "Navigate to main page"
+  },
+  "formFields": {
+    "meetup": {
+      "topic": {
+        "label": "Topic",
+        "errorText": "Meetup topic is required"
+      },
+      "speaker": {
+        "label": "Speaker",
+        "placeholder": "Select speaker...",
+        "errorText": "Speaker is required"
+      },
+      "description": {
+        "label": "Description",
+        "errorText": "Meetup description is required"
+      },
+      "datetimeStart": {
+        "label": "Start",
+        "errorText": "Start date is required"
+      },
+      "datetimeFinish": {
+        "label": "Finish",
+        "errorText": "Finish date must be later than start date"
+      },
+      "location": {
+        "label": "Location"
+      },
+      "image": {
+        "label": "Image"
+      }
+    },
+    "news": {
+      "title": {
+        "label": "Title",
+        "errorText": "News title is required"
+      },
+      "text": {
+        "label": "Text",
+        "errorText": "News text is required"
+      },
+      "image": {
+        "label": "Image"
+      }
+    },
+    "login": {
+      "username": {
+        "label": "User name",
+        "errorText": "User name is required"
+      },
+      "password": {
+        "label": "Password",
+        "errorText": "Password is required"
+      }
+    }
+  },
+  "formButtons": {
+    "back": "Back",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "next": "Next",
+    "edit": "Edit",
+    "save": "Save",
+    "create": "Create",
+    "preview": "Preview",
+    "publish": "Publish",
+    "login": "Log in"
+  },
+  "dateTimePicker": {
+    "defaultPlaceholder": "d MMM yyyy HH:mm"
+  },
+  "formattedWeekdays": {
+    "short": ["Sun.", "Mon.", "Tue.", "Wed.", "Thu.", "Fri.", "Sat."],
+    "long": [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ]
+  },
+  "fileSizeString": {
+    "Mb": "{{fileSize}} Mb",
+    "Kb": "{{fileSize}} Kb",
+    "bytes": "{{fileSize}} bytes"
+  }
 }
