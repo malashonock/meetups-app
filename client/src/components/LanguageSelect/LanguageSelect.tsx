@@ -1,5 +1,6 @@
 import ReactSelect from 'react-select';
 import classNames from 'classnames';
+import { observer } from 'mobx-react-lite';
 
 import { SelectOption } from 'components';
 import { useUiStore } from 'hooks';
@@ -12,7 +13,7 @@ const options: SelectOption<Locale>[] = [
   { value: Locale.RU, label: 'Русский' },
 ];
 
-export const LanguageSelect = (): JSX.Element => {
+export const LanguageSelect = observer((): JSX.Element => {
   const { uiStore } = useUiStore();
 
   const handleChange = (newOption: unknown): void => {
@@ -45,4 +46,4 @@ export const LanguageSelect = (): JSX.Element => {
       />
     </div>
   );
-};
+});
