@@ -1,12 +1,19 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { Button, ButtonVariant, Stepper, StepperContext, Typography, TypographyComponent } from 'components';
+import {
+  Button,
+  ButtonVariant,
+  Stepper,
+  StepperContext,
+  Typography,
+  TypographyComponent,
+} from 'components';
 import { withRouter } from 'storybook-addon-react-router-v6';
 
 /* Mocked steps */
 const steps = [
   {
-    title: 'Step 1',
+    title: () => 'Step 1',
     render: ({
       stepsState,
       setStepPassed,
@@ -14,7 +21,14 @@ const steps = [
       handleBack,
       handleNextStep,
     }: StepperContext<{}>): JSX.Element => (
-      <div style={{ width: '100%', display: 'flex', flexDirection: 'column', rowGap: '12px' }}>
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          rowGap: '12px',
+        }}
+      >
         <p>Some content of step 1</p>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Button
@@ -59,12 +73,19 @@ const steps = [
     ),
   },
   {
-    title: 'Step 2',
+    title: () => 'Step 2',
     render: ({
       handlePreviousStep,
       handleNextStep,
     }: StepperContext<{}>): JSX.Element => (
-      <div style={{ width: '100%', display: 'flex', flexDirection: 'column', rowGap: '12px' }}>
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          rowGap: '12px',
+        }}
+      >
         <p>This is a step without validation</p>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Button
@@ -89,7 +110,7 @@ const steps = [
     noValidate: true,
   },
   {
-    title: 'Step 3',
+    title: () => 'Step 3',
     render: ({
       stepsState,
       setStepPassed,
@@ -97,7 +118,14 @@ const steps = [
       handlePreviousStep,
       handleFinish,
     }: StepperContext<{}>): JSX.Element => (
-      <div style={{ width: '100%', display: 'flex', flexDirection: 'column', rowGap: '12px' }}>
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          rowGap: '12px',
+        }}
+      >
         <p>Some content of step 3</p>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Button
