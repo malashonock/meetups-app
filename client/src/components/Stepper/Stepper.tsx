@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { i18n } from 'i18next';
 
 import { StepperProgress } from 'components';
 
@@ -12,8 +13,8 @@ export enum StepStatus {
   Disabled = 'disabled',
 }
 
-interface StepConfig<T> {
-  title: string;
+export interface StepConfig<T> {
+  title: (i18nInstance: i18n) => string;
   render: (context: StepperContext<T>) => JSX.Element;
   noValidate?: boolean;
 }
@@ -27,7 +28,7 @@ export interface StepState<T> extends StepConfig<T> {
 
 export type StepperContext<T = unknown> = {
   dataContext: T;
-  stepsState: StepState<T>[],
+  stepsState: StepState<T>[];
   activeStep: StepState<T>;
   setStepPassed: (index: number, state: boolean) => void;
   handleBack: () => void;
@@ -51,13 +52,14 @@ export const Stepper = <T extends unknown>({
   const [passedStepsIndices, setPassedStepsIndices] = useState<number[]>([]);
 
   const [stepsState, setStepsState] = useState(
-    steps.map((step: StepConfig<T>, index: number): StepState<T> =>
-      Object.assign({}, step, {
-        index,
-        status: StepStatus.Disabled,
-        passed: false,
-        visited: false,
-      }),
+    steps.map(
+      (step: StepConfig<T>, index: number): StepState<T> =>
+        Object.assign({}, step, {
+          index,
+          status: StepStatus.Disabled,
+          passed: false,
+          visited: false,
+        }),
     ),
   );
 
@@ -78,22 +80,24 @@ export const Stepper = <T extends unknown>({
 
         const active = index === activeStepIndex;
         const visited = stepState.visited || active;
-        const passed = (visited && noValidate) || passedStepsIndices.includes(index);
+        const passed =
+          (visited && noValidate) || passedStepsIndices.includes(index);
 
         const status = active
           ? StepStatus.Active
           : passed
-            ? StepStatus.Passed
-            : index === activeStepIndex + 1 && passedStepsIndices.includes(activeStepIndex)
-              ? StepStatus.Available
-              : StepStatus.Disabled;
+          ? StepStatus.Passed
+          : index === activeStepIndex + 1 &&
+            passedStepsIndices.includes(activeStepIndex)
+          ? StepStatus.Available
+          : StepStatus.Disabled;
 
         return {
           ...stepState,
           status,
           passed,
           visited,
-        }
+        };
       }),
     ]);
   }, [activeStepIndex, passedStepsIndices]);
@@ -102,18 +106,15 @@ export const Stepper = <T extends unknown>({
     switch (state) {
       case true:
         if (!passedStepsIndices.includes(index)) {
-          setPassedStepsIndices([
-            ...passedStepsIndices,
-            index,
-          ]);
+          setPassedStepsIndices([...passedStepsIndices, index]);
         }
         break;
       case false:
         if (passedStepsIndices.includes(index)) {
           setPassedStepsIndices(
             passedStepsIndices.filter(
-              (passedStepIndex) => passedStepIndex !== index
-            )
+              (passedStepIndex) => passedStepIndex !== index,
+            ),
           );
         }
         break;

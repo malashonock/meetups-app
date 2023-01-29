@@ -1,6 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import { NavLink, Outlet } from 'react-router-dom';
+import { i18n } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 import {
   Typography,
@@ -21,31 +23,37 @@ enum MeetupTabLink {
 export const meetupTabsLinks = Object.values(MeetupTabLink);
 
 type MeetupTabDescriptor = {
-  label: string;
+  label: (i18nInstance: i18n) => string;
   component: React.ReactNode | JSX.Element;
 };
 
 export const meetupTabToDescriptor: Record<MeetupTabLink, MeetupTabDescriptor> =
   {
     [MeetupTabLink.Topics]: {
-      label: 'Темы',
+      label: ({ t }: i18n) =>
+        t('meetupTabs.tabTitle', { context: MeetupTabLink.Topics }),
       component: <MeetupTabContent variant={MeetupCardVariant.Topic} />,
     },
     [MeetupTabLink.OnModeration]: {
-      label: 'На модерации',
+      label: ({ t }: i18n) =>
+        t('meetupTabs.tabTitle', { context: MeetupTabLink.OnModeration }),
       component: <MeetupTabContent variant={MeetupCardVariant.OnModeration} />,
     },
     [MeetupTabLink.Upcoming]: {
-      label: 'Будущие',
+      label: ({ t }: i18n) =>
+        t('meetupTabs.tabTitle', { context: MeetupTabLink.Upcoming }),
       component: <MeetupTabContent variant={MeetupCardVariant.Upcoming} />,
     },
     [MeetupTabLink.Finished]: {
-      label: 'Прошедшие',
+      label: ({ t }: i18n) =>
+        t('meetupTabs.tabTitle', { context: MeetupTabLink.Finished }),
       component: <MeetupTabContent variant={MeetupCardVariant.Finished} />,
     },
   };
 
-export function MeetupStagesTabs() {
+export const MeetupStagesTabs = (): JSX.Element => {
+  const { i18n } = useTranslation();
+
   return (
     <>
       <NavTabs className={styles.tabs}>
@@ -60,7 +68,7 @@ export function MeetupStagesTabs() {
                 })
               }
             >
-              <Typography>{meetupTabToDescriptor[tab].label}</Typography>
+              <Typography>{meetupTabToDescriptor[tab].label(i18n)}</Typography>
             </NavLink>
           ),
         )}
@@ -68,4 +76,4 @@ export function MeetupStagesTabs() {
       <Outlet />
     </>
   );
-}
+};
