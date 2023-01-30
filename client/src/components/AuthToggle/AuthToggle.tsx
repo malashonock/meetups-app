@@ -22,8 +22,8 @@ export const AuthToggle = observer((): JSX.Element => {
   return loggedUser ? (
     <Tooltip
       variant={TooltipVariant.White}
-      title={t('loginTooltip.title')}
-      description={t('loginTooltip.text')}
+      title={t('logoutTooltip.title')}
+      description={t('logoutTooltip.text')}
     >
       <IconButton onClick={handleLogout} className={styles.button}>
         <LogoutIcon />
@@ -33,8 +33,8 @@ export const AuthToggle = observer((): JSX.Element => {
     <Link to="/login">
       <Tooltip
         variant={TooltipVariant.White}
-        title={t('logoutTooltip.title')}
-        description={t('logoutTooltip.text')}
+        title={t('loginTooltip.title')}
+        description={t('loginTooltip.text')}
       >
         <IconButton className={styles.button}>
           <LoginIcon />
