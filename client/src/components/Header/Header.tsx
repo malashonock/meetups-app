@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
@@ -23,11 +23,13 @@ export const Header = observer((): JSX.Element => {
     <header className={styles.header}>
       <div className={styles.container}>
         <div className={styles.navWrapper}>
-          <img
-            src={logo}
-            className={styles.logo}
-            alt={t('logoAlt') || 'Logo'}
-          />
+          <Link to="/">
+            <img
+              src={logo}
+              className={styles.logo}
+              alt={t('logoAlt') || 'Logo'}
+            />
+          </Link>
           <nav className={classNames(styles.nav, styles.hiddenOnSmall)}>
             <NavLink
               to="/meetups"
