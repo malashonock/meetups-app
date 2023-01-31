@@ -185,5 +185,6 @@
     "Mb": "{{fileSize}} Mb",
     "Kb": "{{fileSize}} Kb",
     "bytes": "{{fileSize}} bytes"
-  }
+  },
+  "logoAlt": "Logo"
 }
