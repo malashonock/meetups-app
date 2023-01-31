@@ -24,7 +24,7 @@ export const ProtectedRoute = ({
   const redirectTarget = redirectTo ?? defaultRedirect;
 
   if (doRedirect) {
-    return <Navigate to={redirectTarget} />;
+    return <Navigate to={redirectTarget} replace />;
   }
 
   return <>{children}</>;
