@@ -15,7 +15,7 @@ import { MeetupStatus } from 'model';
 import { isPast, parseDate } from 'utils';
 import { NotFoundPage } from 'pages';
 import { User } from 'stores';
-import { useMeetup, useUiStore, useUserStore } from 'hooks';
+import { useAuthStore, useMeetup, useUiStore, useUserStore } from 'hooks';
 import { Optional } from 'types';
 
 import styles from './ViewMeetupPage.module.scss';
@@ -33,6 +33,7 @@ export const ViewMeetupPage = observer(() => {
   const { userStore } = useUserStore();
   const { i18n, t } = useTranslation();
   const { locale } = useUiStore();
+  const { loggedUser } = useAuthStore();
 
   if (!meetup) {
     return <NotFoundPage />;
@@ -271,36 +272,38 @@ export const ViewMeetupPage = observer(() => {
         >
           {t('formButtons.back')}
         </Button>
-        <div className={styles.actionsWrapper}>
-          {status === MeetupStatus.REQUEST && (
-            <>
-              <Button
-                className={styles.actionButton}
-                variant={ButtonVariant.Secondary}
-                onClick={handleDeleteTopic}
-              >
-                {t('formButtons.delete')}
-              </Button>
+        {loggedUser ? (
+          <div className={styles.actionsWrapper}>
+            {status === MeetupStatus.REQUEST && (
+              <>
+                <Button
+                  className={styles.actionButton}
+                  variant={ButtonVariant.Secondary}
+                  onClick={handleDeleteTopic}
+                >
+                  {t('formButtons.delete')}
+                </Button>
+                <Button
+                  className={styles.actionButton}
+                  variant={ButtonVariant.Primary}
+                  onClick={handleApproveTopic}
+                >
+                  {t('viewMeetupPage.approveTopicBtn')}
+                </Button>
+              </>
+            )}
+            {status === MeetupStatus.DRAFT && (
               <Button
                 className={styles.actionButton}
                 variant={ButtonVariant.Primary}
-                onClick={handleApproveTopic}
+                onClick={handlePublishMeetup}
+                disabled={!canPublish}
               >
-                {t('viewMeetupPage.approveTopicBtn')}
+                {t('formButtons.publish')}
               </Button>
-            </>
-          )}
-          {status === MeetupStatus.DRAFT && (
-            <Button
-              className={styles.actionButton}
-              variant={ButtonVariant.Primary}
-              onClick={handlePublishMeetup}
-              disabled={!canPublish}
-            >
-              {t('formButtons.publish')}
-            </Button>
-          )}
-        </div>
+            )}
+          </div>
+        ) : null}
       </div>
     );
   };

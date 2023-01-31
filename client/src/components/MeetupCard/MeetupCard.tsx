@@ -16,7 +16,7 @@ import {
 import { isPast, parseDate } from 'utils';
 import { MeetupStatus } from 'model';
 import { Meetup, User } from 'stores';
-import { useUiStore, useUserStore } from 'hooks';
+import { useAuthStore, useUiStore, useUserStore } from 'hooks';
 import { Optional } from 'types';
 
 import styles from './MeetupCard.module.scss';
@@ -45,6 +45,7 @@ export const MeetupCard = observer(
       id,
     } = meetup;
 
+    const { loggedUser } = useAuthStore();
     const { userStore } = useUserStore();
     const author: Optional<User> = userStore?.findUser(authorData);
     const { locale } = useUiStore();
@@ -128,12 +129,14 @@ export const MeetupCard = observer(
               )}
             </ul>
           )}
-          <div className={styles.controls}>
-            <DeleteButton onClick={handleDeleteMeetup} />
-            {status !== MeetupStatus.REQUEST && (
-              <EditButton onClick={handleEditMeetup} />
-            )}
-          </div>
+          {loggedUser ? (
+            <div className={styles.controls}>
+              <DeleteButton onClick={handleDeleteMeetup} />
+              {status !== MeetupStatus.REQUEST && (
+                <EditButton onClick={handleEditMeetup} />
+              )}
+            </div>
+          ) : null}
         </header>
 
         <div className={styles.body}>
