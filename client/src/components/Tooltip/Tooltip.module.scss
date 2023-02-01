@@ -13,9 +13,59 @@
 }
 
 .tooltip {
+  --offset-x: 50%;
   position: absolute;
-  top: 40px;
-  left: 50%;
+
+  &.top-left,
+  &.top-center,
+  &.top-right {
+    bottom: calc(100% + 10px);
+
+    &::before {
+      bottom: -7px;
+    }
+  }
+
+  &.bottom-left,
+  &.bottom-center,
+  &.bottom-right {
+    top: calc(100% + 10px);
+
+    &::before {
+      top: -7px;
+    }
+  }
+
+  &.top-left,
+  &.bottom-left {
+    left: 0;
+
+    &::before {
+      left: var(--offset-x);
+      transform: translateX(-50%) rotate(45deg);
+    }
+  }
+
+  &.top-center,
+  &.bottom-center {
+    left: 50%;
+    transform: translateX(-50%);
+
+    &::before {
+      left: 50%;
+      transform: translateX(-50%) rotate(45deg);
+    }
+  }
+
+  &.top-right,
+  &.bottom-right {
+    right: 0;
+
+    &::before {
+      right: var(--offset-x);
+      transform: translateX(50%) rotate(45deg);
+    }
+  }
 
   width: max-content;
   max-width: 230px;
@@ -30,20 +80,16 @@
   border-radius: 3px;
   opacity: 0;
 
-  transform: translate(-50%);
   @include smooth-transition(opacity);
 
   &::before {
     content: '';
     position: absolute;
-    top: -7px;
 
     padding: 8px;
-    z-index: 1;
+    z-index: 10;
 
     border-radius: 2px;
-
-    transform: rotate(45deg);
   }
 
   &.dark,
@@ -134,4 +180,8 @@
 .visible {
   visibility: visible;
   opacity: 1;
+}
+
+.content {
+  position: relative;
 }

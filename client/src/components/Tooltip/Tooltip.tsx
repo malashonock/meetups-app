@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useState } from 'react';
+import React, { PropsWithChildren, useLayoutEffect, useState } from 'react';
 import classNames from 'classnames';
 
 import { Typography, TypographyComponent } from 'components';
@@ -12,15 +12,41 @@ export enum TooltipVariant {
   White = 'white',
 }
 
+export enum TooltipPosition {
+  TopLeft = 'top-left',
+  TopCenter = 'top-center',
+  TopRight = 'top-right',
+  BottomLeft = 'bottom-left',
+  BottomCenter = 'bottom-center',
+  BottomRight = 'bottom-right',
+}
+
 interface TooltipProps {
   variant?: TooltipVariant;
+  position?: TooltipPosition;
   title: string;
   description: string;
 }
 
+const resetOffsetX = (): void => {
+  const tooltip = document.querySelector<HTMLDivElement>(`.${styles.tooltip}`);
+  const content = document.querySelector<HTMLDivElement>(`.${styles.content}`);
+  if (tooltip && content) {
+    const tooltipWidth: number = tooltip.clientWidth;
+    const contentWidth: number = content.clientWidth;
+    const paddingX = 25; // px
+    const offsetX: number = Math.max(
+      paddingX,
+      Math.min(contentWidth / 2, tooltipWidth / 2),
+    );
+    tooltip.style.setProperty('--offset-x', `${offsetX}px`);
+  }
+};
+
 export const Tooltip = ({
   children,
   variant = TooltipVariant.Dark,
+  position = TooltipPosition.BottomCenter,
   title,
   description,
 }: PropsWithChildren<TooltipProps>) => {
@@ -29,17 +55,24 @@ export const Tooltip = ({
   const showTooltip = () => setVisible(true);
   const hideTooltip = () => setVisible(false);
 
+  useLayoutEffect(() => {
+    resetOffsetX();
+  }, [children]);
+
   return (
     <div
       className={styles.wrapper}
       onMouseEnter={showTooltip}
       onMouseLeave={hideTooltip}
     >
-      {children}
+      <div className={styles.content}>{children}</div>
       <div
-        className={classNames(styles.tooltip, styles[variant], {
-          [styles.visible]: visible,
-        })}
+        className={classNames(
+          styles.tooltip,
+          styles[variant],
+          styles[position],
+          { [styles.visible]: visible },
+        )}
       >
         <Typography
           component={TypographyComponent.Heading3}
