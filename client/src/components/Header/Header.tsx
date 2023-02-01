@@ -23,13 +23,16 @@ export const Header = observer((): JSX.Element => {
     <header className={styles.header}>
       <div className={styles.container}>
         <div className={styles.navWrapper}>
-          <Link to="/">
-            <img
-              src={logo}
-              className={styles.logo}
-              alt={t('logoAlt') || 'Logo'}
-            />
-          </Link>
+          <div className={styles.logoWrapper}>
+            <Link to="/">
+              <img
+                src={logo}
+                className={styles.logo}
+                alt={t('logoAlt') || 'Logo'}
+              />
+            </Link>
+            {loggedUser ? <LanguageSelect /> : null}
+          </div>
           <nav className={classNames(styles.nav, styles.hiddenOnSmall)}>
             <NavLink
               to="/meetups"
@@ -53,13 +56,14 @@ export const Header = observer((): JSX.Element => {
             </NavLink>
           </nav>
           <div className={styles.userInfo}>
-            <LanguageSelect />
             {loggedUser ? (
               <UserPreview
                 variant={UserPreviewVariant.Header}
                 user={loggedUser}
               />
-            ) : null}
+            ) : (
+              <LanguageSelect />
+            )}
             <AuthToggle />
           </div>
         </div>
