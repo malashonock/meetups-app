@@ -3,9 +3,11 @@
 @import '~style/mixins';
 
 .header {
+  --row-count: 1;
+
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 10;
 
   display: flex;
   justify-content: center;
@@ -15,14 +17,14 @@
 }
 
 .container {
-  width: 80%;
+  width: 90%;
   max-width: 1080px;
   display: flex;
   flex-direction: column;
 }
 
 .navWrapper {
-  height: 70px;
+  height: calc(70px * var(--row-count));
   width: 100%;
   display: flex;
   align-items: center;
@@ -35,23 +37,10 @@
   height: 45px;
 }
 
-.navAdaptiveWrapper {
-  display: none;
-  justify-content: center;
-  padding: 20px;
-
-  @media (max-width: 690px) {
-    display: flex;
-  }
-}
-
 .nav {
   display: flex;
+  justify-content: center;
   column-gap: 70px;
-
-  @media (max-width: 820px) {
-    column-gap: 50px;
-  }
 
   &Link {
     position: relative;
@@ -85,15 +74,46 @@
   }
 }
 
-.hiddenOnSmall {
-  @media (max-width: 690px) {
-    display: none;
-  }
-}
-
 .logoWrapper,
 .userInfo {
   display: flex;
   flex-direction: row;
   column-gap: 20px;
+}
+
+.logoWrapper {
+  justify-content: flex-start;
+}
+
+.userInfo {
+  justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+  .header {
+    --row-count: 2;
+  }
+
+  .navWrapper {
+    flex-wrap: wrap;
+    column-gap: 30px;
+  }
+
+  .nav {
+    order: 3;
+    flex-basis: 100%;
+    column-gap: 70px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    --row-count: 3;
+  }
+
+  .logoWrapper,
+  .userInfo {
+    flex-basis: 100%;
+    justify-content: center;
+  }
 }

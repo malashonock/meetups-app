@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import {
   AuthToggle,
   LanguageSelect,
+  TooltipPosition,
   Typography,
   UserPreview,
   UserPreviewVariant,
@@ -33,7 +34,7 @@ export const Header = observer((): JSX.Element => {
             </Link>
             {loggedUser ? <LanguageSelect /> : null}
           </div>
-          <nav className={classNames(styles.nav, styles.hiddenOnSmall)}>
+          <nav className={styles.nav}>
             <NavLink
               to="/meetups"
               className={({ isActive }) =>
@@ -64,33 +65,8 @@ export const Header = observer((): JSX.Element => {
             ) : (
               <LanguageSelect />
             )}
-            <AuthToggle />
+            <AuthToggle tooltipPosition={TooltipPosition.BottomRight} />
           </div>
-        </div>
-
-        <div className={styles.navAdaptiveWrapper}>
-          <nav className={styles.nav}>
-            <NavLink
-              to="/meetups"
-              className={({ isActive }) =>
-                classNames(styles.navLink, {
-                  [styles.active]: isActive,
-                })
-              }
-            >
-              <Typography>{t('meetups')}</Typography>
-            </NavLink>
-            <NavLink
-              to="/news"
-              className={({ isActive }) =>
-                classNames(styles.navLink, {
-                  [styles.active]: isActive,
-                })
-              }
-            >
-              <Typography>{t('news')}</Typography>
-            </NavLink>
-          </nav>
         </div>
       </div>
     </header>
