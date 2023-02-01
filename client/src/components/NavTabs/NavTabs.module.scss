@@ -2,15 +2,24 @@
 @import '~style/typography';
 @import '~style/mixins';
 
-.tabs {  
-  width: 100%;
-  display: flex;
+.tabsWrapper {
+  min-width: 100%;
+  width: max-content;
+}
+
+.tabs {
+  width: inherit;
+  min-width: inherit;
+
+  display: grid;
+  grid-auto-columns: 1fr;
+  align-items: flex-end;
 
   border-bottom: 1px solid $gray-08;
 
   cursor: pointer;
 
   & > * {
-    width: 100%; 
+    grid-row: 1;
   }
 }
