@@ -325,7 +325,7 @@ export const ViewMeetupPage = observer(() => {
             component={TypographyComponent.Span}
             className={styles.dataName}
           >
-            {t('viewMeetupPage.descriptions')}
+            {t('viewMeetupPage.description')}
           </Typography>
           <div className={styles.dataContent}>
             <Typography
