@@ -28,3 +28,12 @@
 .createMeetupBtn {
   width: 152px;
 }
+
+@media (max-width: 550px) {
+  .wrapper {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    row-gap: 16px;
+  }
+}

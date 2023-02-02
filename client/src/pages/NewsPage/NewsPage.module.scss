@@ -46,3 +46,12 @@
 .createNewsBtn {
   width: 168px;
 }
+
+@media (max-width: 425px) {
+  .header {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    row-gap: 16px;
+  }
+}
