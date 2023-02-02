@@ -130,7 +130,7 @@ const CreateMeetupOptionalFieldsForm = ({
           <Button
             type="submit"
             variant={ButtonVariant.Primary}
-            className={classNames(styles.actionButton, styles.next)}
+            className={classNames(styles.actionButton, styles.submit)}
             disabled={!canSubmit}
           >
             {t('formButtons.create')}

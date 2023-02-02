@@ -77,3 +77,28 @@
     box-shadow: 0px 6px 12px rgba($blue-02, $alpha: 0.25);
   }
 }
+
+@media (max-width: 440px) {
+  .main,
+  .actions {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .actions {
+    justify-content: flex-start;
+    align-items: center;
+    row-gap: 16px;
+  }
+
+  .actionButton {
+    &.back,
+    &.next {
+      width: 100%;
+    }
+  }
+}
