@@ -10,7 +10,6 @@ import {
   Typography,
   TypographyComponent,
   UserPreview,
-  UserPreviewVariant,
 } from 'components';
 import { MeetupStatus } from 'model';
 import { isPast, parseDate } from 'utils';
@@ -24,8 +23,6 @@ import defaultImage from 'assets/images/default-image.jpg';
 import calendar from './assets/calendar.svg';
 import clock from './assets/clock.svg';
 import pin from './assets/pin.svg';
-
-const MAX_PREVIEW_USERS = 8;
 
 export const ViewMeetupPage = observer(() => {
   const navigate = useNavigate();
@@ -234,8 +231,6 @@ export const ViewMeetupPage = observer(() => {
     if (votedUsers?.length === 0) {
       return null;
     }
-
-    const previewVotedUsers = votedUsers?.slice(0, MAX_PREVIEW_USERS);
 
     return (
       <div className={styles.data}>
