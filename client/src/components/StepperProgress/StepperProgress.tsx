@@ -14,22 +14,24 @@ export const StepperProgress = observer(
 
     return (
       <div className={styles.stepperProgress}>
-        <div className={styles.steps}>
-          {stepsState.map(
-            ({ title, status }: StepState<T>, stepIndex: number) => (
-              <Step
-                key={title(i18n)}
-                title={title(i18n)}
-                status={status}
-                stepNumber={stepIndex + 1}
-              />
-            ),
-          )}
+        <div className={styles.stepsWrapper}>
+          <div className={styles.steps}>
+            {stepsState.map(
+              ({ title, status }: StepState<T>, stepIndex: number) => (
+                <Step
+                  key={title(i18n)}
+                  title={title(i18n)}
+                  status={status}
+                  stepNumber={stepIndex + 1}
+                />
+              ),
+            )}
+          </div>
+          <TabsIndicator
+            tabsCount={stepsState.length}
+            activeTabIndex={activeStep.index}
+          />
         </div>
-        <TabsIndicator
-          tabsCount={stepsState.length}
-          activeTabIndex={activeStep.index}
-        />
       </div>
     );
   },
