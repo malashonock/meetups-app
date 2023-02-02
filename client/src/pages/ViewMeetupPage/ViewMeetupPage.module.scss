@@ -129,28 +129,6 @@
   @extend .font-color-dark;
 }
 
-.votedUsers {
-  display: flex;
-  justify-content: space-between;
-}
-
-.restCounter {
-  min-width: 50px;
-  min-height: 50px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-  background-color: $gray-04;
-
-  @extend .font-family-primary;
-  @extend .font-weight-regular;
-  @extend .font-size-s;
-  @extend .font-color-white;
-}
-
 .actions {
   display: flex;
   justify-content: space-between;
@@ -163,4 +141,39 @@
 
 .actionButton {
   width: 152px;
+}
+
+@media (max-width: 768px) {
+  .actionButton {
+    width: 130px;
+  }
+}
+
+@media (max-width: 540px) {
+  .backBtn,
+  .deleteBtn {
+    width: 80px;
+  }
+}
+
+@media (max-width: 440px) {
+  .actions {
+    flex-direction: column;
+  }
+
+  .actionsWrapper {
+    flex-direction: column-reverse;
+  }
+
+  .actions,
+  .actionsWrapper {
+    justify-content: flex-start;
+    align-items: center;
+    row-gap: 16px;
+  }
+
+  .actionsWrapper,
+  .actionButton {
+    width: 100%;
+  }
 }
