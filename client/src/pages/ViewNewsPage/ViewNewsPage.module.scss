@@ -95,16 +95,15 @@
 }
 
 @media (max-width: 440px) {
-  .actions {
-    flex-direction: column;
+  .actionButton {
+    width: fit-content;
   }
+}
 
-  .actionGroup {
-    flex-direction: column-reverse;
-  }
-
+@media (max-width: 340px) {
   .actions,
   .actionGroup {
+    flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     row-gap: 16px;
