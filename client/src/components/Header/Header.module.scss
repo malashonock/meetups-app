@@ -4,6 +4,7 @@
 
 .header {
   --row-count: 1;
+  --row-height: 70px;
 
   position: sticky;
   top: 0;
@@ -24,7 +25,7 @@
 }
 
 .navWrapper {
-  height: calc(70px * var(--row-count));
+  height: calc(var(--row-height) * var(--row-count));
   width: 100%;
   display: flex;
   align-items: center;
@@ -92,6 +93,7 @@
 @media (max-width: 768px) {
   .header {
     --row-count: 2;
+    --row-height: 50px;
   }
 
   .navWrapper {
@@ -103,6 +105,7 @@
     order: 3;
     flex-basis: 100%;
     column-gap: 70px;
+    margin-bottom: 10px;
   }
 }
 
