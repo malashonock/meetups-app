@@ -66,23 +66,67 @@
   justify-content: space-between;
 
   padding: 16px 40px;
-
-  > .actionButton {
-    width: 120px;
-  }
 }
 
 .actionsWrapper {
   display: flex;
   column-gap: 16px;
+}
 
-  > .actionButton {
-    width: 128px;
-  }
+.cancelBtn {
+  width: 120px;
+}
+
+.previewBtn,
+.saveBtn {
+  width: 128px;
 }
 
 .dates {
   display: flex;
   justify-content: space-between;
   column-gap: 24px;
+}
+
+@media (max-width: 610px) {
+  .dates {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    row-gap: 16px;
+  }
+}
+
+@media (max-width: 580px) {
+  .actionButton {
+    width: fit-content;
+  }
+}
+
+@media (max-width: 480px) {
+  .main,
+  .actions {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .actionsWrapper {
+    flex-direction: column-reverse;
+  }
+
+  .actions,
+  .actionsWrapper {
+    justify-content: flex-start;
+    align-items: center;
+    row-gap: 16px;
+  }
+
+  .actionButton,
+  .actionsWrapper {
+    width: 100%;
+  }
 }
