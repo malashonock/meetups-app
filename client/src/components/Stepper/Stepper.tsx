@@ -12,7 +12,7 @@ export enum StepStatus {
   Disabled = 'disabled',
 }
 
-interface StepConfig<T> {
+export interface StepConfig<T> {
   title: string;
   render: (context: StepperContext<T>) => JSX.Element;
   noValidate?: boolean;
@@ -27,7 +27,7 @@ export interface StepState<T> extends StepConfig<T> {
 
 export type StepperContext<T = unknown> = {
   dataContext: T;
-  stepsState: StepState<T>[],
+  stepsState: StepState<T>[];
   activeStep: StepState<T>;
   setStepPassed: (index: number, state: boolean) => void;
   handleBack: () => void;
@@ -51,13 +51,14 @@ export const Stepper = <T extends unknown>({
   const [passedStepsIndices, setPassedStepsIndices] = useState<number[]>([]);
 
   const [stepsState, setStepsState] = useState(
-    steps.map((step: StepConfig<T>, index: number): StepState<T> =>
-      Object.assign({}, step, {
-        index,
-        status: StepStatus.Disabled,
-        passed: false,
-        visited: false,
-      }),
+    steps.map(
+      (step: StepConfig<T>, index: number): StepState<T> =>
+        Object.assign({}, step, {
+          index,
+          status: StepStatus.Disabled,
+          passed: false,
+          visited: false,
+        }),
     ),
   );
 
@@ -71,52 +72,55 @@ export const Stepper = <T extends unknown>({
   }, [activeStepIndex]);
 
   // sync steps state with changes in active step selection or validation status
+  const updateStepState = (stepState: StepState<T>): StepState<T> => {
+    const { index, noValidate } = stepState;
+
+    const active = index === activeStepIndex;
+    const visited = stepState.visited || active;
+    const passed =
+      (visited && noValidate) || passedStepsIndices.includes(index);
+    const isNextStep = index === activeStepIndex + 1;
+    const isActiveStepPassed = passedStepsIndices.includes(activeStepIndex);
+
+    let status: StepStatus;
+    if (active) {
+      status = StepStatus.Active;
+    } else if (passed) {
+      status = StepStatus.Passed;
+    } else if (isNextStep && isActiveStepPassed) {
+      status = StepStatus.Available;
+    } else {
+      status = StepStatus.Disabled;
+    }
+
+    return {
+      ...stepState,
+      status,
+      passed,
+      visited,
+    };
+  };
+
   useEffect((): void => {
-    setStepsState([
-      ...stepsState.map((stepState: StepState<T>): StepState<T> => {
-        const { index, noValidate } = stepState;
-
-        const active = index === activeStepIndex;
-        const visited = stepState.visited || active;
-        const passed = (visited && noValidate) || passedStepsIndices.includes(index);
-
-        const status = active
-          ? StepStatus.Active
-          : passed
-            ? StepStatus.Passed
-            : index === activeStepIndex + 1 && passedStepsIndices.includes(activeStepIndex)
-              ? StepStatus.Available
-              : StepStatus.Disabled;
-
-        return {
-          ...stepState,
-          status,
-          passed,
-          visited,
-        }
-      }),
-    ]);
+    const updatedStepsState = stepsState.map(updateStepState);
+    setStepsState([...updatedStepsState]);
   }, [activeStepIndex, passedStepsIndices]);
 
-  const setStepPassed = (index: number, state: boolean): void => {
-    switch (state) {
-      case true:
-        if (!passedStepsIndices.includes(index)) {
-          setPassedStepsIndices([
-            ...passedStepsIndices,
-            index,
-          ]);
-        }
-        break;
-      case false:
-        if (passedStepsIndices.includes(index)) {
-          setPassedStepsIndices(
-            passedStepsIndices.filter(
-              (passedStepIndex) => passedStepIndex !== index
-            )
-          );
-        }
-        break;
+  const setStepPassed = (stepIndex: number, state: boolean): void => {
+    const isStepAlreadyPassed = passedStepsIndices.includes(stepIndex);
+
+    if (state === true && !isStepAlreadyPassed) {
+      // add step to the list of passed steps
+      setPassedStepsIndices([...passedStepsIndices, stepIndex]);
+    }
+
+    if (state === false && isStepAlreadyPassed) {
+      // remove step from the list of passed steps
+      setPassedStepsIndices(
+        passedStepsIndices.filter(
+          (passedStepIndex) => passedStepIndex !== stepIndex,
+        ),
+      );
     }
   };
 
