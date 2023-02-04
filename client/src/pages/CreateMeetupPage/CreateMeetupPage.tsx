@@ -1,72 +1,79 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
+import { Form, Formik, FormikProps } from 'formik';
 import { i18n } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 import { StepConfig, Stepper, StepperContext } from 'components';
 import { CreateMeetupOptionalFields } from './CreateMeetupOptionalFields/CreateMeetupOptionalFields';
 import { CreateMeetupRequiredFields } from './CreateMeetupRequiredFields/CreateMeetupRequiredFields';
 import { MeetupFields } from 'model';
 import { useAuthStore, useMeetupStore } from 'hooks';
+import {
+  meetupRequiredFieldsSchema,
+  validateMeetupOptionalFields,
+} from 'validation';
 
 import styles from './CreateMeetupPage.module.scss';
-import { useTranslation } from 'react-i18next';
 
-export type NewMeetupState = [
-  newMeetupData: MeetupFields,
-  setNewMeetupData: Dispatch<SetStateAction<MeetupFields>>,
-];
-
-const createMeetupSteps: StepConfig<NewMeetupState>[] = [
+const createMeetupSteps = (): StepConfig<FormikProps<MeetupFields>>[] => [
   {
     title: ({ t }: i18n) => t('createMeetupPage.requiredFields.tabTitle'),
-    render: (context: StepperContext<NewMeetupState>): JSX.Element => (
-      <CreateMeetupRequiredFields {...context} />
-    ),
+    render: (
+      context: StepperContext<FormikProps<MeetupFields>>,
+    ): JSX.Element => <CreateMeetupRequiredFields {...context} />,
   },
   {
     title: ({ t }: i18n) => t('createMeetupPage.optionalFields.tabTitle'),
-    render: (context: StepperContext<NewMeetupState>): JSX.Element => (
-      <CreateMeetupOptionalFields {...context} />
-    ),
+    render: (
+      context: StepperContext<FormikProps<MeetupFields>>,
+    ): JSX.Element => <CreateMeetupOptionalFields {...context} />,
   },
 ];
 
 export const CreateMeetupPage = observer((): JSX.Element => {
   const { loggedUser } = useAuthStore();
   const { meetupStore } = useMeetupStore();
-  const { t } = useTranslation();
+  const [finished, setFinished] = useState(false);
+  const navigate = useNavigate();
+  const { i18n } = useTranslation();
 
-  const [newMeetupData, setNewMeetupData] = useState<MeetupFields>({
+  const initialValues: MeetupFields = {
     author: loggedUser ?? null,
     subject: '',
     excerpt: '',
     place: '',
     image: null,
-  });
+  };
 
-  const [finished, setFinished] = useState(false);
+  const handleFinish = (): void => setFinished(true);
 
-  const navigate = useNavigate();
-
-  useEffect(() => {
+  const handleSubmit = async (newMeetupData: MeetupFields): Promise<void> => {
     if (finished) {
       (async () => {
         const newMeetup = await meetupStore?.createMeetup(newMeetupData);
         navigate(newMeetup ? `/meetups/${newMeetup.id}` : '/meetups');
       })();
     }
-  }, [finished]);
+  };
 
   return (
-    <div className={styles.container}>
-      <Stepper<NewMeetupState>
-        steps={createMeetupSteps}
-        dataContext={[newMeetupData, setNewMeetupData]}
-        onFinish={async () => {
-          setFinished(true);
-        }}
-      />
-    </div>
+    <Formik
+      initialValues={initialValues}
+      validationSchema={meetupRequiredFieldsSchema(i18n)}
+      validate={validateMeetupOptionalFields(i18n)}
+      onSubmit={handleSubmit}
+    >
+      {(formikProps: FormikProps<MeetupFields>) => (
+        <Form className={styles.container}>
+          <Stepper<FormikProps<MeetupFields>>
+            steps={createMeetupSteps()}
+            dataContext={formikProps}
+            onFinish={handleFinish}
+          />
+        </Form>
+      )}
+    </Formik>
   );
 });
