@@ -1,5 +1,6 @@
+import { useEffect } from 'react';
 import classNames from 'classnames';
-import { Formik, Form, FormikHelpers, FormikProps } from 'formik';
+import { FormikProps } from 'formik';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -13,31 +14,18 @@ import {
   Typography,
   TypographyComponent,
 } from 'components';
-import { NewMeetupState } from 'pages';
-import { MeetupOptionalFields, validateMeetupOptionalFields } from 'validation';
+import { MeetupFields } from 'model';
 import { useUiStore, useTouchOnLocaleChanged } from 'hooks';
 
 import styles from './CreateMeetupOptionalFields.module.scss';
 
-interface CreateMeetupOptionalFieldsProps {
-  context: StepperContext<NewMeetupState>;
-  formikProps: FormikProps<MeetupOptionalFields>;
-}
-
-const CreateMeetupOptionalFieldsForm = ({
-  context,
-  formikProps,
-}: CreateMeetupOptionalFieldsProps): JSX.Element => {
-  const {
-    dataContext: [newMeetupData, setNewMeetupData],
-    activeStep,
-    setStepPassed,
-    handlePreviousStep,
-  } = context;
-
-  const { errors, values, touched, isSubmitting, setFieldTouched } =
-    formikProps;
-
+export const CreateMeetupOptionalFields = ({
+  dataContext: { values, errors, touched, isSubmitting, setFieldTouched },
+  activeStep,
+  setStepPassed,
+  handlePreviousStep,
+  handleFinish,
+}: StepperContext<FormikProps<MeetupFields>>): JSX.Element => {
   const { t } = useTranslation();
   const { locale } = useUiStore();
   useTouchOnLocaleChanged(locale, errors, touched, setFieldTouched);
@@ -46,30 +34,12 @@ const CreateMeetupOptionalFieldsForm = ({
   const isPassed = !hasErrors;
   const canSubmit = isPassed && !isSubmitting;
 
-  // sync stepper state
-  if (isPassed !== activeStep.passed) {
-    // mute console error
-    setTimeout(() => setStepPassed(activeStep.index, canSubmit), 0);
-  }
-
-  const handleBack = (): void => {
-    // save step values if they are valid
-    if (canSubmit) {
-      // mute console error
-      setTimeout(
-        () =>
-          setNewMeetupData({
-            ...newMeetupData,
-            ...values,
-          }),
-        0,
-      );
-    }
-    handlePreviousStep();
-  };
+  useEffect(() => {
+    setStepPassed(activeStep.index, isPassed);
+  }, [isPassed]);
 
   return (
-    <Form className={styles.container}>
+    <div className={styles.container}>
       <div className={styles.heading}>
         <Typography
           className={styles.title}
@@ -119,8 +89,8 @@ const CreateMeetupOptionalFieldsForm = ({
         </div>
         <div className={classNames(styles.textSection, styles.actions)}>
           <Button
-            type="button"
-            onClick={handleBack}
+            type="submit"
+            onClick={handlePreviousStep}
             variant={ButtonVariant.Default}
             className={classNames(styles.actionButton, styles.back)}
             disabled={!canSubmit}
@@ -129,6 +99,7 @@ const CreateMeetupOptionalFieldsForm = ({
           </Button>
           <Button
             type="submit"
+            onClick={handleFinish}
             variant={ButtonVariant.Primary}
             className={classNames(styles.actionButton, styles.next)}
             disabled={!canSubmit}
@@ -137,53 +108,6 @@ const CreateMeetupOptionalFieldsForm = ({
           </Button>
         </div>
       </div>
-    </Form>
-  );
-};
-
-export const CreateMeetupOptionalFields = (
-  context: StepperContext<NewMeetupState>,
-): JSX.Element => {
-  const { i18n } = useTranslation();
-
-  const {
-    dataContext: [newMeetupData, setNewMeetupData],
-    handleFinish,
-  } = context;
-
-  const { start, finish, place, image } = newMeetupData;
-
-  const initialValues: MeetupOptionalFields = {
-    start,
-    finish,
-    place,
-    image,
-  };
-
-  const handleSubmit = (
-    values: MeetupOptionalFields,
-    { setSubmitting }: FormikHelpers<MeetupOptionalFields>,
-  ): void => {
-    setNewMeetupData({
-      ...newMeetupData,
-      ...values,
-    });
-    setSubmitting(false);
-    handleFinish();
-  };
-
-  return (
-    <Formik<MeetupOptionalFields>
-      initialValues={initialValues}
-      validate={validateMeetupOptionalFields(i18n)}
-      onSubmit={handleSubmit}
-    >
-      {(formikProps: FormikProps<MeetupOptionalFields>) => (
-        <CreateMeetupOptionalFieldsForm
-          context={context}
-          formikProps={formikProps}
-        />
-      )}
-    </Formik>
+    </div>
   );
 };

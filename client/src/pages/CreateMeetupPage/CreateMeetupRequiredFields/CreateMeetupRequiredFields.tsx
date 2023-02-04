@@ -1,5 +1,6 @@
+import { useEffect } from 'react';
 import classNames from 'classnames';
-import { Formik, Form, FormikHelpers, FormikProps } from 'formik';
+import { FormikProps } from 'formik';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -12,27 +13,20 @@ import {
   Typography,
   TypographyComponent,
 } from 'components';
-import { NewMeetupState } from 'pages';
-import { MeetupRequiredFields, meetupRequiredFieldsSchema } from 'validation';
+import { MeetupFields } from 'model';
 import { useTouchOnLocaleChanged, useUiStore, useUserStore } from 'hooks';
 import { User } from 'stores';
 import { Nullable } from 'types';
 
 import styles from './CreateMeetupRequiredFields.module.scss';
 
-interface CreateMeetupRequiredFieldsProps {
-  context: StepperContext<NewMeetupState>;
-  formikProps: FormikProps<MeetupRequiredFields>;
-}
-
-const CreateMeetupRequiredFieldsForm = ({
-  context,
-  formikProps,
-}: CreateMeetupRequiredFieldsProps): JSX.Element => {
-  const { activeStep, setStepPassed, handleBack } = context;
-
-  const { touched, errors, isSubmitting, setFieldTouched } = formikProps;
-
+export const CreateMeetupRequiredFields = ({
+  dataContext: { errors, touched, isSubmitting, setFieldTouched },
+  activeStep,
+  setStepPassed,
+  handleBack,
+  handleNextStep,
+}: StepperContext<FormikProps<MeetupFields>>): JSX.Element => {
   const { users } = useUserStore();
   const { t } = useTranslation();
   const { locale } = useUiStore();
@@ -43,14 +37,12 @@ const CreateMeetupRequiredFieldsForm = ({
   const isPassed = (isTouched || activeStep.passed) && !hasErrors;
   const canSubmit = isPassed && !hasErrors && !isSubmitting;
 
-  // sync stepper state
-  if (isPassed !== activeStep.passed) {
-    // mute console error
-    setTimeout(() => setStepPassed(activeStep.index, isPassed), 0);
-  }
+  useEffect(() => {
+    setStepPassed(activeStep.index, isPassed);
+  }, [isPassed]);
 
   return (
-    <Form className={styles.container}>
+    <div className={styles.container}>
       <div className={styles.heading}>
         <Typography
           className={styles.title}
@@ -108,6 +100,7 @@ const CreateMeetupRequiredFieldsForm = ({
           </Button>
           <Button
             type="submit"
+            onClick={handleNextStep}
             variant={ButtonVariant.Primary}
             className={classNames(styles.actionButton, styles.next)}
             disabled={!canSubmit}
@@ -116,52 +109,6 @@ const CreateMeetupRequiredFieldsForm = ({
           </Button>
         </div>
       </div>
-    </Form>
-  );
-};
-
-export const CreateMeetupRequiredFields = (
-  context: StepperContext<NewMeetupState>,
-): JSX.Element => {
-  const { i18n } = useTranslation();
-
-  const {
-    dataContext: [newMeetupData, setNewMeetupData],
-    handleNextStep,
-  } = context;
-
-  const { author, subject, excerpt } = newMeetupData;
-
-  const initialValues: MeetupRequiredFields = {
-    author,
-    subject,
-    excerpt,
-  };
-
-  const handleSubmit = (
-    values: MeetupRequiredFields,
-    { setSubmitting }: FormikHelpers<MeetupRequiredFields>,
-  ): void => {
-    setNewMeetupData({
-      ...newMeetupData,
-      ...values,
-    });
-    setSubmitting(false);
-    handleNextStep();
-  };
-
-  return (
-    <Formik<MeetupRequiredFields>
-      initialValues={initialValues}
-      validationSchema={meetupRequiredFieldsSchema(i18n)}
-      onSubmit={handleSubmit}
-    >
-      {(formikProps: FormikProps<MeetupRequiredFields>) => (
-        <CreateMeetupRequiredFieldsForm
-          context={context}
-          formikProps={formikProps}
-        />
-      )}
-    </Formik>
+    </div>
   );
 };
