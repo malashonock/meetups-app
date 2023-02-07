@@ -38,7 +38,11 @@ export const AuthToggle = observer(
         title={t('logoutTooltip.title')}
         description={t('logoutTooltip.text')}
       >
-        <IconButton onClick={handleLogout} className={styles.button}>
+        <IconButton
+          onClick={handleLogout}
+          className={styles.button}
+          aria-label="logout-button"
+        >
           <LogoutIcon />
         </IconButton>
       </Tooltip>
@@ -50,7 +54,7 @@ export const AuthToggle = observer(
           title={t('loginTooltip.title')}
           description={t('loginTooltip.text')}
         >
-          <IconButton className={styles.button}>
+          <IconButton className={styles.button} aria-label="login-button">
             <LoginIcon />
           </IconButton>
         </Tooltip>
