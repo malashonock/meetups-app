@@ -4,8 +4,8 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import { AuthToggle } from 'components';
-import { UserRole } from 'model';
 import { RootStore, User } from 'stores';
+import { mockEmployee as mockedLoggedUser } from 'mocks';
 
 // Mock useAuthStore hook
 import { useAuthStore } from 'hooks/useAuthStore';
@@ -85,14 +85,6 @@ describe('AuthToggle', () => {
     const mockedLogout = jest.fn();
 
     beforeEach(() => {
-      const mockedLoggedUser = new User({
-        id: 'aaa',
-        name: 'John',
-        surname: 'Doe',
-        post: 'Software Engineer',
-        roles: UserRole.EMPLOYEE,
-      });
-
       mockUseAuthStore.mockReturnValue({
         loggedUser: mockedLoggedUser,
         authStore: {
