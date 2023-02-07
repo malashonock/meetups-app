@@ -7,3 +7,4 @@ export * from './useNewsStore';
 export * from './useNewsArticle';
 export * from './useUiStore';
 export * from './useTouchOnLocaleChanged';
+export * from './useResizeEffect';
