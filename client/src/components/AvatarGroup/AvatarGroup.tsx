@@ -1,9 +1,21 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import {
+  CSSProperties,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
+import classNames from 'classnames';
 
 import { UserPreview, UserPreviewVariant } from 'components';
 import { User } from 'stores';
 
 import styles from './AvatarGroup.module.scss';
+
+enum AvatarGroupVariant {
+  Stacked = 'stacked',
+  Justified = 'justified',
+}
 
 interface AvatarGroupProps {
   users: User[];
@@ -43,14 +55,28 @@ export const AvatarGroup = ({ users, max }: AvatarGroupProps): JSX.Element => {
         Math.floor(
           Math.max(containerWidth - avatarWidth, 0) / (avatarWidth + GAP),
         );
-      const showCount = fitCount >= users.length ? users.length : fitCount - 1;
+      const cappedFitCount = max ? Math.min(fitCount, max) : fitCount;
+      const showCount =
+        cappedFitCount >= users.length ? users.length : cappedFitCount - 1;
       setSliceCount(showCount);
       setRestCount(users.length - showCount);
     }
   }, [containerWidth]);
 
+  const variant = max
+    ? AvatarGroupVariant.Stacked
+    : AvatarGroupVariant.Justified;
+
   return (
-    <ul className={styles.container} ref={containerRef}>
+    <ul
+      ref={containerRef}
+      className={classNames(styles.container, styles[variant])}
+      style={
+        {
+          '--gap': `${GAP}px`,
+        } as CSSProperties
+      }
+    >
       {users.slice(0, sliceCount).map((user: User) => (
         <li key={user.id} className={styles.avatar}>
           <UserPreview variant={UserPreviewVariant.Image} user={user} />
