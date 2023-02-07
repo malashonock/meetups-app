@@ -35,11 +35,11 @@ export const AvatarGroup = ({ users, max }: AvatarGroupProps): JSX.Element => {
           Math.floor(
             Math.max(containerWidth - avatarWidth, 0) / (avatarWidth + GAP),
           );
-        const cappedFitCount = max ? Math.min(fitCount, max) : fitCount;
         const showCount =
-          cappedFitCount >= users.length ? users.length : cappedFitCount - 1;
-        setSliceCount(showCount);
-        setRestCount(users.length - showCount);
+          fitCount >= users.length ? users.length : fitCount - 1;
+        const cappedShowCount = max ? Math.min(showCount, max) : showCount;
+        setSliceCount(cappedShowCount);
+        setRestCount(users.length - cappedShowCount);
       }
     },
   );
