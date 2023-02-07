@@ -1,14 +1,9 @@
-import {
-  CSSProperties,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react';
+import { useRef, useState, CSSProperties } from 'react';
 import classNames from 'classnames';
 
 import { UserPreview, UserPreviewVariant } from 'components';
 import { User } from 'stores';
+import { useResizeEffect } from 'hooks';
 
 import styles from './AvatarGroup.module.scss';
 
@@ -24,44 +19,30 @@ interface AvatarGroupProps {
 
 export const AvatarGroup = ({ users, max }: AvatarGroupProps): JSX.Element => {
   const containerRef = useRef<HTMLUListElement>(null);
-  const [containerWidth, setContainerWidth] = useState(
-    containerRef.current?.clientWidth || 0,
-  );
   const [sliceCount, setSliceCount] = useState(users.length);
   const [restCount, setRestCount] = useState(0);
   const GAP = 10; // px
 
-  // sync container width on resize
-  useEffect(() => {
-    const updateContainerWidth = (): void => {
-      if (containerRef.current) {
-        setContainerWidth(containerRef.current?.clientWidth);
+  // repopulate container width with avatars on resize
+  useResizeEffect<HTMLUListElement>(
+    containerRef,
+    (containerWidth: number): void => {
+      const avatarWidth = containerRef.current?.children[0]?.clientWidth;
+
+      if (containerWidth && avatarWidth) {
+        const fitCount =
+          Math.min(Math.floor(containerWidth / avatarWidth), 1) +
+          Math.floor(
+            Math.max(containerWidth - avatarWidth, 0) / (avatarWidth + GAP),
+          );
+        const cappedFitCount = max ? Math.min(fitCount, max) : fitCount;
+        const showCount =
+          cappedFitCount >= users.length ? users.length : cappedFitCount - 1;
+        setSliceCount(showCount);
+        setRestCount(users.length - showCount);
       }
-    };
-
-    updateContainerWidth();
-    window.addEventListener('resize', updateContainerWidth);
-    return (): void =>
-      window.removeEventListener('resize', updateContainerWidth);
-  }, []);
-
-  // repopulate container width with avatars
-  useLayoutEffect((): void => {
-    const avatarWidth = containerRef.current?.children[0]?.clientWidth;
-
-    if (containerWidth && avatarWidth) {
-      const fitCount =
-        Math.min(Math.floor(containerWidth / avatarWidth), 1) +
-        Math.floor(
-          Math.max(containerWidth - avatarWidth, 0) / (avatarWidth + GAP),
-        );
-      const cappedFitCount = max ? Math.min(fitCount, max) : fitCount;
-      const showCount =
-        cappedFitCount >= users.length ? users.length : cappedFitCount - 1;
-      setSliceCount(showCount);
-      setRestCount(users.length - showCount);
-    }
-  }, [containerWidth]);
+    },
+  );
 
   const variant = max
     ? AvatarGroupVariant.Stacked
