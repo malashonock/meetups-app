@@ -101,7 +101,10 @@
       "text",
       "text-summary",
       "cobertura"
-    ]
+    ],
+    "moduleNameMapper": {
+      "axios": "axios/dist/node/axios.cjs"
+    }
   },
   "browserslist": {
     "production": [
