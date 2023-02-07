@@ -24,7 +24,7 @@ export const useResizeEffect = <T extends HTMLElement>(
     window.addEventListener('resize', updateContainerSize);
     return (): void =>
       window.removeEventListener('resize', updateContainerSize);
-  }, []);
+  }, [containerRef.current]);
 
   // run effect on container resize
   useLayoutEffect((): void => {
