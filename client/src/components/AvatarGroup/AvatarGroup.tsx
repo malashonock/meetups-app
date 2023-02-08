@@ -19,7 +19,7 @@ interface AvatarGroupProps {
 
 export const AvatarGroup = ({ users, max }: AvatarGroupProps): JSX.Element => {
   const containerRef = useRef<HTMLUListElement>(null);
-  const [sliceCount, setSliceCount] = useState(users.length);
+  const [sliceCount, setSliceCount] = useState(0);
   const [restCount, setRestCount] = useState(0);
   const GAP = 10; // px
 
