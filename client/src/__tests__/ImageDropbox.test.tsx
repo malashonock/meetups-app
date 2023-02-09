@@ -1,5 +1,13 @@
+/* eslint-disable testing-library/no-unnecessary-act */
+
 import { PropsWithChildren } from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 
 import { ImageDropbox } from 'components';
 import { FileWithUrl } from 'types';
@@ -77,7 +85,9 @@ describe('ImageDropbox', () => {
     render(<ImageDropbox onDrop={mockedHandleDrop} />);
 
     const imageDropbox = screen.getByTestId('image-dropbox');
-    fireEvent.drop(imageDropbox, eventDataFrom(goodImage));
+    await act(() => {
+      fireEvent.drop(imageDropbox, eventDataFrom(goodImage));
+    });
 
     await waitFor(() => {
       expect(mockedHandleDrop).toHaveBeenCalledTimes(1);
@@ -93,7 +103,9 @@ describe('ImageDropbox', () => {
     render(<ImageDropbox onDrop={mockedHandleDrop} />);
 
     const imageDropbox = screen.getByTestId('image-dropbox');
-    fireEvent.drop(imageDropbox, eventDataFrom(tooLargeImage));
+    await act(() => {
+      fireEvent.drop(imageDropbox, eventDataFrom(tooLargeImage));
+    });
 
     await waitFor(() => {
       expect(mockedHandleDrop).not.toHaveBeenCalled();
@@ -107,7 +119,9 @@ describe('ImageDropbox', () => {
     render(<ImageDropbox onDrop={mockedHandleDrop} />);
 
     const imageDropbox = screen.getByTestId('image-dropbox');
-    fireEvent.drop(imageDropbox, eventDataFrom(notImage));
+    await act(() => {
+      fireEvent.drop(imageDropbox, eventDataFrom(notImage));
+    });
 
     await waitFor(() => {
       expect(mockedHandleDrop).not.toHaveBeenCalled();
@@ -121,7 +135,9 @@ describe('ImageDropbox', () => {
     render(<ImageDropbox onDrop={mockedHandleDrop} />);
 
     const imageDropbox = screen.getByTestId('image-dropbox');
-    fireEvent.drop(imageDropbox, eventDataFrom([goodImage, goodImage]));
+    await act(() => {
+      fireEvent.drop(imageDropbox, eventDataFrom([goodImage, goodImage]));
+    });
 
     await waitFor(() => {
       expect(mockedHandleDrop).not.toHaveBeenCalled();
@@ -134,7 +150,9 @@ describe('ImageDropbox', () => {
     render(<ImageDropbox onDrop={jest.fn()} />);
 
     const imageDropbox = screen.getByTestId('image-dropbox');
-    fireEvent.dragEnter(imageDropbox, eventDataFrom(goodImage));
+    await act(() => {
+      fireEvent.dragEnter(imageDropbox, eventDataFrom(goodImage));
+    });
 
     await waitFor(() => {
       expect(imageDropbox.classList).toContain('willAccept');
@@ -147,7 +165,9 @@ describe('ImageDropbox', () => {
     render(<ImageDropbox onDrop={jest.fn()} />);
 
     const imageDropbox = screen.getByTestId('image-dropbox');
-    fireEvent.dragEnter(imageDropbox, eventDataFrom(badFile));
+    await act(() => {
+      fireEvent.dragEnter(imageDropbox, eventDataFrom(badFile));
+    });
 
     await waitFor(() => {
       expect(imageDropbox.classList).toContain('willReject');
