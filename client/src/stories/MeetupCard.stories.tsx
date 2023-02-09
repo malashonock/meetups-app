@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { MeetupCard } from 'components';
-import { Meetup, MeetupStatus, ShortUser } from 'model';
+import { MeetupDto, MeetupStatus, ShortUser } from 'model';
 import { withRouter } from 'storybook-addon-react-router-v6';
 
 export default {
@@ -27,9 +27,9 @@ const author: ShortUser = {
   surname: 'Jackson',
 };
 
-const meetupTopic: Meetup = {
+const meetupTopic: MeetupDto = {
   id: 'AAA-AAA',
-  status: MeetupStatus.DRAFT,
+  status: MeetupStatus.REQUEST,
   author,
   subject: 'EF Core от практикующих',
   excerpt:
@@ -40,23 +40,23 @@ const meetupTopic: Meetup = {
   imageUrl: null,
 };
 
-const meetupOnModerationNoDate: Meetup = {
+const meetupOnModerationNoDate: MeetupDto = {
   ...meetupTopic,
   status: MeetupStatus.REQUEST,
 };
 
-const meetupOnModeration: Meetup = {
+const meetupOnModeration: MeetupDto = {
   ...meetupOnModerationNoDate,
   start: new Date(2022, 3, 23, 15, 0).toISOString(),
 };
 
-const meetupUpcoming: Meetup = {
+const meetupUpcoming: MeetupDto = {
   ...meetupOnModeration,
   status: MeetupStatus.CONFIRMED,
   place: 'комн. 601b',
 };
 
-const meetupFinished: Meetup = {
+const meetupFinished: MeetupDto = {
   ...meetupUpcoming,
 };
 

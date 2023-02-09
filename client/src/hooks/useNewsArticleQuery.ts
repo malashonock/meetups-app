@@ -1,10 +1,10 @@
 import { getNewsArticle } from 'api';
 import { AxiosError } from 'axios';
-import { News } from 'model';
+import { NewsDto } from 'model';
 import { useEffect, useState } from 'react';
 
 interface UseNewsArticleQueryResult {
-  newsArticle?: News;
+  newsArticle?: NewsDto;
   error?: string;
   isLoading: boolean;
   isSuccess: boolean;
@@ -13,8 +13,9 @@ interface UseNewsArticleQueryResult {
 
 export const useNewsArticleQuery = (
   id: string | null | undefined,
+  ...dependencies: unknown[]
 ): UseNewsArticleQueryResult => {
-  const [newsArticle, setNewsArticle] = useState<News | undefined>();
+  const [newsArticle, setNewsArticle] = useState<NewsDto | undefined>();
   const [error, setError] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
@@ -48,7 +49,7 @@ export const useNewsArticleQuery = (
         setIsLoading(false);
       }
     })();
-  }, [id]);
+  }, [id, ...dependencies]);
 
   return {
     newsArticle,

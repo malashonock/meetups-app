@@ -13,7 +13,7 @@ import {
   Typography,
   TypographyComponent,
 } from 'components';
-import { NewMeetup } from 'model';
+import { MeetupFields } from 'model';
 
 import styles from './CreateMeetupOptionalFields.module.scss';
 
@@ -23,7 +23,7 @@ export const CreateMeetupOptionalFields = ({
   setStepPassed,
   handlePreviousStep,
   handleFinish,
-}: StepperContext<FormikProps<NewMeetup>>): JSX.Element => {
+}: StepperContext<FormikProps<MeetupFields>>): JSX.Element => {
   const hasErrors = Object.entries(errors).length > 0;
   const isPassed = !hasErrors;
   const canSubmit = isPassed && !isSubmitting;

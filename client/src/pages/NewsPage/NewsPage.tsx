@@ -6,14 +6,14 @@ import {
   Typography,
   TypographyComponent,
 } from 'components';
-import { News } from 'model';
+import { NewsDto } from 'model';
 import { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 import styles from './NewsPage.module.scss';
 
 export const NewsPage = () => {
-  const [news, setNews] = useState<News[]>([]);
+  const [news, setNews] = useState<NewsDto[]>([]);
 
   const navigate = useNavigate();
 
@@ -38,7 +38,7 @@ export const NewsPage = () => {
         </Button>
       </div>
       <ul className={styles.newsList}>
-        {news.map((article: News) => (
+        {news.map((article: NewsDto) => (
           <li key={article.id} className={styles.newsItem}>
             <NavLink to={`/news/${article.id}`}>
               <NewsCard news={article} />

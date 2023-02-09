@@ -1,6 +1,6 @@
 import multer from 'multer';
 import path from 'path';
-import fs from 'fs';
+import faker from 'faker';
 import { PUBLIC_DIR } from '../constants.mjs';
 
 const UPLOAD_DIR = path.join(PUBLIC_DIR, 'assets', 'images');

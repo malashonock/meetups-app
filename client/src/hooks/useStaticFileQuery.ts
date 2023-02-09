@@ -15,6 +15,7 @@ interface UseStaticFileQueryResult {
 
 export const useStaticFileQuery = (
   url: string | null | undefined,
+  ...dependencies: unknown[]
 ): UseStaticFileQueryResult => {
   const [file, setFile] = useState<FileWithUrl | undefined>();
   const [error, setError] = useState<string | undefined>();
@@ -52,7 +53,7 @@ export const useStaticFileQuery = (
         setIsLoading(false);
       }
     })();
-  }, [url]);
+  }, [url, ...dependencies]);
 
   return {
     file,

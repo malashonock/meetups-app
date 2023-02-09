@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router';
 import classNames from 'classnames';
-import { Form, Formik, FormikHelpers, FormikProps } from 'formik';
-import * as yup from 'yup';
+import { Form, Formik, FormikProps } from 'formik';
 
 import {
   Button,
@@ -12,20 +11,16 @@ import {
   Typography,
   TypographyComponent,
 } from 'components';
-import { NewNews } from 'model';
+import { NewsFields } from 'model';
+import { newsSchema } from 'validation';
 import { createNewsArticle } from 'api';
 
 import styles from './CreateNewsPage.module.scss';
 
-const validationSchema = yup.object().shape({
-  title: yup.string().required('Введите заголовок новости'),
-  text: yup.string().required('Введите текст новости'),
-});
-
 export const CreateNewsPage = (): JSX.Element => {
   const navigate = useNavigate();
 
-  const initialValues: NewNews = {
+  const initialValues: NewsFields = {
     title: '',
     text: '',
     image: null,
@@ -33,12 +28,8 @@ export const CreateNewsPage = (): JSX.Element => {
 
   const handleBack = (): void => navigate(-1);
 
-  const handleSubmit = async (
-    newArticleData: NewNews,
-    { setSubmitting }: FormikHelpers<NewNews>,
-  ): Promise<void> => {
+  const handleSubmit = async (newArticleData: NewsFields): Promise<void> => {
     await createNewsArticle(newArticleData);
-    setSubmitting(false);
     navigate('/news');
   };
 
@@ -46,7 +37,7 @@ export const CreateNewsPage = (): JSX.Element => {
     touched,
     errors,
     isSubmitting,
-  }: FormikProps<NewNews>): JSX.Element => {
+  }: FormikProps<NewsFields>): JSX.Element => {
     const isTouched = Object.entries(touched).length > 0;
     const hasErrors = Object.entries(errors).length > 0;
     const canSubmit = isTouched && !hasErrors && !isSubmitting;
@@ -95,9 +86,9 @@ export const CreateNewsPage = (): JSX.Element => {
   };
 
   return (
-    <Formik<NewNews>
+    <Formik<NewsFields>
       initialValues={initialValues}
-      validationSchema={validationSchema}
+      validationSchema={newsSchema}
       onSubmit={handleSubmit}
     >
       {renderForm}

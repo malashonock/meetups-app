@@ -1,12 +1,12 @@
 import { Typography, TypographyComponent } from 'components';
 import { parseDateString } from 'helpers';
-import { News } from 'model';
+import { NewsDto } from 'model';
 
 import styles from './NewsCard.module.scss';
 import defaultImage from 'assets/images/default-background-blue.jpg';
 
 interface NewsCardProps {
-  news: News;
+  news: NewsDto;
 }
 
 export const NewsCard = ({ news }: NewsCardProps): JSX.Element => {

@@ -1,10 +1,10 @@
 import { getMeetup } from 'api';
 import { AxiosError } from 'axios';
-import { Meetup } from 'model';
+import { MeetupDto } from 'model';
 import { useEffect, useState } from 'react';
 
 type UseMeetupQueryResult = {
-  meetup?: Meetup;
+  meetup?: MeetupDto;
   error?: string;
   isLoading: boolean;
   isSuccess: boolean;
@@ -13,8 +13,9 @@ type UseMeetupQueryResult = {
 
 export const useMeetupQuery = (
   id: string | null | undefined,
+  ...dependencies: unknown[]
 ): UseMeetupQueryResult => {
-  const [meetup, setMeetup] = useState<Meetup | undefined>();
+  const [meetup, setMeetup] = useState<MeetupDto | undefined>();
   const [error, setError] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
@@ -48,7 +49,7 @@ export const useMeetupQuery = (
         setIsLoading(false);
       }
     })();
-  }, [id]);
+  }, [id, ...dependencies]);
 
   return {
     meetup,

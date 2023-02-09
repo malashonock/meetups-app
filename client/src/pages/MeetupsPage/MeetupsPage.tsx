@@ -1,8 +1,8 @@
 import { Typography, MeetupStagesTabs, TypographyComponent } from 'components';
 
-import styles from './MeetupPage.module.scss';
+import styles from './MeetupsPage.module.scss';
 
-export const MeetupPage = () => {
+export const MeetupsPage = () => {
   return (
     <div className={styles.container}>
       <Typography

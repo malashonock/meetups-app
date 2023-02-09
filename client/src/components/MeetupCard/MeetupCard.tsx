@@ -11,12 +11,12 @@ import {
   VotesCount,
 } from 'components';
 import { isPast, parseDateString } from 'helpers';
-import { Meetup, MeetupStatus } from 'model';
+import { MeetupDto, MeetupStatus } from 'model';
 
 import styles from './MeetupCard.module.scss';
 
 interface MeetupCardProps {
-  meetup: Meetup;
+  meetup: MeetupDto;
 }
 
 export enum MeetupCardVariant {
@@ -27,16 +27,8 @@ export enum MeetupCardVariant {
 }
 
 export const MeetupCard = ({ meetup }: MeetupCardProps): JSX.Element => {
-  const {
-    status,
-    author,
-    start,
-    place,
-    subject,
-    excerpt,
-    goCount,
-    id,
-  } = meetup;
+  const { status, author, start, place, subject, excerpt, goCount, id } =
+    meetup;
 
   const navigate = useNavigate();
 
@@ -53,22 +45,22 @@ export const MeetupCard = ({ meetup }: MeetupCardProps): JSX.Element => {
 
   const getVariant = (): MeetupCardVariant => {
     switch (status) {
-      case MeetupStatus.DRAFT:
+      case MeetupStatus.REQUEST:
       default:
         return MeetupCardVariant.Topic;
-      case MeetupStatus.REQUEST:
+      case MeetupStatus.DRAFT:
         return MeetupCardVariant.OnModeration;
       case MeetupStatus.CONFIRMED:
-        return start && isPast(start) ? MeetupCardVariant.Finished : MeetupCardVariant.Upcoming;
+        return start && isPast(start)
+          ? MeetupCardVariant.Finished
+          : MeetupCardVariant.Upcoming;
     }
   };
 
-  const variant = getVariant();
-
   return (
-    <article className={classNames(styles.card, styles[variant])}>
+    <article className={classNames(styles.card, styles[getVariant()])}>
       <header className={styles.header}>
-        {status === MeetupStatus.DRAFT ? (
+        {status === MeetupStatus.REQUEST ? (
           <UserPreview user={author} variant={UserPreviewVariant.Card} />
         ) : (
           <ul className={styles.appointment}>
@@ -97,7 +89,7 @@ export const MeetupCard = ({ meetup }: MeetupCardProps): JSX.Element => {
         )}
         <div className={styles.controls}>
           <DeleteButton />
-          {status !== MeetupStatus.DRAFT && (
+          {status !== MeetupStatus.REQUEST && (
             <EditButton
               onClick={(e) => {
                 e.preventDefault();
@@ -126,7 +118,7 @@ export const MeetupCard = ({ meetup }: MeetupCardProps): JSX.Element => {
       </div>
 
       <footer className={styles.footer}>
-        {status === MeetupStatus.DRAFT ? (
+        {status === MeetupStatus.REQUEST ? (
           goCount > 0 && <VotesCount votesCount={goCount} />
         ) : (
           <UserPreview user={author} variant={UserPreviewVariant.Card} />

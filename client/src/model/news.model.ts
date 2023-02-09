@@ -1,11 +1,16 @@
 export interface News {
   id: string;
-  publicationDate: string; // Date string
+  publicationDate: Date;
   title: string;
   text: string;
-  imageUrl: string | null;
+  image?: File | null;
 }
 
-export type NewNews = Pick<News, 'title' | 'text'> & {
-    image: File | null;
-  };
+// Data structure exchanged with server
+export type NewsDto = Omit<News, 'publicationDate' | 'image'> & {
+  publicationDate: string; // Date string
+  imageUrl?: string;
+};
+
+// Data structure used in create/edit forms
+export type NewsFields = Omit<News, 'id' | 'publicationDate'>;

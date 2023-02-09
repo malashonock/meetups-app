@@ -1,7 +1,6 @@
 import { useNavigate, useParams } from 'react-router';
 import classNames from 'classnames';
 import { Form, Formik, FormikHelpers, FormikProps } from 'formik';
-import * as yup from 'yup';
 
 import {
   Button,
@@ -12,16 +11,12 @@ import {
   Typography,
   TypographyComponent,
 } from 'components';
-import { NewNews } from 'model';
+import { NewsFields } from 'model';
+import { newsSchema } from 'validation';
 import { updateNewsArticle } from 'api';
 import { useNewsArticleQuery, useStaticFileQuery } from 'hooks';
 
 import styles from './EditNewsPage.module.scss';
-
-const validationSchema = yup.object().shape({
-  title: yup.string().required('Введите заголовок новости'),
-  text: yup.string().required('Введите текст новости'),
-});
 
 export const EditNewsPage = (): JSX.Element => {
   const { id } = useParams();
@@ -34,7 +29,7 @@ export const EditNewsPage = (): JSX.Element => {
     return <div>Загрузка...</div>;
   }
 
-  const initialValues: NewNews = {
+  const initialValues: NewsFields = {
     title: newsArticle.title || '',
     text: newsArticle.text || '',
     image: imageFile ?? null,
@@ -43,8 +38,8 @@ export const EditNewsPage = (): JSX.Element => {
   const handleBack = (): void => navigate(-1);
 
   const handleSubmit = async (
-    updatedArticleData: NewNews,
-    { setSubmitting }: FormikHelpers<NewNews>,
+    updatedArticleData: NewsFields,
+    { setSubmitting }: FormikHelpers<NewsFields>,
   ): Promise<void> => {
     await updateNewsArticle(id, updatedArticleData);
     setSubmitting(false);
@@ -56,7 +51,7 @@ export const EditNewsPage = (): JSX.Element => {
     dirty,
     errors,
     isSubmitting,
-  }: FormikProps<NewNews>): JSX.Element => {
+  }: FormikProps<NewsFields>): JSX.Element => {
     const isTouched = Object.entries(touched).length > 0;
     const hasErrors = Object.entries(errors).length > 0;
     const canSubmit = isTouched && dirty && !hasErrors && !isSubmitting;
@@ -105,9 +100,9 @@ export const EditNewsPage = (): JSX.Element => {
   };
 
   return (
-    <Formik<NewNews>
+    <Formik<NewsFields>
       initialValues={initialValues}
-      validationSchema={validationSchema}
+      validationSchema={newsSchema}
       onSubmit={handleSubmit}
     >
       {renderForm}
