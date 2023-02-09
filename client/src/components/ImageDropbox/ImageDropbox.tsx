@@ -87,8 +87,12 @@ export const ImageDropbox = ({
 
   return (
     <div className={styles.container}>
-      <div {...getRootProps()} className={classList}>
-        <input {...getInputProps()} />
+      <div
+        {...getRootProps()}
+        className={classList}
+        data-testid="image-dropbox"
+      >
+        <input {...getInputProps()} data-testid="file-input" />
         <UploadIcon />
         <Typography
           component={TypographyComponent.Paragraph}
