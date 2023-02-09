@@ -5,7 +5,7 @@ import { Typography, TypographyComponent, InputFieldVariant } from 'components';
 import styles from './HelperText.module.scss';
 
 type HelperTextProps = {
-  variant: InputFieldVariant;
+  variant?: InputFieldVariant;
 } & PropsWithChildren &
   HTMLAttributes<HTMLParagraphElement>;
 
