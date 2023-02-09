@@ -31,34 +31,38 @@ export const AuthToggle = observer(
       navigate('/');
     };
 
-    return loggedUser ? (
-      <Tooltip
-        variant={TooltipVariant.White}
-        position={tooltipPosition}
-        title={t('logoutTooltip.title')}
-        description={t('logoutTooltip.text')}
-      >
-        <IconButton
-          onClick={handleLogout}
-          className={styles.button}
-          aria-label="logout-button"
-        >
-          <LogoutIcon />
-        </IconButton>
-      </Tooltip>
-    ) : (
-      <Link to="/login">
-        <Tooltip
-          variant={TooltipVariant.White}
-          position={tooltipPosition}
-          title={t('loginTooltip.title')}
-          description={t('loginTooltip.text')}
-        >
-          <IconButton className={styles.button} aria-label="login-button">
-            <LoginIcon />
-          </IconButton>
-        </Tooltip>
-      </Link>
+    return (
+      <div data-testid="auth-toggle">
+        {loggedUser ? (
+          <Tooltip
+            variant={TooltipVariant.White}
+            position={tooltipPosition}
+            title={t('logoutTooltip.title')}
+            description={t('logoutTooltip.text')}
+          >
+            <IconButton
+              onClick={handleLogout}
+              className={styles.button}
+              aria-label="logout-button"
+            >
+              <LogoutIcon />
+            </IconButton>
+          </Tooltip>
+        ) : (
+          <Link to="/login">
+            <Tooltip
+              variant={TooltipVariant.White}
+              position={tooltipPosition}
+              title={t('loginTooltip.title')}
+              description={t('loginTooltip.text')}
+            >
+              <IconButton className={styles.button} aria-label="login-button">
+                <LoginIcon />
+              </IconButton>
+            </Tooltip>
+          </Link>
+        )}
+      </div>
     );
   },
 );

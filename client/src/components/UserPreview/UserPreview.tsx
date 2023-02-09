@@ -25,7 +25,10 @@ export const UserPreview = ({
   const { initials, fullName } = user;
 
   return (
-    <div className={classNames(styles.user, styles[variant])}>
+    <div
+      className={classNames(styles.user, styles[variant])}
+      data-testid="user-preview"
+    >
       <div className={styles.avatar}>
         <Typography className={styles.initials}>{initials}</Typography>
       </div>

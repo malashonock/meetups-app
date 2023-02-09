@@ -23,7 +23,7 @@ export const LanguageSelect = observer((): JSX.Element => {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} data-testid="language-select">
       <ReactSelect
         options={options}
         value={
