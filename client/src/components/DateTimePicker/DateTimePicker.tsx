@@ -10,6 +10,7 @@ import { Maybe } from 'types';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import './DateTimePicker.scss';
+import { useTranslation } from 'react-i18next';
 
 type DateTimePickerConstraints = Pick<
   ComponentProps<typeof DatePicker>,
@@ -32,56 +33,63 @@ type DateTimePickerProps = InputFieldExternalProps & {
 };
 
 export const DateTimePicker = ({
-  placeholderText = 'd MMM yyyy HH:mm',
+  placeholderText,
   constraints = {},
   containerAttributes,
   ...inputFieldProps
-}: DateTimePickerProps): JSX.Element => (
-  <InputField containerAttributes={containerAttributes} {...inputFieldProps}>
-    {({
-      field: { name, value },
-      form: { setFieldValue, handleBlur, setFieldTouched },
-      className,
-    }: InputRenderProps<Maybe<Date>>): JSX.Element => {
-      const handleChange = (date: Date | null): void =>
-        setFieldValue(name, date);
+}: DateTimePickerProps): JSX.Element => {
+  const { t } = useTranslation();
 
-      const adjustTimeListHeight = () => {
-        const dayNamesHeight = document.querySelector<HTMLDivElement>(
-          '.react-datepicker__day-names',
-        )?.clientHeight;
-        const monthHeight = document.querySelector<HTMLDivElement>(
-          '.react-datepicker__month',
-        )?.clientHeight;
-        const timeList = document.querySelector<HTMLDivElement>(
-          '.react-datepicker__time-list',
-        );
+  return (
+    <InputField containerAttributes={containerAttributes} {...inputFieldProps}>
+      {({
+        field: { name, value },
+        form: { setFieldValue, handleBlur, setFieldTouched },
+        className,
+      }: InputRenderProps<Maybe<Date>>): JSX.Element => {
+        const handleChange = (date: Date | null): void =>
+          setFieldValue(name, date);
 
-        if (timeList && dayNamesHeight && monthHeight) {
-          timeList.style.setProperty(
-            '--time-list-height',
-            `${dayNamesHeight + monthHeight}px`,
+        const adjustTimeListHeight = () => {
+          const dayNamesHeight = document.querySelector<HTMLDivElement>(
+            '.react-datepicker__day-names',
+          )?.clientHeight;
+          const monthHeight = document.querySelector<HTMLDivElement>(
+            '.react-datepicker__month',
+          )?.clientHeight;
+          const timeList = document.querySelector<HTMLDivElement>(
+            '.react-datepicker__time-list',
           );
-        }
-      };
 
-      return (
-        <DatePicker
-          className={className}
-          name={name}
-          selected={value}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          onCalendarClose={() => setFieldTouched(name, true)}
-          showTimeSelect
-          dateFormat="d MMM yyyy HH:mm"
-          timeFormat="HH:mm"
-          placeholderText={placeholderText}
-          onMonthChange={adjustTimeListHeight}
-          autoComplete="off"
-          {...constraints}
-        />
-      );
-    }}
-  </InputField>
-);
+          if (timeList && dayNamesHeight && monthHeight) {
+            timeList.style.setProperty(
+              '--time-list-height',
+              `${dayNamesHeight + monthHeight}px`,
+            );
+          }
+        };
+
+        return (
+          <DatePicker
+            className={className}
+            name={name}
+            selected={value}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            onCalendarClose={() => setFieldTouched(name, true)}
+            showTimeSelect
+            dateFormat="d MMM yyyy HH:mm"
+            timeFormat="HH:mm"
+            placeholderText={
+              placeholderText ??
+              (t('dateTimePicker.defaultPlaceholder') || 'd MMM yyyy HH:mm')
+            }
+            onMonthChange={adjustTimeListHeight}
+            autoComplete="off"
+            {...constraints}
+          />
+        );
+      }}
+    </InputField>
+  );
+};

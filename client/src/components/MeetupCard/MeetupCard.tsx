@@ -2,6 +2,7 @@ import { MouseEvent } from 'react';
 import classNames from 'classnames';
 import { useNavigate } from 'react-router';
 import { observer } from 'mobx-react-lite';
+import { useTranslation } from 'react-i18next';
 
 import {
   DeleteButton,
@@ -15,7 +16,7 @@ import {
 import { isPast, parseDate } from 'utils';
 import { MeetupStatus } from 'model';
 import { Meetup, User } from 'stores';
-import { useUserStore } from 'hooks';
+import { useUiStore, useUserStore } from 'hooks';
 import { Optional } from 'types';
 
 import styles from './MeetupCard.module.scss';
@@ -46,6 +47,8 @@ export const MeetupCard = observer(
 
     const { userStore } = useUserStore();
     const author: Optional<User> = userStore?.findUser(authorData);
+    const { locale } = useUiStore();
+    const { i18n, t } = useTranslation();
 
     const navigate = useNavigate();
 
@@ -59,7 +62,7 @@ export const MeetupCard = observer(
     ): Promise<void> => {
       event.preventDefault();
 
-      if (!window.confirm('Вы уверены, что хотите удалить митап?')) {
+      if (!window.confirm(t('meetupCard.deletePrompt') || '')) {
         return;
       }
 
@@ -71,8 +74,10 @@ export const MeetupCard = observer(
     let formattedTime: string | undefined;
 
     if (start) {
-      ({ formattedWeekdayShort, formattedDate, formattedTime } =
-        parseDate(start));
+      ({ formattedWeekdayShort, formattedDate, formattedTime } = parseDate(
+        start,
+        { locale, i18n },
+      ));
     }
 
     const votesCount = votedUsers.length;

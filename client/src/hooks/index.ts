@@ -5,3 +5,5 @@ export * from './useMeetupStore';
 export * from './useMeetup';
 export * from './useNewsStore';
 export * from './useNewsArticle';
+export * from './useUiStore';
+export * from './useTouchOnLocaleChanged';

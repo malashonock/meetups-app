@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import classNames from 'classnames';
 import { FileError, FileRejection, useDropzone } from 'react-dropzone';
+import { Trans, useTranslation } from 'react-i18next';
+
 import { Typography, TypographyComponent } from 'components';
-import { ReactComponent as UploadIcon } from './upload.svg';
-import { getFileSizeString } from 'utils';
+import { getFileSizeString, getFileWithUrl } from 'utils';
 import { FileWithUrl } from 'types';
+
 import styles from './ImageDropbox.module.scss';
-import { getFileWithUrl } from 'utils/file';
+import { ReactComponent as UploadIcon } from './upload.svg';
 
 const ACCEPT_FORMATS = ['.jpg', '.jpeg', '.png'];
 
@@ -22,6 +24,7 @@ export const ImageDropbox = ({
   externalError,
 }: ImageDropboxProps): JSX.Element => {
   const [internalErrors, setInternalErrors] = useState<string[]>([]);
+  const { i18n, t } = useTranslation();
 
   const acceptOptions = ACCEPT_FORMATS.reduce((formats, format) => {
     return {
@@ -36,9 +39,9 @@ export const ImageDropbox = ({
 
   const translateError = (error: string): string => {
     return error
-      .replace('File type must be', 'Допустимые типы файлов:')
-      .replace('File is larger than', 'Размер файла превышает')
-      .replace('bytes', 'байт');
+      .replace('File type must be', t('imageDropbox.fileTypeHint'))
+      .replace('File is larger than', t('imageDropbox.fileSizeHint'))
+      .replace('bytes', t('imageDropbox.bytes'));
   };
 
   const handleAcceptedDrop = (acceptedFiles: File[]): void => {
@@ -91,23 +94,29 @@ export const ImageDropbox = ({
           component={TypographyComponent.Paragraph}
           className={styles.promptText}
         >
-          Перетащите изображения сюда
-          <br />
-          или
-          <button
-            type="button"
-            className={styles.browseFileLink}
-            onClick={open}
-          >
-            загрузите
-          </button>
+          <Trans i18nKey="imageDropbox.promptText">
+            Перетащите изображения сюда
+            <br />
+            или
+            <button
+              type="button"
+              className={styles.browseFileLink}
+              onClick={open}
+            >
+              загрузите
+            </button>
+          </Trans>
         </Typography>
         <div className={styles.constraints}>
           <Typography component={TypographyComponent.Paragraph}>
-            Разрешенные форматы: {acceptFileExtensions}
+            {t('imageDropbox.acceptedExtensions', {
+              extensions: acceptFileExtensions,
+            })}
           </Typography>
           <Typography component={TypographyComponent.Paragraph}>
-            Максимальный размер файла: {getFileSizeString(MAX_FILESIZE)}
+            {t('imageDropbox.maxFileSize', {
+              maxFileSize: getFileSizeString(MAX_FILESIZE, undefined, i18n),
+            })}
           </Typography>
         </div>
         {errors.length > 0 ? (

@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
+import { useTranslation } from 'react-i18next';
 
 import { IconButton, Tooltip, TooltipVariant } from 'components';
 import { useAuthStore } from 'hooks';
@@ -11,6 +12,7 @@ import { ReactComponent as LogoutIcon } from './assets/logout.svg';
 export const AuthToggle = observer((): JSX.Element => {
   const navigate = useNavigate();
   const { authStore, loggedUser } = useAuthStore();
+  const { t } = useTranslation();
 
   const handleLogout = async (): Promise<void> => {
     await authStore?.logOut();
@@ -20,8 +22,8 @@ export const AuthToggle = observer((): JSX.Element => {
   return loggedUser ? (
     <Tooltip
       variant={TooltipVariant.White}
-      title="Выход"
-      description="Выйти из своей учетной записи"
+      title={t('logoutTooltip.title')}
+      description={t('logoutTooltip.text')}
     >
       <IconButton onClick={handleLogout} className={styles.button}>
         <LogoutIcon />
@@ -31,8 +33,8 @@ export const AuthToggle = observer((): JSX.Element => {
     <Link to="/login">
       <Tooltip
         variant={TooltipVariant.White}
-        title="Вход"
-        description="Войти в свою учетную запись"
+        title={t('loginTooltip.title')}
+        description={t('loginTooltip.text')}
       >
         <IconButton className={styles.button}>
           <LoginIcon />

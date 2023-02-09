@@ -1,9 +1,11 @@
-import { createContext, useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { observer } from 'mobx-react-lite';
 
-import { Header, meetupTabsLinks, meetupTabToDescriptor } from 'components';
-
+import {
+  Header,
+  meetupTabsLinks,
+  meetupTabToDescriptor,
+  RootStoreProvider,
+} from 'components';
 import {
   LoginPage,
   MeetupsPage,
@@ -16,26 +18,14 @@ import {
   EditNewsPage,
   EditMeetupPage,
 } from 'pages';
-import { RootStore } from 'stores';
-import { Nullable } from 'types';
 
 import styles from './App.module.scss';
+import { Suspense } from 'react';
 
-export const RootContext = createContext<Nullable<RootStore>>(null);
-
-export const App = observer((): JSX.Element => {
-  const [rootStore, setRootStore] = useState((): RootStore => new RootStore());
-
-  // Initialize root store
-  useEffect((): void => {
-    (async (): Promise<void> => {
-      setRootStore(await rootStore.init());
-    })();
-  }, []);
-
-  return (
-    <RootContext.Provider value={rootStore}>
-      <BrowserRouter>
+export const App = (): JSX.Element => (
+  <RootStoreProvider>
+    <BrowserRouter>
+      <Suspense fallback={<div>Loading...</div>}>
         <Header />
         <main className={styles.container}>
           <Routes>
@@ -72,7 +62,7 @@ export const App = observer((): JSX.Element => {
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>
-      </BrowserRouter>
-    </RootContext.Provider>
-  );
-});
+      </Suspense>
+    </BrowserRouter>
+  </RootStoreProvider>
+);

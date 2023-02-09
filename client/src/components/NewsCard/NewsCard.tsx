@@ -1,8 +1,10 @@
 import { observer } from 'mobx-react-lite';
+import { useTranslation } from 'react-i18next';
 
 import { Typography, TypographyComponent } from 'components';
 import { parseDate } from 'utils';
 import { News } from 'stores';
+import { useUiStore } from 'hooks';
 
 import styles from './NewsCard.module.scss';
 import defaultImage from 'assets/images/default-background-blue.jpg';
@@ -14,8 +16,13 @@ interface NewsCardProps {
 export const NewsCard = observer(({ news }: NewsCardProps): JSX.Element => {
   const { publicationDate, title, text, image } = news;
 
+  const { locale } = useUiStore();
+  const { i18n } = useTranslation();
+
   const { formattedDate } = parseDate(publicationDate, {
     dateOptions: { dateStyle: 'short' },
+    locale,
+    i18n,
   });
 
   return (

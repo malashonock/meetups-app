@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import classNames from 'classnames';
 import { FormikProps } from 'formik';
+import { useTranslation } from 'react-i18next';
 
 import {
   Button,
@@ -13,20 +14,23 @@ import {
   TypographyComponent,
 } from 'components';
 import { MeetupFields } from 'model';
-import { useUserStore } from 'hooks';
+import { useTouchOnLocaleChanged, useUiStore, useUserStore } from 'hooks';
 import { User } from 'stores';
 import { Nullable } from 'types';
 
 import styles from './CreateMeetupRequiredFields.module.scss';
 
 export const CreateMeetupRequiredFields = ({
-  dataContext: { errors, touched, isSubmitting },
+  dataContext: { errors, touched, isSubmitting, setFieldTouched },
   activeStep,
   setStepPassed,
   handleBack,
   handleNextStep,
 }: StepperContext<FormikProps<MeetupFields>>): JSX.Element => {
   const { users } = useUserStore();
+  const { t } = useTranslation();
+  const { locale } = useUiStore();
+  useTouchOnLocaleChanged(locale, errors, touched, setFieldTouched);
 
   const isTouched = Object.entries(touched).length > 0;
   const hasErrors = Object.entries(errors).length > 0;
@@ -44,23 +48,27 @@ export const CreateMeetupRequiredFields = ({
           className={styles.title}
           component={TypographyComponent.Heading1}
         >
-          Новый митап
+          {t('createMeetupPage.title')}
         </Typography>
         <Typography
           className={styles.subTitle}
           component={TypographyComponent.Paragraph}
         >
-          Заполните поля ниже наиболее подробно, это даст полную информацию о
-          предстоящем событии.
+          {t('createMeetupPage.subTitle')}
         </Typography>
       </div>
       <div className={styles.contentWrapper}>
         <div className={classNames(styles.textSection, styles.main)}>
-          <TextField name="subject" labelText="Название" />
+          <TextField
+            name="subject"
+            labelText={t('formFields.meetup.topic.label') || 'Topic'}
+          />
           <SelectField<User>
             name="author"
-            labelText="Спикер"
-            placeholderText="Выберите спикера..."
+            labelText={t('formFields.meetup.speaker.label') || 'Speaker'}
+            placeholderText={
+              t('formFields.meetup.speaker.placeholder') || 'Select speaker...'
+            }
             selectProps={{
               options: users?.map(
                 (user: User): SelectOption<User> => ({
@@ -73,7 +81,13 @@ export const CreateMeetupRequiredFields = ({
               u1?.id === u2?.id
             }
           />
-          <TextField name="excerpt" labelText="Описание" multiline />
+          <TextField
+            name="excerpt"
+            labelText={
+              t('formFields.meetup.description.label') || 'Description'
+            }
+            multiline
+          />
         </div>
         <div className={classNames(styles.textSection, styles.actions)}>
           <Button
@@ -82,7 +96,7 @@ export const CreateMeetupRequiredFields = ({
             variant={ButtonVariant.Default}
             className={classNames(styles.actionButton, styles.back)}
           >
-            Назад
+            {t('formButtons.back')}
           </Button>
           <Button
             type="submit"
@@ -91,7 +105,7 @@ export const CreateMeetupRequiredFields = ({
             className={classNames(styles.actionButton, styles.next)}
             disabled={!canSubmit}
           >
-            Далее
+            {t('formButtons.next')}
           </Button>
         </div>
       </div>

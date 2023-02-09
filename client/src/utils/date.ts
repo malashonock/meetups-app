@@ -1,29 +1,11 @@
+import { i18n } from 'i18next';
+
 export interface FormattedDateTime {
   formattedWeekdayShort: string;
   formattedWeekdayLong: string;
   formattedDate: string;
   formattedTime: string;
 }
-
-const formattedWeekdaysShort = [
-  'Воскр.',
-  'Пон.',
-  'Вт.',
-  'Ср.',
-  'Четв.',
-  'Пятн.',
-  'Субб.',
-];
-
-const formattedWeekdaysLong = [
-  'Воскресение',
-  'Понедельник',
-  'Вторник',
-  'Среда',
-  'Четверг',
-  'Пятница',
-  'Суббота',
-];
 
 const defaultLocale: Intl.LocalesArgument = 'ru-RU';
 
@@ -36,7 +18,28 @@ const defaultTimeOptions: Intl.DateTimeFormatOptions = {
   timeStyle: 'short',
 };
 
+const getFormattedWeekday = (
+  date: Date,
+  weekdayFormat: 'short' | 'long',
+  i18n?: i18n,
+  locale: Intl.LocalesArgument = defaultLocale,
+) => {
+  // try to look up in i18n dictionaries
+  if (i18n) {
+    const formattedWeekdays: string[] = i18n.t(
+      `formattedWeekdays.${weekdayFormat}`,
+      { returnObjects: true },
+    );
+    const weekdayIndex: number = date.getDay();
+    return formattedWeekdays[weekdayIndex];
+  }
+
+  // otherwise, return default formatted weekday name
+  return date.toLocaleDateString(locale, { weekday: weekdayFormat });
+};
+
 export interface DateParserOptions {
+  i18n?: i18n;
   locale?: Intl.LocalesArgument;
   dateOptions?: Intl.DateTimeFormatOptions;
   timeOptions?: Intl.DateTimeFormatOptions;
@@ -52,15 +55,22 @@ export const parseDate = (
   let locale: Intl.LocalesArgument | undefined;
   let dateOptions: Intl.DateTimeFormatOptions | undefined;
   let timeOptions: Intl.DateTimeFormatOptions | undefined;
+  let i18n: i18n | undefined;
 
   ({
+    i18n,
     locale = defaultLocale,
     dateOptions = defaultDateOptions,
     timeOptions = defaultTimeOptions,
   } = options ?? {});
 
-  const formattedWeekdayShort = formattedWeekdaysShort[date.getDay()];
-  const formattedWeekdayLong = formattedWeekdaysLong[date.getDay()];
+  const formattedWeekdayShort = getFormattedWeekday(
+    date,
+    'short',
+    i18n,
+    locale,
+  );
+  const formattedWeekdayLong = getFormattedWeekday(date, 'long', i18n, locale);
   const formattedDate = date.toLocaleDateString(locale, dateOptions);
   const formattedTime = date.toLocaleTimeString(locale, timeOptions);
 

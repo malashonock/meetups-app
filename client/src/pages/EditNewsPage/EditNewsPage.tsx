@@ -2,6 +2,7 @@ import { useNavigate, useParams } from 'react-router';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import { Form, Formik, FormikHelpers, FormikProps } from 'formik';
+import { useTranslation } from 'react-i18next';
 
 import {
   Button,
@@ -14,16 +15,84 @@ import {
 } from 'components';
 import { NotFoundPage } from 'pages';
 import { NewsFields } from 'model';
-import { useNewsArticle } from 'hooks';
+import { useNewsArticle, useTouchOnLocaleChanged, useUiStore } from 'hooks';
 import { newsSchema } from 'validation';
 
 import styles from './EditNewsPage.module.scss';
 
+const EditNewsForm = ({
+  touched,
+  dirty,
+  errors,
+  isSubmitting,
+  setFieldTouched,
+}: FormikProps<NewsFields>): JSX.Element => {
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+  const { locale } = useUiStore();
+  useTouchOnLocaleChanged(locale, errors, touched, setFieldTouched);
+
+  const isTouched = Object.entries(touched).length > 0;
+  const hasErrors = Object.entries(errors).length > 0;
+  const canSubmit = isTouched && dirty && !hasErrors && !isSubmitting;
+
+  const handleBack = (): void => navigate(-1);
+
+  return (
+    <Form>
+      <section className={styles.container}>
+        <Typography
+          className={styles.heading}
+          component={TypographyComponent.Heading1}
+        >
+          {t('editNewsPage.title')}
+        </Typography>
+        <div className={styles.contentWrapper}>
+          <div className={classNames(styles.textSection, styles.main)}>
+            <ImageUploader
+              name="image"
+              labelText={t('formFields.news.image.label') || 'Image'}
+              variant={ImagePreviewMode.Large}
+            />
+            <TextField
+              name="title"
+              labelText={t('formFields.news.title.label') || 'Title'}
+            />
+            <TextField
+              name="text"
+              labelText={t('formFields.news.text.label') || 'Text'}
+              multiline
+            />
+          </div>
+          <div className={classNames(styles.textSection, styles.actions)}>
+            <Button
+              type="button"
+              variant={ButtonVariant.Default}
+              onClick={handleBack}
+              className={styles.actionButton}
+            >
+              {t('formButtons.cancel')}
+            </Button>
+            <Button
+              type="submit"
+              variant={ButtonVariant.Primary}
+              className={styles.actionButton}
+              disabled={!canSubmit}
+            >
+              {t('formButtons.save')}
+            </Button>
+          </div>
+        </div>
+      </section>
+    </Form>
+  );
+};
+
 export const EditNewsPage = observer((): JSX.Element => {
   const { id } = useParams();
-  const navigate = useNavigate();
-
   const newsArticle = useNewsArticle(id);
+  const navigate = useNavigate();
+  const { i18n } = useTranslation();
 
   if (!newsArticle) {
     return <NotFoundPage />;
@@ -35,8 +104,6 @@ export const EditNewsPage = observer((): JSX.Element => {
     image: newsArticle.image,
   };
 
-  const handleBack = (): void => navigate(-1);
-
   const handleSubmit = async (
     updatedArticleData: NewsFields,
     { setSubmitting }: FormikHelpers<NewsFields>,
@@ -46,66 +113,15 @@ export const EditNewsPage = observer((): JSX.Element => {
     navigate('/news');
   };
 
-  const renderForm = ({
-    touched,
-    dirty,
-    errors,
-    isSubmitting,
-  }: FormikProps<NewsFields>): JSX.Element => {
-    const isTouched = Object.entries(touched).length > 0;
-    const hasErrors = Object.entries(errors).length > 0;
-    const canSubmit = isTouched && dirty && !hasErrors && !isSubmitting;
-
-    return (
-      <Form>
-        <section className={styles.container}>
-          <Typography
-            className={styles.heading}
-            component={TypographyComponent.Heading1}
-          >
-            Редактирование новости
-          </Typography>
-          <div className={styles.contentWrapper}>
-            <div className={classNames(styles.textSection, styles.main)}>
-              <ImageUploader
-                name="image"
-                labelText="Изображение"
-                variant={ImagePreviewMode.Large}
-              />
-              <TextField name="title" labelText="Заголовок" />
-              <TextField name="text" labelText="Текст" multiline />
-            </div>
-            <div className={classNames(styles.textSection, styles.actions)}>
-              <Button
-                type="button"
-                variant={ButtonVariant.Default}
-                onClick={handleBack}
-                className={styles.actionButton}
-              >
-                Отмена
-              </Button>
-              <Button
-                type="submit"
-                variant={ButtonVariant.Primary}
-                className={styles.actionButton}
-                disabled={!canSubmit}
-              >
-                Сохранить
-              </Button>
-            </div>
-          </div>
-        </section>
-      </Form>
-    );
-  };
-
   return (
     <Formik<NewsFields>
       initialValues={initialValues}
-      validationSchema={newsSchema}
+      validationSchema={newsSchema(i18n)}
       onSubmit={handleSubmit}
     >
-      {renderForm}
+      {(formikProps: FormikProps<NewsFields>) => (
+        <EditNewsForm {...formikProps} />
+      )}
     </Formik>
   );
 });

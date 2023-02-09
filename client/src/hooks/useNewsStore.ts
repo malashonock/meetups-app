@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 
 import { News, NewsStore } from 'stores';
-import { RootContext } from 'App';
+import { RootContext } from 'components';
 import { NewsFields } from 'model';
 import { Optional } from 'types';
 

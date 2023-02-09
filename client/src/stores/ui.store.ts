@@ -1,11 +1,11 @@
-import { makeObservable, observable } from 'mobx';
+import { makeAutoObservable } from 'mobx';
 import { makePersistable } from 'mobx-persist-store';
 
 import { RootStore } from 'stores';
 
 export enum Locale {
   RU = 'ru-RU',
-  EN = 'en-EN',
+  EN = 'en-US',
 }
 
 export class UiStore {
@@ -13,10 +13,7 @@ export class UiStore {
   showOverlay: boolean;
 
   constructor(public rootStore: RootStore) {
-    makeObservable(this, {
-      locale: observable,
-      showOverlay: observable,
-    });
+    makeAutoObservable(this);
 
     makePersistable(this, {
       name: 'ui',

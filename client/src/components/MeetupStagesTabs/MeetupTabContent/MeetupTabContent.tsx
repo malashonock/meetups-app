@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
+import { useTranslation } from 'react-i18next';
 
 import {
   Button,
@@ -24,6 +25,7 @@ export const MeetupTabContent = observer(
   ({ variant }: MeetupTabContentProps) => {
     const { meetups } = useMeetupStore();
     const [selectedMeetups, setSelectedMeetups] = useState<Meetup[]>();
+    const { t } = useTranslation();
 
     const navigate = useNavigate();
 
@@ -63,63 +65,22 @@ export const MeetupTabContent = observer(
       }
     }, [variant, meetups, meetups?.length]);
 
-    const getCounterEnding = (num: number, variant: MeetupCardVariant) => {
-      const lastNumber = num % 10;
-      const lastTwoNumbers = num % 100;
-
-      switch (variant) {
-        case MeetupCardVariant.Topic:
-          if (
-            [5, 6, 7, 8, 9, 0].includes(lastNumber) ||
-            [11, 12, 13, 14].includes(lastTwoNumbers)
-          )
-            return 'тем предложено';
-          if ([2, 3, 4].includes(lastNumber)) return 'темы предложено';
-          if (lastNumber === 1) return 'тема предложена';
-          break;
-        case MeetupCardVariant.OnModeration:
-          if (
-            [5, 6, 7, 8, 9, 0].includes(lastNumber) ||
-            [11, 12, 13, 14].includes(lastTwoNumbers)
-          )
-            return 'митапов на модерации';
-          if ([2, 3, 4].includes(lastNumber)) return 'митапа на модерации';
-          if (lastNumber === 1) return 'митап на модерации';
-          break;
-        case MeetupCardVariant.Upcoming:
-          if (
-            [5, 6, 7, 8, 9, 0].includes(lastNumber) ||
-            [11, 12, 13, 14].includes(lastTwoNumbers)
-          )
-            return 'митапов опубликовано';
-          if ([2, 3, 4].includes(lastNumber)) return 'митапа опубликовано';
-          if (lastNumber === 1) return 'митап опубликован';
-          break;
-        case MeetupCardVariant.Finished:
-          if (
-            [5, 6, 7, 8, 9, 0].includes(lastNumber) ||
-            [11, 12, 13, 14].includes(lastTwoNumbers)
-          )
-            return 'митапов прошло';
-          if ([2, 3, 4].includes(lastNumber)) return 'митапа прошло';
-          if (lastNumber === 1) return 'митап прошёл';
-          break;
-      }
-    };
-
     return (
       <section className={styles.topicsTab}>
         <div className={styles.wrapper}>
           <div className={styles.counter}>
-            {selectedMeetups?.length}{' '}
-            {getCounterEnding(selectedMeetups?.length || 0, variant)}
+            {t('meetupTabContent.meetupCount', {
+              context: variant,
+              count: selectedMeetups?.length || 0,
+            })}
           </div>
           {variant === MeetupCardVariant.Topic && (
             <Button
               variant={ButtonVariant.Secondary}
               onClick={openCreateMeetupPage}
+              className={styles.createMeetupBtn}
             >
-              + Создать митап
+              {t('meetupTabContent.createMeetupBtn')}
             </Button>
           )}
         </div>

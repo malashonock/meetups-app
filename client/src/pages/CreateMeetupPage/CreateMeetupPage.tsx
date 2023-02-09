@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 import { Form, Formik, FormikProps } from 'formik';
+import { i18n } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 import { StepConfig, Stepper, StepperContext } from 'components';
 import { CreateMeetupOptionalFields } from './CreateMeetupOptionalFields/CreateMeetupOptionalFields';
@@ -17,13 +19,13 @@ import styles from './CreateMeetupPage.module.scss';
 
 const createMeetupSteps = (): StepConfig<FormikProps<MeetupFields>>[] => [
   {
-    title: 'Обязательные поля',
+    title: ({ t }: i18n) => t('createMeetupPage.requiredFields.tabTitle'),
     render: (
       context: StepperContext<FormikProps<MeetupFields>>,
     ): JSX.Element => <CreateMeetupRequiredFields {...context} />,
   },
   {
-    title: 'Дополнительные поля',
+    title: ({ t }: i18n) => t('createMeetupPage.optionalFields.tabTitle'),
     render: (
       context: StepperContext<FormikProps<MeetupFields>>,
     ): JSX.Element => <CreateMeetupOptionalFields {...context} />,
@@ -35,6 +37,7 @@ export const CreateMeetupPage = observer((): JSX.Element => {
   const { meetupStore } = useMeetupStore();
   const [finished, setFinished] = useState(false);
   const navigate = useNavigate();
+  const { i18n } = useTranslation();
 
   const initialValues: MeetupFields = {
     author: loggedUser ?? null,
@@ -58,8 +61,8 @@ export const CreateMeetupPage = observer((): JSX.Element => {
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={meetupRequiredFieldsSchema}
-      validate={validateMeetupOptionalFields}
+      validationSchema={meetupRequiredFieldsSchema(i18n)}
+      validate={validateMeetupOptionalFields(i18n)}
       onSubmit={handleSubmit}
     >
       {(formikProps: FormikProps<MeetupFields>) => (

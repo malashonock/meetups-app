@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { i18n } from 'i18next';
 
 import { StepperProgress } from 'components';
 
@@ -13,7 +14,7 @@ export enum StepStatus {
 }
 
 export interface StepConfig<T> {
-  title: string;
+  title: (i18nInstance: i18n) => string;
   render: (context: StepperContext<T>) => JSX.Element;
   noValidate?: boolean;
 }

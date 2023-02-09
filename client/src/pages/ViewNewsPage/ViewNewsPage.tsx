@@ -1,6 +1,7 @@
 import { useLocation, useNavigate, useParams } from 'react-router';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 import {
   Button,
@@ -19,6 +20,7 @@ export const ViewNewsPage = observer(() => {
   const { id } = useParams();
   const { pathname } = useLocation();
   const newsArticle = useNewsArticle(id);
+  const { t } = useTranslation();
 
   const handleBack = (): void => navigate(-1);
   const handleEdit = (): void => navigate(pathname + '/edit');
@@ -35,7 +37,7 @@ export const ViewNewsPage = observer(() => {
         <img
           className={styles.image}
           src={image?.url ?? defaultImage}
-          alt="Изображение новости"
+          alt={t('viewNewsPage.imgAlt') || 'News image'}
         />
       </figure>
     );
@@ -66,7 +68,7 @@ export const ViewNewsPage = observer(() => {
           className={styles.actionButton}
           onClick={handleBack}
         >
-          Назад
+          {t('formButtons.back')}
         </Button>
         <div className={styles.actionGroup}>
           <Button
@@ -74,7 +76,7 @@ export const ViewNewsPage = observer(() => {
             className={styles.actionButton}
             onClick={handleEdit}
           >
-            Редактировать
+            {t('formButtons.edit')}
           </Button>
         </div>
       </div>
@@ -87,7 +89,7 @@ export const ViewNewsPage = observer(() => {
         className={styles.heading}
         component={TypographyComponent.Heading1}
       >
-        Просмотр новости
+        {t('viewNewsPage.title')}
       </Typography>
       <div className={styles.contentWrapper}>
         {renderImage()}
