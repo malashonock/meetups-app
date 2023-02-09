@@ -1,4 +1,6 @@
-import { getNews } from 'api';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
+
 import {
   Button,
   ButtonVariant,
@@ -6,23 +8,17 @@ import {
   Typography,
   TypographyComponent,
 } from 'components';
-import { NewsDto } from 'model';
-import { useEffect, useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNewsStore } from 'hooks';
+import { News } from 'stores';
 
 import styles from './NewsPage.module.scss';
 
-export const NewsPage = () => {
-  const [news, setNews] = useState<NewsDto[]>([]);
+export const NewsPage = observer(() => {
+  const { news } = useNewsStore();
 
   const navigate = useNavigate();
 
-  const openCreateNewsPage = () => navigate('/news/create');
-
-  useEffect(() => {
-    const fetchNews = async () => setNews(await getNews());
-    fetchNews();
-  }, []);
+  const handleCreateNews = () => navigate('/news/create');
 
   return (
     <div className={styles.container}>
@@ -33,12 +29,12 @@ export const NewsPage = () => {
         >
           Новости
         </Typography>
-        <Button variant={ButtonVariant.Secondary} onClick={openCreateNewsPage}>
+        <Button variant={ButtonVariant.Secondary} onClick={handleCreateNews}>
           + Создать новость
         </Button>
       </div>
       <ul className={styles.newsList}>
-        {news.map((article: NewsDto) => (
+        {news?.map((article: News) => (
           <li key={article.id} className={styles.newsItem}>
             <NavLink to={`/news/${article.id}`}>
               <NewsCard news={article} />
@@ -48,4 +44,4 @@ export const NewsPage = () => {
       </ul>
     </div>
   );
-};
+});

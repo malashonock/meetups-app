@@ -1,16 +1,21 @@
-export interface News {
+import { Nullable, FileWithUrl } from 'types';
+
+export interface INews {
   id: string;
   publicationDate: Date;
   title: string;
   text: string;
-  image?: File | null;
+  image: Nullable<FileWithUrl>;
 }
 
 // Data structure exchanged with server
-export type NewsDto = Omit<News, 'publicationDate' | 'image'> & {
+export interface NewsDto {
+  id: string;
   publicationDate: string; // Date string
-  imageUrl?: string;
-};
+  title: string;
+  text: string;
+  imageUrl: Nullable<string>;
+}
 
 // Data structure used in create/edit forms
-export type NewsFields = Omit<News, 'id' | 'publicationDate'>;
+export type NewsFields = Pick<INews, 'title' | 'text' | 'image'>;

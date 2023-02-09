@@ -1,6 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { NewsCard } from 'components';
-import { NewsDto } from 'model';
+import { News } from 'stores';
+import { getFileWithUrl } from 'utils';
 import testImage from './assets/news-img.jpg';
 
 export default {
@@ -20,15 +21,15 @@ const Template: ComponentStory<typeof NewsCard> = (args) => (
   </div>
 );
 
-const newsArticle: NewsDto = {
+const newsArticle: News = new News({
   id: 'AAA-AAA',
-  publicationDate: new Date().toISOString(),
+  publicationDate: new Date(),
   title: 'Our Vilnius office celebrates 1 year!',
   text:
     '🙌 The SaM Solutions office in #Vilnius celebrates a one-year anniversary.' +
     ' 🎉 Congratulations to our colleagues! Keep it up! More new victories and achievements ahead. 💪 #SaMSolutions',
-  imageUrl: testImage,
-};
+  image: getFileWithUrl(new File(['testImage'], 'news-img.jpg'), testImage),
+});
 
 export const Default = Template.bind({});
 

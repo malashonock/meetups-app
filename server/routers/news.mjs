@@ -84,7 +84,7 @@ export const newsRoutes = (db) => {
         const imageUrl = image ? getUrlFromPublicPath(image.path) : news.imageUrl;
 
         db.data.news[index] = {
-          ...db.data.news[index],
+          ...news,
           title,
           text,
           imageUrl,

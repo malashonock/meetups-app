@@ -1,53 +1,67 @@
-import { httpClient } from 'api';
-import { NewsFields, NewsDto } from 'model';
+import { getStaticFile, httpClient } from 'api';
+import { NewsFields, NewsDto, INews } from 'model';
 
-export const getNews = async (): Promise<NewsDto[]> => {
-  const { data: articles } = await httpClient.get<NewsDto[]>('/news');
-  return articles;
+export const getNews = async (): Promise<INews[]> => {
+  const { data: articlesData } = await httpClient.get<NewsDto[]>('/news');
+  return Promise.all(articlesData.map(getNewsFromJson));
 };
 
-export const getNewsArticle = async (id: string): Promise<NewsDto> => {
-  const { data: article } = await httpClient.get<NewsDto>(`/news/${id}`);
-  return article;
+export const getNewsArticle = async (id: string): Promise<INews> => {
+  const { data: articleData } = await httpClient.get<NewsDto>(`/news/${id}`);
+  return getNewsFromJson(articleData);
 };
 
 export const createNewsArticle = async (
-  newArticleData: NewsFields,
-): Promise<NewsDto> => {
+  newArticleFields: NewsFields,
+): Promise<INews> => {
+  const formData = buildNewsFormData(newArticleFields);
+
+  const { data: createdArticleData } = await httpClient.post<NewsDto>(
+    '/news',
+    formData,
+  );
+
+  return getNewsFromJson(createdArticleData);
+};
+
+export const updateNewsArticle = async (
+  id: string,
+  updatedArticleFields: Partial<NewsFields>,
+): Promise<INews> => {
+  const formData = buildNewsFormData(updatedArticleFields);
+
+  const { data: updatedArticleData } = await httpClient.patch<NewsDto>(
+    `/news/${id}`,
+    formData,
+  );
+
+  return getNewsFromJson(updatedArticleData);
+};
+
+export const deleteNewsArticle = async (id: string): Promise<void> => {
+  await httpClient.delete(`/news/${id}`);
+};
+
+const getNewsFromJson = async (articleData: NewsDto): Promise<INews> => {
+  const { publicationDate, imageUrl } = articleData;
+
+  const image = imageUrl ? await getStaticFile(imageUrl) : null;
+
+  return {
+    ...articleData,
+    publicationDate: new Date(publicationDate),
+    image,
+  };
+};
+
+const buildNewsFormData = (newsFields: Partial<NewsFields>): FormData => {
   const formData = new FormData();
 
-  Object.entries(newArticleData).forEach(([name, value]) => {
+  Object.entries(newsFields).forEach(([name, value]): void => {
     if (value !== null && value !== undefined) {
       formData.append(name, value);
     }
   });
 
-  const { data: createdArticle } = await httpClient.post<NewsDto>(
-    '/news',
-    formData,
-  );
-  return createdArticle;
-};
-
-export const updateNewsArticle = async (
-  id: string,
-  updatedArticleData: NewsFields,
-): Promise<NewsDto> => {
-  const formData = new FormData();
-
-  Object.entries(updatedArticleData).forEach(([name, value]) => {
-    if (value !== null) {
-      formData.append(name, value);
-    }
-  });
-
-  const { data: updatedArticle } = await httpClient.patch<NewsDto>(
-    `/news/${id}`,
-    formData,
-  );
-  return updatedArticle;
-};
-
-export const deleteNewsArticle = async (id: string): Promise<void> => {
-  await httpClient.delete(`/news/${id}`);
+  return formData;
 };
