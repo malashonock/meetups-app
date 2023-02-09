@@ -4,6 +4,7 @@ import {
   Header,
   meetupTabsLinks,
   meetupTabToDescriptor,
+  ProtectedRoute,
   RootStoreProvider,
 } from 'components';
 import {
@@ -30,7 +31,14 @@ export const App = (): JSX.Element => (
         <main className={styles.container}>
           <Routes>
             <Route path="/" element={<Navigate replace to="/meetups" />} />
-            <Route path="login" element={<LoginPage />} />
+            <Route
+              path="login"
+              element={
+                <ProtectedRoute redirectIf="authenticated">
+                  <LoginPage />
+                </ProtectedRoute>
+              }
+            />
             <Route path="meetups">
               <Route element={<MeetupsPage />}>
                 <Route
@@ -45,18 +53,46 @@ export const App = (): JSX.Element => (
                   />
                 ))}
               </Route>
-              <Route path="create" element={<CreateMeetupPage />} />
+              <Route
+                path="create"
+                element={
+                  <ProtectedRoute>
+                    <CreateMeetupPage />
+                  </ProtectedRoute>
+                }
+              />
               <Route path=":id">
                 <Route index element={<ViewMeetupPage />} />
-                <Route path="edit" element={<EditMeetupPage />} />
+                <Route
+                  path="edit"
+                  element={
+                    <ProtectedRoute>
+                      <EditMeetupPage />
+                    </ProtectedRoute>
+                  }
+                />
               </Route>
             </Route>
             <Route path="news">
               <Route index element={<NewsPage />} />
-              <Route path="create" element={<CreateNewsPage />} />
+              <Route
+                path="create"
+                element={
+                  <ProtectedRoute>
+                    <CreateNewsPage />
+                  </ProtectedRoute>
+                }
+              />
               <Route path=":id">
                 <Route index element={<ViewNewsPage />} />
-                <Route path="edit" element={<EditNewsPage />} />
+                <Route
+                  path="edit"
+                  element={
+                    <ProtectedRoute>
+                      <EditNewsPage />
+                    </ProtectedRoute>
+                  }
+                />
               </Route>
             </Route>
             <Route path="*" element={<NotFoundPage />} />

@@ -10,7 +10,7 @@ import {
   TypographyComponent,
 } from 'components';
 import { NotFoundPage } from 'pages';
-import { useNewsArticle } from 'hooks';
+import { useAuthStore, useNewsArticle } from 'hooks';
 
 import styles from './ViewNewsPage.module.scss';
 import defaultImage from 'assets/images/default-background-blue.jpg';
@@ -21,6 +21,7 @@ export const ViewNewsPage = observer(() => {
   const { pathname } = useLocation();
   const newsArticle = useNewsArticle(id);
   const { t } = useTranslation();
+  const { loggedUser } = useAuthStore();
 
   const handleBack = (): void => navigate(-1);
   const handleEdit = (): void => navigate(pathname + '/edit');
@@ -70,15 +71,17 @@ export const ViewNewsPage = observer(() => {
         >
           {t('formButtons.back')}
         </Button>
-        <div className={styles.actionGroup}>
-          <Button
-            variant={ButtonVariant.Secondary}
-            className={styles.actionButton}
-            onClick={handleEdit}
-          >
-            {t('formButtons.edit')}
-          </Button>
-        </div>
+        {loggedUser ? (
+          <div className={styles.actionGroup}>
+            <Button
+              variant={ButtonVariant.Secondary}
+              className={styles.actionButton}
+              onClick={handleEdit}
+            >
+              {t('formButtons.edit')}
+            </Button>
+          </div>
+        ) : null}
       </div>
     );
   };
