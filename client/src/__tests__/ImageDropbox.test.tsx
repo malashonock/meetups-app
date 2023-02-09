@@ -153,4 +153,12 @@ describe('ImageDropbox', () => {
       expect(imageDropbox.classList).toContain('willReject');
     });
   });
+
+  it('renders external error messages', async () => {
+    const ERR_MSG = 'Test error';
+    render(<ImageDropbox onDrop={jest.fn()} externalError={ERR_MSG} />);
+
+    const errorMessage = screen.getByText(ERR_MSG);
+    expect(errorMessage).toBeInTheDocument();
+  });
 });
