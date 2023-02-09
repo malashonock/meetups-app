@@ -37,7 +37,7 @@ export const CreateMeetupPage = observer((): JSX.Element => {
   const navigate = useNavigate();
 
   const initialValues: MeetupFields = {
-    author: loggedUser ? `${loggedUser.name} ${loggedUser.surname}` : '',
+    author: loggedUser ?? null,
     subject: '',
     excerpt: '',
     place: '',
@@ -49,8 +49,8 @@ export const CreateMeetupPage = observer((): JSX.Element => {
   const handleSubmit = async (newMeetupData: MeetupFields): Promise<void> => {
     if (finished) {
       (async () => {
-        await meetupStore?.createMeetup(newMeetupData);
-        navigate('/meetups');
+        const newMeetup = await meetupStore?.createMeetup(newMeetupData);
+        navigate(newMeetup ? `/meetups/${newMeetup.id}` : '/meetups');
       })();
     }
   };

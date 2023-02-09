@@ -74,14 +74,6 @@ const buildMeetupFormData = (
   meetupFields: Partial<MeetupFields>,
   meetupStatus?: MeetupStatus,
 ): FormData => {
-  // enhance form field values with missing data
-  // TODO: remove as being redundant
-  const stubUser: ShortUser = {
-    id: 'uuu-bbb',
-    name: 'chief',
-    surname: 'Blick',
-  };
-
   const formData = new FormData();
 
   formData.append('modified', new Date().toISOString());
@@ -99,10 +91,8 @@ const buildMeetupFormData = (
         valueToAppend = (value as Date)?.toISOString();
         break;
       case 'author':
-        valueToAppend = JSON.stringify(stubUser);
-        break;
       case 'speakers':
-        valueToAppend = JSON.stringify([stubUser]);
+        valueToAppend = JSON.stringify(value);
         break;
       default:
         if (value !== null && value !== undefined) {

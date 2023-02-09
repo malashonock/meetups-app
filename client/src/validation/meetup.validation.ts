@@ -15,7 +15,14 @@ export type MeetupOptionalFields = Pick<
 >;
 
 export const meetupRequiredFieldsSchema = yup.object().shape({
-  author: yup.string().required('Необходимо указать спикера'),
+  author: yup
+    .object()
+    .shape({
+      id: yup.string().required(),
+      name: yup.string().required(),
+      surname: yup.string().required(),
+    })
+    .required('Необходимо указать спикера'),
   subject: yup.string().required('Необходимо заполнить тему митапа'),
   excerpt: yup.string().required('Необходимо заполнить описание митапа'),
 });

@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import { useNavigate } from 'react-router';
-import { flowResult } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import { Form, Formik, FormikHelpers, FormikProps } from 'formik';
@@ -32,7 +31,7 @@ export const LoginPage = observer((): JSX.Element => {
     credentials: Credentials,
     { setSubmitting }: FormikHelpers<Credentials>,
   ): Promise<void> => {
-    await flowResult(authStore?.logIn(credentials));
+    await authStore?.logIn(credentials);
     setSubmitting(false);
     navigate('/meetups');
   };

@@ -1,10 +1,13 @@
+import { ComponentProps } from 'react';
+import DatePicker from 'react-datepicker';
+
 import {
   InputField,
   InputFieldExternalProps,
   InputRenderProps,
 } from 'components';
-import { ComponentProps } from 'react';
-import DatePicker from 'react-datepicker';
+import { Maybe } from 'types';
+
 import 'react-datepicker/dist/react-datepicker.css';
 import './DateTimePicker.scss';
 
@@ -24,7 +27,7 @@ type DateTimePickerConstraints = Pick<
 
 type DateTimePickerProps = InputFieldExternalProps & {
   placeholderText?: string;
-  containerAttributes?: Omit<React.HTMLAttributes<HTMLDivElement>, "children">;
+  containerAttributes?: Omit<React.HTMLAttributes<HTMLDivElement>, 'children'>;
   constraints?: DateTimePickerConstraints;
 };
 
@@ -37,9 +40,9 @@ export const DateTimePicker = ({
   <InputField containerAttributes={containerAttributes} {...inputFieldProps}>
     {({
       field: { name, value },
-      form: { setFieldValue, handleBlur },
+      form: { setFieldValue, handleBlur, setFieldTouched },
       className,
-    }: InputRenderProps): JSX.Element => {
+    }: InputRenderProps<Maybe<Date>>): JSX.Element => {
       const handleChange = (date: Date | null): void =>
         setFieldValue(name, date);
 
@@ -68,8 +71,8 @@ export const DateTimePicker = ({
           name={name}
           selected={value}
           onChange={handleChange}
-          onSelect={handleChange} // hack to make onChange fire
           onBlur={handleBlur}
+          onCalendarClose={() => setFieldTouched(name, true)}
           showTimeSelect
           dateFormat="d MMM yyyy HH:mm"
           timeFormat="HH:mm"

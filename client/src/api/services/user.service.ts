@@ -1,13 +1,13 @@
 import { httpClient } from 'api';
-import { ShortUser, User } from 'model';
+import { FullUser, ShortUser } from 'model';
 
-export const getUsers = async (): Promise<User[]> => {
-  const { data: users } = await httpClient.get<User[]>('/users');
+export const getUsers = async (): Promise<FullUser[]> => {
+  const { data: users } = await httpClient.get<FullUser[]>('/users');
   return users;
 };
 
-export const getUser = async (id: string): Promise<User> => {
-  const { data: user } = await httpClient.get<User>(`/users/${id}`);
+export const getUser = async (id: string): Promise<FullUser> => {
+  const { data: user } = await httpClient.get<FullUser>(`/users/${id}`);
   return user;
 };
 

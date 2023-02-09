@@ -3,7 +3,7 @@ export enum UserRole {
   EMPLOYEE = 'employee',
 }
 
-export interface User {
+export interface IUser {
   id: string;
   name: string;
   surname: string;
@@ -11,8 +11,8 @@ export interface User {
   roles: UserRole;
 }
 
-export type ShortUser = Pick<User, 'id' | 'name' | 'surname'>;
+export type ShortUser = Pick<IUser, 'id' | 'name' | 'surname'>;
 
-export type FullUser = User & {
+export type FullUser = IUser & {
   password: string;
 };

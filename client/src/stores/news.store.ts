@@ -22,11 +22,15 @@ export class NewsStore {
     });
   }
 
-  async createNewsArticle(newsArticleData: NewsFields): Promise<void> {
+  async createNewsArticle(newsArticleData: NewsFields): Promise<News> {
     const newArticleData = await API.createNewsArticle(newsArticleData);
+    const newArticle = new News(newArticleData, this);
+
     runInAction(() => {
-      this.news.push(new News(newArticleData, this));
+      this.news.push(newArticle);
     });
+
+    return newArticle;
   }
 
   onNewsArticleDeleted(deletedArticle: News): void {

@@ -1,7 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { MeetupCard } from 'components';
-import { MeetupStatus, ShortUser } from 'model';
-import { Meetup } from 'stores';
+import { MeetupStatus, UserRole } from 'model';
+import { Meetup, User } from 'stores';
 import { withRouter } from 'storybook-addon-react-router-v6';
 
 export default {
@@ -22,11 +22,13 @@ const Template: ComponentStory<typeof MeetupCard> = (args) => (
   </div>
 );
 
-const author: ShortUser = {
+const author: User = new User({
   id: 'AAA-AAA',
   name: 'Joe',
   surname: 'Jackson',
-};
+  post: '',
+  roles: UserRole.EMPLOYEE,
+});
 
 const meetupTopic: Meetup = new Meetup({
   id: 'AAA-AAA',
