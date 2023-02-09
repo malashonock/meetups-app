@@ -37,7 +37,6 @@ export const fixedMeetups = [
 
 const generateMeetup = async (users) => {
   const start = faker.date.future();
-  const goCount = faker.datatype.number({ min: 1, max: users.length - 10 });
   const finish = new Date(
     start.getTime() + faker.datatype.number({ min: 15, max: 240 }) * 60 * 1000
   );
@@ -54,7 +53,6 @@ const generateMeetup = async (users) => {
     subject: faker.company.catchPhrase(),
     excerpt: faker.lorem.paragraph(),
     place: faker.address.streetAddress(),
-    goCount,
     status: faker.random.arrayElement(["DRAFT", "REQUEST", "CONFIRMED"]),
     imageUrl,
     meta: {}

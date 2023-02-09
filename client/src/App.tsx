@@ -1,5 +1,6 @@
-import { createContext } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
 
 import { Header, meetupTabsLinks, meetupTabToDescriptor } from 'components';
 
@@ -15,16 +16,25 @@ import {
   EditNewsPage,
   EditMeetupPage,
 } from 'pages';
-
-import styles from './App.module.scss';
 import { RootStore } from 'stores';
 import { Nullable } from 'types';
 
+import styles from './App.module.scss';
+
 export const RootContext = createContext<Nullable<RootStore>>(null);
 
-export const App = (): JSX.Element => {
+export const App = observer((): JSX.Element => {
+  const [rootStore, setRootStore] = useState((): RootStore => new RootStore());
+
+  // Initialize root store
+  useEffect((): void => {
+    (async (): Promise<void> => {
+      setRootStore(await rootStore.init());
+    })();
+  }, []);
+
   return (
-    <RootContext.Provider value={new RootStore()}>
+    <RootContext.Provider value={rootStore}>
       <BrowserRouter>
         <Header />
         <main className={styles.container}>
@@ -65,4 +75,4 @@ export const App = (): JSX.Element => {
       </BrowserRouter>
     </RootContext.Provider>
   );
-};
+});

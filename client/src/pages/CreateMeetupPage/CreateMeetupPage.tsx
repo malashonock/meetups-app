@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 import { Form, Formik, FormikProps } from 'formik';
 
@@ -6,15 +7,13 @@ import { StepConfig, Stepper, StepperContext } from 'components';
 import { CreateMeetupOptionalFields } from './CreateMeetupOptionalFields/CreateMeetupOptionalFields';
 import { CreateMeetupRequiredFields } from './CreateMeetupRequiredFields/CreateMeetupRequiredFields';
 import { MeetupFields } from 'model';
-import { createMeetup } from 'api';
+import { useAuthStore, useMeetupStore } from 'hooks';
 import {
   meetupRequiredFieldsSchema,
   validateMeetupOptionalFields,
 } from 'validation';
 
 import styles from './CreateMeetupPage.module.scss';
-import { useAuthStore } from 'hooks';
-import { observer } from 'mobx-react-lite';
 
 const createMeetupSteps = (): StepConfig<FormikProps<MeetupFields>>[] => [
   {
@@ -33,6 +32,7 @@ const createMeetupSteps = (): StepConfig<FormikProps<MeetupFields>>[] => [
 
 export const CreateMeetupPage = observer((): JSX.Element => {
   const { loggedUser } = useAuthStore();
+  const { meetupStore } = useMeetupStore();
   const [finished, setFinished] = useState(false);
   const navigate = useNavigate();
 
@@ -48,8 +48,10 @@ export const CreateMeetupPage = observer((): JSX.Element => {
 
   const handleSubmit = async (newMeetupData: MeetupFields): Promise<void> => {
     if (finished) {
-      await createMeetup(newMeetupData);
-      navigate('/meetups');
+      (async () => {
+        await meetupStore?.createMeetup(newMeetupData);
+        navigate('/meetups');
+      })();
     }
   };
 

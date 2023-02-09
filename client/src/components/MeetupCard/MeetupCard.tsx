@@ -1,5 +1,7 @@
+import { MouseEvent } from 'react';
 import classNames from 'classnames';
 import { useNavigate } from 'react-router';
+import { observer } from 'mobx-react-lite';
 
 import {
   DeleteButton,
@@ -10,13 +12,14 @@ import {
   UserPreviewVariant,
   VotesCount,
 } from 'components';
-import { isPast, parseDateString } from 'utils';
-import { MeetupDto, MeetupStatus } from 'model';
+import { isPast, parseDate } from 'utils';
+import { MeetupStatus } from 'model';
+import { Meetup } from 'stores';
 
 import styles from './MeetupCard.module.scss';
 
 interface MeetupCardProps {
-  meetup: MeetupDto;
+  meetup: Meetup;
 }
 
 export enum MeetupCardVariant {
@@ -26,104 +29,118 @@ export enum MeetupCardVariant {
   Finished = 'finished',
 }
 
-export const MeetupCard = ({ meetup }: MeetupCardProps): JSX.Element => {
-  const { status, author, start, place, subject, excerpt, goCount, id } =
-    meetup;
+export const MeetupCard = observer(
+  ({ meetup }: MeetupCardProps): JSX.Element => {
+    const { status, author, start, place, subject, excerpt, votedUsers, id } =
+      meetup;
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const openEditMeetupPage = () => navigate(`/meetups/${id}/edit`);
+    const handleEditMeetup = (event: MouseEvent<HTMLButtonElement>): void => {
+      event.preventDefault();
+      navigate(`/meetups/${id}/edit`);
+    };
 
-  let formattedWeekdayShort: string | undefined;
-  let formattedDate: string | undefined;
-  let formattedTime: string | undefined;
+    const handleDeleteMeetup = async (
+      event: MouseEvent<HTMLButtonElement>,
+    ): Promise<void> => {
+      event.preventDefault();
 
-  if (start) {
-    ({ formattedWeekdayShort, formattedDate, formattedTime } =
-      parseDateString(start));
-  }
+      if (!window.confirm('Вы уверены, что хотите удалить митап?')) {
+        return;
+      }
 
-  const getVariant = (): MeetupCardVariant => {
-    switch (status) {
-      case MeetupStatus.REQUEST:
-      default:
-        return MeetupCardVariant.Topic;
-      case MeetupStatus.DRAFT:
-        return MeetupCardVariant.OnModeration;
-      case MeetupStatus.CONFIRMED:
-        return start && isPast(start)
-          ? MeetupCardVariant.Finished
-          : MeetupCardVariant.Upcoming;
+      await meetup?.delete();
+    };
+
+    let formattedWeekdayShort: string | undefined;
+    let formattedDate: string | undefined;
+    let formattedTime: string | undefined;
+
+    if (start) {
+      ({ formattedWeekdayShort, formattedDate, formattedTime } =
+        parseDate(start));
     }
-  };
 
-  return (
-    <article className={classNames(styles.card, styles[getVariant()])}>
-      <header className={styles.header}>
-        {status === MeetupStatus.REQUEST ? (
-          <UserPreview user={author} variant={UserPreviewVariant.Card} />
-        ) : (
-          <ul className={styles.appointment}>
-            {start !== undefined ? (
-              <>
-                <li className={styles.appointmentItem} key="date">
-                  <Typography className={styles.date}>
-                    {`${formattedWeekdayShort}, ${formattedDate}`}
-                  </Typography>
+    const votesCount = votedUsers.length;
+
+    const getVariant = (): MeetupCardVariant => {
+      switch (status) {
+        case MeetupStatus.REQUEST:
+        default:
+          return MeetupCardVariant.Topic;
+        case MeetupStatus.DRAFT:
+          return MeetupCardVariant.OnModeration;
+        case MeetupStatus.CONFIRMED:
+          return start && isPast(start)
+            ? MeetupCardVariant.Finished
+            : MeetupCardVariant.Upcoming;
+      }
+    };
+
+    return (
+      <article className={classNames(styles.card, styles[getVariant()])}>
+        <header className={styles.header}>
+          {status === MeetupStatus.REQUEST ? (
+            <UserPreview user={author} variant={UserPreviewVariant.Card} />
+          ) : (
+            <ul className={styles.appointment}>
+              {start !== undefined ? (
+                <>
+                  <li className={styles.appointmentItem} key="date">
+                    <Typography className={styles.date}>
+                      {`${formattedWeekdayShort}, ${formattedDate}`}
+                    </Typography>
+                  </li>
+                  <li className={styles.appointmentItem} key="time">
+                    <Typography className={styles.time}>
+                      {formattedTime}
+                    </Typography>
+                  </li>
+                </>
+              ) : (
+                '—'
+              )}
+              {place !== undefined && (
+                <li className={styles.appointmentItem} key="location">
+                  <Typography className={styles.location}>{place}</Typography>
                 </li>
-                <li className={styles.appointmentItem} key="time">
-                  <Typography className={styles.time}>
-                    {formattedTime}
-                  </Typography>
-                </li>
-              </>
-            ) : (
-              '—'
+              )}
+            </ul>
+          )}
+          <div className={styles.controls}>
+            <DeleteButton onClick={handleDeleteMeetup} />
+            {status !== MeetupStatus.REQUEST && (
+              <EditButton onClick={handleEditMeetup} />
             )}
-            {place !== undefined && (
-              <li className={styles.appointmentItem} key="location">
-                <Typography className={styles.location}>{place}</Typography>
-              </li>
-            )}
-          </ul>
-        )}
-        <div className={styles.controls}>
-          <DeleteButton />
-          {status !== MeetupStatus.REQUEST && (
-            <EditButton
-              onClick={(e) => {
-                e.preventDefault();
-                openEditMeetupPage();
-              }}
-            />
+          </div>
+        </header>
+
+        <div className={styles.body}>
+          <Typography
+            component={TypographyComponent.Heading2}
+            className={styles.subject}
+          >
+            {subject}
+          </Typography>
+          {excerpt !== undefined && (
+            <Typography
+              component={TypographyComponent.Paragraph}
+              className={styles.excerpt}
+            >
+              {excerpt}
+            </Typography>
           )}
         </div>
-      </header>
 
-      <div className={styles.body}>
-        <Typography
-          component={TypographyComponent.Heading2}
-          className={styles.subject}
-        >
-          {subject}
-        </Typography>
-        {excerpt !== undefined && (
-          <Typography
-            component={TypographyComponent.Paragraph}
-            className={styles.excerpt}
-          >
-            {excerpt}
-          </Typography>
-        )}
-      </div>
-
-      <footer className={styles.footer}>
-        {status === MeetupStatus.REQUEST ? (
-          goCount > 0 && <VotesCount votesCount={goCount} />
-        ) : (
-          <UserPreview user={author} variant={UserPreviewVariant.Card} />
-        )}
-      </footer>
-    </article>
-  );
-};
+        <footer className={styles.footer}>
+          {status === MeetupStatus.REQUEST ? (
+            votesCount > 0 && <VotesCount votesCount={votesCount} />
+          ) : (
+            <UserPreview user={author} variant={UserPreviewVariant.Card} />
+          )}
+        </footer>
+      </article>
+    );
+  },
+);

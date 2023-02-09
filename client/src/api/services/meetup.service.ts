@@ -1,112 +1,121 @@
-import { getVotedUsers } from 'api';
+import { getParticipants, getStaticFile, getVotedUsers } from 'api';
 import { httpClient } from 'api';
 import {
   MeetupDto,
   MeetupFields,
-  MeetupFormData,
+  MeetupBody,
   MeetupStatus,
   ShortUser,
+  IMeetup,
 } from 'model';
 
-export const getMeetups = async (): Promise<MeetupDto[]> => {
-  const { data: meetups } = await httpClient.get<MeetupDto[]>('/meetups');
-  return meetups;
+export const getMeetups = async (): Promise<IMeetup[]> => {
+  const { data: meetupsData } = await httpClient.get<MeetupDto[]>('/meetups');
+  return Promise.all(meetupsData.map(getMeetupFromJson));
 };
 
-export const getMeetup = async (id: string): Promise<MeetupDto> => {
-  const { data: meetup } = await httpClient.get<MeetupDto>(`/meetups/${id}`);
-  const votedUsers = await getVotedUsers(id);
-
-  return {
-    ...meetup,
-    votedUsers,
-  };
+export const getMeetup = async (id: string): Promise<IMeetup> => {
+  const { data: meetupData } = await httpClient.get<MeetupDto>(
+    `/meetups/${id}`,
+  );
+  return getMeetupFromJson(meetupData);
 };
 
 export const createMeetup = async (
   newMeetupFields: MeetupFields,
-): Promise<MeetupFormData> => {
-  const formData = buildMeetupFormData(newMeetupFields, MeetupStatus.DRAFT);
+): Promise<IMeetup> => {
+  const formData = buildMeetupFormData(newMeetupFields);
 
-  const { data: createdMeetup } = await httpClient.post<MeetupFormData>(
+  const { data: createdMeetup } = await httpClient.post<MeetupDto>(
     '/meetups',
     formData,
   );
 
-  return createdMeetup;
+  return getMeetupFromJson(createdMeetup);
 };
 
 export const updateMeetup = async (
   id: string,
-  updatedMeetupFields: MeetupFields,
-  meetupStatus: MeetupStatus,
-): Promise<MeetupFormData> => {
+  updatedMeetupFields: Partial<MeetupFields>,
+  meetupStatus?: MeetupStatus,
+): Promise<IMeetup> => {
   const formData = buildMeetupFormData(updatedMeetupFields, meetupStatus);
 
-  const { data: updatedMeetup } = await httpClient.put<MeetupFormData>(
+  const { data: updatedMeetup } = await httpClient.patch<MeetupDto>(
     `/meetups/${id}`,
     formData,
   );
 
-  return updatedMeetup;
+  return getMeetupFromJson(updatedMeetup);
 };
 
 export const deleteMeetup = async (id: string): Promise<void> => {
   await httpClient.delete(`/meetups/${id}`);
 };
 
-const buildMeetupFormData = (
-  meetupFields: MeetupFields,
-  meetupStatus: MeetupStatus,
+export const getMeetupFromJson = async (
+  meetupData: MeetupDto,
+): Promise<IMeetup> => {
+  const { id, modified, start, finish, imageUrl } = meetupData;
+
+  const image = imageUrl ? await getStaticFile(imageUrl) : null;
+  const votedUsers = await getVotedUsers(id);
+  const participants = await getParticipants(id);
+
+  return {
+    ...meetupData,
+    modified: new Date(modified),
+    start: start ? new Date(start) : undefined,
+    finish: finish ? new Date(finish) : undefined,
+    votedUsers,
+    participants,
+    image,
+  };
+};
+
+export const buildMeetupFormData = (
+  meetupFields: Partial<MeetupFields>,
+  meetupStatus?: MeetupStatus,
 ): FormData => {
   // enhance form field values with missing data
+  // TODO: remove as being redundant
   const stubUser: ShortUser = {
     id: 'uuu-bbb',
     name: 'chief',
     surname: 'Blick',
   };
 
-  const newMeetupData: MeetupFormData = {
-    ...meetupFields,
-    ...{
-      status: meetupStatus,
-      modified: new Date(),
-      author: stubUser,
-      goCount: 0,
-      speakers: [stubUser],
-      votedUsers: [],
-    },
-  };
-
   const formData = new FormData();
 
-  Object.entries(newMeetupData).forEach(([name, value]) => {
-    let valueToSend: string | File | Blob;
+  formData.append('modified', new Date().toISOString());
 
-    switch (typeof value) {
-      case 'string':
-        valueToSend = value;
+  if (meetupStatus) {
+    formData.append('status', meetupStatus);
+  }
+
+  Object.entries(meetupFields).forEach(([name, value]): void => {
+    let valueToAppend: string | Blob | undefined = undefined;
+
+    switch (name) {
+      case 'start':
+      case 'finish':
+        valueToAppend = (value as Date)?.toISOString();
         break;
-      case 'object':
-        if (value instanceof File || value instanceof Blob) {
-          valueToSend = value;
-          break;
-        }
-
-        if (value instanceof Date) {
-          valueToSend = value.toISOString();
-          break;
-        }
-
-        valueToSend = JSON.stringify(value);
+      case 'author':
+        valueToAppend = JSON.stringify(stubUser);
+        break;
+      case 'speakers':
+        valueToAppend = JSON.stringify([stubUser]);
         break;
       default:
-        valueToSend = value.toString();
+        if (value !== null && value !== undefined) {
+          valueToAppend = value as string | Blob;
+        }
         break;
     }
 
-    if (valueToSend !== null && value !== undefined) {
-      formData.append(name, valueToSend);
+    if (valueToAppend) {
+      formData.append(name, valueToAppend);
     }
   });
 

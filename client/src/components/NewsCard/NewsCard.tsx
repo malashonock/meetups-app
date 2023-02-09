@@ -1,5 +1,5 @@
 import { Typography, TypographyComponent } from 'components';
-import { parseDateString } from 'utils';
+import { parseDate } from 'utils';
 import { NewsDto } from 'model';
 
 import styles from './NewsCard.module.scss';
@@ -12,7 +12,7 @@ interface NewsCardProps {
 export const NewsCard = ({ news }: NewsCardProps): JSX.Element => {
   const { publicationDate, title, text, imageUrl } = news;
 
-  const { formattedDate } = parseDateString(publicationDate, {
+  const { formattedDate } = parseDate(publicationDate, {
     dateOptions: { dateStyle: 'short' },
   });
 

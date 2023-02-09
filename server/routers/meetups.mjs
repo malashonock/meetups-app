@@ -28,7 +28,6 @@ export const meetupsRoutes = (db) => {
           subject,
           excerpt,
           place,
-          goCount,
         } = req.body;
 
         const image = req.file;
@@ -40,15 +39,14 @@ export const meetupsRoutes = (db) => {
           start,
           finish,
           author: JSON.parse(author),
-          speakers: JSON.parse(speakers)
+          speakers: speakers ? JSON.parse(speakers)
             .map((speaker) => ({
               id: faker.datatype.uuid(),
               ...speaker,
-            })),
+            })) : [],
           subject,
           excerpt,
           place,
-          goCount: Number(goCount),
           status: "REQUEST",
           imageUrl,
         };
@@ -76,7 +74,7 @@ export const meetupsRoutes = (db) => {
     }
   );
 
-  meetupsRouter.put(
+  meetupsRouter.patch(
     "/:id", 
     // ensureAuthenticated,
     upload.single('image'), 
@@ -92,14 +90,14 @@ export const meetupsRoutes = (db) => {
         const meetup = db.data.meetups[index];
         const newMeetupData = req.body;
 
-        const author = JSON.parse(newMeetupData.author);
-        const speakers = JSON.parse(newMeetupData.speakers);
+        const author = newMeetupData.author ? JSON.parse(newMeetupData.author) : meetup.author;
+        const speakers = newMeetupData.speakers ? JSON.parse(newMeetupData.speakers) : meetup.speakers;
 
         const image = req.file;
         const imageUrl = image ? getUrlFromPublicPath(image.path) : meetup.imageUrl;
 
         db.data.meetups[index] = {
-          ...db.data.meetups[index],
+          ...meetup,
           ...newMeetupData,
           ...{
             author,
@@ -124,7 +122,7 @@ export const meetupsRoutes = (db) => {
     res.send(meetup);
   });
 
-  meetupsRouter.delete("/:id", ensureAuthenticated, async (req, res) => {
+  meetupsRouter.delete("/:id"/* , ensureAuthenticated */, async (req, res) => {
     const index = db.data.meetups.findIndex((it) => it.id === req.params.id);
     if (index >= 0) {
       db.data.meetups.splice(index, 1);

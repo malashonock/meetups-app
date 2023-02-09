@@ -8,7 +8,6 @@ import {
   UserPreview,
   UserPreviewVariant,
 } from 'components';
-import { ShortUser } from 'model';
 import { useAuthStore } from 'hooks';
 
 import styles from './Header.module.scss';

@@ -1,4 +1,5 @@
 import { useNavigate, useParams } from 'react-router';
+import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 
 import {
@@ -10,9 +11,9 @@ import {
   UserPreviewVariant,
 } from 'components';
 import { MeetupStatus, ShortUser } from 'model';
-import { parseDateString } from 'utils';
+import { isPast, parseDate } from 'utils';
 import { NotFoundPage } from 'pages';
-import { useMeetupQuery } from 'hooks';
+import { useMeetup } from 'hooks';
 
 import styles from './ViewMeetupPage.module.scss';
 import defaultImage from 'assets/images/default-image.jpg';
@@ -22,17 +23,13 @@ import pin from './assets/pin.svg';
 
 const MAX_PREVIEW_USERS = 8;
 
-export const ViewMeetupPage = () => {
+export const ViewMeetupPage = observer(() => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { meetup, isLoading } = useMeetupQuery(id!);
+  const meetup = useMeetup(id);
   const votedUsers = meetup?.votedUsers ?? [];
 
-  if (isLoading || meetup === undefined) {
-    return <div>Загрузка...</div>;
-  }
-
-  if (meetup === null) {
+  if (!meetup) {
     return <NotFoundPage />;
   }
 
@@ -45,8 +42,34 @@ export const ViewMeetupPage = () => {
     excerpt,
     author,
     speakers,
-    imageUrl,
+    image,
   } = meetup;
+
+  const handleBack = (): void => navigate(-1);
+
+  const handleDeleteTopic = async (): Promise<void> => {
+    if (!window.confirm('Вы уверены, что хотите удалить тему?')) {
+      return;
+    }
+
+    await meetup?.delete();
+    navigate(`/meetups/topics`);
+  };
+
+  const handleApproveTopic = async (): Promise<void> => {
+    await meetup?.approve();
+    navigate(`/meetups/${id}/edit`);
+  };
+
+  const canPublish = meetup?.start && meetup?.finish && meetup?.place;
+
+  const handlePublishMeetup = async (): Promise<void> => {
+    await meetup?.publish();
+
+    const tab = start && isPast(start) ? 'finished' : 'upcoming';
+
+    navigate(`/meetups/${tab}`);
+  };
 
   const renderHeader = () => {
     if (status === MeetupStatus.REQUEST) {
@@ -75,7 +98,7 @@ export const ViewMeetupPage = () => {
         <figure className={styles.imageWrapper}>
           <img
             className={styles.image}
-            src={imageUrl ?? defaultImage}
+            src={image?.url ?? defaultImage}
             alt="Изображение митапа"
           />
         </figure>
@@ -100,13 +123,13 @@ export const ViewMeetupPage = () => {
 
     if (start) {
       const { formattedWeekdayLong, formattedDate, formattedTime } =
-        parseDateString(start);
+        parseDate(start);
 
-      date = `${formattedWeekdayLong}, ${formattedDate}`;
+      date = `${formattedWeekdayLong}, ${formattedDate}, ${start.getFullYear()}`;
       time = `${formattedTime}`;
 
       if (finish) {
-        const { formattedTime } = parseDateString(finish);
+        const { formattedTime } = parseDate(finish);
 
         time = time + ` — ${formattedTime}`;
       }
@@ -116,30 +139,36 @@ export const ViewMeetupPage = () => {
       <div className={styles.data}>
         <Typography
           component={TypographyComponent.Span}
-          className={styles.dataName}
+          className={classNames(styles.dataName, {
+            [styles.notFilledText]: !canPublish,
+          })}
         >
-          Время и место проведения
+          {canPublish
+            ? 'Время и место проведения'
+            : 'Перед публикацией заполните время и место проведения митапа'}
         </Typography>
-        <div className={styles.dataContent}>
-          <div className={styles.timePlaceInfo}>
-            <div className={styles.info}>
-              <img className={styles.image} src={calendar} alt="Дата" />
-              <Typography component={TypographyComponent.Span}>
-                {date || '—'}
-              </Typography>
-            </div>
-            <div className={styles.info}>
-              <img className={styles.image} src={clock} alt="Время" />
-              <Typography component={TypographyComponent.Span}>
-                {time || '—'}
-              </Typography>
-            </div>
-            <div className={styles.info}>
-              <img className={styles.image} src={pin} alt="Место" />
-              <Typography component={TypographyComponent.Span}>
-                {place || '—'}
-              </Typography>
-            </div>
+        <div
+          className={classNames(styles.dataContent, styles.timePlaceInfo, {
+            [styles.notFilledOutline]: !canPublish,
+          })}
+        >
+          <div className={styles.info}>
+            <img className={styles.image} src={calendar} alt="Дата" />
+            <Typography component={TypographyComponent.Span}>
+              {date || '—'}
+            </Typography>
+          </div>
+          <div className={styles.info}>
+            <img className={styles.image} src={clock} alt="Время" />
+            <Typography component={TypographyComponent.Span}>
+              {time || '—'}
+            </Typography>
+          </div>
+          <div className={styles.info}>
+            <img className={styles.image} src={pin} alt="Место" />
+            <Typography component={TypographyComponent.Span}>
+              {place || '—'}
+            </Typography>
           </div>
         </div>
       </div>
@@ -204,24 +233,43 @@ export const ViewMeetupPage = () => {
   const renderActions = () => {
     return (
       <div className={classNames(styles.dataContent, styles.actions)}>
-        <Button variant={ButtonVariant.Default} onClick={() => navigate(-1)}>
+        <Button
+          className={styles.actionButton}
+          variant={ButtonVariant.Default}
+          onClick={handleBack}
+        >
           Назад
         </Button>
-        {status === MeetupStatus.REQUEST && (
-          <div className={styles.actionsWrapper}>
-            <Button variant={ButtonVariant.Secondary}>Удалить</Button>
-            <Button variant={ButtonVariant.Primary}>Одобрить тему</Button>
-          </div>
-        )}
-        {status === MeetupStatus.DRAFT && (
-          <div className={styles.actionsWrapper}>
-            <Button variant={ButtonVariant.Secondary}>Удалить</Button>
-            <Button variant={ButtonVariant.Primary}>Опубликовать</Button>
-          </div>
-        )}
-        {status === MeetupStatus.CONFIRMED && (
-          <Button variant={ButtonVariant.Secondary}>Удалить</Button>
-        )}
+        <div className={styles.actionsWrapper}>
+          {status === MeetupStatus.REQUEST && (
+            <>
+              <Button
+                className={styles.actionButton}
+                variant={ButtonVariant.Secondary}
+                onClick={handleDeleteTopic}
+              >
+                Удалить
+              </Button>
+              <Button
+                className={styles.actionButton}
+                variant={ButtonVariant.Primary}
+                onClick={handleApproveTopic}
+              >
+                Одобрить тему
+              </Button>
+            </>
+          )}
+          {status === MeetupStatus.DRAFT && (
+            <Button
+              className={styles.actionButton}
+              variant={ButtonVariant.Primary}
+              onClick={handlePublishMeetup}
+              disabled={!canPublish}
+            >
+              Опубликовать
+            </Button>
+          )}
+        </div>
       </div>
     );
   };
@@ -259,4 +307,4 @@ export const ViewMeetupPage = () => {
       </div>
     </section>
   );
-};
+});

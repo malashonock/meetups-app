@@ -41,7 +41,7 @@ export const updateNewsArticle = async (
     }
   });
 
-  const { data: updatedArticle } = await httpClient.put<NewsDto>(
+  const { data: updatedArticle } = await httpClient.patch<NewsDto>(
     `/news/${id}`,
     formData,
   );
