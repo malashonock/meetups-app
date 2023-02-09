@@ -10,8 +10,9 @@ import {
 } from '@testing-library/react';
 
 import { ImageDropbox } from 'components';
-import { FileWithUrl } from 'types';
 import { getFileWithUrl } from 'utils/file';
+
+jest.mock('utils/file');
 
 // Mock useTranslation hook;
 jest.mock('react-i18next', () => ({
@@ -29,17 +30,6 @@ jest.mock('react-i18next', () => ({
     type: '3rdParty',
     init: () => {},
   },
-}));
-
-// Mock getFileWithUrl function
-jest.mock('utils/file', () => ({
-  ...jest.requireActual('utils/file'),
-  getFileWithUrl: jest.fn().mockImplementation(
-    (file: File, url?: string): FileWithUrl => ({
-      ...file,
-      url: 'test-url',
-    }),
-  ),
 }));
 
 type Bytes = number;
