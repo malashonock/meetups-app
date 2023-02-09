@@ -75,7 +75,8 @@ export function isPast(date: Date): boolean;
 export function isPast(dateString: string): boolean;
 export function isPast(dateOrString: Date | string): boolean {
   const now = new Date();
-  const date = dateOrString instanceof Date ? dateOrString : new Date(dateOrString);
+  const date =
+    dateOrString instanceof Date ? dateOrString : new Date(dateOrString);
   return date <= now;
 }
 

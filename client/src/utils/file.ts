@@ -5,4 +5,4 @@ export const getFileWithUrl = (file: File, url?: string): FileWithUrl => {
     url: url ?? URL.createObjectURL(file),
   });
   return fileWithUrl;
-}
+};

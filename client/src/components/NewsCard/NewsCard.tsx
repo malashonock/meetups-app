@@ -1,5 +1,5 @@
 import { Typography, TypographyComponent } from 'components';
-import { parseDateString } from 'helpers';
+import { parseDateString } from 'utils';
 import { NewsDto } from 'model';
 
 import styles from './NewsCard.module.scss';

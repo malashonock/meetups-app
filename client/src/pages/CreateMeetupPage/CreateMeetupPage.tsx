@@ -13,6 +13,8 @@ import {
 } from 'validation';
 
 import styles from './CreateMeetupPage.module.scss';
+import { useAuthStore } from 'hooks';
+import { observer } from 'mobx-react-lite';
 
 const createMeetupSteps = (): StepConfig<FormikProps<MeetupFields>>[] => [
   {
@@ -29,13 +31,13 @@ const createMeetupSteps = (): StepConfig<FormikProps<MeetupFields>>[] => [
   },
 ];
 
-export const CreateMeetupPage = (): JSX.Element => {
+export const CreateMeetupPage = observer((): JSX.Element => {
+  const { loggedUser } = useAuthStore();
+  const [finished, setFinished] = useState(false);
   const navigate = useNavigate();
 
-  const [finished, setFinished] = useState(false);
-
   const initialValues: MeetupFields = {
-    author: '',
+    author: loggedUser ? `${loggedUser.name} ${loggedUser.surname}` : '',
     subject: '',
     excerpt: '',
     place: '',
@@ -69,4 +71,4 @@ export const CreateMeetupPage = (): JSX.Element => {
       )}
     </Formik>
   );
-};
+});

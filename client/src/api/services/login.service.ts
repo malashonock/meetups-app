@@ -1,8 +1,14 @@
 import { httpClient } from 'api';
 import { Credentials, FullUser, User } from 'model';
 
+interface AuthResponse<T> {
+  user: T;
+}
+
 export const login = async (credentials: Credentials): Promise<FullUser> => {
-  const { data: authenticatedUser } = await httpClient.post('/login', {
+  const {
+    data: { user: authenticatedUser },
+  } = await httpClient.post<AuthResponse<FullUser>>('/login', {
     ...credentials,
   });
 
@@ -10,7 +16,9 @@ export const login = async (credentials: Credentials): Promise<FullUser> => {
 };
 
 export const checkLogin = async (): Promise<User> => {
-  const { data: authenticatedUser } = await httpClient.get<User>('/login');
+  const {
+    data: { user: authenticatedUser },
+  } = await httpClient.get<AuthResponse<User>>('/login');
   return authenticatedUser;
 };
 

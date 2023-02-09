@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { AxiosError } from 'axios';
 
 import { getStaticFile } from 'api';
-import { getFileWithUrl } from 'helpers';
+import { getFileWithUrl } from 'utils';
 import { FileWithUrl } from 'types';
 
 interface UseStaticFileQueryResult {

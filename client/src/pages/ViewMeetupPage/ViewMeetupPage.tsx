@@ -10,7 +10,7 @@ import {
   UserPreviewVariant,
 } from 'components';
 import { MeetupStatus, ShortUser } from 'model';
-import { parseDateString } from 'helpers';
+import { parseDateString } from 'utils';
 import { NotFoundPage } from 'pages';
 import { useMeetupQuery } from 'hooks';
 

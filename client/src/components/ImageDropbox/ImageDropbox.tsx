@@ -3,10 +3,10 @@ import classNames from 'classnames';
 import { FileError, FileRejection, useDropzone } from 'react-dropzone';
 import { Typography, TypographyComponent } from 'components';
 import { ReactComponent as UploadIcon } from './upload.svg';
-import { getFileSizeString } from 'helpers';
+import { getFileSizeString } from 'utils';
 import { FileWithUrl } from 'types';
 import styles from './ImageDropbox.module.scss';
-import { getFileWithUrl } from 'helpers/file';
+import { getFileWithUrl } from 'utils/file';
 
 const ACCEPT_FORMATS = ['.jpg', '.jpeg', '.png'];
 

@@ -10,7 +10,7 @@ import {
   UserPreviewVariant,
   VotesCount,
 } from 'components';
-import { isPast, parseDateString } from 'helpers';
+import { isPast, parseDateString } from 'utils';
 import { MeetupDto, MeetupStatus } from 'model';
 
 import styles from './MeetupCard.module.scss';

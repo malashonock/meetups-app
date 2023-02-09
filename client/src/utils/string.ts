@@ -3,5 +3,7 @@ export const getFirstLetter = (text: string): string => {
 };
 
 export const getInitials = (name: string, surname: string): string => {
-  return `${getFirstLetter(name)}${getFirstLetter(surname)}`.toLocaleUpperCase();
+  return `${getFirstLetter(name)}${getFirstLetter(
+    surname,
+  )}`.toLocaleUpperCase();
 };

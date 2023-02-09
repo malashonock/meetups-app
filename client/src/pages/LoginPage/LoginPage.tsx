@@ -1,8 +1,11 @@
+import { useContext } from 'react';
 import { useNavigate } from 'react-router';
+import { flowResult } from 'mobx';
+import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
-import * as yup from 'yup';
 import { Form, Formik, FormikHelpers, FormikProps } from 'formik';
 
+import { RootContext } from 'App';
 import {
   Button,
   ButtonVariant,
@@ -12,13 +15,13 @@ import {
 } from 'components';
 import { Credentials } from 'model';
 import { loginSchema } from 'validation';
-import { login } from 'api';
 
 import { ReactComponent as AnonymousUserIcon } from 'assets/images/anonymous-user.svg';
 import styles from './LoginPage.module.scss';
 
-export const LoginPage = (): JSX.Element => {
+export const LoginPage = observer((): JSX.Element => {
   const navigate = useNavigate();
+  const authStore = useContext(RootContext)?.authStore;
 
   const initialValues: Credentials = {
     username: '',
@@ -29,7 +32,7 @@ export const LoginPage = (): JSX.Element => {
     credentials: Credentials,
     { setSubmitting }: FormikHelpers<Credentials>,
   ): Promise<void> => {
-    await login(credentials);
+    await flowResult(authStore?.logIn(credentials));
     setSubmitting(false);
     navigate('/meetups');
   };
@@ -85,4 +88,4 @@ export const LoginPage = (): JSX.Element => {
       {renderForm}
     </Formik>
   );
-};
+});

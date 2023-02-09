@@ -4,7 +4,7 @@ import { ReactComponent as ImagePlaceholder } from './assets/image-placeholder.s
 import { ReactComponent as CloseIcon } from './assets/close.svg';
 import { ReactComponent as ChangeImageIcon } from './assets/change-photo.svg';
 import { FileWithUrl } from 'types';
-import { getFileSizeString } from 'helpers';
+import { getFileSizeString } from 'utils';
 import styles from './ImagePreview.module.scss';
 
 export enum ImagePreviewMode {
