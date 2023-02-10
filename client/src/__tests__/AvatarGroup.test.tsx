@@ -5,13 +5,13 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import { AvatarGroup } from 'components';
-import { generateEmployee } from 'mocks';
+import { generateEmployee } from 'model/__fakes__';
 import { User } from 'stores';
 
 const mockUsers = (userCount: number): User[] =>
   Array(userCount)
     .fill(undefined)
-    .map((element: undefined): User => generateEmployee());
+    .map((): User => generateEmployee());
 
 const mockContainerRef = (
   containerWidth: number = 500,

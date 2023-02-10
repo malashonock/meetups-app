@@ -4,33 +4,15 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import { AuthToggle } from 'components';
-import { RootStore, User } from 'stores';
-import { mockEmployee as mockedLoggedUser } from 'mocks';
+import { RootStore } from 'stores';
+import { mockEmployee as mockedLoggedUser } from 'model/__fakes__';
+import { useAuthStore } from 'hooks/useAuthStore';
 
 // Mock useAuthStore hook
-import { useAuthStore } from 'hooks/useAuthStore';
-jest.mock('hooks/useAuthStore', () => ({
-  useAuthStore: jest.fn(),
-}));
+jest.mock('hooks/useAuthStore');
 const mockUseAuthStore = useAuthStore as jest.MockedFunction<
   typeof useAuthStore
 >;
-
-// Mock useTranslation hook;
-jest.mock('react-i18next', () => ({
-  useTranslation: () => {
-    return {
-      t: (key: string) => key,
-      i18n: {
-        changeLanguage: () => new Promise(() => {}),
-      },
-    };
-  },
-  initReactI18next: {
-    type: '3rdParty',
-    init: () => {},
-  },
-}));
 
 const MockLoginRouter = ({ children }: PropsWithChildren): JSX.Element => (
   <MemoryRouter initialEntries={['/somepage']}>

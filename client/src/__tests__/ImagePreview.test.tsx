@@ -1,29 +1,8 @@
-import { PropsWithChildren } from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { ImagePreview, ImagePreviewMode } from 'components';
 import { FileWithUrl } from 'types';
-
-// Mock useTranslation hook;
-jest.mock('react-i18next', () => ({
-  useTranslation: () => {
-    return {
-      t: (key: string) => key,
-      i18n: {
-        t: (key: string) => key,
-        changeLanguage: () => new Promise(() => {}),
-      },
-    };
-  },
-  Trans: ({ children }: PropsWithChildren): JSX.Element => <>{children}</>,
-  initReactI18next: {
-    type: '3rdParty',
-    init: () => {},
-  },
-}));
-
-type Bytes = number;
 
 const mockImage = (url: string = 'test-url'): FileWithUrl => {
   const file = new File(['test'], `test.jpg`, {

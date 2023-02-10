@@ -11,22 +11,6 @@ import userEvent from '@testing-library/user-event';
 import { DateTimePicker } from 'components';
 import { Nullable } from 'types';
 
-// Mock useTranslation hook;
-jest.mock('react-i18next', () => ({
-  useTranslation: () => {
-    return {
-      t: (key: string) => key,
-      i18n: {
-        changeLanguage: () => new Promise(() => {}),
-      },
-    };
-  },
-  initReactI18next: {
-    type: '3rdParty',
-    init: () => {},
-  },
-}));
-
 interface TestFormValues {
   date: Nullable<Date>;
 }

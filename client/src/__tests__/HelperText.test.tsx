@@ -4,8 +4,6 @@ import { HelperText, InputFieldVariant } from 'components';
 
 describe('HelperText', () => {
   it('renders text content', () => {
-    const handleClick = jest.fn();
-
     render(<HelperText>Hint text</HelperText>);
 
     const hintText = screen.getByText('Hint text');

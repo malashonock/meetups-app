@@ -1,38 +1,12 @@
 import { PropsWithChildren } from 'react';
-import {
-  act,
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-} from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Form, Formik, FormikErrors, FormikHelpers } from 'formik';
 
 import { ImageUploader } from 'components';
 import { Nullable, FileWithUrl } from 'types';
-import { getFileWithUrl } from 'utils/file';
+import { Bytes } from 'utils';
 
 jest.mock('utils/file');
-
-// Mock useTranslation hook;
-jest.mock('react-i18next', () => ({
-  useTranslation: () => {
-    return {
-      t: (key: string) => key,
-      i18n: {
-        t: (key: string) => key,
-        changeLanguage: () => new Promise(() => {}),
-      },
-    };
-  },
-  Trans: ({ children }: PropsWithChildren): JSX.Element => <>{children}</>,
-  initReactI18next: {
-    type: '3rdParty',
-    init: () => {},
-  },
-}));
-
-type Bytes = number;
 
 const mockFile = (
   extension: string = 'jpg',

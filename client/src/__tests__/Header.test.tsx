@@ -5,7 +5,7 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import { Header } from 'components';
 import { RootStore } from 'stores';
-import { mockEmployee as mockedLoggedUser } from 'mocks';
+import { mockEmployee as mockedLoggedUser } from 'model/__fakes__';
 
 // Mock useAuthStore hook
 import { useAuthStore } from 'hooks/useAuthStore';
@@ -15,22 +15,6 @@ jest.mock('hooks/useAuthStore', () => ({
 const mockUseAuthStore = useAuthStore as jest.MockedFunction<
   typeof useAuthStore
 >;
-
-// Mock useTranslation hook;
-jest.mock('react-i18next', () => ({
-  useTranslation: () => {
-    return {
-      t: (key: string) => key,
-      i18n: {
-        changeLanguage: () => new Promise(() => {}),
-      },
-    };
-  },
-  initReactI18next: {
-    type: '3rdParty',
-    init: () => {},
-  },
-}));
 
 beforeEach(() => {
   mockUseAuthStore.mockReturnValue({

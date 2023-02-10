@@ -1,6 +1,6 @@
 import { screen, render } from '@testing-library/react';
 
-import { InputLabel, InputFieldVariant } from 'components';
+import { InputLabel } from 'components';
 
 describe('InputLabel', () => {
   it('renders text content', () => {

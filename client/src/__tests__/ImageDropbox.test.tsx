@@ -1,6 +1,5 @@
 /* eslint-disable testing-library/no-unnecessary-act */
 
-import { PropsWithChildren } from 'react';
 import {
   act,
   fireEvent,
@@ -10,29 +9,10 @@ import {
 } from '@testing-library/react';
 
 import { ImageDropbox } from 'components';
+import { Bytes } from 'utils';
 import { getFileWithUrl } from 'utils/file';
 
 jest.mock('utils/file');
-
-// Mock useTranslation hook;
-jest.mock('react-i18next', () => ({
-  useTranslation: () => {
-    return {
-      t: (key: string) => key,
-      i18n: {
-        t: (key: string) => key,
-        changeLanguage: () => new Promise(() => {}),
-      },
-    };
-  },
-  Trans: ({ children }: PropsWithChildren): JSX.Element => <>{children}</>,
-  initReactI18next: {
-    type: '3rdParty',
-    init: () => {},
-  },
-}));
-
-type Bytes = number;
 
 const mockFile = (
   extension: string,
