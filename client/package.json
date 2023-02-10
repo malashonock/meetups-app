@@ -104,7 +104,8 @@
       "cobertura"
     ],
     "moduleNameMapper": {
-      "axios": "axios/dist/node/axios.cjs"
+      "axios": "axios/dist/node/axios.cjs",
+      "react-i18next": "<rootDir>/__mocks__/react-i18next.tsx"
     }
   },
   "browserslist": {
