@@ -16,7 +16,7 @@ import {
 import { isPast, parseDate } from 'utils';
 import { MeetupStatus } from 'model';
 import { Meetup, User } from 'stores';
-import { useAuthStore, useLocale, useUserStore } from 'hooks';
+import { useAuthStore, useLocale, useUser } from 'hooks';
 import { Optional } from 'types';
 
 import styles from './MeetupCard.module.scss';
@@ -46,8 +46,7 @@ export const MeetupCard = observer(
     } = meetup;
 
     const { loggedUser } = useAuthStore();
-    const { userStore } = useUserStore();
-    const author: Optional<User> = userStore?.findUser(authorData);
+    const author: Optional<User> = useUser(authorData);
     const [locale] = useLocale();
     const { i18n, t } = useTranslation();
 
