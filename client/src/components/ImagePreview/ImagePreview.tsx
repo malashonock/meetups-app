@@ -34,7 +34,10 @@ export const ImagePreview = ({
   };
 
   return (
-    <div className={classNames(styles.preview, styles[variant])}>
+    <div
+      className={classNames(styles.preview, styles[variant])}
+      data-testid="image-preview"
+    >
       <figure className={styles.image}>
         {url ? (
           <img src={url} alt={t('imagePreview.imgAlt') || 'Uploaded image'} />
