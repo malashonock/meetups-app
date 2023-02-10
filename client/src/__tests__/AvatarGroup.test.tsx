@@ -5,13 +5,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import { AvatarGroup } from 'components';
-import { generateEmployee } from 'model/__fakes__';
-import { User } from 'stores';
-
-const mockUsers = (userCount: number): User[] =>
-  Array(userCount)
-    .fill(undefined)
-    .map((): User => generateEmployee());
+import { generateUsers } from 'model/__fakes__';
 
 const mockContainerRef = (
   containerWidth: number = 500,
@@ -41,7 +35,7 @@ describe('AvatarGroup', () => {
     it('for width of 500px and 20 users, renders 7 normal avatars and 1 "rest count" avatar', async () => {
       mockContainerRef(500);
 
-      const { container } = render(<AvatarGroup users={mockUsers(20)} />);
+      const { container } = render(<AvatarGroup users={generateUsers(20)} />);
 
       const normalAvatars = container.querySelectorAll('.initials');
       expect(normalAvatars.length).toBe(7);
@@ -54,7 +48,7 @@ describe('AvatarGroup', () => {
     it('for width of 400px and 20 users, renders 6 normal avatars and 1 "rest count" avatar', async () => {
       mockContainerRef(400);
 
-      const { container } = render(<AvatarGroup users={mockUsers(20)} />);
+      const { container } = render(<AvatarGroup users={generateUsers(20)} />);
 
       const normalAvatars = container.querySelectorAll('.initials');
       expect(normalAvatars.length).toBe(6);
@@ -67,7 +61,7 @@ describe('AvatarGroup', () => {
     it('for width of 300px and 20 users, renders 4 normal avatars and 1 "rest count" avatar', async () => {
       mockContainerRef(300);
 
-      const { container } = render(<AvatarGroup users={mockUsers(20)} />);
+      const { container } = render(<AvatarGroup users={generateUsers(20)} />);
 
       const normalAvatars = container.querySelectorAll('.initials');
       expect(normalAvatars.length).toBe(4);
@@ -82,7 +76,7 @@ describe('AvatarGroup', () => {
     it('for width of 500px and 8 users, renders 8 normal avatars and no "rest count" avatar', async () => {
       mockContainerRef(500);
 
-      const { container } = render(<AvatarGroup users={mockUsers(8)} />);
+      const { container } = render(<AvatarGroup users={generateUsers(8)} />);
 
       const normalAvatars = container.querySelectorAll('.initials');
       expect(normalAvatars.length).toBe(8);
@@ -94,7 +88,7 @@ describe('AvatarGroup', () => {
     it('for width of 500px and 6 users, renders 6 normal avatars and no "rest count" avatar', async () => {
       mockContainerRef(500);
 
-      const { container } = render(<AvatarGroup users={mockUsers(6)} />);
+      const { container } = render(<AvatarGroup users={generateUsers(6)} />);
 
       const normalAvatars = container.querySelectorAll('.initials');
       expect(normalAvatars.length).toBe(6);
@@ -109,7 +103,7 @@ describe('AvatarGroup', () => {
       mockContainerRef(500);
 
       const { container } = render(
-        <AvatarGroup users={mockUsers(10)} max={3} />,
+        <AvatarGroup users={generateUsers(10)} max={3} />,
       );
 
       const normalAvatars = container.querySelectorAll('.initials');
@@ -124,7 +118,7 @@ describe('AvatarGroup', () => {
       mockContainerRef(500);
 
       const { container } = render(
-        <AvatarGroup users={mockUsers(2)} max={3} />,
+        <AvatarGroup users={generateUsers(2)} max={3} />,
       );
 
       const normalAvatars = container.querySelectorAll('.initials');
@@ -139,7 +133,7 @@ describe('AvatarGroup', () => {
     it('should not render any avatars', () => {
       mockContainerRef(0, 0, 0);
 
-      const { container } = render(<AvatarGroup users={mockUsers(10)} />);
+      const { container } = render(<AvatarGroup users={generateUsers(10)} />);
 
       const normalAvatars = container.querySelectorAll('.initials');
       expect(normalAvatars.length).toBe(0);

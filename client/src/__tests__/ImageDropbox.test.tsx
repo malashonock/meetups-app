@@ -9,26 +9,15 @@ import {
 } from '@testing-library/react';
 
 import { ImageDropbox } from 'components';
-import { Bytes } from 'utils';
+import {
+  mockImage,
+  mockLargeImage,
+  mockLargeNonImage,
+  mockNonImage,
+} from 'model/__fakes__';
 import { getFileWithUrl } from 'utils/file';
 
 jest.mock('utils/file');
-
-const mockFile = (
-  extension: string,
-  size: Bytes,
-  type: string = 'image',
-): File => {
-  const file = new File(['test'], `test.${extension}`, {
-    type: `${type}/${extension}`,
-  });
-  Object.defineProperty(file, 'size', {
-    configurable: true,
-    enumerable: true,
-    value: size,
-  });
-  return file;
-};
 
 const eventDataFrom = (fileOrFiles: File | File[]) => {
   const files = Array.isArray(fileOrFiles) ? fileOrFiles : [fileOrFiles];
@@ -49,7 +38,7 @@ const eventDataFrom = (fileOrFiles: File | File[]) => {
 
 describe('ImageDropbox', () => {
   it('accepts images with extensions .jpg, .jpeg, .png and size up to 10 Mb', async () => {
-    const goodImage = mockFile('jpg', 1_000_000);
+    const goodImage = mockImage;
     const mockedHandleDrop = jest.fn();
 
     render(<ImageDropbox onDrop={mockedHandleDrop} />);
@@ -67,7 +56,7 @@ describe('ImageDropbox', () => {
   });
 
   it('rejects images with size larger than 10 Mb', async () => {
-    const tooLargeImage = mockFile('png', 1_000_000_000);
+    const tooLargeImage = mockLargeImage;
     const mockedHandleDrop = jest.fn();
 
     render(<ImageDropbox onDrop={mockedHandleDrop} />);
@@ -83,7 +72,7 @@ describe('ImageDropbox', () => {
   });
 
   it('rejects files of types other than images', async () => {
-    const notImage = mockFile('pdf', 1_000_000);
+    const notImage = mockNonImage;
     const mockedHandleDrop = jest.fn();
 
     render(<ImageDropbox onDrop={mockedHandleDrop} />);
@@ -99,7 +88,7 @@ describe('ImageDropbox', () => {
   });
 
   it('rejects attempts to upload multiple images', async () => {
-    const goodImage = mockFile('jpg', 1_000_000);
+    const goodImage = mockImage;
     const mockedHandleDrop = jest.fn();
 
     render(<ImageDropbox onDrop={mockedHandleDrop} />);
@@ -115,7 +104,7 @@ describe('ImageDropbox', () => {
   });
 
   it('gets green if a file is being dragged over of acceptable type and size', async () => {
-    const goodImage = mockFile('jpg', 1_000_000);
+    const goodImage = mockImage;
 
     render(<ImageDropbox onDrop={jest.fn()} />);
 
@@ -130,7 +119,7 @@ describe('ImageDropbox', () => {
   });
 
   it('gets red if a file is being dragged over of unacceptable type or size', async () => {
-    const badFile = mockFile('avi', 1_000_000_000);
+    const badFile = mockLargeNonImage;
 
     render(<ImageDropbox onDrop={jest.fn()} />);
 

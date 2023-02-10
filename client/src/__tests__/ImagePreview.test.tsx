@@ -2,22 +2,11 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { ImagePreview, ImagePreviewMode } from 'components';
-import { FileWithUrl } from 'types';
-
-const mockImage = (url: string = 'test-url'): FileWithUrl => {
-  const file = new File(['test'], `test.jpg`, {
-    type: `image/jpg`,
-  });
-  Object.defineProperties(file, {
-    size: { value: 1_000_000 },
-    url: { value: url },
-  });
-  return file as FileWithUrl;
-};
+import { mockImageWithUrl } from 'model/__fakes__';
 
 describe('ImagePreview', () => {
   it('renders the provided image', async () => {
-    const testImage = mockImage();
+    const testImage = mockImageWithUrl;
 
     render(<ImagePreview image={testImage} onClear={jest.fn()} />);
 
@@ -26,7 +15,7 @@ describe('ImagePreview', () => {
   });
 
   it('when clicked on close button, calls onClear callback', () => {
-    const testImage = mockImage();
+    const testImage = mockImageWithUrl;
     const mockedHandleClose = jest.fn();
 
     render(<ImagePreview image={testImage} onClear={mockedHandleClose} />);
@@ -39,7 +28,7 @@ describe('ImagePreview', () => {
 
   describe('in Thumbnail mode', () => {
     it('renders file name', async () => {
-      const testImage = mockImage();
+      const testImage = mockImageWithUrl;
 
       render(
         <ImagePreview
@@ -54,7 +43,7 @@ describe('ImagePreview', () => {
     });
 
     it('renders file size', async () => {
-      const testImage = mockImage();
+      const testImage = mockImageWithUrl;
 
       render(
         <ImagePreview
@@ -71,7 +60,7 @@ describe('ImagePreview', () => {
 
   describe('in Large mode', () => {
     it('does not render file name', async () => {
-      const testImage = mockImage();
+      const testImage = mockImageWithUrl;
 
       render(
         <ImagePreview
@@ -86,7 +75,7 @@ describe('ImagePreview', () => {
     });
 
     it('does not render file size', async () => {
-      const testImage = mockImage();
+      const testImage = mockImageWithUrl;
 
       render(
         <ImagePreview

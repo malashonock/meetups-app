@@ -3,36 +3,14 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Form, Formik, FormikErrors, FormikHelpers } from 'formik';
 
 import { ImageUploader } from 'components';
-import { Nullable, FileWithUrl } from 'types';
-import { Bytes } from 'utils';
+import { Nullable } from 'types';
+import {
+  mockImageWithUrl,
+  mockLargeImageWithUrl,
+  mockNonImageWithUrl,
+} from 'model/__fakes__';
 
 jest.mock('utils/file');
-
-const mockFile = (
-  extension: string = 'jpg',
-  size: Bytes = 1_000_000,
-  type: string = 'image',
-  url: string = 'http://localhost/test-url',
-): FileWithUrl => {
-  const file = new File(['test'], `test.${extension}`, {
-    type: `${type}/${extension}`,
-  });
-  Object.defineProperties(file, {
-    size: {
-      configurable: true,
-      enumerable: true,
-      writable: true,
-      value: size,
-    },
-    url: {
-      configurable: true,
-      enumerable: true,
-      writable: true,
-      value: url,
-    },
-  });
-  return file as FileWithUrl;
-};
 
 interface TestFormValues {
   image: Nullable<File>;
@@ -83,7 +61,7 @@ beforeEach(() => {
 
 describe('ImageUploader', () => {
   it('returns valid selected date and time value', async () => {
-    const testImage = mockFile();
+    const testImage = mockImageWithUrl;
 
     render(<ImageUploader name="image" />, {
       wrapper: TestForm,
@@ -101,7 +79,7 @@ describe('ImageUploader', () => {
   });
 
   it('pre-fills field with initial value', async () => {
-    const testImage = mockFile();
+    const testImage = mockImageWithUrl;
 
     mockInitialValues = {
       image: testImage,
@@ -142,7 +120,7 @@ describe('ImageUploader', () => {
   });
 
   it('shows error message if uploaded file is not image', async () => {
-    const badFile = mockFile('pdf', 1_000_000, 'document');
+    const badFile = mockNonImageWithUrl;
     const ERR_MSG = 'imageDropbox.fileTypeHint';
 
     mockValidate = (values: TestFormValues): FormikErrors<TestFormValues> => {
@@ -167,7 +145,7 @@ describe('ImageUploader', () => {
   });
 
   it('shows error message if uploaded image is larger than 10 Mb', async () => {
-    const tooLargeImage = mockFile('jpg', 1_000_000_000, 'image');
+    const tooLargeImage = mockLargeImageWithUrl;
     const ERR_MSG = 'imageDropbox.fileSizeHint';
 
     mockValidate = (values: TestFormValues): FormikErrors<TestFormValues> => {

@@ -5,7 +5,7 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import { Header } from 'components';
 import { RootStore } from 'stores';
-import { mockEmployee as mockedLoggedUser } from 'model/__fakes__';
+import { mockUser as mockedLoggedUser } from 'model/__fakes__';
 
 // Mock useAuthStore hook
 import { useAuthStore } from 'hooks/useAuthStore';
