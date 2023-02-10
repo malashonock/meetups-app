@@ -6,5 +6,6 @@ export * from './useMeetup';
 export * from './useNewsStore';
 export * from './useNewsArticle';
 export * from './useUiStore';
+export * from './useLocale';
 export * from './useTouchOnLocaleChanged';
 export * from './useResizeEffect';

@@ -12,7 +12,7 @@ import {
   TypographyComponent,
 } from 'components';
 import { Credentials } from 'model';
-import { useAuthStore, useUiStore, useTouchOnLocaleChanged } from 'hooks';
+import { useAuthStore, useLocale, useTouchOnLocaleChanged } from 'hooks';
 import { loginSchema } from 'validation';
 
 import { ReactComponent as AnonymousUserIcon } from 'assets/images/anonymous-user.svg';
@@ -24,7 +24,7 @@ const LoginForm = ({
   isSubmitting,
   setFieldTouched,
 }: FormikProps<Credentials>): JSX.Element => {
-  const { locale } = useUiStore();
+  const [locale] = useLocale();
   const { t } = useTranslation();
   useTouchOnLocaleChanged(locale, errors, touched, setFieldTouched);
 

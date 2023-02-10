@@ -26,7 +26,7 @@ import { User } from 'stores';
 import {
   useMeetup,
   useTouchOnLocaleChanged,
-  useUiStore,
+  useLocale,
   useUserStore,
 } from 'hooks';
 import { Nullable } from 'types';
@@ -44,7 +44,7 @@ const EditMeetupForm = ({
   const { users } = useUserStore();
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { locale } = useUiStore();
+  const [locale] = useLocale();
   useTouchOnLocaleChanged(locale, errors, touched, setFieldTouched);
 
   const isTouched = Object.entries(touched).length > 0;

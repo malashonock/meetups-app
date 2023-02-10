@@ -15,7 +15,7 @@ import {
   TypographyComponent,
 } from 'components';
 import { MeetupFields } from 'model';
-import { useUiStore, useTouchOnLocaleChanged } from 'hooks';
+import { useLocale, useTouchOnLocaleChanged } from 'hooks';
 
 import styles from './CreateMeetupOptionalFields.module.scss';
 
@@ -27,7 +27,7 @@ export const CreateMeetupOptionalFields = ({
   handleFinish,
 }: StepperContext<FormikProps<MeetupFields>>): JSX.Element => {
   const { t } = useTranslation();
-  const { locale } = useUiStore();
+  const [locale] = useLocale();
   useTouchOnLocaleChanged(locale, errors, touched, setFieldTouched);
 
   const hasErrors = Object.entries(errors).length > 0;
