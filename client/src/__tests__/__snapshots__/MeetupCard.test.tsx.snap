@@ -1,0 +1,178 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MeetupCard after topic approval should match snapshot 1`] = `
+<DocumentFragment>
+  <article
+    class="card upcoming"
+  >
+    <header
+      class="header"
+    >
+      <ul
+        class="appointment"
+      >
+        <li
+          class="appointmentItem"
+        >
+          <span
+            class="typography span date noWrap"
+          >
+            m, 15 марта
+          </span>
+        </li>
+        <li
+          class="appointmentItem"
+        >
+          <span
+            class="typography span time noWrap"
+          >
+            14:00
+          </span>
+        </li>
+        <li
+          class="appointmentItem"
+        >
+          <span
+            class="typography span location noWrap"
+          >
+            room 123
+          </span>
+        </li>
+      </ul>
+      <div
+        class="controls"
+      >
+        <button
+          class="button"
+          data-testid="delete-button"
+        >
+          <svg>
+            delete.svg
+          </svg>
+        </button>
+        <button
+          class="button"
+          data-testid="edit-button"
+        >
+          <svg>
+            edit.svg
+          </svg>
+        </button>
+      </div>
+    </header>
+    <div
+      class="body"
+    >
+      <h2
+        class="typography h2 subject"
+      >
+        Test meetup topic
+      </h2>
+      <p
+        class="typography p excerpt"
+      >
+        Test meetup description
+      </p>
+    </div>
+    <footer
+      class="footer"
+    >
+      <div
+        class="user card"
+        data-testid="user-preview"
+      >
+        <div
+          class="avatar"
+        >
+          <span
+            class="typography span initials"
+          >
+            JD
+          </span>
+        </div>
+        <span
+          class="typography span name noWrap"
+        >
+          John Doe
+        </span>
+      </div>
+    </footer>
+  </article>
+</DocumentFragment>
+`;
+
+exports[`MeetupCard before topic approval should match snapshot 1`] = `
+<DocumentFragment>
+  <article
+    class="card topic"
+  >
+    <header
+      class="header"
+    >
+      <div
+        class="user card"
+        data-testid="user-preview"
+      >
+        <div
+          class="avatar"
+        >
+          <span
+            class="typography span initials"
+          >
+            JD
+          </span>
+        </div>
+        <span
+          class="typography span name noWrap"
+        >
+          John Doe
+        </span>
+      </div>
+      <div
+        class="controls"
+      >
+        <button
+          class="button"
+          data-testid="delete-button"
+        >
+          <svg>
+            delete.svg
+          </svg>
+        </button>
+      </div>
+    </header>
+    <div
+      class="body"
+    >
+      <h2
+        class="typography h2 subject"
+      >
+        Test meetup topic
+      </h2>
+      <p
+        class="typography p excerpt"
+      >
+        Test meetup description
+      </p>
+    </div>
+    <footer
+      class="footer"
+    >
+      <div
+        class="wrapper"
+      >
+        <svg
+          class="icon"
+        >
+          profile.svg
+        </svg>
+        <p
+          class="typography p text"
+        >
+          votesCount.text
+        </p>
+      </div>
+    </footer>
+  </article>
+</DocumentFragment>
+`;
