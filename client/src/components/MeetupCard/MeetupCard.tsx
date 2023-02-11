@@ -97,7 +97,10 @@ export const MeetupCard = observer(
     };
 
     return (
-      <article className={classNames(styles.card, styles[getVariant()])}>
+      <article
+        className={classNames(styles.card, styles[getVariant()])}
+        data-testid="meetup-card"
+      >
         <header className={styles.header}>
           {status === MeetupStatus.REQUEST ? (
             author !== undefined && (

@@ -26,7 +26,7 @@ export const NewsCard = observer(({ news }: NewsCardProps): JSX.Element => {
   });
 
   return (
-    <article className={styles.news}>
+    <article className={styles.news} data-testid="news-card">
       <figure className={styles.image}>
         <img src={image?.url ?? defaultImage} alt={title} />
       </figure>
