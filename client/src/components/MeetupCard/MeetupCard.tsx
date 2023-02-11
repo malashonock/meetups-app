@@ -66,7 +66,7 @@ export const MeetupCard = observer(
         return;
       }
 
-      await meetup?.delete();
+      await meetup.delete();
     };
 
     let formattedWeekdayShort: string | undefined;
