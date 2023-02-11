@@ -10,8 +10,11 @@ describe('ImagePreview', () => {
 
     render(<ImagePreview image={testImage} onClear={jest.fn()} />);
 
-    const image = screen.getByAltText('imagePreview.imgAlt');
+    const image = screen.getByAltText(
+      'imagePreview.imgAlt',
+    ) as HTMLImageElement;
     expect(image).toBeInTheDocument();
+    expect(image.src).toBe(testImage.url);
   });
 
   it('when clicked on close button, calls onClear callback', () => {
