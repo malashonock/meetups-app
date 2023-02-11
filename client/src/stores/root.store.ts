@@ -21,4 +21,8 @@ export class RootStore {
     await this.newsStore.loadNews();
     return this;
   }
+
+  destroy(): void {
+    this.uiStore.destroy();
+  }
 }

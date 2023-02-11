@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx';
-import { makePersistable } from 'mobx-persist-store';
+import { makePersistable, stopPersisting } from 'mobx-persist-store';
 
 import { RootStore } from 'stores';
 
@@ -23,5 +23,9 @@ export class UiStore {
 
     this.locale = Locale.RU;
     this.showOverlay = false;
+  }
+
+  destroy(): void {
+    stopPersisting(this);
   }
 }
