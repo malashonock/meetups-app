@@ -6,12 +6,15 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { Header } from 'components';
 import { RootStore } from 'stores';
 import { mockUser as mockedLoggedUser } from 'model/__fakes__';
+import { useAuthStore } from 'hooks';
 
 // Mock useAuthStore hook
-import { useAuthStore } from 'hooks/useAuthStore';
-jest.mock('hooks/useAuthStore', () => ({
-  useAuthStore: jest.fn(),
-}));
+jest.mock('hooks', () => {
+  return {
+    ...jest.requireActual('hooks'),
+    useAuthStore: jest.fn(),
+  };
+});
 const mockUseAuthStore = useAuthStore as jest.MockedFunction<
   typeof useAuthStore
 >;
