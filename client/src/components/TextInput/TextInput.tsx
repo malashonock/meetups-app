@@ -1,9 +1,7 @@
 import { HTMLAttributes } from 'react';
 
-type TextInputProps = {
-  // TODO: multiline?
-} & HTMLAttributes<HTMLInputElement>;
-
 export const TextInput = ({
   ...nativeHtmlProps
-}: TextInputProps): JSX.Element => <input type="text" {...nativeHtmlProps} />;
+}: HTMLAttributes<HTMLInputElement>): JSX.Element => (
+  <input type="text" {...nativeHtmlProps} />
+);
