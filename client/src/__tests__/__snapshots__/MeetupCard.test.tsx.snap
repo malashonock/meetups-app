@@ -4,6 +4,7 @@ exports[`MeetupCard after topic approval should match snapshot 1`] = `
 <DocumentFragment>
   <article
     class="card upcoming"
+    data-testid="meetup-card"
   >
     <header
       class="header"
@@ -105,6 +106,7 @@ exports[`MeetupCard before topic approval should match snapshot 1`] = `
 <DocumentFragment>
   <article
     class="card topic"
+    data-testid="meetup-card"
   >
     <header
       class="header"
