@@ -2,10 +2,10 @@
 
 import { PropsWithChildren } from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Form, Formik, FormikErrors, FormikHelpers } from 'formik';
 
 import { TextField } from 'components';
-import userEvent from '@testing-library/user-event';
 
 interface TestFormValues {
   email: string;
