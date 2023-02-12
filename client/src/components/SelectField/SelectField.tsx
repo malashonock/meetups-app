@@ -106,7 +106,7 @@ export const SelectField = <TValue extends unknown>({
       };
 
       return (
-        <div {...containerAttributes}>
+        <div {...containerAttributes} data-testid="select-field">
           <ReactSelect
             {...selectProps}
             name={field.name}
