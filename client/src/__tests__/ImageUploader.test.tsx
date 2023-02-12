@@ -60,7 +60,7 @@ beforeEach(() => {
 });
 
 describe('ImageUploader', () => {
-  it('returns valid selected date and time value', async () => {
+  it('returns valid uploaded image value', async () => {
     const testImage = mockImageWithUrl;
 
     render(<ImageUploader name="image" />, {
