@@ -20,43 +20,36 @@ describe('TabsManager', () => {
   it('renders all provided tabs', () => {
     render(<TabsManager tabs={testTabs} />);
 
-    const tab1 = screen.queryByText('Tab 1') as HTMLElement;
-    expect(tab1).toBeInTheDocument();
-
-    const tab2 = screen.getByText('Tab 2') as HTMLElement;
-    expect(tab2).toBeInTheDocument();
-
-    userEvent.click(tab2);
-
-    expect(tab1).toBeInTheDocument();
-    expect(tab2).toBeInTheDocument();
-
-    userEvent.click(tab1);
-
-    expect(tab1).toBeInTheDocument();
-    expect(tab2).toBeInTheDocument();
+    expect(screen.getByText('Tab 1')).toBeInTheDocument();
+    expect(screen.getByText('Tab 2')).toBeInTheDocument();
   });
 
   it('renders only the selected tab content', () => {
     render(<TabsManager tabs={testTabs} />);
 
-    const tab1 = screen.queryByText('Tab 1') as HTMLElement;
-    const tab2 = screen.getByText('Tab 2') as HTMLElement;
+    expect(screen.queryByText('Tab 1 content')?.parentElement).toHaveClass(
+      'visible',
+    );
+    expect(screen.queryByText('Tab 2 content')?.parentElement).toHaveClass(
+      'hidden',
+    );
 
-    const tabContent1 = screen.queryByText('Tab 1 content');
-    expect(tabContent1?.parentElement).toHaveClass('visible');
+    userEvent.click(screen.getByText('Tab 2') as HTMLElement);
 
-    const tabContent2 = screen.queryByText('Tab 2 content');
-    expect(tabContent2?.parentElement).toHaveClass('hidden');
+    expect(screen.queryByText('Tab 1 content')?.parentElement).toHaveClass(
+      'hidden',
+    );
+    expect(screen.queryByText('Tab 2 content')?.parentElement).toHaveClass(
+      'visible',
+    );
 
-    userEvent.click(tab2);
+    userEvent.click(screen.queryByText('Tab 1') as HTMLElement);
 
-    expect(tabContent1?.parentElement).toHaveClass('hidden');
-    expect(tabContent2?.parentElement).toHaveClass('visible');
-
-    userEvent.click(tab1);
-
-    expect(tabContent1?.parentElement).toHaveClass('visible');
-    expect(tabContent2?.parentElement).toHaveClass('hidden');
+    expect(screen.queryByText('Tab 1 content')?.parentElement).toHaveClass(
+      'visible',
+    );
+    expect(screen.queryByText('Tab 2 content')?.parentElement).toHaveClass(
+      'hidden',
+    );
   });
 });
