@@ -23,7 +23,7 @@ beforeEach(() => {
   });
 });
 
-const MockLoginRouter = ({ children }: PropsWithChildren): JSX.Element => (
+const MockRouter = ({ children }: PropsWithChildren): JSX.Element => (
   <MemoryRouter initialEntries={['/protected']}>
     <Routes>
       <Route path="/" element={<h1>Home page</h1>} />
@@ -49,7 +49,7 @@ describe('ProtectedRoute', () => {
           <ProtectedPage />
         </ProtectedRoute>,
         {
-          wrapper: MockLoginRouter,
+          wrapper: MockRouter,
         },
       );
 
@@ -64,7 +64,7 @@ describe('ProtectedRoute', () => {
             <ProtectedPage />
           </ProtectedRoute>,
           {
-            wrapper: MockLoginRouter,
+            wrapper: MockRouter,
           },
         );
 
@@ -81,7 +81,7 @@ describe('ProtectedRoute', () => {
             <ProtectedPage />
           </ProtectedRoute>,
           {
-            wrapper: MockLoginRouter,
+            wrapper: MockRouter,
           },
         );
 
@@ -101,7 +101,7 @@ describe('ProtectedRoute', () => {
           <ProtectedPage />
         </ProtectedRoute>,
         {
-          wrapper: MockLoginRouter,
+          wrapper: MockRouter,
         },
       );
 
@@ -122,7 +122,7 @@ describe('ProtectedRoute', () => {
             <ProtectedPage />
           </ProtectedRoute>,
           {
-            wrapper: MockLoginRouter,
+            wrapper: MockRouter,
           },
         );
 
@@ -139,7 +139,7 @@ describe('ProtectedRoute', () => {
             <ProtectedPage />
           </ProtectedRoute>,
           {
-            wrapper: MockLoginRouter,
+            wrapper: MockRouter,
           },
         );
 
