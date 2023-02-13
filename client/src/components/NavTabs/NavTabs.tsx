@@ -1,5 +1,4 @@
-import React, { Children, HTMLAttributes, ReactElement } from 'react';
-import classNames from 'classnames';
+import { Children, HTMLAttributes, ReactElement } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 
 import { TabsIndicator } from 'components';
