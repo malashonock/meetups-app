@@ -16,10 +16,14 @@ export const Step = ({ status, title, stepNumber }: StepProps) => {
   const { t } = useTranslation();
 
   return (
-    <div className={classNames(styles.step, styles[status])}>
-      <div className={styles.number}>
+    <div
+      className={classNames(styles.step, styles[status])}
+      data-testid={`step-${stepNumber}`}
+    >
+      <div className={styles.number} data-testid={`step-${stepNumber}-circle`}>
         {status === StepStatus.Passed ? (
           <img
+            data-testid={`step-${stepNumber}-tick`}
             src={check}
             alt={t('stepper.passedImgAlt') || 'Step completed'}
           />
