@@ -48,9 +48,24 @@ export const mockMeetup = new Meetup(
   new MeetupStore(new RootStore()),
 );
 
-export const generateMeetup = (status?: MeetupStatus): Meetup => {
-  const randomStartDate =
-    Math.random() <= 0.75 ? faker.date.future() : faker.date.recent();
+export const generateMeetup = (
+  status?: MeetupStatus,
+  dateConstraint?: 'upcoming' | 'finished',
+): Meetup => {
+  let randomStartDate: Date;
+  switch (dateConstraint) {
+    case 'upcoming':
+      randomStartDate = faker.date.future();
+      break;
+    case 'finished':
+      randomStartDate = faker.date.recent();
+      break;
+    default:
+      randomStartDate =
+        Math.random() <= 0.75 ? faker.date.future() : faker.date.recent();
+      break;
+  }
+
   const randomFinishDate = new Date(
     randomStartDate.getTime() +
       faker.datatype.number({ min: 15, max: 240 }) * 60 * 1000,
@@ -81,6 +96,12 @@ export const generateMeetup = (status?: MeetupStatus): Meetup => {
   });
 };
 
-export const generateMeetups = (count: number): Meetup[] => {
-  return generateArray<Meetup>(count, generateMeetup);
+export const generateMeetups = (
+  count: number,
+  status?: MeetupStatus,
+  dateConstraint?: 'upcoming' | 'finished',
+): Meetup[] => {
+  return generateArray<Meetup>(count, () =>
+    generateMeetup(status, dateConstraint),
+  );
 };
