@@ -1,6 +1,6 @@
 @import '~style/typography';
 
-.topicsTab {
+.meetupsTab {
   margin-top: 36px;
   display: flex;
   flex-direction: column;
@@ -19,7 +19,7 @@
   @extend .font-color-gray-01;
 }
 
-.topics {
+.meetups {
   display: flex;
   flex-direction: column;
   row-gap: 20px;
