@@ -167,4 +167,12 @@ describe('EditNewsPage', () => {
 
     expect(screen.getByText('View news article')).toBeInTheDocument();
   });
+
+  it('should render a Not Found page if useNewsArticle returns undefined', () => {
+    mockUseNewsArticle.mockReturnValue(undefined);
+
+    render(<EditNewsPage />, { wrapper: MockRouter });
+
+    expect(screen.getByText('notFoundPage.title')).toBeInTheDocument();
+  });
 });
