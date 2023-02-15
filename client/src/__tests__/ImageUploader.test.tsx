@@ -1,5 +1,7 @@
+/* eslint-disable testing-library/no-unnecessary-act */
+
 import { PropsWithChildren } from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import { Form, Formik, FormikErrors, FormikHelpers } from 'formik';
 
 import { ImageUploader } from 'components';
@@ -9,6 +11,7 @@ import {
   mockLargeImageWithUrl,
   mockNonImageWithUrl,
 } from 'model/__fakes__';
+import { dropFile } from 'utils';
 
 jest.mock('utils/file');
 
@@ -35,23 +38,6 @@ const TestForm = ({ children }: PropsWithChildren): JSX.Element => (
   </Formik>
 );
 
-const eventDataFrom = (fileOrFiles: File | File[]) => {
-  const files = Array.isArray(fileOrFiles) ? fileOrFiles : [fileOrFiles];
-
-  return {
-    dataTransfer: {
-      files,
-      items: files.map((file: File) => ({
-        kind: 'file',
-        size: file.size,
-        type: file.type,
-        getAsFile: (): File => file,
-      })),
-      types: ['Files'],
-    },
-  };
-};
-
 beforeEach(() => {
   mockInitialValues = {
     image: null,
@@ -67,15 +53,15 @@ describe('ImageUploader', () => {
       wrapper: TestForm,
     });
 
-    const imageDropbox = screen.getByTestId('image-dropbox');
-    fireEvent.drop(imageDropbox, eventDataFrom(testImage));
-
-    await waitFor(() => {
-      const image = screen.getByAltText(
-        'imagePreview.imgAlt',
-      ) as HTMLInputElement;
-      expect(image.src).toBe(testImage.url);
+    await act(() => {
+      const imageDropbox = screen.getByTestId('image-dropbox');
+      dropFile(imageDropbox, testImage);
     });
+
+    const image = screen.getByAltText(
+      'imagePreview.imgAlt',
+    ) as HTMLInputElement;
+    expect(image.src).toBe(testImage.url);
   });
 
   it('pre-fills field with initial value', async () => {
@@ -103,9 +89,7 @@ describe('ImageUploader', () => {
     });
 
     const label = screen.getByText(LABEL);
-    await waitFor(() => {
-      expect(label).toBeInTheDocument();
-    });
+    expect(label).toBeInTheDocument();
   });
 
   it('renders hint text', () => {
@@ -135,13 +119,13 @@ describe('ImageUploader', () => {
       wrapper: TestForm,
     });
 
-    const imageDropbox = screen.getByTestId('image-dropbox');
-    fireEvent.drop(imageDropbox, eventDataFrom(badFile));
-
-    await waitFor(async () => {
-      const errorText = screen.getByText(new RegExp(ERR_MSG));
-      expect(errorText).toBeInTheDocument();
+    await act(() => {
+      const imageDropbox = screen.getByTestId('image-dropbox');
+      dropFile(imageDropbox, badFile);
     });
+
+    const errorText = screen.getByText(new RegExp(ERR_MSG));
+    expect(errorText).toBeInTheDocument();
   });
 
   it('shows error message if uploaded image is larger than 10 Mb', async () => {
@@ -160,12 +144,12 @@ describe('ImageUploader', () => {
       wrapper: TestForm,
     });
 
-    const imageDropbox = screen.getByTestId('image-dropbox');
-    fireEvent.drop(imageDropbox, eventDataFrom(tooLargeImage));
-
-    await waitFor(async () => {
-      const errorText = screen.getByText(new RegExp(ERR_MSG));
-      expect(errorText).toBeInTheDocument();
+    await act(() => {
+      const imageDropbox = screen.getByTestId('image-dropbox');
+      dropFile(imageDropbox, tooLargeImage);
     });
+
+    const errorText = screen.getByText(new RegExp(ERR_MSG));
+    expect(errorText).toBeInTheDocument();
   });
 });

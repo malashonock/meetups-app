@@ -1,12 +1,6 @@
 /* eslint-disable testing-library/no-unnecessary-act */
 
-import {
-  act,
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-} from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 
 import { ImageDropbox } from 'components';
 import {
@@ -15,43 +9,24 @@ import {
   mockLargeNonImage,
   mockNonImage,
 } from 'model/__fakes__';
+import { dragFile, dropFile } from 'utils/test';
 import { getFileWithUrl } from 'utils/file';
 
 jest.mock('utils/file');
-
-const eventDataFrom = (fileOrFiles: File | File[]) => {
-  const files = Array.isArray(fileOrFiles) ? fileOrFiles : [fileOrFiles];
-
-  return {
-    dataTransfer: {
-      files,
-      items: files.map((file: File) => ({
-        kind: 'file',
-        size: file.size,
-        type: file.type,
-        getAsFile: (): File => file,
-      })),
-      types: ['Files'],
-    },
-  };
-};
 
 describe('ImageDropbox', () => {
   it('accepts images with extensions .jpg, .jpeg, .png and size up to 10 Mb', async () => {
     const goodImage = mockImage;
     const mockedHandleDrop = jest.fn();
 
-    render(<ImageDropbox onDrop={mockedHandleDrop} />);
+    render(<ImageDropbox name="image-dropbox" onDrop={mockedHandleDrop} />);
 
     const imageDropbox = screen.getByTestId('image-dropbox');
     await act(() => {
-      fireEvent.drop(imageDropbox, eventDataFrom(goodImage));
+      dropFile(imageDropbox, goodImage);
     });
 
-    await waitFor(() => {
-      expect(mockedHandleDrop).toHaveBeenCalledTimes(1);
-    });
-
+    expect(mockedHandleDrop).toHaveBeenCalledTimes(1);
     expect(mockedHandleDrop).toHaveBeenCalledWith(getFileWithUrl(goodImage));
   });
 
@@ -59,83 +34,84 @@ describe('ImageDropbox', () => {
     const tooLargeImage = mockLargeImage;
     const mockedHandleDrop = jest.fn();
 
-    render(<ImageDropbox onDrop={mockedHandleDrop} />);
+    render(<ImageDropbox name="image-dropbox" onDrop={mockedHandleDrop} />);
 
     const imageDropbox = screen.getByTestId('image-dropbox');
+
     await act(() => {
-      fireEvent.drop(imageDropbox, eventDataFrom(tooLargeImage));
+      dropFile(imageDropbox, tooLargeImage);
     });
 
-    await waitFor(() => {
-      expect(mockedHandleDrop).not.toHaveBeenCalled();
-    });
+    expect(mockedHandleDrop).not.toHaveBeenCalled();
   });
 
   it('rejects files of types other than images', async () => {
     const notImage = mockNonImage;
     const mockedHandleDrop = jest.fn();
 
-    render(<ImageDropbox onDrop={mockedHandleDrop} />);
+    render(<ImageDropbox name="image-dropbox" onDrop={mockedHandleDrop} />);
 
     const imageDropbox = screen.getByTestId('image-dropbox');
+
     await act(() => {
-      fireEvent.drop(imageDropbox, eventDataFrom(notImage));
+      dropFile(imageDropbox, notImage);
     });
 
-    await waitFor(() => {
-      expect(mockedHandleDrop).not.toHaveBeenCalled();
-    });
+    expect(mockedHandleDrop).not.toHaveBeenCalled();
   });
 
   it('rejects attempts to upload multiple images', async () => {
     const goodImage = mockImage;
     const mockedHandleDrop = jest.fn();
 
-    render(<ImageDropbox onDrop={mockedHandleDrop} />);
+    render(<ImageDropbox name="image-dropbox" onDrop={mockedHandleDrop} />);
 
     const imageDropbox = screen.getByTestId('image-dropbox');
+
     await act(() => {
-      fireEvent.drop(imageDropbox, eventDataFrom([goodImage, goodImage]));
+      dropFile(imageDropbox, [goodImage, goodImage]);
     });
 
-    await waitFor(() => {
-      expect(mockedHandleDrop).not.toHaveBeenCalled();
-    });
+    expect(mockedHandleDrop).not.toHaveBeenCalled();
   });
 
   it('gets green if a file is being dragged over of acceptable type and size', async () => {
     const goodImage = mockImage;
 
-    render(<ImageDropbox onDrop={jest.fn()} />);
+    render(<ImageDropbox name="image-dropbox" onDrop={jest.fn()} />);
 
     const imageDropbox = screen.getByTestId('image-dropbox');
+
     await act(() => {
-      fireEvent.dragEnter(imageDropbox, eventDataFrom(goodImage));
+      dragFile(imageDropbox, goodImage);
     });
 
-    await waitFor(() => {
-      expect(imageDropbox.classList).toContain('willAccept');
-    });
+    expect(imageDropbox.classList).toContain('willAccept');
   });
 
   it('gets red if a file is being dragged over of unacceptable type or size', async () => {
     const badFile = mockLargeNonImage;
 
-    render(<ImageDropbox onDrop={jest.fn()} />);
+    render(<ImageDropbox name="image-dropbox" onDrop={jest.fn()} />);
 
     const imageDropbox = screen.getByTestId('image-dropbox');
+
     await act(() => {
-      fireEvent.dragEnter(imageDropbox, eventDataFrom(badFile));
+      dragFile(imageDropbox, badFile);
     });
 
-    await waitFor(() => {
-      expect(imageDropbox.classList).toContain('willReject');
-    });
+    expect(imageDropbox.classList).toContain('willReject');
   });
 
   it('renders external error messages', async () => {
     const ERR_MSG = 'Test error';
-    render(<ImageDropbox onDrop={jest.fn()} externalError={ERR_MSG} />);
+    render(
+      <ImageDropbox
+        name="image-dropbox"
+        onDrop={jest.fn()}
+        externalError={ERR_MSG}
+      />,
+    );
 
     const errorMessage = screen.getByText(ERR_MSG);
     expect(errorMessage).toBeInTheDocument();
