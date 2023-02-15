@@ -15,11 +15,13 @@ const ACCEPT_FORMATS = ['.jpg', '.jpeg', '.png'];
 const MAX_FILESIZE = 10_000_000; // bytes
 
 interface ImageDropboxProps {
+  name: string;
   onDrop: (image: FileWithUrl) => void;
   externalError?: string;
 }
 
 export const ImageDropbox = ({
+  name,
   onDrop,
   externalError,
 }: ImageDropboxProps): JSX.Element => {
@@ -92,7 +94,10 @@ export const ImageDropbox = ({
         className={classList}
         data-testid="image-dropbox"
       >
-        <input {...getInputProps()} data-testid="file-input" />
+        <input
+          {...getInputProps({ name, id: name })}
+          data-testid="file-input"
+        />
         <UploadIcon />
         <Typography
           component={TypographyComponent.Paragraph}

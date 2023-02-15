@@ -109,6 +109,7 @@ export const SelectField = <TValue extends unknown>({
         <div {...containerAttributes} data-testid="select-field">
           <ReactSelect
             {...selectProps}
+            id={field.name}
             name={field.name}
             value={getOptionsFromFieldValues(field.value)}
             onChange={setFieldValueFromOption}

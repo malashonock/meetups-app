@@ -72,6 +72,7 @@ export const DateTimePicker = ({
         return (
           <DatePicker
             className={className}
+            id={name}
             name={name}
             selected={value}
             onChange={handleChange}
