@@ -48,6 +48,11 @@ export const mockImageWithUrl: FileWithUrl = generateFileWithUrl(
   1_000_000,
   'image',
 );
+export const mockImageWithUrl2: FileWithUrl = generateFileWithUrl(
+  'png',
+  5_000_000,
+  'image',
+);
 export const mockLargeImageWithUrl: FileWithUrl = generateFileWithUrl(
   'jpg',
   100_000_000,

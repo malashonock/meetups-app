@@ -12,6 +12,14 @@ export const mockUser: User = new User({
   roles: UserRole.EMPLOYEE,
 });
 
+export const mockUser2: User = new User({
+  id: 'bbb',
+  name: 'Alice',
+  surname: 'Green',
+  post: 'Business Analyst',
+  roles: UserRole.EMPLOYEE,
+});
+
 export const generateUser = (): User =>
   new User({
     id: faker.datatype.uuid(),
