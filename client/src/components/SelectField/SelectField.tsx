@@ -110,6 +110,7 @@ export const SelectField = <TValue extends unknown>({
           <ReactSelect
             {...selectProps}
             id={field.name}
+            aria-label={field.name}
             name={field.name}
             value={getOptionsFromFieldValues(field.value)}
             onChange={setFieldValueFromOption}
