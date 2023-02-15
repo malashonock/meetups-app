@@ -56,7 +56,7 @@ const getImagePreview = () => screen.getByTestId('image-preview');
 const getImage = () =>
   screen.getByAltText('imagePreview.imgAlt') as HTMLImageElement;
 const getSubmitBtn = () => screen.getByText('formButtons.save');
-const getBackBtn = () => screen.getByText('formButtons.cancel');
+const getCancelBtn = () => screen.getByText('formButtons.cancel');
 const getClearImageBtn = () => screen.getByTestId('clear-button');
 
 const mockUpdatedNews: NewsFields = {
@@ -162,7 +162,7 @@ describe('EditNewsPage', () => {
     render(<EditNewsPage />, { wrapper: MockRouter });
 
     await act(() => {
-      userEvent.click(getBackBtn());
+      userEvent.click(getCancelBtn());
     });
 
     expect(screen.getByText('View news article')).toBeInTheDocument();
