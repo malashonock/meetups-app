@@ -23,7 +23,7 @@ describe('ImagePreview', () => {
 
     render(<ImagePreview image={testImage} onClear={mockedHandleClose} />);
 
-    const closeBtn = screen.getByRole('button');
+    const closeBtn = screen.getByTestId('clear-button');
     userEvent.click(closeBtn);
 
     expect(mockedHandleClose).toHaveBeenCalledTimes(1);

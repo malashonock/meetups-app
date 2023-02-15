@@ -63,7 +63,12 @@ export const ImagePreview = ({
           </Typography>
         </div>
       )}
-      <button className={styles.clearBtn} onClick={handleClear}>
+      <button
+        type="button"
+        className={styles.clearBtn}
+        onClick={handleClear}
+        data-testid="clear-button"
+      >
         {variant === ImagePreviewMode.Thumbnail ? (
           <CloseIcon />
         ) : (
