@@ -1,0 +1,470 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CreateMeetupPage Step 1 - required fields should match snapshot 1`] = `
+<DocumentFragment>
+  <form
+    action="#"
+    class="container"
+  >
+    <div
+      class="stepper"
+    >
+      <div
+        class="stepperProgress"
+      >
+        <div
+          class="stepsWrapper"
+        >
+          <div
+            class="steps"
+          >
+            <div
+              class="step active"
+              data-testid="step-1"
+            >
+              <div
+                class="number"
+                data-testid="step-1-circle"
+              >
+                1
+              </div>
+              createMeetupPage.requiredFields.tabTitle
+            </div>
+            <div
+              class="step disabled"
+              data-testid="step-2"
+            >
+              <div
+                class="number"
+                data-testid="step-2-circle"
+              >
+                2
+              </div>
+              createMeetupPage.optionalFields.tabTitle
+            </div>
+          </div>
+          <div
+            class="indicator"
+            style="--tabsCount: 2; --activeTabIndex: 0;"
+          />
+        </div>
+      </div>
+      <div
+        class="stepperBody"
+      >
+        <div
+          class="container"
+        >
+          <div
+            class="heading"
+          >
+            <h1
+              class="typography h1 title"
+            >
+              createMeetupPage.title
+            </h1>
+            <p
+              class="typography p subTitle"
+            >
+              createMeetupPage.subTitle
+            </p>
+          </div>
+          <div
+            class="contentWrapper"
+          >
+            <div
+              class="textSection main"
+            >
+              <div
+                class="container"
+              >
+                <label
+                  class="inputLabel label"
+                  for="subject"
+                >
+                  formFields.meetup.topic.label
+                </label>
+                <input
+                  class="input default"
+                  data-testid="text-input"
+                  id="subject"
+                  name="subject"
+                  type="text"
+                  value=""
+                />
+              </div>
+              <div
+                class="container"
+              >
+                <label
+                  class="inputLabel label"
+                  for="author"
+                >
+                  formFields.meetup.speaker.label
+                </label>
+                <div
+                  data-testid="select-field"
+                >
+                  <div
+                    class=" css-b62m3t-container"
+                    id="author"
+                  >
+                    <span
+                      class="css-1f43avz-a11yText-A11yText"
+                      id="react-select-2-live-region"
+                    />
+                    <span
+                      aria-atomic="false"
+                      aria-live="polite"
+                      aria-relevant="additions text"
+                      class="css-1f43avz-a11yText-A11yText"
+                    />
+                    <div
+                      class="input default css-13cymwt-control"
+                    >
+                      <div
+                        class=" css-1fdsijx-ValueContainer"
+                      >
+                        <div
+                          class="placeholder css-1jqq78o-placeholder"
+                          id="react-select-2-placeholder"
+                        >
+                          formFields.meetup.speaker.placeholder
+                        </div>
+                        <div
+                          class=" css-qbdosj-Input"
+                          data-value=""
+                        >
+                          <input
+                            aria-autocomplete="list"
+                            aria-describedby="react-select-2-placeholder"
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            aria-label="author"
+                            autocapitalize="none"
+                            autocomplete="off"
+                            autocorrect="off"
+                            class=""
+                            id="react-select-2-input"
+                            role="combobox"
+                            spellcheck="false"
+                            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                            tabindex="0"
+                            type="text"
+                            value=""
+                          />
+                        </div>
+                      </div>
+                      <div
+                        class=" css-1hb7zxy-IndicatorsContainer"
+                      >
+                        <span
+                          class=" css-1u9des2-indicatorSeparator"
+                        />
+                        <div
+                          aria-hidden="true"
+                          class=" css-1xc3v61-indicatorContainer"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="css-tj5bde-Svg"
+                            focusable="false"
+                            height="20"
+                            viewBox="0 0 20 20"
+                            width="20"
+                          >
+                            <path
+                              d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                    <input
+                      name="author"
+                      type="hidden"
+                      value=""
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                class="container"
+              >
+                <label
+                  class="inputLabel label"
+                  for="excerpt"
+                >
+                  formFields.meetup.description.label
+                </label>
+                <div
+                  class="container"
+                >
+                  <textarea
+                    class="input default textArea"
+                    data-testid="text-area"
+                    id="excerpt"
+                    name="excerpt"
+                    rows="1"
+                    style="height: 2px;"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="textSection actions"
+            >
+              <button
+                class="actionButton back button default"
+                type="button"
+              >
+                formButtons.back
+              </button>
+              <button
+                class="actionButton next button primary"
+                disabled=""
+                type="submit"
+              >
+                formButtons.next
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</DocumentFragment>
+`;
+
+exports[`CreateMeetupPage Step 2 - optional fields should match snapshot 1`] = `
+<DocumentFragment>
+  <form
+    action="#"
+    class="container"
+  >
+    <div
+      class="stepper"
+    >
+      <div
+        class="stepperProgress"
+      >
+        <div
+          class="stepsWrapper"
+        >
+          <div
+            class="steps"
+          >
+            <div
+              class="step passed"
+              data-testid="step-1"
+            >
+              <div
+                class="number"
+                data-testid="step-1-circle"
+              >
+                <img
+                  alt="stepper.passedImgAlt"
+                  data-testid="step-1-tick"
+                  src="check.svg"
+                />
+              </div>
+              createMeetupPage.requiredFields.tabTitle
+            </div>
+            <div
+              class="step active"
+              data-testid="step-2"
+            >
+              <div
+                class="number"
+                data-testid="step-2-circle"
+              >
+                2
+              </div>
+              createMeetupPage.optionalFields.tabTitle
+            </div>
+          </div>
+          <div
+            class="indicator"
+            style="--tabsCount: 2; --activeTabIndex: 1;"
+          />
+        </div>
+      </div>
+      <div
+        class="stepperBody"
+      >
+        <div
+          class="container"
+        >
+          <div
+            class="heading"
+          >
+            <h1
+              class="typography h1 title"
+            >
+              createMeetupPage.title
+            </h1>
+            <p
+              class="typography p subTitle"
+            >
+              createMeetupPage.subTitle
+            </p>
+          </div>
+          <div
+            class="contentWrapper"
+          >
+            <div
+              class="textSection main"
+            >
+              <div
+                class="dates"
+              >
+                <div
+                  class="container"
+                >
+                  <label
+                    class="inputLabel label"
+                    for="start"
+                  >
+                    formFields.meetup.datetimeStart.label
+                  </label>
+                  <div
+                    class="react-datepicker-wrapper"
+                  >
+                    <div
+                      class="react-datepicker__input-container"
+                    >
+                      <input
+                        autocomplete="off"
+                        class="input default"
+                        id="start"
+                        name="start"
+                        placeholder="dateTimePicker.defaultPlaceholder"
+                        type="text"
+                        value=""
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="container"
+                >
+                  <label
+                    class="inputLabel label"
+                    for="finish"
+                  >
+                    formFields.meetup.datetimeFinish.label
+                  </label>
+                  <div
+                    class="react-datepicker-wrapper"
+                  >
+                    <div
+                      class="react-datepicker__input-container"
+                    >
+                      <input
+                        autocomplete="off"
+                        class="input default"
+                        id="finish"
+                        name="finish"
+                        placeholder="dateTimePicker.defaultPlaceholder"
+                        type="text"
+                        value=""
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="container"
+              >
+                <label
+                  class="inputLabel label"
+                  for="place"
+                >
+                  formFields.meetup.location.label
+                </label>
+                <input
+                  class="input success"
+                  data-testid="text-input"
+                  id="place"
+                  name="place"
+                  type="text"
+                  value=""
+                />
+              </div>
+              <div
+                class="imageUploader container"
+              >
+                <div
+                  class="container"
+                >
+                  <div
+                    class="dropbox"
+                    data-testid="image-dropbox"
+                    role="presentation"
+                  >
+                    <input
+                      accept="image/jpg,image/jpeg,image/png"
+                      data-testid="file-input"
+                      id="image"
+                      name="image"
+                      style="display: none;"
+                      tabindex="-1"
+                      type="file"
+                    />
+                    <svg>
+                      upload.svg
+                    </svg>
+                    <p
+                      class="typography p promptText"
+                    >
+                      Перетащите изображения сюда
+                      <br />
+                      или
+                      <button
+                        class="browseFileLink"
+                        type="button"
+                      >
+                        загрузите
+                      </button>
+                    </p>
+                    <div
+                      class="constraints"
+                    >
+                      <p
+                        class="typography p"
+                      >
+                        imageDropbox.acceptedExtensions
+                      </p>
+                      <p
+                        class="typography p"
+                      >
+                        imageDropbox.maxFileSize
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="textSection actions"
+            >
+              <button
+                class="actionButton back button default"
+                type="submit"
+              >
+                formButtons.back
+              </button>
+              <button
+                class="actionButton submit button primary"
+                type="submit"
+              >
+                formButtons.create
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</DocumentFragment>
+`;
