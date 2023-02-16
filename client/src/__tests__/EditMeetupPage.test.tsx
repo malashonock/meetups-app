@@ -102,6 +102,56 @@ const mockUpdatedMeetup: MeetupFields = {
   image: mockImageWithUrl2,
 };
 
+const editFields = async () => {
+  // Edit subject
+  await act(() => {
+    userEvent.clear(getSubjectInput());
+    userEvent.type(getSubjectInput(), mockUpdatedMeetup.subject);
+  });
+
+  // Edit excerpt
+  await act(() => {
+    userEvent.clear(getExcerptInput());
+    userEvent.type(getExcerptInput(), mockUpdatedMeetup.excerpt);
+  });
+
+  // Select another speaker
+  await act(() => {
+    userEvent.click(getSpeakerSelect());
+  });
+
+  await act(async () => {
+    userEvent.click(await screen.findByText(mockUser2.fullName));
+  });
+
+  // Select another start date/time
+  await waitFor(() => {
+    userEvent.clear(getStartDatePicker());
+    userEvent.type(getStartDatePicker(), '20 Mar 2023 15:00');
+  });
+
+  // Select another finish date/time
+  await waitFor(() => {
+    userEvent.clear(getFinishDatePicker());
+    userEvent.type(getFinishDatePicker(), '20 Mar 2023 16:30');
+  });
+
+  // Edit location
+  await act(() => {
+    userEvent.clear(getLocationInput());
+    userEvent.type(getLocationInput(), mockUpdatedMeetup.place || '');
+  });
+
+  // Upload another image
+  await act(() => {
+    userEvent.click(getClearImageBtn());
+  });
+
+  await act(() => {
+    dropFile(getImageDropbox(), mockImageWithUrl2);
+  });
+};
+
 describe('EditMeetupPage', () => {
   it('should match snapshot', () => {
     const { asFragment } = render(<EditMeetupPage />, { wrapper: MockRouter });
@@ -124,110 +174,18 @@ describe('EditMeetupPage', () => {
   it('should accept user input', async () => {
     render(<EditMeetupPage />, { wrapper: MockRouter });
 
-    // Edit subject
-    await act(() => {
-      userEvent.clear(getSubjectInput());
-      userEvent.type(getSubjectInput(), mockUpdatedMeetup.subject);
-    });
+    await editFields();
+
     expect(getSubjectInput()).toHaveValue(mockUpdatedMeetup.subject);
-
-    // Edit excerpt
-    await act(() => {
-      userEvent.clear(getExcerptInput());
-      userEvent.type(getExcerptInput(), mockUpdatedMeetup.excerpt);
-    });
     expect(getExcerptInput()).toHaveValue(mockUpdatedMeetup.excerpt);
-
-    // Select another speaker
-    await act(() => {
-      userEvent.click(getSpeakerSelect());
-    });
-
-    await act(async () => {
-      userEvent.click(await screen.findByText(mockUser2.fullName));
-    });
     expect(screen.getByText(mockUser2.fullName)).toBeInTheDocument();
-
-    await act(() => {
-      userEvent.click(getClearImageBtn());
-    });
-    expect(getImageDropbox()).toBeInTheDocument();
-
-    // Select another start date/time
-    await waitFor(() => {
-      userEvent.click(getStartDatePicker());
-    });
-
-    let startDatePopup: HTMLDivElement;
-    await waitFor(() => {
-      startDatePopup = document.querySelector(
-        'label[for="start"] ~ * .react-datepicker-popper',
-      ) as HTMLDivElement;
-    });
-
-    await act(() => {
-      const newDay = startDatePopup.querySelector(
-        '.react-datepicker__day--020',
-      ) as HTMLDivElement;
-      userEvent.click(newDay);
-    });
-
-    await act(() => {
-      const newTime = startDatePopup.querySelector(
-        '.react-datepicker__time-list-item:nth-of-type(31)',
-      ) as HTMLLIElement;
-      userEvent.click(newTime);
-    });
-
-    await waitFor(() => {
-      expect(new Date(getStartDatePicker().value)).toEqual(
-        mockUpdatedMeetup.start,
-      );
-    });
-
-    // Select another finish date/time
-    await waitFor(() => {
-      userEvent.click(getFinishDatePicker());
-    });
-
-    let finishDatePopup: HTMLDivElement;
-    await waitFor(() => {
-      finishDatePopup = document.querySelector(
-        'label[for="finish"] ~ * .react-datepicker-popper',
-      ) as HTMLDivElement;
-    });
-
-    await act(() => {
-      const newDay = finishDatePopup.querySelector(
-        '.react-datepicker__day--020',
-      ) as HTMLDivElement;
-      userEvent.click(newDay);
-    });
-
-    await act(() => {
-      const newTime = finishDatePopup.querySelector(
-        '.react-datepicker__time-list-item:nth-of-type(34)',
-      ) as HTMLLIElement;
-      userEvent.click(newTime);
-    });
-
-    await waitFor(() => {
-      expect(new Date(getFinishDatePicker().value)).toEqual(
-        mockUpdatedMeetup.finish,
-      );
-    });
-
-    // Edit location
-    await act(() => {
-      userEvent.clear(getLocationInput());
-      userEvent.type(getLocationInput(), mockUpdatedMeetup.place || '');
-    });
+    expect(new Date(getStartDatePicker().value)).toEqual(
+      mockUpdatedMeetup.start,
+    );
+    expect(new Date(getFinishDatePicker().value)).toEqual(
+      mockUpdatedMeetup.finish,
+    );
     expect(getLocationInput()).toHaveValue(mockUpdatedMeetup.place);
-
-    // Upload another image
-    await act(() => {
-      dropFile(getImageDropbox(), mockImageWithUrl2);
-    });
     expect(getImagePreview()).toBeInTheDocument();
     expect(getImage().src).toBe(mockImageWithUrl2.url);
   });
@@ -257,95 +215,8 @@ describe('EditMeetupPage', () => {
   it('should handle form submit', async () => {
     render(<EditMeetupPage />, { wrapper: MockRouter });
 
-    // Edit subject
-    await act(() => {
-      userEvent.clear(getSubjectInput());
-      userEvent.type(getSubjectInput(), mockUpdatedMeetup.subject);
-    });
+    await editFields();
 
-    // Edit excerpt
-    await act(() => {
-      userEvent.clear(getExcerptInput());
-      userEvent.type(getExcerptInput(), mockUpdatedMeetup.excerpt);
-    });
-
-    // Select another speaker
-    await act(() => {
-      userEvent.click(getSpeakerSelect());
-    });
-
-    await act(async () => {
-      userEvent.click(await screen.findByText(mockUser2.fullName));
-    });
-
-    await act(() => {
-      userEvent.click(getClearImageBtn());
-    });
-
-    // Select another start date/time
-    await waitFor(() => {
-      userEvent.click(getStartDatePicker());
-    });
-
-    let startDatePopup: HTMLDivElement;
-    await waitFor(() => {
-      startDatePopup = document.querySelector(
-        'label[for="start"] ~ * .react-datepicker-popper',
-      ) as HTMLDivElement;
-    });
-
-    await act(() => {
-      const newDay = startDatePopup.querySelector(
-        '.react-datepicker__day--020',
-      ) as HTMLDivElement;
-      userEvent.click(newDay);
-    });
-
-    await act(() => {
-      const newTime = startDatePopup.querySelector(
-        '.react-datepicker__time-list-item:nth-of-type(31)',
-      ) as HTMLLIElement;
-      userEvent.click(newTime);
-    });
-
-    // Select another finish date/time
-    await waitFor(() => {
-      userEvent.click(getFinishDatePicker());
-    });
-
-    let finishDatePopup: HTMLDivElement;
-    await waitFor(() => {
-      finishDatePopup = document.querySelector(
-        'label[for="finish"] ~ * .react-datepicker-popper',
-      ) as HTMLDivElement;
-    });
-
-    await act(() => {
-      const newDay = finishDatePopup.querySelector(
-        '.react-datepicker__day--020',
-      ) as HTMLDivElement;
-      userEvent.click(newDay);
-    });
-
-    await act(() => {
-      const newTime = finishDatePopup.querySelector(
-        '.react-datepicker__time-list-item:nth-of-type(34)',
-      ) as HTMLLIElement;
-      userEvent.click(newTime);
-    });
-
-    // Edit location
-    await act(() => {
-      userEvent.clear(getLocationInput());
-      userEvent.type(getLocationInput(), mockUpdatedMeetup.place || '');
-    });
-
-    // Upload another image
-    await act(() => {
-      dropFile(getImageDropbox(), mockImageWithUrl2);
-    });
-
-    // Submit and check result
     await act(() => {
       userEvent.click(getSubmitBtn());
     });
