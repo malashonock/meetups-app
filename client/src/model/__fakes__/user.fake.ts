@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import { ShortUser, UserRole } from 'model';
+import { FullUser, ShortUser, UserRole } from 'model';
 import { User } from 'stores';
 import { generateArray } from 'utils';
 
@@ -19,6 +19,11 @@ export const mockUser2: User = new User({
   post: 'Business Analyst',
   roles: UserRole.EMPLOYEE,
 });
+
+export const mockFullUser: FullUser = {
+  ...mockUser,
+  password: 'alabama',
+};
 
 export const generateUser = (): User =>
   new User({
