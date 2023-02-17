@@ -21,6 +21,11 @@ describe('AuthStore', () => {
       const authStore = new AuthStore(new RootStore());
       expect(spiedOnMobXMakeAutoObservable).toHaveBeenCalledWith(authStore);
     });
+
+    it('should initialize loggedUser field to null', () => {
+      const authStore = new AuthStore(new RootStore());
+      expect(authStore.loggedUser).toBeNull();
+    });
   });
 
   describe('login() instance method', () => {

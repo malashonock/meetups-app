@@ -1,6 +1,6 @@
 import { makePersistable, stopPersisting } from 'mobx-persist-store';
 
-import { UiStore, RootStore } from 'stores';
+import { UiStore, RootStore, Locale } from 'stores';
 
 jest.mock('mobx-persist-store', () => ({
   makePersistable: jest.fn(),
@@ -26,6 +26,16 @@ describe('UiStore', () => {
         uiStore,
         defaultOptions,
       );
+    });
+
+    it('should initialize locale field to ru-RU', () => {
+      const uiStore = new UiStore(new RootStore());
+      expect(uiStore.locale).toBe(Locale.RU);
+    });
+
+    it('should initialize showOverlay field to false', () => {
+      const uiStore = new UiStore(new RootStore());
+      expect(uiStore.showOverlay).toBe(false);
     });
   });
 
