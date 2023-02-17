@@ -1,0 +1,831 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ViewMeetupPage after approval & publishing given a user is logged in should match snapshot 1`] = `
+<DocumentFragment>
+  <section
+    class="container CONFIRMED"
+  >
+    <h1
+      class="typography h1 heading"
+    >
+      viewMeetupPage.title
+    </h1>
+    <div
+      class="dataWrapper"
+    >
+      <div
+        class="headerData"
+      >
+        <figure
+          class="imageWrapper"
+        >
+          <img
+            alt="viewMeetupPage.imgAlt"
+            class="image"
+            src="http://localhost/test.jpg"
+          />
+        </figure>
+        <div
+          class="headerDataContent"
+        >
+          <h2
+            class="typography h2 meetupHeading"
+          >
+            Test meetup topic
+          </h2>
+        </div>
+      </div>
+      <div
+        class="data"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.timePlaceInfo.valid
+        </span>
+        <div
+          class="dataContent timePlaceInfo"
+        >
+          <div
+            class="info"
+          >
+            <img
+              alt="viewMeetupPage.date"
+              class="image"
+              src="calendar.svg"
+            />
+            <span
+              class="typography span"
+            >
+              m, 15 марта, 2023
+            </span>
+          </div>
+          <div
+            class="info"
+          >
+            <img
+              alt="viewMeetupPage.time"
+              class="image"
+              src="clock.svg"
+            />
+            <span
+              class="typography span"
+            >
+              14:00 — 15:30
+            </span>
+          </div>
+          <div
+            class="info"
+          >
+            <img
+              alt="viewMeetupPage.location"
+              class="image"
+              src="pin.svg"
+            />
+            <span
+              class="typography span"
+            >
+              room 123
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        class="data"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.speakers
+        </span>
+        <div
+          class="dataContent"
+        >
+          <div
+            class="speakerWrapper"
+          />
+        </div>
+      </div>
+      <div
+        class="data"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.description
+        </span>
+        <div
+          class="dataContent"
+        >
+          <p
+            class="typography p excerpt"
+          >
+            Test meetup description
+          </p>
+        </div>
+      </div>
+      <div
+        class="data"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.supporters
+        </span>
+        <div
+          class="dataContent"
+        >
+          <ul
+            class="container justified"
+            style="--gap: 10px;"
+          />
+        </div>
+      </div>
+      <div
+        class="dataContent actions"
+      >
+        <button
+          class="actionButton backBtn button default"
+        >
+          formButtons.back
+        </button>
+        <div
+          class="actionsWrapper"
+        />
+      </div>
+    </div>
+  </section>
+</DocumentFragment>
+`;
+
+exports[`ViewMeetupPage after approval & publishing given no user is logged in should match snapshot 1`] = `
+<DocumentFragment>
+  <section
+    class="container CONFIRMED"
+  >
+    <h1
+      class="typography h1 heading"
+    >
+      viewMeetupPage.title
+    </h1>
+    <div
+      class="dataWrapper"
+    >
+      <div
+        class="headerData"
+      >
+        <figure
+          class="imageWrapper"
+        >
+          <img
+            alt="viewMeetupPage.imgAlt"
+            class="image"
+            src="http://localhost/test.jpg"
+          />
+        </figure>
+        <div
+          class="headerDataContent"
+        >
+          <h2
+            class="typography h2 meetupHeading"
+          >
+            Test meetup topic
+          </h2>
+        </div>
+      </div>
+      <div
+        class="data"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.timePlaceInfo.valid
+        </span>
+        <div
+          class="dataContent timePlaceInfo"
+        >
+          <div
+            class="info"
+          >
+            <img
+              alt="viewMeetupPage.date"
+              class="image"
+              src="calendar.svg"
+            />
+            <span
+              class="typography span"
+            >
+              m, 15 марта, 2023
+            </span>
+          </div>
+          <div
+            class="info"
+          >
+            <img
+              alt="viewMeetupPage.time"
+              class="image"
+              src="clock.svg"
+            />
+            <span
+              class="typography span"
+            >
+              14:00 — 15:30
+            </span>
+          </div>
+          <div
+            class="info"
+          >
+            <img
+              alt="viewMeetupPage.location"
+              class="image"
+              src="pin.svg"
+            />
+            <span
+              class="typography span"
+            >
+              room 123
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        class="data"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.speakers
+        </span>
+        <div
+          class="dataContent"
+        >
+          <div
+            class="speakerWrapper"
+          />
+        </div>
+      </div>
+      <div
+        class="data"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.description
+        </span>
+        <div
+          class="dataContent"
+        >
+          <p
+            class="typography p excerpt"
+          >
+            Test meetup description
+          </p>
+        </div>
+      </div>
+      <div
+        class="data"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.supporters
+        </span>
+        <div
+          class="dataContent"
+        >
+          <ul
+            class="container justified"
+            style="--gap: 10px;"
+          />
+        </div>
+      </div>
+      <div
+        class="dataContent actions"
+      >
+        <button
+          class="actionButton backBtn button default"
+        >
+          formButtons.back
+        </button>
+      </div>
+    </div>
+  </section>
+</DocumentFragment>
+`;
+
+exports[`ViewMeetupPage after topic approval, but before publishing given a user is logged in should match snapshot 1`] = `
+<DocumentFragment>
+  <section
+    class="container DRAFT"
+  >
+    <h1
+      class="typography h1 heading"
+    >
+      viewMeetupPage.title
+    </h1>
+    <div
+      class="dataWrapper"
+    >
+      <div
+        class="headerData"
+      >
+        <figure
+          class="imageWrapper"
+        >
+          <img
+            alt="viewMeetupPage.imgAlt"
+            class="image"
+            src="http://localhost/test.jpg"
+          />
+        </figure>
+        <div
+          class="headerDataContent"
+        >
+          <h2
+            class="typography h2 meetupHeading"
+          >
+            Test meetup topic
+          </h2>
+        </div>
+      </div>
+      <div
+        class="data"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.timePlaceInfo.valid
+        </span>
+        <div
+          class="dataContent timePlaceInfo"
+        >
+          <div
+            class="info"
+          >
+            <img
+              alt="viewMeetupPage.date"
+              class="image"
+              src="calendar.svg"
+            />
+            <span
+              class="typography span"
+            >
+              m, 15 марта, 2023
+            </span>
+          </div>
+          <div
+            class="info"
+          >
+            <img
+              alt="viewMeetupPage.time"
+              class="image"
+              src="clock.svg"
+            />
+            <span
+              class="typography span"
+            >
+              14:00 — 15:30
+            </span>
+          </div>
+          <div
+            class="info"
+          >
+            <img
+              alt="viewMeetupPage.location"
+              class="image"
+              src="pin.svg"
+            />
+            <span
+              class="typography span"
+            >
+              room 123
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        class="data"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.speakers
+        </span>
+        <div
+          class="dataContent"
+        >
+          <div
+            class="speakerWrapper"
+          />
+        </div>
+      </div>
+      <div
+        class="data"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.description
+        </span>
+        <div
+          class="dataContent"
+        >
+          <p
+            class="typography p excerpt"
+          >
+            Test meetup description
+          </p>
+        </div>
+      </div>
+      <div
+        class="data"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.supporters
+        </span>
+        <div
+          class="dataContent"
+        >
+          <ul
+            class="container justified"
+            style="--gap: 10px;"
+          />
+        </div>
+      </div>
+      <div
+        class="dataContent actions"
+      >
+        <button
+          class="actionButton backBtn button default"
+        >
+          formButtons.back
+        </button>
+        <div
+          class="actionsWrapper"
+        >
+          <button
+            class="actionButton publishBtn button primary"
+          >
+            formButtons.publish
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+</DocumentFragment>
+`;
+
+exports[`ViewMeetupPage after topic approval, but before publishing given no user is logged in should match snapshot 1`] = `
+<DocumentFragment>
+  <section
+    class="container DRAFT"
+  >
+    <h1
+      class="typography h1 heading"
+    >
+      viewMeetupPage.title
+    </h1>
+    <div
+      class="dataWrapper"
+    >
+      <div
+        class="headerData"
+      >
+        <figure
+          class="imageWrapper"
+        >
+          <img
+            alt="viewMeetupPage.imgAlt"
+            class="image"
+            src="http://localhost/test.jpg"
+          />
+        </figure>
+        <div
+          class="headerDataContent"
+        >
+          <h2
+            class="typography h2 meetupHeading"
+          >
+            Test meetup topic
+          </h2>
+        </div>
+      </div>
+      <div
+        class="data"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.timePlaceInfo.valid
+        </span>
+        <div
+          class="dataContent timePlaceInfo"
+        >
+          <div
+            class="info"
+          >
+            <img
+              alt="viewMeetupPage.date"
+              class="image"
+              src="calendar.svg"
+            />
+            <span
+              class="typography span"
+            >
+              m, 15 марта, 2023
+            </span>
+          </div>
+          <div
+            class="info"
+          >
+            <img
+              alt="viewMeetupPage.time"
+              class="image"
+              src="clock.svg"
+            />
+            <span
+              class="typography span"
+            >
+              14:00 — 15:30
+            </span>
+          </div>
+          <div
+            class="info"
+          >
+            <img
+              alt="viewMeetupPage.location"
+              class="image"
+              src="pin.svg"
+            />
+            <span
+              class="typography span"
+            >
+              room 123
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        class="data"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.speakers
+        </span>
+        <div
+          class="dataContent"
+        >
+          <div
+            class="speakerWrapper"
+          />
+        </div>
+      </div>
+      <div
+        class="data"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.description
+        </span>
+        <div
+          class="dataContent"
+        >
+          <p
+            class="typography p excerpt"
+          >
+            Test meetup description
+          </p>
+        </div>
+      </div>
+      <div
+        class="data"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.supporters
+        </span>
+        <div
+          class="dataContent"
+        >
+          <ul
+            class="container justified"
+            style="--gap: 10px;"
+          />
+        </div>
+      </div>
+      <div
+        class="dataContent actions"
+      >
+        <button
+          class="actionButton backBtn button default"
+        >
+          formButtons.back
+        </button>
+      </div>
+    </div>
+  </section>
+</DocumentFragment>
+`;
+
+exports[`ViewMeetupPage before topic approval given a user is logged in should match snapshot 1`] = `
+<DocumentFragment>
+  <section
+    class="container REQUEST"
+  >
+    <h1
+      class="typography h1 heading"
+    >
+      viewMeetupPage.title
+    </h1>
+    <div
+      class="dataWrapper"
+    >
+      <div
+        class="data"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.topic
+        </span>
+        <div
+          class="dataContent"
+        >
+          <h2
+            class="typography h2 meetupHeading"
+          >
+            Test meetup topic
+          </h2>
+        </div>
+      </div>
+      <div
+        class="data"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.author
+        </span>
+        <div
+          class="dataContent"
+        />
+      </div>
+      <div
+        class="data"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.description
+        </span>
+        <div
+          class="dataContent"
+        >
+          <p
+            class="typography p excerpt"
+          >
+            Test meetup description
+          </p>
+        </div>
+      </div>
+      <div
+        class="data"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.supporters
+        </span>
+        <div
+          class="dataContent"
+        >
+          <ul
+            class="container justified"
+            style="--gap: 10px;"
+          />
+        </div>
+      </div>
+      <div
+        class="dataContent actions"
+      >
+        <button
+          class="actionButton backBtn button default"
+        >
+          formButtons.back
+        </button>
+        <div
+          class="actionsWrapper"
+        >
+          <button
+            class="actionButton deleteBtn button secondary"
+          >
+            formButtons.delete
+          </button>
+          <button
+            class="actionButton approveBtn button primary"
+          >
+            viewMeetupPage.approveTopicBtn
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+</DocumentFragment>
+`;
+
+exports[`ViewMeetupPage before topic approval given no user is logged in should match snapshot 1`] = `
+<DocumentFragment>
+  <section
+    class="container REQUEST"
+  >
+    <h1
+      class="typography h1 heading"
+    >
+      viewMeetupPage.title
+    </h1>
+    <div
+      class="dataWrapper"
+    >
+      <div
+        class="data"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.topic
+        </span>
+        <div
+          class="dataContent"
+        >
+          <h2
+            class="typography h2 meetupHeading"
+          >
+            Test meetup topic
+          </h2>
+        </div>
+      </div>
+      <div
+        class="data"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.author
+        </span>
+        <div
+          class="dataContent"
+        />
+      </div>
+      <div
+        class="data"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.description
+        </span>
+        <div
+          class="dataContent"
+        >
+          <p
+            class="typography p excerpt"
+          >
+            Test meetup description
+          </p>
+        </div>
+      </div>
+      <div
+        class="data"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.supporters
+        </span>
+        <div
+          class="dataContent"
+        >
+          <ul
+            class="container justified"
+            style="--gap: 10px;"
+          />
+        </div>
+      </div>
+      <div
+        class="dataContent actions"
+      >
+        <button
+          class="actionButton backBtn button default"
+        >
+          formButtons.back
+        </button>
+      </div>
+    </div>
+  </section>
+</DocumentFragment>
+`;
