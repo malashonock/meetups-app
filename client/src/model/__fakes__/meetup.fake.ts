@@ -7,6 +7,7 @@ import { generateArray } from 'utils';
 
 const mockRootStore: RootStore = new RootStore();
 mockRootStore.userStore.users = [...mockUsers];
+const mockMeetupStore = new MeetupStore(mockRootStore);
 
 export const mockTopic: Meetup = new Meetup(
   {
@@ -24,7 +25,7 @@ export const mockTopic: Meetup = new Meetup(
     status: MeetupStatus.REQUEST,
     image: null,
   },
-  new MeetupStore(mockRootStore),
+  mockMeetupStore,
 );
 
 export const mockMeetupDraft = new Meetup(
@@ -32,7 +33,7 @@ export const mockMeetupDraft = new Meetup(
     ...mockTopic,
     status: MeetupStatus.DRAFT,
   },
-  new MeetupStore(mockRootStore),
+  mockMeetupStore,
 );
 
 export const mockMeetupDraftFilled = new Meetup(
@@ -43,7 +44,7 @@ export const mockMeetupDraftFilled = new Meetup(
     place: 'room 123',
     image: mockImageWithUrl,
   },
-  new MeetupStore(mockRootStore),
+  mockMeetupStore,
 );
 
 export const mockMeetup = new Meetup(
@@ -51,7 +52,7 @@ export const mockMeetup = new Meetup(
     ...mockMeetupDraftFilled,
     status: MeetupStatus.CONFIRMED,
   },
-  new MeetupStore(mockRootStore),
+  mockMeetupStore,
 );
 
 export const generateMeetup = (
@@ -118,7 +119,7 @@ export const generateMeetup = (
         ]),
       image: mockImageWithUrl,
     },
-    new MeetupStore(mockRootStore),
+    mockMeetupStore,
   );
 };
 
