@@ -35,11 +35,18 @@ describe('AuthStore', () => {
       expect(spiedOnApiLogin).toHaveBeenCalledWith(testCredentials);
     });
 
-    it('should find the logged in user in the user store and assign it to loggedUser instance variable', async () => {
+    it('should find the logged in user in the user store and assign it to loggedUser field', async () => {
       const authStore = new AuthStore(new RootStore());
       await authStore.logIn(testCredentials);
       expect(spiedOnUserStoreFindUser).toHaveBeenCalledWith(mockFullUser.id);
       expect(authStore.loggedUser).toBe(mockUser);
+    });
+
+    it('should clear the loggedUser field if logged in user is not found in the user store', async () => {
+      spiedOnUserStoreFindUser.mockReturnValue(undefined);
+      const authStore = new AuthStore(new RootStore());
+      await authStore.logIn(testCredentials);
+      expect(authStore.loggedUser).toBeNull();
     });
   });
 
@@ -50,7 +57,7 @@ describe('AuthStore', () => {
       expect(spiedOnApiLogout).toHaveBeenCalled();
     });
 
-    it('should clear the loggedUser instance variable', async () => {
+    it('should clear the loggedUser field', async () => {
       const authStore = new AuthStore(new RootStore());
       await authStore.logOut();
       expect(authStore.loggedUser).toBeNull();
