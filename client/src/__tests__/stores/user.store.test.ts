@@ -110,7 +110,7 @@ describe('User', () => {
     });
 
     describe('given user store is not passed', () => {
-      it('should make the returned instance observable', () => {
+      it('should not make the returned instance observable', () => {
         const user = new User(mockUserData);
         expect(spiedOnMobXMakeAutoObservable).not.toHaveBeenCalled();
       });
@@ -142,6 +142,13 @@ describe('User', () => {
         mockUserData.surname[0].toUpperCase();
       const user = new User(mockUserData);
       expect(user.initials).toBe(expectedInitials);
+    });
+  });
+
+  describe('toJSON instance() method', () => {
+    it('should serialize to IUser', () => {
+      const user = new User(mockUserData);
+      expect(JSON.stringify(user)).toBe(JSON.stringify(mockUserData));
     });
   });
 });
