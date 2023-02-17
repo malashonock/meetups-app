@@ -1,21 +1,12 @@
 import { faker } from '@faker-js/faker';
 
 import { MeetupStatus, ShortUser } from 'model';
-import { Meetup, MeetupStore, RootStore, UserStore } from 'stores';
-import {
-  mockImageWithUrl,
-  generateShortUser,
-  generateShortUsers,
-  mockUser,
-} from 'model/__fakes__';
+import { Meetup, MeetupStore, RootStore } from 'stores';
+import { mockImageWithUrl, mockUser, mockUsers } from 'model/__fakes__';
 import { generateArray } from 'utils';
 
-// Spy on UserStore.prototype.findUser(s) method
-// Meetup constructor calls these to populate author, votedUsers, participants fields
-jest.spyOn(UserStore.prototype, 'findUser').mockImplementation(() => mockUser);
-jest
-  .spyOn(UserStore.prototype, 'findUsers')
-  .mockImplementation(() => [mockUser]);
+const mockRootStore: RootStore = new RootStore();
+mockRootStore.userStore.users = [...mockUsers];
 
 export const mockTopic: Meetup = new Meetup(
   {
@@ -33,7 +24,7 @@ export const mockTopic: Meetup = new Meetup(
     status: MeetupStatus.REQUEST,
     image: null,
   },
-  new MeetupStore(new RootStore()),
+  new MeetupStore(mockRootStore),
 );
 
 export const mockMeetupDraft = new Meetup(
@@ -41,7 +32,7 @@ export const mockMeetupDraft = new Meetup(
     ...mockTopic,
     status: MeetupStatus.DRAFT,
   },
-  new MeetupStore(new RootStore()),
+  new MeetupStore(mockRootStore),
 );
 
 export const mockMeetupDraftFilled = new Meetup(
@@ -52,7 +43,7 @@ export const mockMeetupDraftFilled = new Meetup(
     place: 'room 123',
     image: mockImageWithUrl,
   },
-  new MeetupStore(new RootStore()),
+  new MeetupStore(mockRootStore),
 );
 
 export const mockMeetup = new Meetup(
@@ -60,7 +51,7 @@ export const mockMeetup = new Meetup(
     ...mockMeetupDraftFilled,
     status: MeetupStatus.CONFIRMED,
   },
-  new MeetupStore(new RootStore()),
+  new MeetupStore(mockRootStore),
 );
 
 export const generateMeetup = (
@@ -86,29 +77,49 @@ export const generateMeetup = (
       faker.datatype.number({ min: 15, max: 240 }) * 60 * 1000,
   );
 
-  return new Meetup({
-    id: faker.datatype.uuid(),
-    modified: faker.date.recent(),
-    start: randomStartDate,
-    finish: randomFinishDate,
-    author: generateShortUser(),
-    speakers: generateShortUsers(faker.datatype.number({ min: 1, max: 3 })),
-    votedUsers: generateShortUsers(faker.datatype.number({ min: 0, max: 100 })),
-    participants: generateShortUsers(
-      faker.datatype.number({ min: 0, max: 100 }),
-    ),
-    subject: faker.company.catchPhrase(),
-    excerpt: faker.lorem.paragraph(),
-    place: faker.address.streetAddress(),
-    status:
-      status ??
-      faker.helpers.arrayElement([
-        MeetupStatus.REQUEST,
-        MeetupStatus.DRAFT,
-        MeetupStatus.CONFIRMED,
-      ]),
-    image: mockImageWithUrl,
+  const randomSpeakersCount = faker.datatype.number({
+    min: 1,
+    max: Math.min(3, mockUsers.length),
   });
+  const randomVotedUsersCount = faker.datatype.number({
+    min: 0,
+    max: Math.min(100, mockUsers.length),
+  });
+  const randomParticipantsCount = faker.datatype.number({
+    min: 0,
+    max: Math.min(100, mockUsers.length),
+  });
+
+  return new Meetup(
+    {
+      id: faker.datatype.uuid(),
+      modified: faker.date.recent(),
+      start: randomStartDate,
+      finish: randomFinishDate,
+      author: mockUser,
+      speakers: generateArray(randomSpeakersCount, () =>
+        faker.helpers.arrayElement(mockUsers),
+      ),
+      votedUsers: generateArray(randomVotedUsersCount, () =>
+        faker.helpers.arrayElement(mockUsers),
+      ),
+      participants: generateArray(randomParticipantsCount, () =>
+        faker.helpers.arrayElement(mockUsers),
+      ),
+      subject: faker.company.catchPhrase(),
+      excerpt: faker.lorem.paragraph(),
+      place: faker.address.streetAddress(),
+      status:
+        status ??
+        faker.helpers.arrayElement([
+          MeetupStatus.REQUEST,
+          MeetupStatus.DRAFT,
+          MeetupStatus.CONFIRMED,
+        ]),
+      image: mockImageWithUrl,
+    },
+    new MeetupStore(mockRootStore),
+  );
 };
 
 export const generateMeetups = (
