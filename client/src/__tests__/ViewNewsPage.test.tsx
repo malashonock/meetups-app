@@ -7,8 +7,6 @@ import { ViewNewsPage } from 'pages';
 import { mockNewsArticle, mockUser } from 'model/__fakes__';
 import { useAuthStore, useNewsArticle } from 'hooks';
 
-jest.mock('utils/file');
-
 // Mock useAuthStore & useNewsArticle hook
 jest.mock('hooks', () => {
   return {
@@ -52,45 +50,48 @@ const MockRouter = ({ children }: PropsWithChildren): JSX.Element => (
 describe('ViewNewsPage', () => {
   it('should match snapshot', () => {
     const { asFragment } = render(<ViewNewsPage />, { wrapper: MockRouter });
-
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it('should be able to navigate back to news page', async () => {
-    render(<ViewNewsPage />, { wrapper: MockRouter });
-
-    userEvent.click(screen.getByText('formButtons.back'));
-
-    expect(screen.getByText('News page')).toBeInTheDocument();
+  describe('Back button', () => {
+    it('on click, should navigate to previous page', async () => {
+      render(<ViewNewsPage />, { wrapper: MockRouter });
+      userEvent.click(screen.getByText('formButtons.back'));
+      expect(screen.getByText('News page')).toBeInTheDocument();
+    });
   });
 
   describe('Edit News button', () => {
-    it('should not be rendered if no user is logged in', () => {
-      mockUseAuthStore.mockReturnValue({
-        loggedUser: null,
+    describe('given no user is logged in', () => {
+      beforeEach(() => {
+        mockUseAuthStore.mockReturnValue({
+          loggedUser: null,
+        });
       });
 
-      render(<ViewNewsPage />, { wrapper: MockRouter });
-
-      expect(screen.queryByText('formButtons.edit')).toBeNull();
+      it('should not be rendered', () => {
+        render(<ViewNewsPage />, { wrapper: MockRouter });
+        expect(screen.queryByText('formButtons.edit')).toBeNull();
+      });
     });
 
-    it('if a user is logged in, should redirect to Edit News page', async () => {
-      render(<ViewNewsPage />, { wrapper: MockRouter });
-
-      expect(screen.getByText('formButtons.back')).toBeInTheDocument();
-
-      userEvent.click(screen.getByText('formButtons.edit'));
-
-      expect(screen.getByText('Edit news article')).toBeInTheDocument();
+    describe('given a user is logged in', () => {
+      it('on click, should redirect to Edit News page', async () => {
+        render(<ViewNewsPage />, { wrapper: MockRouter });
+        userEvent.click(screen.getByText('formButtons.edit'));
+        expect(screen.getByText('Edit news article')).toBeInTheDocument();
+      });
     });
   });
 
-  it('should render a Not Found page if useNewsArticle returns undefined', () => {
-    mockUseNewsArticle.mockReturnValue(undefined);
+  describe('given useNewsArticle returns undefined', () => {
+    beforeEach(() => {
+      mockUseNewsArticle.mockReturnValue(undefined);
+    });
 
-    render(<ViewNewsPage />, { wrapper: MockRouter });
-
-    expect(screen.getByText('notFoundPage.title')).toBeInTheDocument();
+    it('should render a Not Found page', () => {
+      render(<ViewNewsPage />, { wrapper: MockRouter });
+      expect(screen.getByText('notFoundPage.title')).toBeInTheDocument();
+    });
   });
 });
