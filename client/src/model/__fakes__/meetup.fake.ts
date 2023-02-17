@@ -36,14 +36,29 @@ export const mockTopic: Meetup = new Meetup(
   new MeetupStore(new RootStore()),
 );
 
-export const mockMeetup = new Meetup(
+export const mockMeetupDraft = new Meetup(
   {
     ...mockTopic,
+    status: MeetupStatus.DRAFT,
+  },
+  new MeetupStore(new RootStore()),
+);
+
+export const mockMeetupDraftFilled = new Meetup(
+  {
+    ...mockMeetupDraft,
     start: new Date(2023, 2, 15, 14, 0),
     finish: new Date(2023, 2, 15, 15, 30),
     place: 'room 123',
-    status: MeetupStatus.CONFIRMED,
     image: mockImageWithUrl,
+  },
+  new MeetupStore(new RootStore()),
+);
+
+export const mockMeetup = new Meetup(
+  {
+    ...mockMeetupDraftFilled,
+    status: MeetupStatus.CONFIRMED,
   },
   new MeetupStore(new RootStore()),
 );
