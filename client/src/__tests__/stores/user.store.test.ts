@@ -2,13 +2,22 @@ import * as MobX from 'mobx';
 
 import { UserStore, RootStore, User } from 'stores';
 import * as UserApi from 'api/services/user.service';
-import { mockFullUsers, mockUser, mockUsers } from 'model/__fakes__';
+import {
+  mockFullUsers,
+  mockUser,
+  mockUserData,
+  mockUsers,
+} from 'model/__fakes__';
 
 const spiedOnMobXMakeAutoObservable = jest.spyOn(MobX, 'makeAutoObservable');
 const spiedOnApiGetUsers = jest.spyOn(UserApi, 'getUsers');
 
 beforeEach(() => {
   spiedOnApiGetUsers.mockReturnValue(Promise.resolve(mockFullUsers));
+});
+
+afterEach(() => {
+  jest.resetAllMocks();
 });
 
 describe('UserStore', () => {
@@ -86,6 +95,53 @@ describe('UserStore', () => {
       await userStore.loadUsers();
       const foundUsers = userStore.findUsers([]);
       expect(foundUsers.length).toBe(0);
+    });
+  });
+});
+
+describe('User', () => {
+  describe('constructor', () => {
+    describe('given user store is passed', () => {
+      it('should make the returned instance observable', () => {
+        const userStore = new UserStore(new RootStore());
+        const user = new User(mockUserData, userStore);
+        expect(spiedOnMobXMakeAutoObservable).toHaveBeenCalledWith(user);
+      });
+    });
+
+    describe('given user store is not passed', () => {
+      it('should make the returned instance observable', () => {
+        const user = new User(mockUserData);
+        expect(spiedOnMobXMakeAutoObservable).not.toHaveBeenCalled();
+      });
+    });
+
+    it('should initialize users fields with user data', () => {
+      const user = new User(mockUserData);
+      expect(user.userStore).toBeNull();
+      expect(user.id).toBe(mockUserData.id);
+      expect(user.name).toBe(mockUserData.name);
+      expect(user.surname).toBe(mockUserData.surname);
+      expect(user.post).toBe(mockUserData.post);
+      expect(user.roles).toBe(mockUserData.roles);
+    });
+  });
+
+  describe('fullName property', () => {
+    it('should return concatenated full name', () => {
+      const expectedInitials = mockUserData.name + ' ' + mockUserData.surname;
+      const user = new User(mockUserData);
+      expect(user.fullName).toBe(expectedInitials);
+    });
+  });
+
+  describe('initials property', () => {
+    it('should return initials', () => {
+      const expectedInitials =
+        mockUserData.name[0].toUpperCase() +
+        mockUserData.surname[0].toUpperCase();
+      const user = new User(mockUserData);
+      expect(user.initials).toBe(expectedInitials);
     });
   });
 });
