@@ -1,29 +1,48 @@
 import { faker } from '@faker-js/faker';
 
-import { FullUser, ShortUser, UserRole } from 'model';
-import { User } from 'stores';
+import { FullUser, IUser, ShortUser, UserRole } from 'model';
+import { RootStore, User, UserStore } from 'stores';
 import { generateArray } from 'utils';
 
-export const mockUser: User = new User({
+export const mockUserData: IUser = {
   id: 'aaa',
   name: 'John',
   surname: 'Doe',
   post: 'Software Engineer',
   roles: UserRole.EMPLOYEE,
-});
+};
 
-export const mockUser2: User = new User({
+export const mockUser2Data: IUser = {
   id: 'bbb',
   name: 'Alice',
   surname: 'Green',
   post: 'Business Analyst',
   roles: UserRole.EMPLOYEE,
-});
+};
+
+export const mockUsersData: IUser[] = [mockUserData, mockUser2Data];
+
+export const mockUser: User = new User(
+  mockUserData,
+  new UserStore(new RootStore()),
+);
+export const mockUser2: User = new User(
+  mockUser2Data,
+  new UserStore(new RootStore()),
+);
+export const mockUsers: User[] = [mockUser, mockUser2];
 
 export const mockFullUser: FullUser = {
-  ...mockUser,
+  ...mockUserData,
   password: 'alabama',
 };
+
+export const mockFullUser2: FullUser = {
+  ...mockUser2Data,
+  password: '12345',
+};
+
+export const mockFullUsers: FullUser[] = [mockFullUser, mockFullUser2];
 
 export const generateUser = (): User =>
   new User({
