@@ -82,4 +82,14 @@ export class News implements INews {
       this.newsStore?.onNewsArticleDeleted(this);
     });
   }
+
+  toJSON(): INews {
+    return {
+      id: this.id,
+      publicationDate: this.publicationDate,
+      title: this.title,
+      text: this.text,
+      image: this.image,
+    };
+  }
 }
