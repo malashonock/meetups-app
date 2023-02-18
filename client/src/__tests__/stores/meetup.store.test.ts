@@ -1,12 +1,16 @@
 import * as MobX from 'mobx';
 
-import { MeetupStore, RootStore, Meetup } from 'stores';
+import { MeetupStore, RootStore, Meetup, User } from 'stores';
 import * as MeetupApi from 'api/services/meetup.service';
-import { IMeetup, MeetupFields } from 'model';
+import { IMeetup, MeetupStatus, ShortUser } from 'model';
 import {
   generateMeetupsData,
   mapMeetupsData,
-  mockMeetup,
+  mockMeetupData,
+  mockMeetupDraftData,
+  mockMeetupDraftFilledData,
+  mockMeetupFields,
+  mockMeetupStore,
   mockTopicData,
 } from 'model/__fakes__';
 
@@ -16,25 +20,33 @@ const spiedOnApiCreateMeetup = jest.spyOn(MeetupApi, 'createMeetup');
 const spiedOnApiUpdateMeetup = jest.spyOn(MeetupApi, 'updateMeetup');
 const spiedOnApiDeleteMeetup = jest.spyOn(MeetupApi, 'deleteMeetup');
 
+const getIds = <T extends { id: string }>(objects: T[]): string[] =>
+  objects.map(({ id }: T): string => id);
+
+const expectMeetupFieldsNotChanged = (meetup1: Meetup, meetup2: Meetup) => {
+  expect(meetup1.start).toBe(meetup2.start);
+  expect(meetup1.finish).toBe(meetup2.finish);
+  expect(meetup1.place).toBe(meetup2.place);
+  expect(meetup1.subject).toBe(meetup2.subject);
+  expect(meetup1.excerpt).toBe(meetup2.excerpt);
+  expect(meetup1.author?.id).toBe(meetup2.author?.id);
+  expect(getIds<User>(meetup1.speakers)).toEqual(
+    getIds<User>(meetup2.speakers),
+  );
+  expect(getIds<User>(meetup1.votedUsers)).toEqual(
+    getIds<User>(meetup2.votedUsers),
+  );
+  expect(getIds<User>(meetup1.participants)).toEqual(
+    getIds<User>(meetup2.participants),
+  );
+  expect(meetup1.image).toBe(meetup2.image);
+};
+
 const mockMeetupsData: IMeetup[] = generateMeetupsData(1);
-
-// const updatedMeetupFields: Partial<MeetupFields> = {
-//   title: 'Updated meetups title',
-//   text: 'Updated meetups text',
-//   image: mockImageWithUrl2,
-// };
-
-// const updatedNewsArticleData: INews = {
-//   ...mockNewsArticleData,
-//   ...updatedMeetupFields,
-// };
 
 beforeEach(() => {
   spiedOnApiGetMeetups.mockReturnValue(Promise.resolve(mockMeetupsData));
   spiedOnApiCreateMeetup.mockReturnValue(Promise.resolve(mockTopicData));
-  // spiedOnApiUpdateMeetup.mockReturnValue(
-  //   Promise.resolve(updatedNewsArticleData),
-  // );
 });
 
 afterEach(() => {
@@ -105,84 +117,157 @@ describe('MeetupStore', () => {
   });
 });
 
-// describe('News', () => {
-//   describe('constructor', () => {
-//     describe('given meetups store is passed', () => {
-//       it('should make the returned instance observable', () => {
-//         const meetupStore = new MeetupStore(new RootStore());
-//         const newsArticle = new News(mockNewsArticleData, meetupStore);
-//         expect(spiedOnMobXMakeAutoObservable).toHaveBeenCalledWith(newsArticle);
-//       });
-//     });
+describe('Meetup', () => {
+  describe('constructor', () => {
+    describe('given meetups store is passed', () => {
+      it('should make the returned instance observable', () => {
+        const meetup = new Meetup(mockMeetupData, mockMeetupStore);
+        expect(spiedOnMobXMakeAutoObservable).toHaveBeenCalledWith(meetup);
+      });
+    });
 
-//     describe('given meetups store is not passed', () => {
-//       it('should not make the returned instance observable', () => {
-//         const newsArticle = new News(mockNewsArticleData);
-//         expect(spiedOnMobXMakeAutoObservable).not.toHaveBeenCalled();
-//       });
-//     });
+    describe('given meetups store is not passed', () => {
+      it('should not make the returned instance observable', () => {
+        const meetup = new Meetup(mockMeetupData);
+        expect(spiedOnMobXMakeAutoObservable).not.toHaveBeenCalled();
+      });
+    });
 
-//     it('should initialize meetups fields with meetups data', () => {
-//       const newsArticle = new News(mockNewsArticleData);
-//       expect(newsArticle.meetupStore).toBeNull();
-//       expect(newsArticle.id).toBe(mockNewsArticleData.id);
-//       expect(newsArticle.publicationDate).toBe(
-//         mockNewsArticleData.publicationDate,
-//       );
-//       expect(newsArticle.title).toBe(mockNewsArticleData.title);
-//       expect(newsArticle.text).toBe(mockNewsArticleData.text);
-//       expect(newsArticle.image).toBe(mockNewsArticleData.image);
-//     });
-//   });
+    it('should initialize meetup fields with meetups data', () => {
+      const meetup = new Meetup(mockMeetupData, mockMeetupStore);
+      expect(meetup.meetupStore).toBe(mockMeetupStore);
+      expect(meetup.id).toBe(mockMeetupData.id);
+      expect(meetup.status).toBe(mockMeetupData.status);
+      expect(meetup.modified).toBe(mockMeetupData.modified);
+      expect(meetup.start).toBe(mockMeetupData.start);
+      expect(meetup.finish).toBe(mockMeetupData.finish);
+      expect(meetup.place).toBe(mockMeetupData.place);
+      expect(meetup.subject).toBe(mockMeetupData.subject);
+      expect(meetup.excerpt).toBe(mockMeetupData.excerpt);
+      expect(meetup.author?.id).toBe(mockMeetupData.author?.id);
+      expect(getIds<User>(meetup.speakers)).toEqual(
+        getIds<ShortUser>(mockMeetupData.speakers),
+      );
+      expect(getIds<User>(meetup.votedUsers)).toEqual(
+        getIds<ShortUser>(mockMeetupData.votedUsers),
+      );
+      expect(getIds<User>(meetup.participants)).toEqual(
+        getIds<ShortUser>(mockMeetupData.participants),
+      );
+      expect(meetup.image).toBe(mockMeetupData.image);
+    });
+  });
 
-//   describe('update() instance method', () => {
-//     it('should call API updateMeetup() function', async () => {
-//       const newsArticle = new News(mockNewsArticleData);
-//       await newsArticle.update(updatedMeetupFields);
-//       expect(spiedOnApiUpdateMeetup).toHaveBeenCalledWith(
-//         newsArticle.id,
-//         updatedMeetupFields,
-//       );
-//     });
+  describe('update() instance method', () => {
+    beforeEach(() => {
+      spiedOnApiUpdateMeetup.mockReturnValue(
+        Promise.resolve(mockMeetupDraftFilledData),
+      );
+    });
 
-//     it('should update meetups instance fields', async () => {
-//       const newsArticle = new News(mockNewsArticleData);
-//       await newsArticle.update(updatedMeetupFields);
-//       expect(newsArticle.title).toBe(updatedMeetupFields.title);
-//       expect(newsArticle.text).toBe(updatedMeetupFields.text);
-//       expect(newsArticle.image).toBe(updatedMeetupFields.image);
-//     });
-//   });
+    it('should call API updateMeetup() function', async () => {
+      const meetup = new Meetup(mockMeetupDraftData, mockMeetupStore);
+      await meetup.update(mockMeetupFields);
+      expect(spiedOnApiUpdateMeetup).toHaveBeenCalledWith(
+        meetup.id,
+        mockMeetupFields,
+      );
+    });
 
-//   describe('delete() instance method', () => {
-//     it('should call API deleteMeetup() function', async () => {
-//       const newsArticle = new News(mockNewsArticleData);
-//       await newsArticle.delete();
-//       expect(spiedOnApiDeleteMeetup).toHaveBeenCalledWith(newsArticle.id);
-//     });
+    it('should update meetups instance fields', async () => {
+      const meetup = new Meetup(mockMeetupData, mockMeetupStore);
+      await meetup.update(mockMeetupFields);
+      expect(meetup.start).toBe(mockMeetupFields.start);
+      expect(meetup.finish).toBe(mockMeetupFields.finish);
+      expect(meetup.place).toBe(mockMeetupFields.place);
+      expect(meetup.image).toBe(mockMeetupFields.image);
+    });
+  });
 
-//     it('given a meetups store, should call its onMeetupDeleted() method', async () => {
-//       const spiedOnNewsStoreOnNewsArticleDeleted = jest.spyOn(
-//         MeetupStore.prototype,
-//         'onMeetupDeleted',
-//       );
-//       const newsArticle = new News(
-//         mockNewsArticleData,
-//         new MeetupStore(new RootStore()),
-//       );
-//       await newsArticle.delete();
-//       expect(spiedOnNewsStoreOnNewsArticleDeleted).toHaveBeenCalledWith(
-//         newsArticle,
-//       );
-//     });
-//   });
+  describe('approve() instance method', () => {
+    describe('given a meetup in topic stage', () => {
+      it('should set meetup status to DRAFT', async () => {
+        spiedOnApiUpdateMeetup.mockReturnValue(
+          Promise.resolve(mockMeetupDraftData),
+        );
+        const meetup = new Meetup(mockTopicData, mockMeetupStore);
+        const meetupSnapshot = Object.assign({}, meetup) as Meetup;
+        await meetup.approve();
+        expect(meetup.status).toBe(MeetupStatus.DRAFT);
+        expectMeetupFieldsNotChanged(meetup, meetupSnapshot);
+      });
+    });
 
-//   describe('toJSON instance() method', () => {
-//     it('should serialize to IUser', () => {
-//       const newsArticle = new News(mockNewsArticleData);
-//       expect(JSON.stringify(newsArticle)).toBe(
-//         JSON.stringify(mockNewsArticleData),
-//       );
-//     });
-//   });
-// });
+    describe('given a meetup after approval', () => {
+      it('should not touch meetup status', async () => {
+        const meetup = new Meetup(mockMeetupData, mockMeetupStore);
+        const meetupSnapshot = Object.assign({}, meetup) as Meetup;
+        await meetup.approve();
+        expect(meetup.status).toBe(meetupSnapshot.status);
+        expectMeetupFieldsNotChanged(meetup, meetupSnapshot);
+      });
+    });
+  });
+
+  describe('publish() instance method', () => {
+    describe('given a meetup in draft stage', () => {
+      describe('given start & finish dates and location are filled', () => {
+        it('should set meetup status to CONFIRMED', async () => {
+          spiedOnApiUpdateMeetup.mockReturnValue(
+            Promise.resolve(mockMeetupData),
+          );
+          const meetup = new Meetup(mockMeetupDraftFilledData, mockMeetupStore);
+          const meetupSnapshot = Object.assign({}, meetup) as Meetup;
+          await meetup.publish();
+          expect(meetup.status).toBe(MeetupStatus.CONFIRMED);
+          expectMeetupFieldsNotChanged(meetup, meetupSnapshot);
+        });
+      });
+
+      describe('given either start date, or finish date, or location is not filled', () => {
+        it('should not touch meetup status', async () => {
+          const meetup = new Meetup(mockMeetupDraftData, mockMeetupStore);
+          const meetupSnapshot = Object.assign({}, meetup) as Meetup;
+          await meetup.publish();
+          expect(meetup.status).toBe(meetupSnapshot.status);
+          expectMeetupFieldsNotChanged(meetup, meetupSnapshot);
+        });
+      });
+    });
+
+    describe('given a meetup with status other than draft', () => {
+      it('should not touch meetup status', async () => {
+        const meetup = new Meetup(mockTopicData, mockMeetupStore);
+        const meetupSnapshot = Object.assign({}, meetup) as Meetup;
+        await meetup.publish();
+        expect(meetup.status).toBe(meetupSnapshot.status);
+        expectMeetupFieldsNotChanged(meetup, meetupSnapshot);
+      });
+    });
+  });
+
+  describe('delete() instance method', () => {
+    it('should call API deleteMeetup() function', async () => {
+      const meetup = new Meetup(mockMeetupData, mockMeetupStore);
+      await meetup.delete();
+      expect(spiedOnApiDeleteMeetup).toHaveBeenCalledWith(meetup.id);
+    });
+
+    it('given a meetups store, should call its onMeetupDeleted() method', async () => {
+      const spiedOnNewsStoreOnNewsArticleDeleted = jest.spyOn(
+        MeetupStore.prototype,
+        'onMeetupDeleted',
+      );
+      const meetup = new Meetup(mockMeetupData, mockMeetupStore);
+      await meetup.delete();
+      expect(spiedOnNewsStoreOnNewsArticleDeleted).toHaveBeenCalledWith(meetup);
+    });
+  });
+
+  describe('toJSON instance() method', () => {
+    it('should serialize to IMeetup', () => {
+      const meetup = new Meetup(mockMeetupData, mockMeetupStore);
+      expect(meetup.toJSON()).toEqual(mockMeetupData);
+    });
+  });
+});
