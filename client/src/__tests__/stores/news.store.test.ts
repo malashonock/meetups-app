@@ -50,7 +50,7 @@ describe('NewsStore', () => {
       expect(spiedOnMobXMakeAutoObservable).toHaveBeenCalledWith(newsStore);
     });
 
-    it('should initialize newsArticle field to an empty array', () => {
+    it('should initialize news field to an empty array', () => {
       const newsStore = new NewsStore(new RootStore());
       expect(newsStore.news.length).toBe(0);
     });
