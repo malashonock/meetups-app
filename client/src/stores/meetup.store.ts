@@ -139,4 +139,22 @@ export class Meetup implements IMeetup {
       this.meetupStore?.onMeetupDeleted(this);
     });
   }
+
+  toJSON(): IMeetup {
+    return {
+      id: this.id,
+      status: this.status,
+      modified: this.modified,
+      start: this.start,
+      finish: this.finish,
+      place: this.place,
+      subject: this.subject,
+      excerpt: this.excerpt,
+      author: this.author,
+      speakers: this.speakers,
+      votedUsers: this.votedUsers,
+      participants: this.participants,
+      image: this.image,
+    };
+  }
 }
