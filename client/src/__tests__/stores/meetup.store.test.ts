@@ -42,7 +42,7 @@ const expectMeetupFieldsNotChanged = (meetup1: Meetup, meetup2: Meetup) => {
   expect(meetup1.image).toBe(meetup2.image);
 };
 
-const mockMeetupsData: IMeetup[] = generateMeetupsData(1);
+const mockMeetupsData: IMeetup[] = generateMeetupsData(20);
 
 beforeEach(() => {
   spiedOnApiGetMeetups.mockReturnValue(Promise.resolve(mockMeetupsData));
