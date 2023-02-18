@@ -25,7 +25,6 @@ import {
   mockNewsArticleFields,
 } from 'model/__fakes__';
 import { apiUrl, RestResolver } from 'utils';
-import { INews, NewsDto } from 'model';
 import { FileWithUrl } from 'types';
 
 // Mock getNewsFromJson
