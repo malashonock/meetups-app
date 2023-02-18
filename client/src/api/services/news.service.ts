@@ -42,19 +42,23 @@ export const deleteNewsArticle = async (id: string): Promise<void> => {
   await httpClient.delete(`/news/${id}`);
 };
 
-const getNewsFromJson = async (articleData: NewsDto): Promise<INews> => {
-  const { publicationDate, imageUrl } = articleData;
+export const getNewsFromJson = async (articleData: NewsDto): Promise<INews> => {
+  const { id, publicationDate, title, text, imageUrl } = articleData;
 
   const image = imageUrl ? await getStaticFile(imageUrl) : null;
 
   return {
-    ...articleData,
+    id,
     publicationDate: new Date(publicationDate),
+    title,
+    text,
     image,
   };
 };
 
-const buildNewsFormData = (newsFields: Partial<NewsFields>): FormData => {
+export const buildNewsFormData = (
+  newsFields: Partial<NewsFields>,
+): FormData => {
   const formData = new FormData();
 
   Object.entries(newsFields).forEach(([name, value]): void => {
