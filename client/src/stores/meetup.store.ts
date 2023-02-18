@@ -3,7 +3,7 @@ import { makeAutoObservable, runInAction } from 'mobx';
 import * as API from 'api';
 import { RootStore, User } from 'stores';
 import { FileWithUrl, Nullable, Optional } from 'types';
-import { IMeetup, MeetupFields, MeetupStatus } from 'model';
+import { IMeetup, MeetupFields, MeetupStatus, ShortUser } from 'model';
 
 export class MeetupStore {
   meetups: Meetup[];
@@ -150,10 +150,16 @@ export class Meetup implements IMeetup {
       place: this.place,
       subject: this.subject,
       excerpt: this.excerpt,
-      author: this.author,
-      speakers: this.speakers,
-      votedUsers: this.votedUsers,
-      participants: this.participants,
+      author: this.author ? this.author.asShortUser() : null,
+      speakers: this.speakers.map(
+        (speaker: User): ShortUser => speaker.asShortUser(),
+      ),
+      votedUsers: this.votedUsers.map(
+        (votedUser: User): ShortUser => votedUser.asShortUser(),
+      ),
+      participants: this.participants.map(
+        (participant: User): ShortUser => participant.asShortUser(),
+      ),
       image: this.image,
     };
   }
