@@ -12,18 +12,15 @@ import {
   mockUserData,
 } from 'model/__fakes__';
 import { apiUrl, RestResolver } from 'utils';
-import { Credentials } from 'model';
 
 const mockUsersGetSuccess: RestResolver = (req, res, ctx) => {
   return res(ctx.status(200), ctx.json(mockFullUsers));
 };
 
-const mockUserGetSuccess: RestResolver = (req, res, ctx) => {
-  return res(ctx.status(200), ctx.json(mockFullUser));
-};
-
-const mockUserGetError: RestResolver = (req, res, ctx) => {
-  return res(ctx.status(404));
+const mockUserGetHandler: RestResolver = (req, res, ctx) => {
+  return req.params.id === mockFullUser.id
+    ? res(ctx.status(200), ctx.json(mockFullUser))
+    : res(ctx.status(404));
 };
 
 const mockRelatedUsersGet: RestResolver = (req, res, ctx) => {
@@ -49,7 +46,7 @@ afterAll(() => server.close());
 
 beforeEach(() => {
   spiedOnUsersGetHandler.mockImplementation(mockUsersGetSuccess);
-  spiedOnUserGetHandler.mockImplementation(mockUserGetSuccess);
+  spiedOnUserGetHandler.mockImplementation(mockUserGetHandler);
   spiedOnVotedUsersGetHandler.mockImplementation(mockRelatedUsersGet);
   spiedOnParticipantsGetHandler.mockImplementation(mockRelatedUsersGet);
 });
@@ -79,8 +76,6 @@ describe('User API service', () => {
 
     describe('given no user was found', () => {
       it('should reject with a 404 error', async () => {
-        spiedOnUserGetHandler.mockImplementation(mockUserGetError);
-
         expect.assertions(2);
         try {
           await getUser('invalid-id');
