@@ -2,7 +2,7 @@ import { makeAutoObservable, runInAction } from 'mobx';
 
 import * as API from 'api';
 import { RootStore } from 'stores';
-import { IUser, UserRole } from 'model';
+import { IUser, ShortUser, UserRole } from 'model';
 import { getFirstLetter } from 'utils';
 import { Maybe, Nullable, Optional } from 'types';
 
@@ -100,6 +100,14 @@ export class User {
       surname: this.surname,
       post: this.post,
       roles: this.roles,
+    };
+  }
+
+  asShortUser(): ShortUser {
+    return {
+      id: this.id,
+      name: this.name,
+      surname: this.surname,
     };
   }
 }
