@@ -16,6 +16,11 @@ export const mockShortUser2Data: ShortUser = {
   surname: 'Green',
 };
 
+export const mockShortUsersData: ShortUser[] = [
+  mockShortUserData,
+  mockShortUser2Data,
+];
+
 export const mockUserData: IUser = {
   ...mockShortUserData,
   post: 'Software Engineer',
