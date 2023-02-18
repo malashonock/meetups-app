@@ -9,8 +9,9 @@ import {
   mockNewsArticleData,
   mockNewsArticleFields,
   mockImageWithUrl2,
+  mockUpdatedNewsArticleData,
+  mockUpdatedNewsArticleFields,
 } from 'model/__fakes__';
-import { INews, NewsFields } from 'model';
 
 const spiedOnMobXMakeAutoObservable = jest.spyOn(MobX, 'makeAutoObservable');
 const spiedOnApiGetNews = jest.spyOn(NewsApi, 'getNews');
@@ -18,24 +19,13 @@ const spiedOnApiCreateNewsArticle = jest.spyOn(NewsApi, 'createNewsArticle');
 const spiedOnApiUpdateNewsArticle = jest.spyOn(NewsApi, 'updateNewsArticle');
 const spiedOnApiDeleteNewsArticle = jest.spyOn(NewsApi, 'deleteNewsArticle');
 
-const updatedNewsArticleFields: Partial<NewsFields> = {
-  title: 'Updated news title',
-  text: 'Updated news text',
-  image: mockImageWithUrl2,
-};
-
-const updatedNewsArticleData: INews = {
-  ...mockNewsArticleData,
-  ...updatedNewsArticleFields,
-};
-
 beforeEach(() => {
   spiedOnApiGetNews.mockReturnValue(Promise.resolve(mockNewsData));
   spiedOnApiCreateNewsArticle.mockReturnValue(
     Promise.resolve(mockNewsArticleData),
   );
   spiedOnApiUpdateNewsArticle.mockReturnValue(
-    Promise.resolve(updatedNewsArticleData),
+    Promise.resolve(mockUpdatedNewsArticleData),
   );
 });
 
@@ -145,19 +135,19 @@ describe('News', () => {
   describe('update() instance method', () => {
     it('should call API updateNewsArticle() function', async () => {
       const newsArticle = new News(mockNewsArticleData);
-      await newsArticle.update(updatedNewsArticleFields);
+      await newsArticle.update(mockUpdatedNewsArticleFields);
       expect(spiedOnApiUpdateNewsArticle).toHaveBeenCalledWith(
         newsArticle.id,
-        updatedNewsArticleFields,
+        mockUpdatedNewsArticleFields,
       );
     });
 
     it('should update news instance fields', async () => {
       const newsArticle = new News(mockNewsArticleData);
-      await newsArticle.update(updatedNewsArticleFields);
-      expect(newsArticle.title).toBe(updatedNewsArticleFields.title);
-      expect(newsArticle.text).toBe(updatedNewsArticleFields.text);
-      expect(newsArticle.image).toBe(updatedNewsArticleFields.image);
+      await newsArticle.update(mockUpdatedNewsArticleFields);
+      expect(newsArticle.title).toBe(mockUpdatedNewsArticleFields.title);
+      expect(newsArticle.text).toBe(mockUpdatedNewsArticleFields.text);
+      expect(newsArticle.image).toBe(mockUpdatedNewsArticleFields.image);
     });
   });
 
