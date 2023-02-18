@@ -4,18 +4,26 @@ import { FullUser, IUser, ShortUser, UserRole } from 'model';
 import { RootStore, User, UserStore } from 'stores';
 import { generateArray } from 'utils';
 
-export const mockUserData: IUser = {
+export const mockShortUserData: ShortUser = {
   id: 'aaa',
   name: 'John',
   surname: 'Doe',
+};
+
+export const mockShortUser2Data: ShortUser = {
+  id: 'bbb',
+  name: 'Alice',
+  surname: 'Green',
+};
+
+export const mockUserData: IUser = {
+  ...mockShortUserData,
   post: 'Software Engineer',
   roles: UserRole.EMPLOYEE,
 };
 
 export const mockUser2Data: IUser = {
-  id: 'bbb',
-  name: 'Alice',
-  surname: 'Green',
+  ...mockShortUser2Data,
   post: 'Business Analyst',
   roles: UserRole.EMPLOYEE,
 };
