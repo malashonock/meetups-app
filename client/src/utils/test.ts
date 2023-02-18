@@ -1,4 +1,13 @@
 import { fireEvent } from '@testing-library/react';
+import {
+  DefaultBodyType,
+  PathParams,
+  ResponseResolver,
+  RestContext,
+  RestRequest,
+} from 'msw';
+
+import { API_BASE_URL } from 'api/constants';
 
 export const dragEventArgsFrom = (fileOrFiles: File | File[]) => {
   const files = Array.isArray(fileOrFiles) ? fileOrFiles : [fileOrFiles];
@@ -30,3 +39,12 @@ export const dragFile = async (
 ) => {
   fireEvent.dragEnter(fileDropbox, dragEventArgsFrom(fileOrFiles));
 };
+
+export const apiUrl = (relativePath: string): string =>
+  API_BASE_URL + relativePath;
+
+export type RestResolver = ResponseResolver<
+  RestRequest<never, PathParams<string>>,
+  RestContext,
+  DefaultBodyType
+>;
