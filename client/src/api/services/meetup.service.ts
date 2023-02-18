@@ -1,12 +1,6 @@
 import { getParticipants, getStaticFile, getVotedUsers } from 'api';
 import { httpClient } from 'api';
-import {
-  MeetupDto,
-  MeetupFields,
-  MeetupStatus,
-  ShortUser,
-  IMeetup,
-} from 'model';
+import { MeetupDto, MeetupFields, MeetupStatus, IMeetup } from 'model';
 
 export const getMeetups = async (): Promise<IMeetup[]> => {
   const { data: meetupsData } = await httpClient.get<MeetupDto[]>('/meetups');
@@ -53,17 +47,35 @@ export const deleteMeetup = async (id: string): Promise<void> => {
 };
 
 const getMeetupFromJson = async (meetupData: MeetupDto): Promise<IMeetup> => {
-  const { id, modified, start, finish, imageUrl } = meetupData;
+  const {
+    id,
+    subject,
+    excerpt,
+    status,
+    modified,
+    start,
+    finish,
+    place,
+    author,
+    speakers,
+    imageUrl,
+  } = meetupData;
 
   const image = imageUrl ? await getStaticFile(imageUrl) : null;
   const votedUsers = await getVotedUsers(id);
   const participants = await getParticipants(id);
 
   return {
-    ...meetupData,
+    id,
+    subject,
+    excerpt,
+    status,
     modified: new Date(modified),
     start: start ? new Date(start) : undefined,
     finish: finish ? new Date(finish) : undefined,
+    place,
+    author,
+    speakers,
     votedUsers,
     participants,
     image,
