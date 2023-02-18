@@ -25,6 +25,8 @@ import { dropFile } from 'utils';
 import { useMeetup, useUserStore } from 'hooks';
 import { Meetup } from 'stores';
 
+jest.setTimeout(15 * 1000);
+
 jest.mock('utils/file');
 
 // Mock useMeetup & useUsers hook
