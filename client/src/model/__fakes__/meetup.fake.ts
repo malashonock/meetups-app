@@ -1,29 +1,43 @@
 import { faker } from '@faker-js/faker';
 
-import { IMeetup, MeetupStatus, ShortUser } from 'model';
+import { IMeetup, MeetupFields, MeetupStatus, ShortUser } from 'model';
 import { Meetup, MeetupStore, RootStore } from 'stores';
 import {
   mockImageWithUrl,
+  mockShortUser2Data,
+  mockShortUserData,
   mockUser,
   mockUsers,
   mockUsersData,
 } from 'model/__fakes__';
 import { generateArray } from 'utils';
 
-export const mockTopicData: IMeetup = {
-  id: 'aaa',
-  modified: new Date(2023, 0, 10),
-  start: undefined,
-  finish: undefined,
-  author: mockUser,
-  speakers: [mockUser],
-  votedUsers: generateArray<ShortUser>(3, () => mockUser),
-  participants: generateArray<ShortUser>(2, () => mockUser),
+export const mockTopicFields: MeetupFields = {
   subject: 'Test meetup topic',
   excerpt: 'Test meetup description',
+  author: mockShortUserData,
+  start: undefined,
+  finish: undefined,
   place: undefined,
-  status: MeetupStatus.REQUEST,
   image: null,
+};
+
+export const mockMeetupFields: MeetupFields = {
+  ...mockTopicFields,
+  start: new Date(2023, 2, 15, 14, 0),
+  finish: new Date(2023, 2, 15, 15, 30),
+  place: 'room 123',
+  image: mockImageWithUrl,
+};
+
+export const mockTopicData: IMeetup = {
+  ...mockTopicFields,
+  id: 'aaa',
+  modified: new Date(2023, 0, 10),
+  speakers: [mockShortUserData],
+  votedUsers: [mockShortUserData, mockShortUser2Data],
+  participants: [mockShortUserData, mockShortUser2Data],
+  status: MeetupStatus.REQUEST,
 };
 
 export const mockMeetupDraftData: IMeetup = {
@@ -33,10 +47,7 @@ export const mockMeetupDraftData: IMeetup = {
 
 export const mockMeetupDraftFilledData: IMeetup = {
   ...mockMeetupDraftData,
-  start: new Date(2023, 2, 15, 14, 0),
-  finish: new Date(2023, 2, 15, 15, 30),
-  place: 'room 123',
-  image: mockImageWithUrl,
+  ...mockMeetupFields,
 };
 
 export const mockMeetupData: IMeetup = {
