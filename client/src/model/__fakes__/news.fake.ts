@@ -43,29 +43,21 @@ export const mockNewsData: INews[] = [
   mockNewsArticle2Data,
 ];
 
-export const mockNewsArticleDto: NewsDto = {
-  id: mockNewsArticleData.id,
-  publicationDate: mockNewsArticleData.publicationDate.toISOString(),
-  title: mockNewsArticleData.title,
-  text: mockNewsArticleData.text,
-  imageUrl: mockNewsArticleData.image!.url,
-};
+const getNewsArticleDtoFromData = (newsArticleData: INews): NewsDto => ({
+  id: newsArticleData.id,
+  publicationDate: newsArticleData.publicationDate.toISOString(),
+  title: newsArticleData.title,
+  text: newsArticleData.text,
+  imageUrl: newsArticleData.image!.url,
+});
 
-export const mockUpdatedNewsArticleDto: NewsDto = {
-  id: mockUpdatedNewsArticleData.id,
-  publicationDate: mockUpdatedNewsArticleData.publicationDate.toISOString(),
-  title: mockUpdatedNewsArticleData.title,
-  text: mockUpdatedNewsArticleData.text,
-  imageUrl: mockUpdatedNewsArticleData.image!.url,
-};
-
-export const mockNewsArticle2Dto: NewsDto = {
-  id: mockNewsArticle2Data.id,
-  publicationDate: mockNewsArticle2Data.publicationDate.toISOString(),
-  title: mockNewsArticle2Data.title,
-  text: mockNewsArticle2Data.text,
-  imageUrl: mockNewsArticle2Data.image!.url,
-};
+export const mockNewsArticleDto: NewsDto =
+  getNewsArticleDtoFromData(mockNewsArticleData);
+export const mockUpdatedNewsArticleDto: NewsDto = getNewsArticleDtoFromData(
+  mockUpdatedNewsArticleData,
+);
+export const mockNewsArticle2Dto: NewsDto =
+  getNewsArticleDtoFromData(mockNewsArticle2Data);
 
 export const mockNewsDto: NewsDto[] = [mockNewsArticleDto, mockNewsArticle2Dto];
 

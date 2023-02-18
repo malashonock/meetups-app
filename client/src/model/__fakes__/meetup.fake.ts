@@ -1,11 +1,18 @@
 import { faker } from '@faker-js/faker';
 
-import { IMeetup, MeetupFields, MeetupStatus, ShortUser } from 'model';
+import {
+  IMeetup,
+  MeetupDto,
+  MeetupFields,
+  MeetupStatus,
+  ShortUser,
+} from 'model';
 import { Meetup, MeetupStore, RootStore } from 'stores';
 import {
   mockImageWithUrl,
   mockShortUser2Data,
   mockShortUserData,
+  mockShortUsersData,
   mockUser,
   mockUsers,
   mockUsersData,
@@ -54,6 +61,28 @@ export const mockMeetupData: IMeetup = {
   ...mockMeetupDraftFilledData,
   status: MeetupStatus.CONFIRMED,
 };
+
+export const getMeetupDtoFromData = (meetupData: IMeetup): MeetupDto => ({
+  id: meetupData.id,
+  modified: meetupData.modified.toISOString(),
+  start: meetupData.start?.toISOString(),
+  finish: meetupData.finish?.toISOString(),
+  author: meetupData.author,
+  speakers: meetupData.speakers,
+  subject: meetupData.subject,
+  excerpt: meetupData.excerpt,
+  place: meetupData.place,
+  status: meetupData.status,
+  imageUrl: meetupData.image?.url ?? null,
+});
+
+export const mockTopicDto: MeetupDto = getMeetupDtoFromData(mockTopicData);
+export const mockMeetupDraftDto: MeetupDto =
+  getMeetupDtoFromData(mockMeetupDraftData);
+export const mockMeetupDraftFilledDto: MeetupDto = getMeetupDtoFromData(
+  mockMeetupDraftFilledData,
+);
+export const mockMeetupDto: MeetupDto = getMeetupDtoFromData(mockMeetupData);
 
 const mockRootStore: RootStore = new RootStore();
 mockRootStore.userStore.users = [...mockUsers];
@@ -108,15 +137,15 @@ export const generateMeetupData = (
     modified: faker.date.recent(),
     start: randomStartDate,
     finish: randomFinishDate,
-    author: mockUser,
+    author: mockShortUserData,
     speakers: generateArray(randomSpeakersCount, () =>
-      faker.helpers.arrayElement(mockUsersData),
+      faker.helpers.arrayElement(mockShortUsersData),
     ),
     votedUsers: generateArray(randomVotedUsersCount, () =>
-      faker.helpers.arrayElement(mockUsersData),
+      faker.helpers.arrayElement(mockShortUsersData),
     ),
     participants: generateArray(randomParticipantsCount, () =>
-      faker.helpers.arrayElement(mockUsersData),
+      faker.helpers.arrayElement(mockShortUsersData),
     ),
     subject: faker.company.catchPhrase(),
     excerpt: faker.lorem.paragraph(),
