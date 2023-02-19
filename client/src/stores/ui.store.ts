@@ -28,4 +28,11 @@ export class UiStore {
   destroy(): void {
     stopPersisting(this);
   }
+
+  toJSON() {
+    return {
+      locale: this.locale,
+      this: this.showOverlay,
+    };
+  }
 }

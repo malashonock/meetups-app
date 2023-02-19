@@ -1,7 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx';
-// import { makePersistable } from 'mobx-persist-store';
+import { makePersistable } from 'mobx-persist-store';
 
-import { Credentials } from 'model';
+import { Credentials, IUser } from 'model';
 import * as API from 'api';
 import { RootStore, User } from 'stores';
 import { Nullable } from 'types';
@@ -12,11 +12,23 @@ export class AuthStore {
   constructor(public rootStore: RootStore) {
     makeAutoObservable(this);
 
-    // makePersistable(this, {
-    //   name: 'auth',
-    //   properties: ['loggedUser'],
-    //   storage: window.localStorage,
-    // });
+    makePersistable(this, {
+      name: 'auth',
+      properties: [
+        {
+          key: 'loggedUser',
+          serialize: (value: Nullable<User>): string => {
+            return JSON.stringify(value);
+          },
+          deserialize: (value: string): Nullable<User> => {
+            return value
+              ? new User(JSON.parse(value) as IUser, this.rootStore.userStore)
+              : null;
+          },
+        },
+      ],
+      storage: window.localStorage,
+    });
 
     this.loggedUser = null;
   }
@@ -33,5 +45,11 @@ export class AuthStore {
     runInAction(() => {
       this.loggedUser = null;
     });
+  }
+
+  toJSON() {
+    return {
+      loggedUser: this.loggedUser,
+    };
   }
 }
