@@ -52,5 +52,12 @@ describe('Create meetup', () => {
       cy.get('[class*="createMeetupBtn"]').click();
       cy.url().should('contain', '/login');
     });
+
+    it('should not allow to navigate to /create route via browser address bar', () => {
+      cy.visit('/meetups/create');
+
+      // Should redirect to /login page
+      cy.url().should('contain', 'login');
+    });
   });
 });

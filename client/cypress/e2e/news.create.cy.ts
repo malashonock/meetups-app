@@ -39,5 +39,12 @@ describe('Create news article', () => {
       cy.get('[class*="createNewsBtn"]').click();
       cy.url().should('contain', '/login');
     });
+
+    it('should not allow to navigate to /create route via browser address bar', () => {
+      cy.visit('/news/create');
+
+      // Should redirect to /login page
+      cy.url().should('contain', 'login');
+    });
   });
 });
