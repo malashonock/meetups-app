@@ -168,7 +168,7 @@ export const ViewMeetupPage = observer(() => {
             [styles.notFilledOutline]: !canPublish,
           })}
         >
-          <div className={styles.info}>
+          <div id="date" className={styles.info}>
             <img
               className={styles.image}
               src={calendar}
@@ -178,7 +178,7 @@ export const ViewMeetupPage = observer(() => {
               {date || '—'}
             </Typography>
           </div>
-          <div className={styles.info}>
+          <div id="time" className={styles.info}>
             <img
               className={styles.image}
               src={clock}
@@ -188,7 +188,7 @@ export const ViewMeetupPage = observer(() => {
               {time || '—'}
             </Typography>
           </div>
-          <div className={styles.info}>
+          <div id="location" className={styles.info}>
             <img
               className={styles.image}
               src={pin}
