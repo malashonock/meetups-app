@@ -21,8 +21,10 @@ export class AuthStore {
             return JSON.stringify(value);
           },
           deserialize: (value: string): Nullable<User> => {
-            return value
-              ? new User(JSON.parse(value) as IUser, this.rootStore.userStore)
+            const userData = JSON.parse(value) as Nullable<IUser>;
+
+            return userData
+              ? new User(userData, this.rootStore.userStore)
               : null;
           },
         },
