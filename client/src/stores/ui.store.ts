@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
 import { makePersistable, stopPersisting } from 'mobx-persist-store';
 
 import { RootStore } from 'stores';
@@ -25,8 +25,8 @@ export class UiStore {
     this.showOverlay = false;
   }
 
-  destroy(): void {
-    stopPersisting(this);
+  setLocale(locale: Locale): void {
+    this.locale = locale;
   }
 
   toJSON() {

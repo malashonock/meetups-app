@@ -22,10 +22,6 @@ export class RootStore {
     return this;
   }
 
-  destroy(): void {
-    this.uiStore.destroy();
-  }
-
   toJSON() {
     return {
       authStore: this.authStore.toJSON(),

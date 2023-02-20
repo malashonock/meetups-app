@@ -10,7 +10,6 @@ import {
 const spiedOnLoadUsers = jest.spyOn(UserStore.prototype, 'loadUsers');
 const spiedOnLoadMeetups = jest.spyOn(MeetupStore.prototype, 'loadMeetups');
 const spiedOnLoadNews = jest.spyOn(NewsStore.prototype, 'loadNews');
-const spiedOnUiStoreDestroy = jest.spyOn(UiStore.prototype, 'destroy');
 
 describe('RootStore', () => {
   describe('constructor', () => {
@@ -68,14 +67,6 @@ describe('RootStore', () => {
       const rootStore = new RootStore();
       const initializedRootStore = await rootStore.init();
       expect(initializedRootStore).toBe(rootStore);
-    });
-  });
-
-  describe('destroy() instance method', () => {
-    it('should call UiStore destroy() method', () => {
-      const rootStore = new RootStore();
-      rootStore.destroy();
-      expect(spiedOnUiStoreDestroy).toHaveBeenCalled();
     });
   });
 });

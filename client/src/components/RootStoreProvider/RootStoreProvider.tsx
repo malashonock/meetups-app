@@ -14,13 +14,10 @@ export const RootStoreProvider = observer(
     );
 
     // Initialize root store
-    useEffect((): (() => void) => {
+    useEffect((): void => {
       (async (): Promise<void> => {
         setRootStore(await rootStore.init());
       })();
-
-      // Cleanup on unmount
-      return () => rootStore.destroy();
     }, []);
 
     // Set UI language
