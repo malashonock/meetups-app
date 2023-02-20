@@ -66,6 +66,7 @@ const EditNewsForm = ({
           </div>
           <div className={classNames(styles.textSection, styles.actions)}>
             <Button
+              id="btn-cancel"
               type="button"
               variant={ButtonVariant.Default}
               onClick={handleBack}
@@ -74,6 +75,7 @@ const EditNewsForm = ({
               {t('formButtons.cancel')}
             </Button>
             <Button
+              id="btn-save"
               type="submit"
               variant={ButtonVariant.Primary}
               className={styles.actionButton}

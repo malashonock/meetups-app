@@ -216,6 +216,7 @@ exports[`CreateMeetupPage Step 1 - required fields should match snapshot 1`] = `
             >
               <button
                 class="actionButton back button default"
+                id="btn-back"
                 type="button"
               >
                 formButtons.back
@@ -223,6 +224,7 @@ exports[`CreateMeetupPage Step 1 - required fields should match snapshot 1`] = `
               <button
                 class="actionButton next button primary"
                 disabled=""
+                id="btn-next"
                 type="submit"
               >
                 formButtons.next
@@ -333,6 +335,11 @@ exports[`CreateMeetupPage Step 2 - optional fields should match snapshot 1`] = `
                     <div
                       class="react-datepicker__input-container"
                     >
+                      <span
+                        aria-live="polite"
+                        class="react-datepicker__aria-live"
+                        role="alert"
+                      />
                       <input
                         autocomplete="off"
                         class="input default"
@@ -360,6 +367,11 @@ exports[`CreateMeetupPage Step 2 - optional fields should match snapshot 1`] = `
                     <div
                       class="react-datepicker__input-container"
                     >
+                      <span
+                        aria-live="polite"
+                        class="react-datepicker__aria-live"
+                        role="alert"
+                      />
                       <input
                         autocomplete="off"
                         class="input default"
@@ -450,12 +462,14 @@ exports[`CreateMeetupPage Step 2 - optional fields should match snapshot 1`] = `
             >
               <button
                 class="actionButton back button default"
+                id="btn-back"
                 type="submit"
               >
                 formButtons.back
               </button>
               <button
                 class="actionButton submit button primary"
+                id="btn-create"
                 type="submit"
               >
                 formButtons.create

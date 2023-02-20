@@ -76,6 +76,7 @@ export const MeetupTabContent = observer(
           </div>
           {variant === MeetupCardVariant.Topic && (
             <Button
+              id="btn-create-meetup"
               variant={ButtonVariant.Secondary}
               onClick={openCreateMeetupPage}
               className={styles.createMeetupBtn}

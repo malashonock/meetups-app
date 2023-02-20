@@ -99,6 +99,7 @@ exports[`EditNewsPage should match snapshot 1`] = `
         >
           <button
             class="actionButton button default"
+            id="btn-cancel"
             type="button"
           >
             formButtons.cancel
@@ -106,6 +107,7 @@ exports[`EditNewsPage should match snapshot 1`] = `
           <button
             class="actionButton button primary"
             disabled=""
+            id="btn-save"
             type="submit"
           >
             formButtons.save

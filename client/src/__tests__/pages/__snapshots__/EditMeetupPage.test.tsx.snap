@@ -87,6 +87,11 @@ exports[`EditMeetupPage should match snapshot 1`] = `
                 <div
                   class="react-datepicker__input-container"
                 >
+                  <span
+                    aria-live="polite"
+                    class="react-datepicker__aria-live"
+                    role="alert"
+                  />
                   <input
                     autocomplete="off"
                     class="input default"
@@ -114,6 +119,11 @@ exports[`EditMeetupPage should match snapshot 1`] = `
                 <div
                   class="react-datepicker__input-container"
                 >
+                  <span
+                    aria-live="polite"
+                    class="react-datepicker__aria-live"
+                    role="alert"
+                  />
                   <input
                     autocomplete="off"
                     class="input default"
@@ -268,6 +278,7 @@ exports[`EditMeetupPage should match snapshot 1`] = `
         >
           <button
             class="actionButton cancelBtn button default"
+            id="btn-cancel"
             type="button"
           >
             formButtons.cancel
@@ -277,6 +288,7 @@ exports[`EditMeetupPage should match snapshot 1`] = `
           >
             <button
               class="actionButton previewBtn button secondary"
+              id="btn-preview"
               type="button"
             >
               formButtons.preview
@@ -284,6 +296,7 @@ exports[`EditMeetupPage should match snapshot 1`] = `
             <button
               class="actionButton saveBtn button primary"
               disabled=""
+              id="btn-save"
               type="submit"
             >
               formButtons.save

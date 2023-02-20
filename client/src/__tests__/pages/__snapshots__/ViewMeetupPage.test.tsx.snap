@@ -146,6 +146,7 @@ exports[`ViewMeetupPage after approval & publishing given a user is logged in sh
       >
         <button
           class="actionButton backBtn button default"
+          id="btn-back"
         >
           formButtons.back
         </button>
@@ -304,6 +305,7 @@ exports[`ViewMeetupPage after approval & publishing given no user is logged in s
       >
         <button
           class="actionButton backBtn button default"
+          id="btn-back"
         >
           formButtons.back
         </button>
@@ -459,6 +461,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given a user
       >
         <button
           class="actionButton backBtn button default"
+          id="btn-back"
         >
           formButtons.back
         </button>
@@ -467,6 +470,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given a user
         >
           <button
             class="actionButton publishBtn button primary"
+            id="btn-publish"
           >
             formButtons.publish
           </button>
@@ -623,6 +627,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given no use
       >
         <button
           class="actionButton backBtn button default"
+          id="btn-back"
         >
           formButtons.back
         </button>
@@ -715,6 +720,7 @@ exports[`ViewMeetupPage before topic approval given a user is logged in should m
       >
         <button
           class="actionButton backBtn button default"
+          id="btn-back"
         >
           formButtons.back
         </button>
@@ -723,11 +729,13 @@ exports[`ViewMeetupPage before topic approval given a user is logged in should m
         >
           <button
             class="actionButton deleteBtn button secondary"
+            id="btn-delete"
           >
             formButtons.delete
           </button>
           <button
             class="actionButton approveBtn button primary"
+            id="btn-approve"
           >
             viewMeetupPage.approveTopicBtn
           </button>
@@ -821,6 +829,7 @@ exports[`ViewMeetupPage before topic approval given no user is logged in should 
       >
         <button
           class="actionButton backBtn button default"
+          id="btn-back"
         >
           formButtons.back
         </button>

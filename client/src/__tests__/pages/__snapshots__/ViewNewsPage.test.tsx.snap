@@ -41,6 +41,7 @@ exports[`ViewNewsPage should match snapshot 1`] = `
       >
         <button
           class="actionButton backBtn button default"
+          id="btn-back"
         >
           formButtons.back
         </button>
@@ -49,6 +50,7 @@ exports[`ViewNewsPage should match snapshot 1`] = `
         >
           <button
             class="actionButton editBtn button secondary"
+            id="btn-edit"
           >
             formButtons.edit
           </button>

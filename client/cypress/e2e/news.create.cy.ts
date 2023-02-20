@@ -2,11 +2,11 @@ import { faker } from '@faker-js/faker';
 
 describe('Create news article', () => {
   describe('given a user is logged in', () => {
-    it('should create new news article', () => {
+    it('should create a new news article', () => {
       cy.loginAsChief();
 
       cy.visit('/news');
-      cy.get('[class*="createNewsBtn"]').click();
+      cy.get('#btn-create-news').click();
       cy.url().should('contain', '/news/create');
 
       const title: string = faker.company.catchPhrase();
@@ -18,7 +18,7 @@ describe('Create news article', () => {
         'cypress/fixtures/test-image-1.jpeg',
         { action: 'drag-drop' },
       );
-      cy.get('[type="submit"]').click();
+      cy.get('#btn-create').click();
 
       // Should redirect to /news
       cy.url().should('match', /\/news$/);
