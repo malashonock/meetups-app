@@ -89,9 +89,9 @@ describe('ViewNewsPage', () => {
       mockUseNewsArticle.mockReturnValue(undefined);
     });
 
-    it('should render a Not Found page', () => {
+    it('should render a Loading spinner while news article is undefined', () => {
       render(<ViewNewsPage />, { wrapper: MockRouter });
-      expect(screen.getByText('notFoundPage.title')).toBeInTheDocument();
+      expect(screen.getByText('loadingText.newsArticle')).toBeInTheDocument();
     });
   });
 });

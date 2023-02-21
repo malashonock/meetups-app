@@ -228,9 +228,9 @@ describe('ViewMeetupPage', () => {
       mockUseMeetup.mockReturnValue(undefined);
     });
 
-    it('should render a Not Found page', () => {
+    it('should render a Loading spinner while meetup is undefined', () => {
       render(<ViewMeetupPage />, { wrapper: MockRouter });
-      expect(screen.getByText('notFoundPage.title')).toBeInTheDocument();
+      expect(screen.getByText('loadingText.meetup')).toBeInTheDocument();
     });
   });
 });

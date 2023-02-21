@@ -6,10 +6,10 @@ import { useTranslation } from 'react-i18next';
 import {
   Button,
   ButtonVariant,
+  LoadingSpinner,
   Typography,
   TypographyComponent,
 } from 'components';
-import { NotFoundPage } from 'pages';
 import { useAuthStore, useNewsArticle } from 'hooks';
 
 import styles from './ViewNewsPage.module.scss';
@@ -27,7 +27,7 @@ export const ViewNewsPage = observer(() => {
   const handleEdit = (): void => navigate(pathname + '/edit');
 
   if (!newsArticle) {
-    return <NotFoundPage />;
+    return <LoadingSpinner text={t('loadingText.newsArticle')} />;
   }
 
   const { image, title, text } = newsArticle;
