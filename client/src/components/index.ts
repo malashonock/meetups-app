@@ -37,3 +37,4 @@ export * from './RootStoreProvider/RootStoreProvider';
 export * from './LanguageSelect/LanguageSelect';
 export * from './ProtectedRoute/ProtectedRoute';
 export * from './AvatarGroup/AvatarGroup';
+export * from './LoadingSpinner/LoadingSpinner';
