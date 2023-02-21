@@ -186,5 +186,12 @@
     "Kb": "{{fileSize}} Kb",
     "bytes": "{{fileSize}} bytes"
   },
-  "logoAlt": "Logo"
+  "logoAlt": "Logo",
+  "loadingText": {
+    "default": "Loading",
+    "meetups": "Loading meetups",
+    "meetup": "Loading meetup",
+    "news": "Loading news",
+    "newsArticle": "Loading newsArticle"
+  }
 }
