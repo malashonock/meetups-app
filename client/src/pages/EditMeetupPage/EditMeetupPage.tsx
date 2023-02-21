@@ -10,13 +10,13 @@ import {
   DateTimePicker,
   ImagePreviewMode,
   ImageUploader,
+  LoadingSpinner,
   SelectField,
   SelectOption,
   TextField,
   Typography,
   TypographyComponent,
 } from 'components';
-import { NotFoundPage } from 'pages';
 import { MeetupFields } from 'model';
 import {
   meetupRequiredFieldsSchema,
@@ -163,10 +163,10 @@ const EditMeetupForm = ({
 export const EditMeetupPage = observer((): JSX.Element => {
   const { id } = useParams();
   const meetup = useMeetup(id);
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
 
   if (!meetup) {
-    return <NotFoundPage />;
+    return <LoadingSpinner text={t('loadingText.meetup')} />;
   }
 
   const initialValues: MeetupFields = {

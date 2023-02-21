@@ -9,11 +9,11 @@ import {
   ButtonVariant,
   ImagePreviewMode,
   ImageUploader,
+  LoadingSpinner,
   TextField,
   Typography,
   TypographyComponent,
 } from 'components';
-import { NotFoundPage } from 'pages';
 import { NewsFields } from 'model';
 import { useNewsArticle, useTouchOnLocaleChanged, useLocale } from 'hooks';
 import { newsSchema } from 'validation';
@@ -94,10 +94,10 @@ export const EditNewsPage = observer((): JSX.Element => {
   const { id } = useParams();
   const newsArticle = useNewsArticle(id);
   const navigate = useNavigate();
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
 
   if (!newsArticle) {
-    return <NotFoundPage />;
+    return <LoadingSpinner text={t('loadingText.newsArticle')} />;
   }
 
   const initialValues: NewsFields = {

@@ -247,11 +247,11 @@ describe('EditMeetupPage', () => {
     expect(screen.getByText('View meetup')).toBeInTheDocument();
   });
 
-  it('should render a Not Found page if useMeetup returns undefined', () => {
+  it('should render a Loading spinner while meetup is undefined', () => {
     mockUseMeetup.mockReturnValue(undefined);
 
     render(<EditMeetupPage />, { wrapper: MockRouter });
 
-    expect(screen.getByText('notFoundPage.title')).toBeInTheDocument();
+    expect(screen.getByText('loadingText.meetup')).toBeInTheDocument();
   });
 });

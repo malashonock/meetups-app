@@ -7,13 +7,13 @@ import {
   AvatarGroup,
   Button,
   ButtonVariant,
+  LoadingSpinner,
   Typography,
   TypographyComponent,
   UserPreview,
 } from 'components';
 import { MeetupStatus } from 'model';
 import { isPast, parseDate } from 'utils';
-import { NotFoundPage } from 'pages';
 import { User } from 'stores';
 import { useAuthStore, useMeetup, useLocale, useUserStore } from 'hooks';
 import { Optional } from 'types';
@@ -34,7 +34,7 @@ export const ViewMeetupPage = observer(() => {
   const { loggedUser } = useAuthStore();
 
   if (!meetup) {
-    return <NotFoundPage />;
+    return <LoadingSpinner text={t('loadingText.meetup')} />;
   }
 
   const {
