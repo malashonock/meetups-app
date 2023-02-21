@@ -20,4 +20,11 @@ img {
 
 body {
   background-color: $gray-09;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
