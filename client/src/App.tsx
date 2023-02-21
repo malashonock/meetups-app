@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import {
   Header,
+  LoadingSpinner,
   meetupTabsLinks,
   meetupTabsMapper,
   ProtectedRoute,
@@ -26,7 +27,7 @@ import styles from './App.module.scss';
 export const App = (): JSX.Element => (
   <RootStoreProvider>
     <BrowserRouter>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<LoadingSpinner />}>
         <Header />
         <main className={styles.container}>
           <Routes>
