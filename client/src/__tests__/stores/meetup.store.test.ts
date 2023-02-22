@@ -1,4 +1,5 @@
 import * as MobX from 'mobx';
+import { AxiosError } from 'axios';
 
 import { MeetupStore, RootStore, Meetup, User } from 'stores';
 import * as MeetupApi from 'api/services/meetup.service';
@@ -60,8 +61,13 @@ describe('MeetupStore', () => {
       expect(spiedOnMobXMakeAutoObservable).toHaveBeenCalledWith(meetupStore);
     });
 
-    it('should initialize meetups field to an empty array', () => {
+    it('should initialize instance fields properly', () => {
       const meetupStore = new MeetupStore(new RootStore());
+
+      expect(meetupStore.isLoading).toBe(false);
+      expect(meetupStore.isError).toBe(false);
+      expect(meetupStore.errors.length).toBe(0);
+
       expect(meetupStore.meetups.length).toBe(0);
     });
   });
@@ -73,13 +79,59 @@ describe('MeetupStore', () => {
       expect(spiedOnApiGetMeetups).toHaveBeenCalled();
     });
 
-    it('should populate meetups field with fetched meetups', async () => {
+    it('should be in isLoading state while API is running the request', async () => {
       const meetupStore = new MeetupStore(new RootStore());
-      await meetupStore.loadMeetups();
-      expect(meetupStore.meetups.length).toBe(mockMeetupsData.length);
-      expect(JSON.stringify(meetupStore.meetups)).toBe(
-        JSON.stringify(mapMeetupsData(mockMeetupsData, meetupStore)),
-      );
+      const loadMeetupsTask = meetupStore.loadMeetups();
+      expect(meetupStore.isLoading).toBe(true);
+      await loadMeetupsTask;
+      expect(meetupStore.isLoading).toBe(false);
+    });
+
+    describe('given API request resolves successfully', () => {
+      it('should populate meetups field with fetched meetups', async () => {
+        const meetupStore = new MeetupStore(new RootStore());
+        await meetupStore.loadMeetups();
+
+        expect(meetupStore.isLoading).toBe(false);
+        expect(meetupStore.isError).toBe(false);
+        expect(meetupStore.errors.length).toBe(0);
+
+        expect(meetupStore.meetups.length).toBe(mockMeetupsData.length);
+        expect(JSON.stringify(meetupStore.meetups)).toBe(
+          JSON.stringify(mapMeetupsData(mockMeetupsData, meetupStore)),
+        );
+      });
+    });
+
+    describe('given API request rejects with an error', () => {
+      const ERROR_CODE = '404';
+      const ERROR_MESSAGE = 'Resource not found';
+
+      beforeEach(() => {
+        spiedOnApiGetMeetups.mockImplementation(() => {
+          throw new AxiosError(ERROR_MESSAGE, ERROR_CODE);
+        });
+      });
+
+      it('should populate errors field with the caught error', async () => {
+        const meetupStore = new MeetupStore(new RootStore());
+
+        await meetupStore.loadMeetups();
+
+        expect(meetupStore.isLoading).toBe(false);
+        expect(meetupStore.isError).toBe(true);
+        expect(meetupStore.errors.length).toBe(1);
+        expect((meetupStore.errors[0] as AxiosError).code).toBe(ERROR_CODE);
+        expect((meetupStore.errors[0] as AxiosError).message).toBe(
+          ERROR_MESSAGE,
+        );
+      });
+
+      it('should not add any elements to the meetups array', async () => {
+        const meetupStore = new MeetupStore(new RootStore());
+        await meetupStore.loadMeetups();
+        expect(meetupStore.meetups.length).toBe(0);
+      });
     });
   });
 
@@ -100,10 +152,51 @@ describe('MeetupStore', () => {
       expect(spiedOnApiCreateMeetup).toHaveBeenCalledWith(mockTopicData);
     });
 
-    it('should append the newly constructed meetup instance to meetups field array', async () => {
+    it('should be in isLoading state while API is running the request', async () => {
       const meetupStore = new MeetupStore(new RootStore());
-      const newMeetup = await meetupStore.createMeetup(mockTopicData);
-      expect(meetupStore.meetups).toContain(newMeetup);
+      const createMeetupTask = meetupStore.createMeetup(mockMeetupFields);
+      expect(meetupStore.isLoading).toBe(true);
+      await createMeetupTask;
+      expect(meetupStore.isLoading).toBe(false);
+    });
+
+    describe('given API request resolves successfully', () => {
+      it('should append the newly constructed meetup instance to meetups field array', async () => {
+        const meetupStore = new MeetupStore(new RootStore());
+        const newMeetup = await meetupStore.createMeetup(mockTopicData);
+        expect(meetupStore.meetups).toContain(newMeetup);
+      });
+    });
+
+    describe('given API request rejects with an error', () => {
+      const ERROR_CODE = '403';
+      const ERROR_MESSAGE = 'Forbidden';
+
+      beforeEach(() => {
+        spiedOnApiCreateMeetup.mockImplementation(() => {
+          throw new AxiosError(ERROR_MESSAGE, ERROR_CODE);
+        });
+      });
+
+      it('should populate errors field with the caught error', async () => {
+        const meetupStore = new MeetupStore(new RootStore());
+
+        await meetupStore.createMeetup(mockMeetupFields);
+
+        expect(meetupStore.isLoading).toBe(false);
+        expect(meetupStore.isError).toBe(true);
+        expect(meetupStore.errors.length).toBe(1);
+        expect((meetupStore.errors[0] as AxiosError).code).toBe(ERROR_CODE);
+        expect((meetupStore.errors[0] as AxiosError).message).toBe(
+          ERROR_MESSAGE,
+        );
+      });
+
+      it('should not add any elements to the meetups array', async () => {
+        const meetupStore = new MeetupStore(new RootStore());
+        await meetupStore.createMeetup(mockMeetupFields);
+        expect(meetupStore.meetups.length).toBe(0);
+      });
     });
   });
 
@@ -111,8 +204,20 @@ describe('MeetupStore', () => {
     it('should remove the deleted meetup instance from meetups field array', async () => {
       const meetupStore = new MeetupStore(new RootStore());
       const newMeetup = await meetupStore.createMeetup(mockTopicData);
-      meetupStore.onMeetupDeleted(newMeetup);
+      expect(newMeetup).not.toBeUndefined();
+      meetupStore.onMeetupDeleted(newMeetup!);
       expect(meetupStore.meetups).not.toContain(newMeetup);
+    });
+  });
+
+  describe('toJSON instance() method', () => {
+    it('should serialize only the meetups field', () => {
+      const meetupStore = new MeetupStore(new RootStore());
+      expect(JSON.stringify(meetupStore)).toBe(
+        JSON.stringify({
+          meetups: [],
+        }),
+      );
     });
   });
 });
@@ -133,9 +238,14 @@ describe('Meetup', () => {
       });
     });
 
-    it('should initialize meetup fields with meetups data', () => {
+    it('should initialize instance fields properly', () => {
       const meetup = new Meetup(mockMeetupData, mockMeetupStore);
+
       expect(meetup.meetupStore).toBe(mockMeetupStore);
+      expect(meetup.isLoading).toBe(false);
+      expect(meetup.isError).toBe(false);
+      expect(meetup.errors.length).toBe(0);
+
       expect(meetup.id).toBe(mockMeetupData.id);
       expect(meetup.status).toBe(mockMeetupData.status);
       expect(meetup.modified).toBe(mockMeetupData.modified);
@@ -174,31 +284,120 @@ describe('Meetup', () => {
       );
     });
 
-    it('should update meetups instance fields', async () => {
-      const meetup = new Meetup(mockMeetupData, mockMeetupStore);
-      await meetup.update(mockMeetupFields);
-      expect(meetup.start).toBe(mockMeetupFields.start);
-      expect(meetup.finish).toBe(mockMeetupFields.finish);
-      expect(meetup.place).toBe(mockMeetupFields.place);
-      expect(meetup.image).toBe(mockMeetupFields.image);
+    it('should be in isLoading state while API is running the request', async () => {
+      const meetup = new Meetup(mockMeetupData);
+      const updateMeetupTask = meetup.update(mockMeetupFields);
+      expect(meetup.isLoading).toBe(true);
+      await updateMeetupTask;
+      expect(meetup.isLoading).toBe(false);
+    });
+
+    describe('given API request resolves successfully', () => {
+      it('should update meetups instance fields', async () => {
+        const meetup = new Meetup(mockTopicData, mockMeetupStore);
+        await meetup.update(mockMeetupFields);
+        expect(meetup.start).toBe(mockMeetupFields.start);
+        expect(meetup.finish).toBe(mockMeetupFields.finish);
+        expect(meetup.place).toBe(mockMeetupFields.place);
+        expect(meetup.image).toBe(mockMeetupFields.image);
+      });
+    });
+
+    describe('given API request rejects with an error', () => {
+      const ERROR_CODE = '500';
+      const ERROR_MESSAGE = 'Internal server error';
+
+      beforeEach(() => {
+        spiedOnApiUpdateMeetup.mockImplementation(() => {
+          throw new AxiosError(ERROR_MESSAGE, ERROR_CODE);
+        });
+      });
+
+      it('populate errors field with the caught error', async () => {
+        const meetup = new Meetup(mockTopicData);
+
+        await meetup.update(mockMeetupFields);
+
+        expect(meetup.isLoading).toBe(false);
+        expect(meetup.isError).toBe(true);
+        expect(meetup.errors.length).toBe(1);
+        expect((meetup.errors[0] as AxiosError).code).toBe(ERROR_CODE);
+        expect((meetup.errors[0] as AxiosError).message).toBe(ERROR_MESSAGE);
+      });
+
+      it('should leave meetup instance data untouched', async () => {
+        const meetup = new Meetup(mockTopicData);
+        const meetupSnapshot = Object.assign({}, meetup) as Meetup;
+        await meetup.update(mockMeetupFields);
+        expectMeetupFieldsNotChanged(meetup, meetupSnapshot);
+      });
     });
   });
 
   describe('approve() instance method', () => {
     describe('given a meetup in topic stage', () => {
-      it('should set meetup status to DRAFT', async () => {
-        spiedOnApiUpdateMeetup.mockReturnValue(
-          Promise.resolve(mockMeetupDraftData),
-        );
+      it('should call API updateMeetup() function', async () => {
         const meetup = new Meetup(mockTopicData, mockMeetupStore);
-        const meetupSnapshot = Object.assign({}, meetup) as Meetup;
         await meetup.approve();
-        expect(meetup.status).toBe(MeetupStatus.DRAFT);
-        expectMeetupFieldsNotChanged(meetup, meetupSnapshot);
+        expect(spiedOnApiUpdateMeetup).toHaveBeenCalledWith(
+          meetup.id,
+          {},
+          MeetupStatus.DRAFT,
+        );
+      });
+
+      describe('given API request resolves successfully', () => {
+        it('should set meetup status to DRAFT', async () => {
+          spiedOnApiUpdateMeetup.mockReturnValue(
+            Promise.resolve(mockMeetupDraftData),
+          );
+          const meetup = new Meetup(mockTopicData, mockMeetupStore);
+          const meetupSnapshot = Object.assign({}, meetup) as Meetup;
+          await meetup.approve();
+          expect(meetup.status).toBe(MeetupStatus.DRAFT);
+          expectMeetupFieldsNotChanged(meetup, meetupSnapshot);
+        });
+      });
+
+      describe('given API request rejects with an error', () => {
+        const ERROR_CODE = '403';
+        const ERROR_MESSAGE = 'Forbidden';
+
+        beforeEach(() => {
+          spiedOnApiUpdateMeetup.mockImplementation(() => {
+            throw new AxiosError(ERROR_MESSAGE, ERROR_CODE);
+          });
+        });
+
+        it('populate errors field with the caught error', async () => {
+          const meetup = new Meetup(mockTopicData);
+
+          await meetup.approve();
+
+          expect(meetup.isLoading).toBe(false);
+          expect(meetup.isError).toBe(true);
+          expect(meetup.errors.length).toBe(1);
+          expect((meetup.errors[0] as AxiosError).code).toBe(ERROR_CODE);
+          expect((meetup.errors[0] as AxiosError).message).toBe(ERROR_MESSAGE);
+        });
+
+        it('should not touch meetup status', async () => {
+          const meetup = new Meetup(mockTopicData);
+          const meetupSnapshot = Object.assign({}, meetup) as Meetup;
+          await meetup.approve();
+          expect(meetup.status).toBe(meetupSnapshot.status);
+          expectMeetupFieldsNotChanged(meetup, meetupSnapshot);
+        });
       });
     });
 
     describe('given a meetup after approval', () => {
+      it('should not call API updateMeetup() function', async () => {
+        const meetup = new Meetup(mockMeetupData, mockMeetupStore);
+        await meetup.approve();
+        expect(spiedOnApiUpdateMeetup).not.toHaveBeenCalled();
+      });
+
       it('should not touch meetup status', async () => {
         const meetup = new Meetup(mockMeetupData, mockMeetupStore);
         const meetupSnapshot = Object.assign({}, meetup) as Meetup;
@@ -212,19 +411,73 @@ describe('Meetup', () => {
   describe('publish() instance method', () => {
     describe('given a meetup in draft stage', () => {
       describe('given start & finish dates and location are filled', () => {
-        it('should set meetup status to CONFIRMED', async () => {
-          spiedOnApiUpdateMeetup.mockReturnValue(
-            Promise.resolve(mockMeetupData),
-          );
+        it('should call API updateMeetup() function', async () => {
           const meetup = new Meetup(mockMeetupDraftFilledData, mockMeetupStore);
-          const meetupSnapshot = Object.assign({}, meetup) as Meetup;
           await meetup.publish();
-          expect(meetup.status).toBe(MeetupStatus.CONFIRMED);
-          expectMeetupFieldsNotChanged(meetup, meetupSnapshot);
+          expect(spiedOnApiUpdateMeetup).toHaveBeenCalledWith(
+            meetup.id,
+            {},
+            MeetupStatus.CONFIRMED,
+          );
+        });
+
+        describe('given API request resolves successfully', () => {
+          it('should set meetup status to CONFIRMED', async () => {
+            spiedOnApiUpdateMeetup.mockReturnValue(
+              Promise.resolve(mockMeetupData),
+            );
+            const meetup = new Meetup(
+              mockMeetupDraftFilledData,
+              mockMeetupStore,
+            );
+            const meetupSnapshot = Object.assign({}, meetup) as Meetup;
+            await meetup.publish();
+            expect(meetup.status).toBe(MeetupStatus.CONFIRMED);
+            expectMeetupFieldsNotChanged(meetup, meetupSnapshot);
+          });
+        });
+
+        describe('given API request rejects with an error', () => {
+          const ERROR_CODE = '403';
+          const ERROR_MESSAGE = 'Forbidden';
+
+          beforeEach(() => {
+            spiedOnApiUpdateMeetup.mockImplementation(() => {
+              throw new AxiosError(ERROR_MESSAGE, ERROR_CODE);
+            });
+          });
+
+          it('populate errors field with the caught error', async () => {
+            const meetup = new Meetup(mockMeetupDraftFilledData);
+
+            await meetup.publish();
+
+            expect(meetup.isLoading).toBe(false);
+            expect(meetup.isError).toBe(true);
+            expect(meetup.errors.length).toBe(1);
+            expect((meetup.errors[0] as AxiosError).code).toBe(ERROR_CODE);
+            expect((meetup.errors[0] as AxiosError).message).toBe(
+              ERROR_MESSAGE,
+            );
+          });
+
+          it('should not touch meetup status', async () => {
+            const meetup = new Meetup(mockMeetupDraftFilledData);
+            const meetupSnapshot = Object.assign({}, meetup) as Meetup;
+            await meetup.publish();
+            expect(meetup.status).toBe(meetupSnapshot.status);
+            expectMeetupFieldsNotChanged(meetup, meetupSnapshot);
+          });
         });
       });
 
       describe('given either start date, or finish date, or location is not filled', () => {
+        it('should not call API updateMeetup() function', async () => {
+          const meetup = new Meetup(mockMeetupDraftData, mockMeetupStore);
+          await meetup.publish();
+          expect(spiedOnApiUpdateMeetup).not.toHaveBeenCalled();
+        });
+
         it('should not touch meetup status', async () => {
           const meetup = new Meetup(mockMeetupDraftData, mockMeetupStore);
           const meetupSnapshot = Object.assign({}, meetup) as Meetup;
@@ -236,6 +489,12 @@ describe('Meetup', () => {
     });
 
     describe('given a meetup with status other than draft', () => {
+      it('should not call API updateMeetup() function', async () => {
+        const meetup = new Meetup(mockTopicData, mockMeetupStore);
+        await meetup.publish();
+        expect(spiedOnApiUpdateMeetup).not.toHaveBeenCalled();
+      });
+
       it('should not touch meetup status', async () => {
         const meetup = new Meetup(mockTopicData, mockMeetupStore);
         const meetupSnapshot = Object.assign({}, meetup) as Meetup;
@@ -253,14 +512,64 @@ describe('Meetup', () => {
       expect(spiedOnApiDeleteMeetup).toHaveBeenCalledWith(meetup.id);
     });
 
-    it('given a meetups store, should call its onMeetupDeleted() method', async () => {
-      const spiedOnNewsStoreOnNewsArticleDeleted = jest.spyOn(
-        MeetupStore.prototype,
-        'onMeetupDeleted',
-      );
-      const meetup = new Meetup(mockMeetupData, mockMeetupStore);
-      await meetup.delete();
-      expect(spiedOnNewsStoreOnNewsArticleDeleted).toHaveBeenCalledWith(meetup);
+    it('should be in isLoading state while API is running the request', async () => {
+      const meetup = new Meetup(mockMeetupData);
+      const deleteMeetupTask = meetup.delete();
+      expect(meetup.isLoading).toBe(true);
+      await deleteMeetupTask;
+      expect(meetup.isLoading).toBe(false);
+    });
+
+    describe('given API request resolves successfully', () => {
+      it('given a meetups store, should call its onMeetupDeleted() method', async () => {
+        const spiedOnNewsStoreMeetupDeleted = jest.spyOn(
+          MeetupStore.prototype,
+          'onMeetupDeleted',
+        );
+        const meetup = new Meetup(mockMeetupData, mockMeetupStore);
+        await meetup.delete();
+        expect(spiedOnNewsStoreMeetupDeleted).toHaveBeenCalledWith(meetup);
+      });
+    });
+
+    describe('given API request rejects with an error', () => {
+      const ERROR_CODE = '403';
+      const ERROR_MESSAGE = 'Forbidden';
+
+      beforeEach(() => {
+        spiedOnApiDeleteMeetup.mockImplementation(() => {
+          throw new AxiosError(ERROR_MESSAGE, ERROR_CODE);
+        });
+      });
+
+      it('should populate errors field with the caught error', async () => {
+        const meetup = new Meetup(
+          mockMeetupData,
+          new MeetupStore(new RootStore()),
+        );
+        await meetup.delete();
+
+        expect(meetup.isLoading).toBe(false);
+        expect(meetup.isError).toBe(true);
+        expect(meetup.errors.length).toBe(1);
+        expect((meetup.errors[0] as AxiosError).code).toBe(ERROR_CODE);
+        expect((meetup.errors[0] as AxiosError).message).toBe(ERROR_MESSAGE);
+      });
+
+      it('given a news store, should not call its onMeetupDeleted() method', async () => {
+        const spiedOnNewsStoreMeetupDeleted = jest.spyOn(
+          MeetupStore.prototype,
+          'onMeetupDeleted',
+        );
+
+        const meetup = new Meetup(
+          mockMeetupData,
+          new MeetupStore(new RootStore()),
+        );
+        await meetup.delete();
+
+        expect(spiedOnNewsStoreMeetupDeleted).not.toHaveBeenCalled();
+      });
     });
   });
 
