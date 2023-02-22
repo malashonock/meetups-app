@@ -5,20 +5,25 @@ import { useTranslation } from 'react-i18next';
 import {
   Button,
   ButtonVariant,
+  LoadingSpinner,
   NewsCard,
   Typography,
   TypographyComponent,
 } from 'components';
+import { NotFoundPage } from 'pages';
 import { useNewsStore } from 'hooks';
 import { News } from 'stores';
 
 import styles from './NewsPage.module.scss';
 
 export const NewsPage = observer(() => {
-  const { news } = useNewsStore();
+  const { news, isLoading, isError } = useNewsStore();
   const { t } = useTranslation();
-
   const navigate = useNavigate();
+
+  if (isError) {
+    return <NotFoundPage />;
+  }
 
   const handleCreateNews = () => navigate('/news/create');
 
@@ -40,15 +45,19 @@ export const NewsPage = observer(() => {
           {t('newsPage.createNewsBtn')}
         </Button>
       </div>
-      <ul className={styles.newsList}>
-        {news?.map((article: News) => (
-          <li key={article.id} className={styles.newsItem}>
-            <NavLink to={`/news/${article.id}`}>
-              <NewsCard news={article} />
-            </NavLink>
-          </li>
-        ))}
-      </ul>
+      {isLoading ? (
+        <LoadingSpinner text={t('loadingText.news')} />
+      ) : (
+        <ul className={styles.newsList}>
+          {news?.map((article: News) => (
+            <li key={article.id} className={styles.newsItem}>
+              <NavLink to={`/news/${article.id}`}>
+                <NewsCard news={article} />
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 });
