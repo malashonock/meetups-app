@@ -2,14 +2,29 @@ import { News } from 'stores';
 import { Maybe, Optional } from 'types';
 import { useNewsStore } from './useNewsStore';
 
-export const useNewsArticle = (id: Maybe<string>): Optional<News> => {
+interface UseNewsArticleResult {
+  newsArticle?: News;
+  isLoading?: boolean;
+  isError?: boolean;
+  errors?: unknown[];
+}
+
+export const useNewsArticle = (id: Maybe<string>): UseNewsArticleResult => {
   const { newsStore } = useNewsStore();
 
   if (!id) {
-    return undefined;
+    return {};
   }
 
-  const news = newsStore?.findNewsArticle(id);
+  const newsArticle = newsStore?.findNewsArticle(id);
+  const isLoading = newsArticle?.isLoading;
+  const isError = newsArticle?.isError;
+  const errors = newsArticle?.errors;
 
-  return news;
+  return {
+    newsArticle,
+    isLoading,
+    isError,
+    errors,
+  };
 };
