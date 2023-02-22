@@ -2,35 +2,65 @@ import { makeAutoObservable, runInAction } from 'mobx';
 
 import * as API from 'api';
 import { RootStore, User } from 'stores';
-import { FileWithUrl, Nullable, Optional } from 'types';
+import { FileWithUrl, ILoadable, Nullable, Optional } from 'types';
 import { IMeetup, MeetupFields, MeetupStatus, ShortUser } from 'model';
 
-export class MeetupStore {
+export class MeetupStore implements ILoadable {
   meetups: Meetup[];
+  isLoading: boolean;
+  isError: boolean;
+  errors: unknown[];
 
   constructor(public rootStore: RootStore) {
     makeAutoObservable(this);
     this.meetups = [];
+    this.isLoading = false;
+    this.isError = false;
+    this.errors = [];
   }
 
   async loadMeetups(): Promise<void> {
-    const meetupsData: IMeetup[] = await API.getMeetups();
-    runInAction(() => {
-      this.meetups = meetupsData.map(
-        (meetupData: IMeetup): Meetup => new Meetup(meetupData, this),
-      );
-    });
+    try {
+      this.isLoading = true;
+
+      const meetupsData: IMeetup[] = await API.getMeetups();
+      runInAction(() => {
+        this.meetups = meetupsData.map(
+          (meetupData: IMeetup): Meetup => new Meetup(meetupData, this),
+        );
+      });
+
+      this.isLoading = false;
+      this.isError = false;
+      this.errors.length = 0;
+    } catch (error) {
+      this.isLoading = false;
+      this.isError = true;
+      this.errors.push(error);
+    }
   }
 
-  async createMeetup(meetupData: MeetupFields): Promise<Meetup> {
-    const newMeetupData = await API.createMeetup(meetupData);
-    const newMeetup = new Meetup(newMeetupData, this);
+  async createMeetup(meetupData: MeetupFields): Promise<Optional<Meetup>> {
+    try {
+      this.isLoading = true;
 
-    runInAction(() => {
-      this.meetups.push(newMeetup);
-    });
+      const newMeetupData = await API.createMeetup(meetupData);
+      const newMeetup = new Meetup(newMeetupData, this);
 
-    return newMeetup;
+      runInAction(() => {
+        this.meetups.push(newMeetup);
+      });
+
+      this.isLoading = false;
+      this.isError = false;
+      this.errors.length = 0;
+
+      return newMeetup;
+    } catch (error) {
+      this.isLoading = false;
+      this.isError = true;
+      this.errors.push(error);
+    }
   }
 
   onMeetupDeleted(deletedMeetup: Meetup): void {
@@ -48,8 +78,11 @@ export class MeetupStore {
   }
 }
 
-export class Meetup implements IMeetup {
+export class Meetup implements IMeetup, ILoadable {
   meetupStore: Nullable<MeetupStore> = null;
+  isLoading: boolean;
+  isError: boolean;
+  errors: unknown[];
 
   id: string;
   status: MeetupStatus;
@@ -96,13 +129,29 @@ export class Meetup implements IMeetup {
     this.speakers = userStore?.findUsers(speakersData) ?? [];
     this.votedUsers = userStore?.findUsers(votedUsersData) ?? [];
     this.participants = userStore?.findUsers(participantsData) ?? [];
+
+    this.isLoading = false;
+    this.isError = false;
+    this.errors = [];
   }
 
   async update(meetupData: Partial<MeetupFields>): Promise<void> {
-    const updatedMeetupData = await API.updateMeetup(this.id, meetupData);
-    runInAction(() => {
-      Object.assign(this, updatedMeetupData);
-    });
+    try {
+      this.isLoading = true;
+
+      const updatedMeetupData = await API.updateMeetup(this.id, meetupData);
+      runInAction(() => {
+        Object.assign(this, updatedMeetupData);
+      });
+
+      this.isLoading = false;
+      this.isError = false;
+      this.errors.length = 0;
+    } catch (error) {
+      this.isLoading = false;
+      this.isError = true;
+      this.errors.push(error);
+    }
   }
 
   async approve(): Promise<void> {
@@ -110,14 +159,26 @@ export class Meetup implements IMeetup {
       return;
     }
 
-    const updatedMeetupData = await API.updateMeetup(
-      this.id,
-      {},
-      MeetupStatus.DRAFT,
-    );
-    runInAction(() => {
-      Object.assign(this, updatedMeetupData);
-    });
+    try {
+      this.isLoading = true;
+
+      const updatedMeetupData = await API.updateMeetup(
+        this.id,
+        {},
+        MeetupStatus.DRAFT,
+      );
+      runInAction(() => {
+        Object.assign(this, updatedMeetupData);
+      });
+
+      this.isLoading = false;
+      this.isError = false;
+      this.errors.length = 0;
+    } catch (error) {
+      this.isLoading = false;
+      this.isError = true;
+      this.errors.push(error);
+    }
   }
 
   async publish(): Promise<void> {
@@ -129,21 +190,45 @@ export class Meetup implements IMeetup {
       return;
     }
 
-    const updatedMeetupData = await API.updateMeetup(
-      this.id,
-      {},
-      MeetupStatus.CONFIRMED,
-    );
-    runInAction(() => {
-      Object.assign(this, updatedMeetupData);
-    });
+    try {
+      this.isLoading = true;
+
+      const updatedMeetupData = await API.updateMeetup(
+        this.id,
+        {},
+        MeetupStatus.CONFIRMED,
+      );
+      runInAction(() => {
+        Object.assign(this, updatedMeetupData);
+      });
+
+      this.isLoading = false;
+      this.isError = false;
+      this.errors.length = 0;
+    } catch (error) {
+      this.isLoading = false;
+      this.isError = true;
+      this.errors.push(error);
+    }
   }
 
   async delete(): Promise<void> {
-    await API.deleteMeetup(this.id);
-    runInAction(() => {
-      this.meetupStore?.onMeetupDeleted(this);
-    });
+    try {
+      this.isLoading = true;
+
+      await API.deleteMeetup(this.id);
+      runInAction(() => {
+        this.meetupStore?.onMeetupDeleted(this);
+      });
+
+      this.isLoading = false;
+      this.isError = false;
+      this.errors.length = 0;
+    } catch (error) {
+      this.isLoading = false;
+      this.isError = true;
+      this.errors.push(error);
+    }
   }
 
   toJSON(): IMeetup {
