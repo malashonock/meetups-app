@@ -10,6 +10,7 @@ import {
   Typography,
   TypographyComponent,
 } from 'components';
+import { NotFoundPage } from 'pages';
 import { useAuthStore, useNewsArticle } from 'hooks';
 
 import styles from './ViewNewsPage.module.scss';
@@ -19,15 +20,19 @@ export const ViewNewsPage = observer(() => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { pathname } = useLocation();
-  const newsArticle = useNewsArticle(id);
+  const { newsArticle, isLoading, isError } = useNewsArticle(id);
   const { t } = useTranslation();
   const { loggedUser } = useAuthStore();
 
   const handleBack = (): void => navigate(-1);
   const handleEdit = (): void => navigate(pathname + '/edit');
 
-  if (!newsArticle) {
+  if (isLoading) {
     return <LoadingSpinner text={t('loadingText.newsArticle')} />;
+  }
+
+  if (!newsArticle || isError) {
+    return <NotFoundPage />;
   }
 
   const { image, title, text } = newsArticle;
