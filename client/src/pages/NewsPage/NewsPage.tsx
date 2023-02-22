@@ -21,7 +21,7 @@ export const NewsPage = observer(() => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  if (isError) {
+  if (!news || isError) {
     return <NotFoundPage />;
   }
 
