@@ -97,11 +97,11 @@ export const EditNewsPage = observer((): JSX.Element => {
   const navigate = useNavigate();
   const { i18n, t } = useTranslation();
 
-  if (isLoading) {
+  if (!newsArticle || isLoading) {
     return <LoadingSpinner text={t('loadingText.newsArticle')} />;
   }
 
-  if (!newsArticle || isError) {
+  if (isError) {
     return <NotFoundPage />;
   }
 

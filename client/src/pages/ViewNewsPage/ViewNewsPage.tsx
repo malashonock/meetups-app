@@ -27,11 +27,11 @@ export const ViewNewsPage = observer(() => {
   const handleBack = (): void => navigate(-1);
   const handleEdit = (): void => navigate(pathname + '/edit');
 
-  if (isLoading) {
+  if (!newsArticle || isLoading) {
     return <LoadingSpinner text={t('loadingText.newsArticle')} />;
   }
 
-  if (!newsArticle || isError) {
+  if (isError) {
     return <NotFoundPage />;
   }
 
