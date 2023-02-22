@@ -14,6 +14,7 @@ import {
   Typography,
   TypographyComponent,
 } from 'components';
+import { NotFoundPage } from 'pages';
 import { NewsFields } from 'model';
 import { useNewsArticle, useTouchOnLocaleChanged, useLocale } from 'hooks';
 import { newsSchema } from 'validation';
@@ -92,12 +93,16 @@ const EditNewsForm = ({
 
 export const EditNewsPage = observer((): JSX.Element => {
   const { id } = useParams();
-  const newsArticle = useNewsArticle(id);
+  const { newsArticle, isLoading, isError } = useNewsArticle(id);
   const navigate = useNavigate();
   const { i18n, t } = useTranslation();
 
-  if (!newsArticle) {
+  if (isLoading) {
     return <LoadingSpinner text={t('loadingText.newsArticle')} />;
+  }
+
+  if (!newsArticle || isError) {
+    return <NotFoundPage />;
   }
 
   const initialValues: NewsFields = {
