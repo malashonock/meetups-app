@@ -17,6 +17,7 @@ import {
   Typography,
   TypographyComponent,
 } from 'components';
+import { NotFoundPage } from 'pages';
 import { MeetupFields } from 'model';
 import {
   meetupRequiredFieldsSchema,
@@ -162,11 +163,15 @@ const EditMeetupForm = ({
 
 export const EditMeetupPage = observer((): JSX.Element => {
   const { id } = useParams();
-  const meetup = useMeetup(id);
+  const { meetup, isLoading, isError } = useMeetup(id);
   const { i18n, t } = useTranslation();
 
-  if (!meetup) {
+  if (!meetup || isLoading) {
     return <LoadingSpinner text={t('loadingText.meetup')} />;
+  }
+
+  if (isError) {
+    return <NotFoundPage />;
   }
 
   const initialValues: MeetupFields = {
