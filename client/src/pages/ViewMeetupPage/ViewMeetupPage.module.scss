@@ -32,20 +32,20 @@
   display: flex;
   flex-direction: column;
   row-gap: 8px;
+}
 
-  &Name {
-    @extend .font-family-primary;
-    @extend .font-weight-regular;
-    @extend .font-size-xs;
-    @extend .font-color-gray-03;
-  }
+.dataName {
+  @extend .font-family-primary;
+  @extend .font-weight-regular;
+  @extend .font-size-xs;
+  @extend .font-color-gray-03;
+}
 
-  &Content {
-    padding: 25px;
-    background: $white;
-    box-shadow: 0px 4px 7px rgba($gray-07, $alpha: 0.4);
-    border-radius: 5px;
-  }
+.dataContent {
+  padding: 25px;
+  background: $white;
+  box-shadow: 0px 4px 7px rgba($gray-07, $alpha: 0.4);
+  border-radius: 5px;
 }
 
 .headerData {
@@ -90,14 +90,12 @@
   row-gap: 15px;
 }
 
-.notFilled {
-  &Text {
-    @extend .font-color-red;
-  }
+.notFilledText {
+  @extend .font-color-red;
+}
 
-  &Outline {
-    border: 2px solid $red-02;
-  }
+.notFilledOutline {
+  border: 2px solid $red-02;
 }
 
 .info {
