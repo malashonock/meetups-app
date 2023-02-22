@@ -1,5 +1,5 @@
 import { News } from 'stores';
-import { Maybe, Optional } from 'types';
+import { Maybe } from 'types';
 import { useNewsStore } from './useNewsStore';
 
 interface UseNewsArticleResult {
