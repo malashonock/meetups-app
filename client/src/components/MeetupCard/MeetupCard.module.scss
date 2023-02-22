@@ -2,6 +2,9 @@
 @import '~style/typography';
 @import '~style/mixins';
 
+$marker-indent: 8px;
+$marker-diameter: 3px;
+
 .card {
   display: flex;
   flex-direction: column;
@@ -34,9 +37,6 @@
 }
 
 .appointment {
-  $marker-indent: 8px;
-  $marker-diameter: 3px;
-
   display: flex;
   flex-direction: row;
   column-gap: calc($marker-indent * 2);
@@ -48,22 +48,22 @@
   @extend .font-size-s;
   @extend .line-height-s;
   @extend .font-color-gray-01;
+}
 
-  &Item {
-    position: relative;
+.appointmentItem {
+  position: relative;
 
-    &:not(:first-child)::before {
-      position: absolute;
-      left: calc(-1 * ($marker-indent + $marker-diameter / 2));
-      top: 50%;
-      transform: translateY(-50%);
+  &:not(:first-child)::before {
+    position: absolute;
+    left: calc(-1 * ($marker-indent + $marker-diameter / 2));
+    top: 50%;
+    transform: translateY(-50%);
 
-      content: '';
-      width: $marker-diameter;
-      height: $marker-diameter;
-      border-radius: 50%;
-      background-color: $gray-01;
-    }
+    content: '';
+    width: $marker-diameter;
+    height: $marker-diameter;
+    border-radius: 50%;
+    background-color: $gray-01;
   }
 }
 

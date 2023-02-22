@@ -113,14 +113,14 @@
   animation-duration: 4s;
   animation-iteration-count: infinite;
   animation-timing-function: ease-in-out;
+}
 
-  &Left {
-    left: 0;
-  }
+.eyeLeft {
+  left: 0;
+}
 
-  &Right {
-    right: 0;
-  }
+.eyeRight {
+  right: 0;
 }
 
 @keyframes eye {
@@ -150,14 +150,14 @@
 
   border-radius: 50%;
   background-color: #ffc0cb;
+}
 
-  &Left {
-    left: 1.4rem;
-  }
+.cheeksLeft {
+  left: 1.4rem;
+}
 
-  &Right {
-    right: 1.4rem;
-  }
+.cheeksRight {
+  right: 1.4rem;
 }
 
 .mouth {
