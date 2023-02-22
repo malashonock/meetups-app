@@ -1,15 +1,30 @@
 import { Meetup } from 'stores';
-import { Maybe, Optional } from 'types';
+import { Maybe } from 'types';
 import { useMeetupStore } from './useMeetupStore';
 
-export const useMeetup = (id: Maybe<string>): Optional<Meetup> => {
+interface UseMeetupResult {
+  meetup?: Meetup;
+  isLoading?: boolean;
+  isError?: boolean;
+  errors?: unknown[];
+}
+
+export const useMeetup = (id: Maybe<string>): UseMeetupResult => {
   const { meetupStore } = useMeetupStore();
 
   if (!id) {
-    return undefined;
+    return {};
   }
 
   const meetup = meetupStore?.findMeetup(id);
+  const isLoading = meetupStore?.isLoading;
+  const isError = meetupStore?.isError;
+  const errors = meetupStore?.errors;
 
-  return meetup;
+  return {
+    meetup,
+    isLoading,
+    isError,
+    errors,
+  };
 };
