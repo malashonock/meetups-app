@@ -8,19 +8,28 @@ import { Optional } from 'types';
 export interface UseMeetupStoreResult {
   meetupStore?: MeetupStore;
   meetups?: Meetup[];
-  createMeetup?: (meetupData: MeetupFields) => Promise<Meetup>;
+  isLoading?: boolean;
+  isError?: boolean;
+  errors?: unknown[];
+  createMeetup?: (meetupData: MeetupFields) => Promise<Optional<Meetup>>;
   findMeetup?: (id: string) => Optional<Meetup>;
 }
 
 export const useMeetupStore = (): UseMeetupStoreResult => {
   const meetupStore = useContext(RootContext)?.meetupStore;
   const meetups = meetupStore?.meetups;
+  const isLoading = meetupStore?.isLoading;
+  const isError = meetupStore?.isError;
+  const errors = meetupStore?.errors;
   const createMeetup = meetupStore?.createMeetup;
   const findMeetup = meetupStore?.findMeetup;
 
   return {
     meetupStore,
     meetups,
+    isLoading,
+    isError,
+    errors,
     createMeetup,
     findMeetup,
   };
