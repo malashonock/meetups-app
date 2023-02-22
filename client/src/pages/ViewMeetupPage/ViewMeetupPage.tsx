@@ -12,6 +12,7 @@ import {
   TypographyComponent,
   UserPreview,
 } from 'components';
+import { NotFoundPage } from 'pages';
 import { MeetupStatus } from 'model';
 import { isPast, parseDate } from 'utils';
 import { User } from 'stores';
@@ -27,14 +28,18 @@ import pin from './assets/pin.svg';
 export const ViewMeetupPage = observer(() => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const meetup = useMeetup(id);
+  const { meetup, isLoading, isError } = useMeetup(id);
   const { userStore } = useUserStore();
   const { i18n, t } = useTranslation();
   const [locale] = useLocale();
   const { loggedUser } = useAuthStore();
 
-  if (!meetup) {
+  if (!meetup || isLoading) {
     return <LoadingSpinner text={t('loadingText.meetup')} />;
+  }
+
+  if (isError) {
+    return <NotFoundPage />;
   }
 
   const {
