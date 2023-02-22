@@ -1,4 +1,5 @@
 import * as MobX from 'mobx';
+import { AxiosError } from 'axios';
 
 import { NewsStore, RootStore, News } from 'stores';
 import * as NewsApi from 'api/services/news.service';
@@ -11,7 +12,6 @@ import {
   mockUpdatedNewsArticleData,
   mockUpdatedNewsArticleFields,
 } from 'model/__fakes__';
-import { AxiosError } from 'axios';
 
 const spiedOnMobXMakeAutoObservable = jest.spyOn(MobX, 'makeAutoObservable');
 const spiedOnApiGetNews = jest.spyOn(NewsApi, 'getNews');
@@ -151,8 +151,8 @@ describe('NewsStore', () => {
     });
 
     describe('given API request rejects with an error', () => {
-      const ERROR_CODE = '404';
-      const ERROR_MESSAGE = 'Resource not found';
+      const ERROR_CODE = '403';
+      const ERROR_MESSAGE = 'Forbidden';
 
       beforeEach(() => {
         spiedOnApiCreateNewsArticle.mockImplementation(() => {
