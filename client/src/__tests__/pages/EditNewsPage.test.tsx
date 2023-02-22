@@ -27,7 +27,12 @@ const mockUseNewsArticle = useNewsArticle as jest.MockedFunction<
 const mockUpdatedNewsArticleUpdate = jest.spyOn(News.prototype, 'update');
 
 beforeEach(() => {
-  mockUseNewsArticle.mockReturnValue(mockNewsArticle);
+  mockUseNewsArticle.mockReturnValue({
+    newsArticle: mockNewsArticle,
+    isLoading: false,
+    isError: false,
+    errors: [],
+  });
 });
 
 afterEach(() => {
@@ -168,11 +173,18 @@ describe('EditNewsPage', () => {
     expect(screen.getByText('View news article')).toBeInTheDocument();
   });
 
-  it('should render a Loading spinner while news article is undefined', () => {
-    mockUseNewsArticle.mockReturnValue(undefined);
-
+  it('should render Not Found page if news article is undefined', () => {
+    mockUseNewsArticle.mockReturnValue({});
     render(<EditNewsPage />, { wrapper: MockRouter });
+    expect(screen.getByText('notFoundPage.title')).toBeInTheDocument();
+  });
 
+  it('should render a Loading spinner while news article is loading', () => {
+    mockUseNewsArticle.mockReturnValue({
+      newsArticle: mockNewsArticle,
+      isLoading: true,
+    });
+    render(<EditNewsPage />, { wrapper: MockRouter });
     expect(screen.getByText('loadingText.newsArticle')).toBeInTheDocument();
   });
 });
