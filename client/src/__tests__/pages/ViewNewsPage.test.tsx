@@ -26,7 +26,12 @@ beforeEach(() => {
   mockUseAuthStore.mockReturnValue({
     loggedUser: mockUser,
   });
-  mockUseNewsArticle.mockReturnValue(mockNewsArticle);
+  mockUseNewsArticle.mockReturnValue({
+    newsArticle: mockNewsArticle,
+    isLoading: false,
+    isError: false,
+    errors: [],
+  });
 });
 
 afterEach(() => {
@@ -84,14 +89,18 @@ describe('ViewNewsPage', () => {
     });
   });
 
-  describe('given useNewsArticle returns undefined', () => {
-    beforeEach(() => {
-      mockUseNewsArticle.mockReturnValue(undefined);
-    });
+  it('should render Not Found page if news article is undefined', () => {
+    mockUseNewsArticle.mockReturnValue({});
+    render(<ViewNewsPage />, { wrapper: MockRouter });
+    expect(screen.getByText('notFoundPage.title')).toBeInTheDocument();
+  });
 
-    it('should render a Loading spinner while news article is undefined', () => {
-      render(<ViewNewsPage />, { wrapper: MockRouter });
-      expect(screen.getByText('loadingText.newsArticle')).toBeInTheDocument();
+  it('should render a Loading spinner while news article is loading', () => {
+    mockUseNewsArticle.mockReturnValue({
+      newsArticle: mockNewsArticle,
+      isLoading: true,
     });
+    render(<ViewNewsPage />, { wrapper: MockRouter });
+    expect(screen.getByText('loadingText.newsArticle')).toBeInTheDocument();
   });
 });
