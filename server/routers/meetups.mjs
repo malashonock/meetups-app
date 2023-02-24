@@ -1,15 +1,43 @@
 import express from "express";
-import { ensureAuthenticated } from "../middleware/ensureAthenticated.mjs";
 import faker from "faker";
-import { isDateValid } from "../utils.mjs";
-import { compareDates } from "../utils.mjs";
+
+import { ensureAuthenticated } from "../middleware/ensureAthenticated.mjs";
 import { upload } from '../middleware/upload.mjs';
-import { getUrlFromPublicPath } from '../utils.mjs';
+import { isDateValid, isPast, compareDates, getUrlFromPublicPath } from "../utils.mjs";
 
 export const meetupsRoutes = (db) => {
   const meetupsRouter = express.Router();
   meetupsRouter.get("/", async (req, res) => {
-    res.send(db.data.meetups);
+    const meetupCategory = req.query.category;
+
+    const meetupDtos = db.data.meetups
+      .filter(meetup => {
+        switch (meetupCategory) {
+          case 'topics':
+            return meetup.status === 'REQUEST';
+          case 'drafts':
+            return meetup.status === 'DRAFT';
+          case 'upcoming':
+            return meetup.status === 'CONFIRMED'
+              && (!meetup.start || (meetup.start && !isPast(meetup.start)));
+          case 'finished':
+            return meetup.status === 'CONFIRMED'
+              && (meetup.start && isPast(meetup.start));
+          default:
+            return true; // no filtering
+        }
+      })
+      .map(meetup => {
+        const { imageUrl, ...meetupDataFields } = meetup;
+
+        return {
+          ...meetupDataFields,
+          votedUsersCount: db.data.votedUsers[meetup.id]?.length,
+          participantsCount: db.data.participants[meetup.id]?.length,
+        }
+      });
+
+    res.send(meetupDtos);
   });
 
   meetupsRouter.post(
@@ -72,6 +100,21 @@ export const meetupsRoutes = (db) => {
     }
   );
 
+  meetupsRouter.get("/:id", async (req, res) => {
+    const meetup = db.data.meetups.find((m) => m.id === req.params.id);
+    if (!meetup) {
+      res.sendStatus(404);
+    }
+
+    const meetupDto = {
+      ...meetup,
+      votedUsers: db.data.votedUsers[meetup.id] ?? [],
+      participants: db.data.participants[meetup.id] ?? [],
+    };
+
+    res.send(meetupDto);
+  });
+
   meetupsRouter.patch(
     "/:id", 
     ensureAuthenticated,
@@ -111,14 +154,6 @@ export const meetupsRoutes = (db) => {
       }
     }
   );
-
-  meetupsRouter.get("/:id", async (req, res) => {
-    const meetup = db.data.meetups.find((m) => m.id === req.params.id);
-    if (!meetup) {
-      res.sendStatus(404);
-    }
-    res.send(meetup);
-  });
 
   meetupsRouter.delete("/:id", ensureAuthenticated, async (req, res) => {
     const index = db.data.meetups.findIndex((it) => it.id === req.params.id);

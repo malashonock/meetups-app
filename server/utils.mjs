@@ -81,3 +81,10 @@ export const getUrlFromPublicPath = (localPath) => {
 
   return publicUrl.toString();
 };
+
+export function isPast(dateOrString) {
+  const now = new Date();
+  const date =
+    dateOrString instanceof Date ? dateOrString : new Date(dateOrString);
+  return date <= now;
+};
