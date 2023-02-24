@@ -66,13 +66,13 @@ export const MeetupTabContent = observer(
       }
     }, [variant, meetups, meetups?.length]);
 
-    if (!meetups || isError) {
+    if (isError) {
       return <NotFoundPage />;
     }
 
     return (
       <section className={styles.meetupsTab}>
-        {isLoading ? (
+        {!meetups || isLoading ? (
           <LoadingSpinner text={t('loadingText.meetups')} />
         ) : (
           <>

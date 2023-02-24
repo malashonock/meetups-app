@@ -21,7 +21,7 @@ export const NewsPage = observer(() => {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  if (!news || isError) {
+  if (isError) {
     return <NotFoundPage />;
   }
 
@@ -45,7 +45,7 @@ export const NewsPage = observer(() => {
           {t('newsPage.createNewsBtn')}
         </Button>
       </div>
-      {isLoading ? (
+      {!news || isLoading ? (
         <LoadingSpinner text={t('loadingText.news')} />
       ) : (
         <ul className={styles.newsList}>
