@@ -1,27 +1,63 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 
 import * as API from 'api';
-import { RootStore } from 'stores';
-import { IUser, ShortUser, UserRole } from 'model';
+import { AuthStore, FullUser } from 'stores';
+import { IUser } from 'model';
 import { getFirstLetter } from 'utils';
-import { Maybe, Nullable, Optional } from 'types';
+import { ILoadable, Maybe, Nullable, Optional } from 'types';
 
-export class UserStore {
+export class UserStore implements ILoadable {
+  authStore: AuthStore;
   users: User[];
 
-  constructor(public rootStore: RootStore) {
+  isLoading: boolean;
+  isError: boolean;
+  errors: unknown[];
+
+  constructor(authStore: AuthStore) {
     makeAutoObservable(this);
 
+    this.authStore = authStore;
     this.users = [];
+
+    this.isLoading = false;
+    this.isError = false;
+    this.errors = [];
+  }
+
+  async init(loggedUser: Nullable<FullUser>): Promise<void> {
+    if (!loggedUser) {
+      this.users = [];
+      return;
+    }
+
+    if (!loggedUser.isAdmin()) {
+      this.users = [new User(loggedUser)];
+      return;
+    }
+
+    await this.loadUsers();
   }
 
   async loadUsers(): Promise<void> {
-    const usersData: IUser[] = await API.getUsers();
-    runInAction(() => {
-      this.users = usersData.map(
-        (userData: IUser): User => new User(userData, this),
-      );
-    });
+    try {
+      this.isLoading = true;
+
+      const usersData: IUser[] = await API.getUsers();
+      runInAction(() => {
+        this.users = usersData.map(
+          (userData: IUser): User => new User(userData),
+        );
+      });
+
+      this.isLoading = false;
+      this.isError = false;
+      this.errors.length = 0;
+    } catch (error) {
+      this.isLoading = false;
+      this.isError = true;
+      this.errors.push(error);
+    }
   }
 
   findUser(idOrUser: Maybe<string> | Maybe<{ id: string }>): Optional<User> {
@@ -65,28 +101,17 @@ export class UserStore {
   }
 }
 
-export class User {
-  userStore: Nullable<UserStore> = null;
-
+export class User implements IUser {
   id: string;
   name: string;
   surname: string;
-  post: string;
-  roles: UserRole;
 
-  constructor(userData: IUser, userStore?: UserStore) {
-    if (userStore) {
-      makeAutoObservable(this);
-      this.userStore = userStore;
-    }
+  constructor(userData: IUser) {
+    ({ id: this.id, name: this.name, surname: this.surname } = userData);
+  }
 
-    ({
-      id: this.id,
-      name: this.name,
-      surname: this.surname,
-      post: this.post,
-      roles: this.roles,
-    } = userData);
+  static factory(userData: IUser): User {
+    return new User(userData);
   }
 
   get fullName(): string {
@@ -104,16 +129,14 @@ export class User {
       id: this.id,
       name: this.name,
       surname: this.surname,
-      post: this.post,
-      roles: this.roles,
     };
   }
 
-  asShortUser(): ShortUser {
+  static serialize({ id, name, surname }: User): IUser {
     return {
-      id: this.id,
-      name: this.name,
-      surname: this.surname,
+      id,
+      name,
+      surname,
     };
   }
 }

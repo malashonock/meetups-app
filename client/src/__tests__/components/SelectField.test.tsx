@@ -7,14 +7,14 @@ import userEvent from '@testing-library/user-event';
 import { Form, Formik, FormikErrors } from 'formik';
 
 import { SelectField, SelectOption } from 'components';
-import { ShortUser } from 'model';
+import { IUser } from 'model';
 import { Nullable } from 'types';
 
 interface TestFormValues {
-  user: Nullable<ShortUser>;
+  user: Nullable<IUser>;
 }
 
-const users: ShortUser[] = [
+const users: IUser[] = [
   {
     id: 'aaa',
     name: 'John',
@@ -27,8 +27,8 @@ const users: ShortUser[] = [
   },
 ];
 
-const userOptions: SelectOption<ShortUser>[] = users.map(
-  (user: ShortUser): SelectOption<ShortUser> => ({
+const userOptions: SelectOption<IUser>[] = users.map(
+  (user: IUser): SelectOption<IUser> => ({
     value: user,
     label: `${user.name} ${user.surname}`,
   }),
@@ -36,7 +36,7 @@ const userOptions: SelectOption<ShortUser>[] = users.map(
 
 let mockInitialValues: TestFormValues;
 let mockValidate: (values: TestFormValues) => FormikErrors<TestFormValues>;
-const handleSubmit: (user: Nullable<ShortUser>) => void = jest.fn();
+const handleSubmit: (user: Nullable<IUser>) => void = jest.fn();
 
 const TestForm = ({ children }: PropsWithChildren): JSX.Element => (
   <Formik<TestFormValues>
@@ -63,7 +63,7 @@ beforeEach(() => {
 describe('SelectField', () => {
   it('accepts user selection', async () => {
     render(
-      <SelectField<ShortUser>
+      <SelectField<IUser>
         name="user"
         selectProps={{
           options: userOptions,
@@ -102,7 +102,7 @@ describe('SelectField', () => {
     };
 
     render(
-      <SelectField<ShortUser>
+      <SelectField<IUser>
         name="user"
         selectProps={{
           options: userOptions,
@@ -121,7 +121,7 @@ describe('SelectField', () => {
     const LABEL = 'Test select';
 
     render(
-      <SelectField<ShortUser>
+      <SelectField<IUser>
         name="user"
         labelText={LABEL}
         selectProps={{
@@ -143,7 +143,7 @@ describe('SelectField', () => {
     const HINT = 'Select user';
 
     render(
-      <SelectField<ShortUser>
+      <SelectField<IUser>
         name="user"
         hintText={HINT}
         selectProps={{
@@ -171,7 +171,7 @@ describe('SelectField', () => {
     };
 
     render(
-      <SelectField<ShortUser>
+      <SelectField<IUser>
         name="user"
         selectProps={{
           options: userOptions,

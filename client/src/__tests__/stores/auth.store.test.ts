@@ -3,7 +3,7 @@ import * as MobX from 'mobx';
 import { AuthStore, RootStore, UserStore } from 'stores';
 import { Credentials } from 'model';
 import * as LoginApi from 'api/services/login.service';
-import { mockFullUser, mockUser } from 'model/__fakes__';
+import { mockIFullUser, mockUser } from 'model/__fakes__';
 
 const spiedOnMobXMakeAutoObservable = jest.spyOn(MobX, 'makeAutoObservable');
 const spiedOnApiLogin = jest.spyOn(LoginApi, 'login');
@@ -12,7 +12,7 @@ const spiedOnUserStoreFindUser = jest.spyOn(UserStore.prototype, 'findUser');
 const spiedOnStorageGetItem = jest.spyOn(Storage.prototype, 'getItem');
 
 const testCredentials: Credentials = {
-  username: mockFullUser.name,
+  username: mockIFullUser.name,
   password: 'alabama',
 };
 
@@ -31,7 +31,7 @@ describe('AuthStore', () => {
 
   describe('login() instance method', () => {
     beforeEach(() => {
-      spiedOnApiLogin.mockReturnValue(Promise.resolve(mockFullUser));
+      spiedOnApiLogin.mockReturnValue(Promise.resolve(mockIFullUser));
       spiedOnUserStoreFindUser.mockReturnValue(mockUser);
     });
 
@@ -46,7 +46,7 @@ describe('AuthStore', () => {
       spiedOnStorageGetItem.mockReturnValue(JSON.stringify(mockUser));
       const authStore = new AuthStore(new RootStore());
       await authStore.logIn(testCredentials);
-      expect(spiedOnUserStoreFindUser).toHaveBeenCalledWith(mockFullUser.id);
+      expect(spiedOnUserStoreFindUser).toHaveBeenCalledWith(mockIFullUser.id);
       expect(authStore.loggedUser).toBe(mockUser);
     });
 

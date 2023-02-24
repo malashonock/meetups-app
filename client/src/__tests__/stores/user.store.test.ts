@@ -3,7 +3,7 @@ import * as MobX from 'mobx';
 import { UserStore, RootStore, User } from 'stores';
 import * as UserApi from 'api/services/user.service';
 import {
-  mockFullUsers,
+  mockIFullUsers,
   mockUser,
   mockUserData,
   mockUsers,
@@ -13,7 +13,7 @@ const spiedOnMobXMakeAutoObservable = jest.spyOn(MobX, 'makeAutoObservable');
 const spiedOnApiGetUsers = jest.spyOn(UserApi, 'getUsers');
 
 beforeEach(() => {
-  spiedOnApiGetUsers.mockReturnValue(Promise.resolve(mockFullUsers));
+  spiedOnApiGetUsers.mockReturnValue(Promise.resolve(mockIFullUsers));
 });
 
 afterEach(() => {

@@ -1,20 +1,11 @@
 import { faker } from '@faker-js/faker';
 
-import {
-  IMeetup,
-  MeetupDto,
-  MeetupFields,
-  MeetupStatus,
-  ShortUser,
-} from 'model';
-import { Meetup, MeetupStore, RootStore } from 'stores';
+import { IMeetup, MeetupDto, MeetupFields, MeetupStatus, IUser } from 'model';
+import { Meetup, MeetupStore } from 'stores';
 import {
   mockImageWithUrl,
-  mockShortUser2Data,
-  mockShortUserData,
-  mockShortUsersData,
-  mockUser,
-  mockUsers,
+  mockUser2Data,
+  mockUserData,
   mockUsersData,
 } from 'model/__fakes__';
 import { generateArray } from 'utils';
@@ -22,7 +13,7 @@ import { generateArray } from 'utils';
 export const mockTopicFields: MeetupFields = {
   subject: 'Test meetup topic',
   excerpt: 'Test meetup description',
-  author: mockShortUserData,
+  author: mockUserData,
   start: undefined,
   finish: undefined,
   place: undefined,
@@ -39,11 +30,12 @@ export const mockMeetupFields: MeetupFields = {
 
 export const mockTopicData: IMeetup = {
   ...mockTopicFields,
+  author: mockTopicFields.author!,
   id: 'aaa',
   modified: new Date(2023, 0, 10),
-  speakers: [mockShortUserData],
-  votedUsers: [mockShortUserData, mockShortUser2Data],
-  participants: [mockShortUserData, mockShortUser2Data],
+  speakers: [mockUserData],
+  votedUsers: [mockUserData, mockUser2Data],
+  participants: [mockUserData, mockUser2Data],
   status: MeetupStatus.REQUEST,
 };
 
@@ -84,9 +76,7 @@ export const mockMeetupDraftFilledDto: MeetupDto = getMeetupDtoFromData(
 );
 export const mockMeetupDto: MeetupDto = getMeetupDtoFromData(mockMeetupData);
 
-const mockRootStore: RootStore = new RootStore();
-mockRootStore.userStore.users = [...mockUsers];
-export const mockMeetupStore = new MeetupStore(mockRootStore);
+export const mockMeetupStore = new MeetupStore();
 
 export const mockTopic: Meetup = new Meetup(mockTopicData, mockMeetupStore);
 export const mockMeetupDraft = new Meetup(mockMeetupDraftData, mockMeetupStore);
@@ -137,15 +127,15 @@ export const generateMeetupData = (
     modified: faker.date.recent(),
     start: randomStartDate,
     finish: randomFinishDate,
-    author: mockShortUserData,
+    author: mockUserData,
     speakers: generateArray(randomSpeakersCount, () =>
-      faker.helpers.arrayElement(mockShortUsersData),
+      faker.helpers.arrayElement(mockUsersData),
     ),
     votedUsers: generateArray(randomVotedUsersCount, () =>
-      faker.helpers.arrayElement(mockShortUsersData),
+      faker.helpers.arrayElement(mockUsersData),
     ),
     participants: generateArray(randomParticipantsCount, () =>
-      faker.helpers.arrayElement(mockShortUsersData),
+      faker.helpers.arrayElement(mockUsersData),
     ),
     subject: faker.company.catchPhrase(),
     excerpt: faker.lorem.paragraph(),

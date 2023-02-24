@@ -4,7 +4,7 @@ import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 
 import { checkLogin, login, logout } from 'api';
-import { mockFullUser, mockUserData } from 'model/__fakes__';
+import { mockIFullUser, mockUserData } from 'model/__fakes__';
 import { apiUrl, RestResolver } from 'utils';
 import { Credentials } from 'model';
 
@@ -25,7 +25,7 @@ const mockLoginPostSuccess: RestResolver = (req, res, ctx) => {
   return res(
     ctx.status(201),
     ctx.json({
-      user: mockFullUser,
+      user: mockIFullUser,
     }),
   );
 };
@@ -67,12 +67,12 @@ describe('Login API service', () => {
     describe('given correct credentials', () => {
       it('should return full info about the logged in user', async () => {
         const validCredentials: Credentials = {
-          username: mockFullUser.name,
-          password: mockFullUser.password,
+          username: mockIFullUser.name,
+          password: mockIFullUser.password,
         };
         const fullUserData = await login(validCredentials);
         expect(spiedOnLoginPostHandler).toHaveBeenCalled();
-        expect(fullUserData).toEqual(mockFullUser);
+        expect(fullUserData).toEqual(mockIFullUser);
       });
     });
 
@@ -83,7 +83,7 @@ describe('Login API service', () => {
         expect.assertions(2);
         try {
           await login({
-            username: mockFullUser.surname,
+            username: mockIFullUser.surname,
             password: 'wrong password',
           });
         } catch (error) {

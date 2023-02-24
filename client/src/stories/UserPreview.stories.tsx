@@ -13,48 +13,36 @@ const user_EN_FirstName = new User({
   id: 'AAA-AAA',
   name: 'John',
   surname: '',
-  post: '',
-  roles: UserRole.EMPLOYEE,
 });
 
 const user_EN_FullName = new User({
   id: 'AAA-AAA',
   name: 'John',
   surname: 'Doe',
-  post: '',
-  roles: UserRole.EMPLOYEE,
 });
 
 const user_EN_ManyNames = new User({
   id: 'AAA-AAA',
   name: 'John F.',
   surname: 'Kennedy',
-  post: '',
-  roles: UserRole.EMPLOYEE,
 });
 
 const user_RU_FirstName = new User({
   id: 'AAA-AAA',
   name: 'Вася',
   surname: '',
-  post: '',
-  roles: UserRole.EMPLOYEE,
 });
 
 const user_RU_FullName = new User({
   id: 'AAA-AAA',
   name: 'Вася',
   surname: 'Пупкин',
-  post: '',
-  roles: UserRole.EMPLOYEE,
 });
 
 const user_RU_ManyNames = new User({
   id: 'AAA-AAA',
   name: 'Остап Сулейман Ибрагим',
   surname: 'Берта-Мария Бендер-бей',
-  post: '',
-  roles: UserRole.EMPLOYEE,
 });
 
 const DefaultTemplate: ComponentStory<typeof UserPreview> = (args) => (

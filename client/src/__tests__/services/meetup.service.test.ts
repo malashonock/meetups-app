@@ -23,7 +23,7 @@ import {
 } from 'model/__fakes__';
 import { apiUrl, RestResolver } from 'utils';
 import { FileWithUrl } from 'types';
-import { IMeetup, MeetupDto, ShortUser } from 'model';
+import { IMeetup, MeetupDto, IUser } from 'model';
 
 // Mock getNewsFromJson
 const mockGetStaticFile = jest.spyOn(StaticApi, 'getStaticFile');
@@ -98,12 +98,12 @@ beforeEach(() => {
     },
   );
   mockGetVotedUsers.mockImplementation(
-    async (meetupId: string): Promise<ShortUser[]> => {
+    async (meetupId: string): Promise<IUser[]> => {
       return findMeetup(meetupId).votedUsers;
     },
   );
   mockGetParticipants.mockImplementation(
-    async (meetupId: string): Promise<ShortUser[]> => {
+    async (meetupId: string): Promise<IUser[]> => {
       return findMeetup(meetupId).participants;
     },
   );

@@ -2,7 +2,7 @@
 
 import '@testing-library/cypress/add-commands';
 import { faker } from '@faker-js/faker';
-import { MeetupStatus, ShortUser } from 'model';
+import { MeetupStatus, IUser } from 'model';
 
 declare global {
   namespace Cypress {
@@ -87,7 +87,7 @@ Cypress.Commands.add('createTopic', function () {
 
   const subject: string = faker.company.catchPhrase();
   const excerpt: string = faker.lorem.paragraph();
-  const author: ShortUser = {
+  const author: IUser = {
     id: 'uuu-bbb',
     name: 'chief',
     surname: 'Blick',

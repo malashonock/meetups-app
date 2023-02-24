@@ -1,13 +1,14 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { makePersistable } from 'mobx-persist-store';
 
-import { Credentials, IUser } from 'model';
+import { Credentials, IFullUser, UserRole } from 'model';
 import * as API from 'api';
-import { RootStore, User } from 'stores';
+import { RootStore, User, UserStore } from 'stores';
 import { Nullable } from 'types';
 
 export class AuthStore {
-  loggedUser: Nullable<User>;
+  loggedUser: Nullable<FullUser>;
+  userStore: UserStore;
 
   constructor(public rootStore: RootStore) {
     makeAutoObservable(this);
@@ -17,15 +18,13 @@ export class AuthStore {
       properties: [
         {
           key: 'loggedUser',
-          serialize: (value: Nullable<User>): string => {
+          serialize: (value: Nullable<FullUser>): string => {
             return JSON.stringify(value);
           },
-          deserialize: (value: string): Nullable<User> => {
-            const userData = JSON.parse(value) as Nullable<IUser>;
+          deserialize: (value: string): Nullable<FullUser> => {
+            const userData = JSON.parse(value) as Nullable<IFullUser>;
 
-            return userData
-              ? new User(userData, this.rootStore.userStore)
-              : null;
+            return userData ? new FullUser(userData) : null;
           },
         },
       ],
@@ -33,13 +32,15 @@ export class AuthStore {
     });
 
     this.loggedUser = null;
+    this.userStore = new UserStore(this);
   }
 
   async logIn(credentials: Credentials): Promise<void> {
-    const { id, ...userData } = await API.login(credentials);
+    const userData: IFullUser = await API.login(credentials);
     runInAction(() => {
-      this.loggedUser = this.rootStore.userStore.findUser(id) ?? null;
+      this.loggedUser = new FullUser(userData);
     });
+    await this.onLoginChanged();
   }
 
   async logOut(): Promise<void> {
@@ -47,11 +48,38 @@ export class AuthStore {
     runInAction(() => {
       this.loggedUser = null;
     });
+    await this.onLoginChanged();
+  }
+
+  async onLoginChanged(): Promise<void> {
+    await this.userStore.init(this.loggedUser);
   }
 
   toJSON() {
     return {
       loggedUser: this.loggedUser,
+    };
+  }
+}
+
+export class FullUser extends User {
+  post: string;
+  roles: UserRole;
+
+  constructor(userData: IFullUser) {
+    super(userData);
+    ({ post: this.post, roles: this.roles } = userData);
+  }
+
+  isAdmin(): boolean {
+    return this.roles === UserRole.CHIEF;
+  }
+
+  toJSON(): IFullUser {
+    return {
+      ...super.toJSON(),
+      post: this.post,
+      roles: this.roles,
     };
   }
 }

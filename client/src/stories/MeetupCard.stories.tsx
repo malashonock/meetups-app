@@ -26,8 +26,6 @@ const author: User = new User({
   id: 'AAA-AAA',
   name: 'Joe',
   surname: 'Jackson',
-  post: '',
-  roles: UserRole.EMPLOYEE,
 });
 
 const meetupTopic: Meetup = new Meetup({
@@ -44,18 +42,18 @@ const meetupTopic: Meetup = new Meetup({
   image: null,
 });
 
-const meetupOnModerationNoDate: Meetup = new Meetup({
+const meetupDraftNoDate: Meetup = new Meetup({
   ...meetupTopic,
   status: MeetupStatus.REQUEST,
 });
 
-const meetupOnModeration: Meetup = new Meetup({
-  ...meetupOnModerationNoDate,
+const meetupDraft: Meetup = new Meetup({
+  ...meetupDraftNoDate,
   start: new Date(2022, 3, 23, 15, 0),
 });
 
 const meetupUpcoming: Meetup = new Meetup({
-  ...meetupOnModeration,
+  ...meetupDraft,
   status: MeetupStatus.CONFIRMED,
   place: 'комн. 601b',
 });
@@ -76,16 +74,16 @@ MeetupCard_Topic_WithExcerpt.args = {
   meetup: meetupTopic,
 };
 
-export const MeetupCard_OnModerationNoDate = Template.bind({});
+export const MeetupCard_DraftNoDate = Template.bind({});
 
-MeetupCard_OnModerationNoDate.args = {
-  meetup: meetupOnModerationNoDate,
+MeetupCard_DraftNoDate.args = {
+  meetup: meetupDraftNoDate,
 };
 
-export const MeetupCard_OnModeration = Template.bind({});
+export const MeetupCard_Draft = Template.bind({});
 
-MeetupCard_OnModeration.args = {
-  meetup: meetupOnModeration,
+MeetupCard_Draft.args = {
+  meetup: meetupDraft,
 };
 
 export const MeetupCard_Upcoming = Template.bind({});

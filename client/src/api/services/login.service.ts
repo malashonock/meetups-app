@@ -1,24 +1,19 @@
 import { httpClient } from 'api';
-import { Credentials, FullUser, IUser } from 'model';
+import { Credentials, IFullUser, IUser } from 'model';
 
-interface AuthResponse<T> {
-  user: T;
-}
-
-export const login = async (credentials: Credentials): Promise<FullUser> => {
-  const {
-    data: { user: authenticatedUser },
-  } = await httpClient.post<AuthResponse<FullUser>>('/login', {
-    ...credentials,
-  });
+export const login = async (credentials: Credentials): Promise<IFullUser> => {
+  const { data: authenticatedUser } = await httpClient.post<IFullUser>(
+    '/login',
+    {
+      ...credentials,
+    },
+  );
 
   return authenticatedUser;
 };
 
-export const checkLogin = async (): Promise<IUser> => {
-  const {
-    data: { user: authenticatedUser },
-  } = await httpClient.get<AuthResponse<IUser>>('/login');
+export const checkLogin = async (): Promise<IFullUser> => {
+  const { data: authenticatedUser } = await httpClient.get<IFullUser>('/login');
   return authenticatedUser;
 };
 

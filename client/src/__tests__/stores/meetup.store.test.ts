@@ -3,7 +3,7 @@ import { AxiosError } from 'axios';
 
 import { MeetupStore, RootStore, Meetup, User } from 'stores';
 import * as MeetupApi from 'api/services/meetup.service';
-import { IMeetup, MeetupStatus, ShortUser } from 'model';
+import { IMeetup, MeetupStatus, IUser } from 'model';
 import {
   generateMeetupsData,
   mapMeetupsData,
@@ -256,13 +256,13 @@ describe('Meetup', () => {
       expect(meetup.excerpt).toBe(mockMeetupData.excerpt);
       expect(meetup.author?.id).toBe(mockMeetupData.author?.id);
       expect(getIds<User>(meetup.speakers)).toEqual(
-        getIds<ShortUser>(mockMeetupData.speakers),
+        getIds<IUser>(mockMeetupData.speakers),
       );
       expect(getIds<User>(meetup.votedUsers)).toEqual(
-        getIds<ShortUser>(mockMeetupData.votedUsers),
+        getIds<IUser>(mockMeetupData.votedUsers),
       );
       expect(getIds<User>(meetup.participants)).toEqual(
-        getIds<ShortUser>(mockMeetupData.participants),
+        getIds<IUser>(mockMeetupData.participants),
       );
       expect(meetup.image).toBe(mockMeetupData.image);
     });

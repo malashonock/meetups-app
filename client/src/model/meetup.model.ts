@@ -1,4 +1,4 @@
-import { ShortUser } from 'model';
+import { IUser } from 'model';
 import { FileWithUrl, Nullable } from 'types';
 
 export enum MeetupStatus {
@@ -12,10 +12,10 @@ export interface IMeetup {
   modified: Date;
   start?: Date;
   finish?: Date;
-  author: Nullable<ShortUser>;
-  speakers: ShortUser[];
-  votedUsers: ShortUser[];
-  participants: ShortUser[];
+  author: IUser;
+  speakers: IUser[];
+  votedUsers: IUser[];
+  participants: IUser[];
   subject: string;
   excerpt: string;
   place?: string;
@@ -29,8 +29,8 @@ export interface MeetupDto {
   modified: string; // ISO datetime string
   start?: string; // ISO datetime string
   finish?: string; // ISO datetime string
-  author: Nullable<ShortUser>;
-  speakers: ShortUser[];
+  author: IUser;
+  speakers: IUser[];
   subject: string;
   excerpt: string;
   place?: string;
@@ -41,5 +41,7 @@ export interface MeetupDto {
 // Data structure used in create/edit forms
 export type MeetupFields = Pick<
   IMeetup,
-  'subject' | 'excerpt' | 'author' | 'start' | 'finish' | 'place' | 'image'
->;
+  'subject' | 'excerpt' | 'start' | 'finish' | 'place' | 'image'
+> & {
+  author?: IUser;
+};
