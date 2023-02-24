@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 
 import { News, NewsStore } from 'stores';
-import { RootContext } from 'components';
+import { NewsContext } from 'components';
 import { NewsFields } from 'model';
 import { Optional } from 'types';
 
@@ -16,7 +16,7 @@ export interface UseNewsStoreResult {
 }
 
 export const useNewsStore = (): UseNewsStoreResult => {
-  const newsStore = useContext(RootContext)?.newsStore;
+  const newsStore = useContext(NewsContext);
   const news = newsStore?.news;
   const isLoading = newsStore?.isLoading;
   const isError = newsStore?.isError;

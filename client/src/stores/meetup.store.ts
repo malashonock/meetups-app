@@ -1,19 +1,21 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 
 import * as API from 'api';
-import { RootStore, User } from 'stores';
+import { User } from 'stores';
 import { FileWithUrl, ILoadable, Nullable, Optional } from 'types';
-import { IMeetup, MeetupFields, MeetupStatus, ShortUser } from 'model';
+import { IMeetup, MeetupFields, MeetupStatus } from 'model';
 
 export class MeetupStore implements ILoadable {
   meetups: Meetup[];
+
   isLoading: boolean;
   isError: boolean;
   errors: unknown[];
 
-  constructor(public rootStore: RootStore) {
+  constructor() {
     makeAutoObservable(this);
     this.meetups = [];
+
     this.isLoading = false;
     this.isError = false;
     this.errors = [];
@@ -28,11 +30,11 @@ export class MeetupStore implements ILoadable {
         this.meetups = meetupsData.map(
           (meetupData: IMeetup): Meetup => new Meetup(meetupData, this),
         );
-      });
 
-      this.isLoading = false;
-      this.isError = false;
-      this.errors.length = 0;
+        this.isLoading = false;
+        this.isError = false;
+        this.errors.length = 0;
+      });
     } catch (error) {
       this.isLoading = false;
       this.isError = true;
@@ -92,7 +94,7 @@ export class Meetup implements IMeetup, ILoadable {
   place?: string;
   subject: string;
   excerpt: string;
-  author: Nullable<User>;
+  author: User;
   speakers: User[];
   votedUsers: User[];
   participants: User[];
@@ -123,12 +125,10 @@ export class Meetup implements IMeetup, ILoadable {
       participants: participantsData,
     } = meetupData;
 
-    const userStore = this.meetupStore?.rootStore.userStore;
-
-    this.author = userStore?.findUser(authorData) ?? null;
-    this.speakers = userStore?.findUsers(speakersData) ?? [];
-    this.votedUsers = userStore?.findUsers(votedUsersData) ?? [];
-    this.participants = userStore?.findUsers(participantsData) ?? [];
+    this.author = new User(authorData);
+    this.speakers = speakersData.map(User.factory);
+    this.votedUsers = votedUsersData.map(User.factory);
+    this.participants = participantsData.map(User.factory);
 
     this.isLoading = false;
     this.isError = false;
@@ -241,16 +241,10 @@ export class Meetup implements IMeetup, ILoadable {
       place: this.place,
       subject: this.subject,
       excerpt: this.excerpt,
-      author: this.author ? this.author.asShortUser() : null,
-      speakers: this.speakers.map(
-        (speaker: User): ShortUser => speaker.asShortUser(),
-      ),
-      votedUsers: this.votedUsers.map(
-        (votedUser: User): ShortUser => votedUser.asShortUser(),
-      ),
-      participants: this.participants.map(
-        (participant: User): ShortUser => participant.asShortUser(),
-      ),
+      author: this.author?.toJSON() ?? null,
+      speakers: this.speakers.map(User.serialize),
+      votedUsers: this.votedUsers.map(User.serialize),
+      participants: this.participants.map(User.serialize),
       image: this.image,
     };
   }

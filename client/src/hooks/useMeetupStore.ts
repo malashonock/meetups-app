@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 
 import { Meetup, MeetupStore } from 'stores';
-import { RootContext } from 'components';
+import { MeetupContext } from 'components';
 import { MeetupFields } from 'model';
 import { Optional } from 'types';
 
@@ -16,7 +16,7 @@ export interface UseMeetupStoreResult {
 }
 
 export const useMeetupStore = (): UseMeetupStoreResult => {
-  const meetupStore = useContext(RootContext)?.meetupStore;
+  const meetupStore = useContext(MeetupContext);
   const meetups = meetupStore?.meetups;
   const isLoading = meetupStore?.isLoading;
   const isError = meetupStore?.isError;

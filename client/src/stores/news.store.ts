@@ -1,19 +1,21 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 
 import * as API from 'api';
-import { RootStore } from 'stores';
 import { FileWithUrl, ILoadable, Nullable, Optional } from 'types';
 import { INews, NewsFields } from 'model';
 
 export class NewsStore implements ILoadable {
   news: News[];
+
   isLoading: boolean;
   isError: boolean;
   errors: unknown[];
 
-  constructor(public rootStore: RootStore) {
+  constructor() {
     makeAutoObservable(this);
+
     this.news = [];
+
     this.isLoading = false;
     this.isError = false;
     this.errors = [];
@@ -28,11 +30,11 @@ export class NewsStore implements ILoadable {
         this.news = newsData.map(
           (newsArticleData: INews): News => new News(newsArticleData, this),
         );
-      });
 
-      this.isLoading = false;
-      this.isError = false;
-      this.errors.length = 0;
+        this.isLoading = false;
+        this.isError = false;
+        this.errors.length = 0;
+      });
     } catch (error) {
       this.isLoading = false;
       this.isError = true;

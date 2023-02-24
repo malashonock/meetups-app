@@ -1,11 +1,11 @@
 import { faker } from '@faker-js/faker';
 import { INews, NewsDto, NewsFields } from 'model/news.model';
 
-import { News, NewsStore, RootStore } from 'stores';
+import { News, NewsStore } from 'stores';
 import { generateArray } from 'utils';
 import { mockImageWithUrl, mockImageWithUrl2 } from 'model/__fakes__';
 
-const mockNewsStore = new NewsStore(new RootStore());
+const mockNewsStore = new NewsStore();
 
 export const mockNewsArticleFields: NewsFields = {
   title: 'Test news title',
