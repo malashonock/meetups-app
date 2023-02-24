@@ -1,13 +1,12 @@
 import { Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
 
 import {
   Header,
   LoadingSpinner,
-  MeetupStoreProvider,
   meetupTabsLinks,
   meetupTabsMapper,
-  NewsStoreProvider,
   ProtectedRoute,
   RootStoreProvider,
 } from 'components';
@@ -26,24 +25,24 @@ import {
 
 import styles from './App.module.scss';
 
-export const App = (): JSX.Element => (
-  <RootStoreProvider>
-    <BrowserRouter>
-      <Suspense fallback={<LoadingSpinner />}>
-        <Header />
-        <main className={styles.container}>
-          <Routes>
-            <Route path="/" element={<Navigate replace to="/meetups" />} />
-            <Route
-              path="login"
-              element={
-                <ProtectedRoute redirectIf="authenticated">
-                  <LoginPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route path="meetups">
-              <Route element={<MeetupStoreProvider />}>
+export const App = observer(
+  (): JSX.Element => (
+    <RootStoreProvider>
+      <BrowserRouter>
+        <Suspense fallback={<LoadingSpinner />}>
+          <Header />
+          <main className={styles.container}>
+            <Routes>
+              <Route path="/" element={<Navigate replace to="/meetups" />} />
+              <Route
+                path="login"
+                element={
+                  <ProtectedRoute redirectIf="authenticated">
+                    <LoginPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="meetups">
                 <Route element={<MeetupsPage />}>
                   <Route
                     index
@@ -77,9 +76,7 @@ export const App = (): JSX.Element => (
                   />
                 </Route>
               </Route>
-            </Route>
-            <Route path="news">
-              <Route element={<NewsStoreProvider />}>
+              <Route path="news">
                 <Route index element={<NewsPage />} />
                 <Route
                   path="create"
@@ -101,11 +98,11 @@ export const App = (): JSX.Element => (
                   />
                 </Route>
               </Route>
-            </Route>
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </main>
-      </Suspense>
-    </BrowserRouter>
-  </RootStoreProvider>
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </main>
+        </Suspense>
+      </BrowserRouter>
+    </RootStoreProvider>
+  ),
 );

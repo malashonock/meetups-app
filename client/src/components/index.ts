@@ -34,8 +34,6 @@ export * from './ImageUploader/ImageUploader';
 export * from './AuthToggle/AuthToggle';
 export * from './SelectField/SelectField';
 export * from './RootStoreProvider/RootStoreProvider';
-export * from './MeetupStoreProvider/MeetupStoreProvider';
-export * from './NewsStoreProvider/NewsStoreProvider';
 export * from './LanguageSelect/LanguageSelect';
 export * from './ProtectedRoute/ProtectedRoute';
 export * from './AvatarGroup/AvatarGroup';
