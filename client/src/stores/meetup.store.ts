@@ -3,7 +3,7 @@ import { makeAutoObservable, runInAction } from 'mobx';
 import * as API from 'api';
 import { RootStore, User } from 'stores';
 import { FileWithUrl, ILoadable, Nullable, Optional } from 'types';
-import { IMeetup, MeetupFields, MeetupStatus } from 'model';
+import { IMeetup, MeetupDto, MeetupFields, MeetupStatus } from 'model';
 
 export class MeetupStore implements ILoadable {
   rootStore: RootStore;
@@ -34,10 +34,10 @@ export class MeetupStore implements ILoadable {
     try {
       this.isLoading = true;
 
-      const meetupsData: IMeetup[] = await API.getMeetups();
+      const meetupsData: MeetupDto[] = await API.getMeetups();
       runInAction(() => {
         this.meetups = meetupsData.map(
-          (meetupData: IMeetup): Meetup => new Meetup(meetupData, this),
+          (meetupData: MeetupDto): Meetup => new Meetup(meetupData, this),
         );
 
         this.isInitialized = true;
@@ -107,9 +107,10 @@ export class Meetup implements IMeetup, ILoadable {
   speakers: User[];
   votedUsers: User[];
   participants: User[];
-  image: Nullable<FileWithUrl>;
+  imageUrl: Nullable<string>;
+  image: Nullable<FileWithUrl> = null;
 
-  constructor(meetupData: IMeetup, meetupStore?: MeetupStore) {
+  constructor(meetupData: MeetupDto, meetupStore?: MeetupStore) {
     if (meetupStore) {
       makeAutoObservable(this);
       this.meetupStore = meetupStore;
@@ -118,21 +119,25 @@ export class Meetup implements IMeetup, ILoadable {
     ({
       id: this.id,
       status: this.status,
-      modified: this.modified,
-      start: this.start,
-      finish: this.finish,
       place: this.place,
       subject: this.subject,
       excerpt: this.excerpt,
-      image: this.image,
+      imageUrl: this.imageUrl,
     } = meetupData);
 
     const {
+      modified: modifiedDateString,
+      start: startDateString,
+      finish: finishDateString,
       author: authorData,
       speakers: speakersData,
       votedUsers: votedUsersData,
       participants: participantsData,
     } = meetupData;
+
+    this.modified = new Date(modifiedDateString);
+    this.start = startDateString ? new Date(startDateString) : undefined;
+    this.finish = finishDateString ? new Date(finishDateString) : undefined;
 
     this.author = new User(authorData);
     this.speakers = speakersData.map(User.factory);
@@ -142,6 +147,29 @@ export class Meetup implements IMeetup, ILoadable {
     this.isLoading = false;
     this.isError = false;
     this.errors = [];
+  }
+
+  async init(): Promise<void> {
+    if (!this.imageUrl) {
+      return;
+    }
+
+    try {
+      this.isLoading = true;
+
+      const image = await API.getStaticFile(this.imageUrl);
+      runInAction(() => {
+        this.image = image;
+      });
+
+      this.isLoading = false;
+      this.isError = false;
+      this.errors.length = 0;
+    } catch (error) {
+      this.isLoading = false;
+      this.isError = true;
+      this.errors.push(error);
+    }
   }
 
   async update(meetupData: Partial<MeetupFields>): Promise<void> {

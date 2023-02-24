@@ -2,84 +2,48 @@ import { getParticipants, getStaticFile, getVotedUsers } from 'api';
 import { httpClient } from 'api';
 import { MeetupDto, MeetupFields, MeetupStatus, IMeetup } from 'model';
 
-export const getMeetups = async (): Promise<IMeetup[]> => {
+export const getMeetups = async (): Promise<MeetupDto[]> => {
   const { data: meetupsData } = await httpClient.get<MeetupDto[]>('/meetups');
-  return Promise.all(meetupsData.map(getMeetupFromJson));
+  return meetupsData;
 };
 
-export const getMeetup = async (id: string): Promise<IMeetup> => {
+export const getMeetup = async (id: string): Promise<MeetupDto> => {
   const { data: meetupData } = await httpClient.get<MeetupDto>(
     `/meetups/${id}`,
   );
-  return getMeetupFromJson(meetupData);
+  return meetupData;
 };
 
 export const createMeetup = async (
   newMeetupFields: MeetupFields,
-): Promise<IMeetup> => {
+): Promise<MeetupDto> => {
   const formData = buildMeetupFormData(newMeetupFields);
 
-  const { data: createdMeetup } = await httpClient.post<MeetupDto>(
+  const { data: createdMeetupData } = await httpClient.post<MeetupDto>(
     '/meetups',
     formData,
   );
 
-  return getMeetupFromJson(createdMeetup);
+  return createdMeetupData;
 };
 
 export const updateMeetup = async (
   id: string,
   updatedMeetupFields: Partial<MeetupFields>,
   meetupStatus?: MeetupStatus,
-): Promise<IMeetup> => {
+): Promise<MeetupDto> => {
   const formData = buildMeetupFormData(updatedMeetupFields, meetupStatus);
 
-  const { data: updatedMeetup } = await httpClient.patch<MeetupDto>(
+  const { data: updatedMeetupData } = await httpClient.patch<MeetupDto>(
     `/meetups/${id}`,
     formData,
   );
 
-  return getMeetupFromJson(updatedMeetup);
+  return updatedMeetupData;
 };
 
 export const deleteMeetup = async (id: string): Promise<void> => {
   await httpClient.delete(`/meetups/${id}`);
-};
-
-const getMeetupFromJson = async (meetupData: MeetupDto): Promise<IMeetup> => {
-  const {
-    id,
-    subject,
-    excerpt,
-    status,
-    modified,
-    start,
-    finish,
-    place,
-    author,
-    speakers,
-    votedUsers,
-    participants,
-    imageUrl,
-  } = meetupData;
-
-  const image = imageUrl ? await getStaticFile(imageUrl) : null;
-
-  return {
-    id,
-    subject,
-    excerpt,
-    status,
-    modified: new Date(modified),
-    start: start ? new Date(start) : undefined,
-    finish: finish ? new Date(finish) : undefined,
-    place,
-    author,
-    speakers,
-    votedUsers,
-    participants,
-    image,
-  };
 };
 
 const buildMeetupFormData = (
