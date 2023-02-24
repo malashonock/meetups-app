@@ -28,9 +28,9 @@
     "meetupCount_topic_one": "{{count}} тема предложена",
     "meetupCount_topic_few": "{{count}} темы предложено",
     "meetupCount_topic_many": "{{count}} тем предложено",
-    "meetupCount_onModeration_one": "{{count}} митап на модерации",
-    "meetupCount_onModeration_few": "{{count}} митапа на модерации",
-    "meetupCount_onModeration_many": "{{count}} митапов на модерации",
+    "meetupCount_draft_one": "{{count}} митап на модерации",
+    "meetupCount_draft_few": "{{count}} митапа на модерации",
+    "meetupCount_draft_many": "{{count}} митапов на модерации",
     "meetupCount_upcoming_one": "{{count}} митап опубликован",
     "meetupCount_upcoming_few": "{{count}} митапа опубликовано",
     "meetupCount_upcoming_many": "{{count}} митапов опубликовано",
@@ -41,7 +41,7 @@
   },
   "meetupTabs": {
     "tabTitle_topics": "Темы",
-    "tabTitle_moderation": "На модерации",
+    "tabTitle_drafts": "На модерации",
     "tabTitle_upcoming": "Будущие",
     "tabTitle_finished": "Прошедшие"
   },

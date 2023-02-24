@@ -15,14 +15,14 @@ describe('Internationalization', () => {
     cy.get('*').contains('Meetups').should('exist');
     cy.get('*').contains('News').should('exist');
     cy.get('*').contains('Topics').should('exist');
-    cy.get('*').contains('On moderation').as('onModerationTab').should('exist');
+    cy.get('*').contains('On moderation').as('draftTab').should('exist');
     cy.get('*').contains('Upcoming').as('upcomingTab').should('exist');
     cy.get('*').contains('Finished').as('finishedTab').should('exist');
     cy.get('*').contains('Create meetup').should('exist');
     cy.get('*').contains(' suggested').should('exist');
 
     // Describe /meetups/moderation page
-    cy.get('@onModerationTab').click();
+    cy.get('@draftTab').click();
     cy.get('*').contains(' on moderation').should('exist');
 
     // Describe /meetups/upcoming page
@@ -52,14 +52,14 @@ describe('Internationalization', () => {
     cy.get('*').contains('Митапы').should('exist');
     cy.get('*').contains('Новости').should('exist');
     cy.get('*').contains('Темы').should('exist');
-    cy.get('*').contains('На модерации').as('onModerationTab').should('exist');
+    cy.get('*').contains('На модерации').as('draftTab').should('exist');
     cy.get('*').contains('Будущие').as('upcomingTab').should('exist');
     cy.get('*').contains('Прошедшие').as('finishedTab').should('exist');
     cy.get('*').contains('Создать митап').should('exist');
     cy.get('*').contains(' предложен').should('exist');
 
     // Describe /meetups/moderation page
-    cy.get('@onModerationTab').click();
+    cy.get('@draftTab').click();
     cy.get('*').contains(' на модерации').should('exist');
 
     // Describe /meetups/upcoming page

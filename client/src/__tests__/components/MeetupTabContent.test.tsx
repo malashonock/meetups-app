@@ -16,7 +16,7 @@ const UPCOMING_COUNT = 5;
 const FINISHED_COUNT = 7;
 
 const mockTopics = generateMeetups(TOPICS_COUNT, MeetupStatus.REQUEST);
-const mockMeetupsOnModeration = generateMeetups(
+const mockMeetupDrafts = generateMeetups(
   ONMODERATION_COUNT,
   MeetupStatus.DRAFT,
 );
@@ -33,7 +33,7 @@ const mockFinishedMeetups = generateMeetups(
 
 const mockMeetups = [
   ...mockTopics,
-  ...mockMeetupsOnModeration,
+  ...mockMeetupDrafts,
   ...mockUpcomingMeetups,
   ...mockFinishedMeetups,
 ];
@@ -98,7 +98,7 @@ describe('MeetupTabContent', () => {
       screen.getByText('meetupTabContent.createMeetupBtn'),
     ).toBeInTheDocument();
 
-    rerender(<MeetupTabContent variant={MeetupCardVariant.OnModeration} />);
+    rerender(<MeetupTabContent variant={MeetupCardVariant.Draft} />);
     expect(screen.queryByText('meetupTabContent.createMeetupBtn')).toBeNull();
 
     rerender(<MeetupTabContent variant={MeetupCardVariant.Upcoming} />);
@@ -109,7 +109,7 @@ describe('MeetupTabContent', () => {
   });
 
   it('renders the list of meetups on moderation correctly', () => {
-    render(<MeetupTabContent variant={MeetupCardVariant.OnModeration} />, {
+    render(<MeetupTabContent variant={MeetupCardVariant.Draft} />, {
       wrapper: MockRouter,
     });
 
@@ -119,9 +119,7 @@ describe('MeetupTabContent', () => {
     const renderedSubjects = meetupCards.map(
       (element) => element.querySelector('.subject')?.textContent,
     );
-    const expectedSubjects = mockMeetupsOnModeration.map(
-      (meetup) => meetup.subject,
-    );
+    const expectedSubjects = mockMeetupDrafts.map((meetup) => meetup.subject);
     expect(renderedSubjects).toEqual(expectedSubjects);
   });
 

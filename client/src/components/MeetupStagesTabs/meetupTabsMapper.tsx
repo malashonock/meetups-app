@@ -13,10 +13,10 @@ export const meetupTabsMapper: Record<MeetupTabLink, MeetupTabDescriptor> = {
       t('meetupTabs.tabTitle', { context: MeetupTabLink.Topics }),
     component: <MeetupTabContent variant={MeetupCardVariant.Topic} />,
   },
-  [MeetupTabLink.OnModeration]: {
+  [MeetupTabLink.Drafts]: {
     label: ({ t }: i18n) =>
-      t('meetupTabs.tabTitle', { context: MeetupTabLink.OnModeration }),
-    component: <MeetupTabContent variant={MeetupCardVariant.OnModeration} />,
+      t('meetupTabs.tabTitle', { context: MeetupTabLink.Drafts }),
+    component: <MeetupTabContent variant={MeetupCardVariant.Draft} />,
   },
   [MeetupTabLink.Upcoming]: {
     label: ({ t }: i18n) =>

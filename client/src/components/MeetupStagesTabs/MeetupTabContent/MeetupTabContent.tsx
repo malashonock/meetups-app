@@ -39,7 +39,7 @@ export const MeetupTabContent = observer(
             meetups?.filter((meetup) => meetup.status === MeetupStatus.REQUEST),
           );
           break;
-        case MeetupCardVariant.OnModeration:
+        case MeetupCardVariant.Draft:
           setSelectedMeetups(
             meetups?.filter((meetup) => meetup.status === MeetupStatus.DRAFT),
           );

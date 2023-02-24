@@ -27,8 +27,8 @@
   "meetupTabContent": {
     "meetupCount_topic_one": "{{count}} topic suggested",
     "meetupCount_topic_other": "{{count}} topics suggested",
-    "meetupCount_onModeration_one": "{{count}} meetup on moderation",
-    "meetupCount_onModeration_other": "{{count}} meetups on moderation",
+    "meetupCount_draft_one": "{{count}} meetup on moderation",
+    "meetupCount_draft_other": "{{count}} meetups on moderation",
     "meetupCount_upcoming_one": "{{count}} meetup scheduled",
     "meetupCount_upcoming_other": "{{count}} meetups scheduled",
     "meetupCount_finished_one": "{{count}} meetup passed",
@@ -37,7 +37,7 @@
   },
   "meetupTabs": {
     "tabTitle_topics": "Topics",
-    "tabTitle_moderation": "On moderation",
+    "tabTitle_drafts": "On moderation",
     "tabTitle_upcoming": "Upcoming",
     "tabTitle_finished": "Finished"
   },
