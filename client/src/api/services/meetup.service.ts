@@ -58,12 +58,12 @@ const getMeetupFromJson = async (meetupData: MeetupDto): Promise<IMeetup> => {
     place,
     author,
     speakers,
+    votedUsers,
+    participants,
     imageUrl,
   } = meetupData;
 
   const image = imageUrl ? await getStaticFile(imageUrl) : null;
-  const votedUsers = await getVotedUsers(id);
-  const participants = await getParticipants(id);
 
   return {
     id,

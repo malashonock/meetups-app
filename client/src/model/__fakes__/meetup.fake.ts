@@ -61,6 +61,8 @@ export const getMeetupDtoFromData = (meetupData: IMeetup): MeetupDto => ({
   finish: meetupData.finish?.toISOString(),
   author: meetupData.author,
   speakers: meetupData.speakers,
+  votedUsers: meetupData.votedUsers,
+  participants: meetupData.participants,
   subject: meetupData.subject,
   excerpt: meetupData.excerpt,
   place: meetupData.place,

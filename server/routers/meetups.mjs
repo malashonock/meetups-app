@@ -3,37 +3,17 @@ import faker from "faker";
 
 import { ensureAuthenticated } from "../middleware/ensureAthenticated.mjs";
 import { upload } from '../middleware/upload.mjs';
-import { isDateValid, isPast, compareDates, getUrlFromPublicPath } from "../utils.mjs";
+import { isDateValid, compareDates, getUrlFromPublicPath } from "../utils.mjs";
 
 export const meetupsRoutes = (db) => {
   const meetupsRouter = express.Router();
   meetupsRouter.get("/", async (req, res) => {
-    const meetupCategory = req.query.category;
-
     const meetupDtos = db.data.meetups
-      .filter(meetup => {
-        switch (meetupCategory) {
-          case 'topics':
-            return meetup.status === 'REQUEST';
-          case 'drafts':
-            return meetup.status === 'DRAFT';
-          case 'upcoming':
-            return meetup.status === 'CONFIRMED'
-              && (!meetup.start || (meetup.start && !isPast(meetup.start)));
-          case 'finished':
-            return meetup.status === 'CONFIRMED'
-              && (meetup.start && isPast(meetup.start));
-          default:
-            return true; // no filtering
-        }
-      })
       .map(meetup => {
-        const { imageUrl, ...meetupDataFields } = meetup;
-
         return {
-          ...meetupDataFields,
-          votedUsersCount: db.data.votedUsers[meetup.id]?.length,
-          participantsCount: db.data.participants[meetup.id]?.length,
+          ...meetup,
+          votedUsers: db.data.votedUsers[meetup.id] ?? [],
+          participants: db.data.participants[meetup.id] ?? [],
         }
       });
 

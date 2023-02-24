@@ -31,6 +31,8 @@ export interface MeetupDto {
   finish?: string; // ISO datetime string
   author: IUser;
   speakers: IUser[];
+  votedUsers: IUser[];
+  participants: IUser[];
   subject: string;
   excerpt: string;
   place?: string;
