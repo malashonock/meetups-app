@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 
 import { IMeetup, MeetupDto, MeetupFields, MeetupStatus, IUser } from 'model';
-import { Meetup, MeetupStore } from 'stores';
+import { Meetup, MeetupStore, RootStore } from 'stores';
 import {
   mockImageWithUrl,
   mockUser2Data,
@@ -78,7 +78,7 @@ export const mockMeetupDraftFilledDto: MeetupDto = getMeetupDtoFromData(
 );
 export const mockMeetupDto: MeetupDto = getMeetupDtoFromData(mockMeetupData);
 
-export const mockMeetupStore = new MeetupStore();
+export const mockMeetupStore = new MeetupStore(new RootStore());
 
 export const mockTopic: Meetup = new Meetup(mockTopicData, mockMeetupStore);
 export const mockMeetupDraft = new Meetup(mockMeetupDraftData, mockMeetupStore);

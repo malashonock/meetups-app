@@ -1,7 +1,7 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 
 import { Meetup, MeetupStore } from 'stores';
-import { MeetupContext } from 'components';
+import { RootContext } from 'components';
 import { MeetupFields } from 'model';
 import { Optional } from 'types';
 
@@ -16,13 +16,20 @@ export interface UseMeetupStoreResult {
 }
 
 export const useMeetupStore = (): UseMeetupStoreResult => {
-  const meetupStore = useContext(MeetupContext);
+  const meetupStore = useContext(RootContext)?.meetupStore;
   const meetups = meetupStore?.meetups;
   const isLoading = meetupStore?.isLoading;
   const isError = meetupStore?.isError;
   const errors = meetupStore?.errors;
   const createMeetup = meetupStore?.createMeetup;
   const findMeetup = meetupStore?.findMeetup;
+
+  // Hydrate meetup store on first load
+  useEffect((): void => {
+    (async (): Promise<void> => {
+      await meetupStore?.loadMeetups();
+    })();
+  }, [meetupStore]);
 
   return {
     meetupStore,

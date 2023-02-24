@@ -1,20 +1,25 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 
 import * as API from 'api';
-import { User } from 'stores';
+import { RootStore, User } from 'stores';
 import { FileWithUrl, ILoadable, Nullable, Optional } from 'types';
 import { IMeetup, MeetupFields, MeetupStatus } from 'model';
 
 export class MeetupStore implements ILoadable {
+  rootStore: RootStore;
   meetups: Meetup[];
+  isInitialized: boolean;
 
   isLoading: boolean;
   isError: boolean;
   errors: unknown[];
 
-  constructor() {
+  constructor(rootStore: RootStore) {
+    this.rootStore = rootStore;
     makeAutoObservable(this);
+
     this.meetups = [];
+    this.isInitialized = false;
 
     this.isLoading = false;
     this.isError = false;
@@ -22,6 +27,10 @@ export class MeetupStore implements ILoadable {
   }
 
   async loadMeetups(): Promise<void> {
+    if (this.isInitialized) {
+      return;
+    }
+
     try {
       this.isLoading = true;
 
@@ -30,6 +39,8 @@ export class MeetupStore implements ILoadable {
         this.meetups = meetupsData.map(
           (meetupData: IMeetup): Meetup => new Meetup(meetupData, this),
         );
+
+        this.isInitialized = true;
 
         this.isLoading = false;
         this.isError = false;
@@ -49,9 +60,7 @@ export class MeetupStore implements ILoadable {
       const newMeetupData = await API.createMeetup(meetupData);
       const newMeetup = new Meetup(newMeetupData, this);
 
-      runInAction(() => {
-        this.meetups.push(newMeetup);
-      });
+      this.meetups.push(newMeetup);
 
       this.isLoading = false;
       this.isError = false;
