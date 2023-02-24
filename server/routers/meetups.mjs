@@ -64,9 +64,13 @@ export const meetupsRoutes = (db) => {
         ) {
           db.data.participants[response.id] = [];
           db.data.votedUsers[response.id] = [];
-          const meetup = db.data.meetups.push(response);
+          db.data.meetups.push(response);
           await db.write();
-          res.send(response);
+          res.send({
+            ...response,
+            votedUsers: [],
+            participants: [],
+          });
         } else {
           res
             .status(500)
@@ -128,7 +132,11 @@ export const meetupsRoutes = (db) => {
         };
 
         await db.write();
-        res.json(db.data.meetups[index]);
+        res.json({
+          ...db.data.meetups[index],
+          votedUsers: db.data.votedUsers[meetup.id] ?? [],
+          participants: db.data.participants[meetup.id] ?? [],
+        });
       } catch (e) {
         res.status(500).json({ message: 'Server error' });
       }
