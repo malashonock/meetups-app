@@ -1,3 +1,9 @@
+@import '~style/mixins';
+
 .typography {
   display: block;
+}
+
+.noWrap {
+  @include multiline-ellipsis(1);
 }

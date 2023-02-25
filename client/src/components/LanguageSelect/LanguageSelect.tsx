@@ -9,8 +9,8 @@ import { Locale } from 'stores';
 import styles from './LanguageSelect.module.scss';
 
 const options: SelectOption<Locale>[] = [
-  { value: Locale.EN, label: 'English' },
-  { value: Locale.RU, label: 'Русский' },
+  { value: Locale.EN, label: 'EN' },
+  { value: Locale.RU, label: 'RU' },
 ];
 
 export const LanguageSelect = observer((): JSX.Element => {

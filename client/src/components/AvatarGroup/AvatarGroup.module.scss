@@ -1,0 +1,32 @@
+@import '~style/colors';
+@import '~style/typography';
+
+.container {
+  width: 100%;
+
+  display: flex;
+  justify-content: space-between;
+
+  list-style: none;
+}
+
+.avatar {
+  flex: auto 0 0;
+}
+
+.restCount {
+  min-width: 50px;
+  min-height: 50px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  background-color: $gray-04;
+
+  @extend .font-family-primary;
+  @extend .font-weight-regular;
+  @extend .font-size-s;
+  @extend .font-color-white;
+}

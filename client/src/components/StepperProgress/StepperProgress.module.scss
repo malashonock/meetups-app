@@ -2,11 +2,25 @@
 
 .stepperProgress {
   width: 100%;
+  overflow-x: auto;
+}
+
+.stepsWrapper {
+  min-width: 100%;
+  width: max-content;
 }
 
 .steps {
-  width: 100%;
-  display: flex;
+  width: inherit;
+  min-width: inherit;
+
+  display: grid;
+  grid-auto-columns: 1fr;
+  align-items: flex-end;
+
+  & > * {
+    grid-row: 1;
+  }
 
   border-bottom: 1px solid $gray-08;
 }

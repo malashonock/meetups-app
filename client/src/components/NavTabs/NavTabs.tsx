@@ -21,12 +21,14 @@ export const NavTabs = ({ className, children }: NavTabsProps) => {
     .indexOf(tabToOpen);
 
   return (
-    <>
-      <div className={classNames(styles.tabs, className)}>{children}</div>
-      <TabsIndicator
-        tabsCount={arrayChildren.length}
-        activeTabIndex={indexOfTabToOpen < 0 ? 0 : indexOfTabToOpen}
-      />
-    </>
+    <div className={className}>
+      <div className={styles.tabsWrapper}>
+        <div className={styles.tabs}>{children}</div>
+        <TabsIndicator
+          tabsCount={arrayChildren.length}
+          activeTabIndex={indexOfTabToOpen < 0 ? 0 : indexOfTabToOpen}
+        />
+      </div>
+    </div>
   );
 };

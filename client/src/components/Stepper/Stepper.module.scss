@@ -2,10 +2,10 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+}
 
-  &Body {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-  }
+.stepperBody {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
 }

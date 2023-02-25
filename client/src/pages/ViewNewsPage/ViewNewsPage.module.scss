@@ -93,3 +93,24 @@
 .actionButton {
   width: 152px;
 }
+
+@media (max-width: 440px) {
+  .actionButton {
+    width: fit-content;
+  }
+}
+
+@media (max-width: 340px) {
+  .actions,
+  .actionGroup {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    row-gap: 16px;
+  }
+
+  .actionGroup,
+  .actionButton {
+    width: 100%;
+  }
+}

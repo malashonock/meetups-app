@@ -31,7 +31,9 @@ export const UserPreview = observer(
           <Typography className={styles.initials}>{initials}</Typography>
         </div>
         {variant !== UserPreviewVariant.Image && (
-          <Typography className={styles.name}>{fullName}</Typography>
+          <Typography className={styles.name} noWrap>
+            {fullName}
+          </Typography>
         )}
       </div>
     );

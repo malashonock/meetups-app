@@ -12,13 +12,12 @@ export default {
   args: {
     title: 'Title',
     description: 'It is a description inside a tooltip',
+    children: 'Hover to see a tooltip',
   },
 } as ComponentMeta<typeof Tooltip>;
 
 const Template: ComponentStory<typeof Tooltip> = (args) => (
-  <Tooltip {...args}>
-    <span>Hover to see a tooltip</span>
-  </Tooltip>
+  <Tooltip {...args} />
 );
 
 export const Dark = Template.bind({});

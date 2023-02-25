@@ -2,6 +2,9 @@
 @import '~style/typography';
 @import '~style/mixins';
 
+$marker-indent: 8px;
+$marker-diameter: 3px;
+
 .card {
   display: flex;
   flex-direction: column;
@@ -18,73 +21,90 @@
     box-shadow: 0 5px 10px rgba($gray-05, $alpha: 0.4);
     @include smooth-transition(box-shadow);
   }
+}
 
-  .header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
 
-    .appointment {
-      $marker-indent: 8px;
-      $marker-diameter: 3px;
+.body {
+  display: flex;
+  flex-direction: column;
+  row-gap: 12px;
+}
 
-      display: flex;
-      flex-direction: row;
-      column-gap: calc($marker-indent * 2);
+.appointment {
+  display: flex;
+  flex-direction: row;
+  column-gap: calc($marker-indent * 2);
 
-      list-style: none;
+  list-style: none;
 
-      @extend .font-family-primary;
-      @extend .font-weight-regular;
-      @extend .font-size-s;
-      @extend .line-height-s;
-      @extend .font-color-gray-01;
+  @extend .font-family-primary;
+  @extend .font-weight-regular;
+  @extend .font-size-s;
+  @extend .line-height-s;
+  @extend .font-color-gray-01;
+}
 
-      > .appointmentItem {
-        position: relative;
+.appointmentItem {
+  position: relative;
 
-        &:not(:first-child)::before {
-          position: absolute;
-          left: calc(-1 * ($marker-indent + $marker-diameter / 2));
-          top: 50%;
-          transform: translateY(-50%);
+  &:not(:first-child)::before {
+    position: absolute;
+    left: calc(-1 * ($marker-indent + $marker-diameter / 2));
+    top: 50%;
+    transform: translateY(-50%);
 
-          content: '';
-          width: $marker-diameter;
-          height: $marker-diameter;
-          border-radius: 50%;
-          background-color: $gray-01;
-        }
+    content: '';
+    width: $marker-diameter;
+    height: $marker-diameter;
+    border-radius: 50%;
+    background-color: $gray-01;
+  }
+}
+
+.controls {
+  display: flex;
+  flex-direction: row;
+  column-gap: 34px;
+}
+
+.subject {
+  @extend .font-family-secondary;
+  @extend .font-weight-medium;
+  @extend .font-size-m;
+  @extend .line-height-xl;
+  @extend .font-color-dark;
+}
+
+.excerpt {
+  @extend .font-family-primary;
+  @extend .font-weight-regular;
+  @extend .font-size-xs;
+  @extend .line-height-2xl;
+  @extend .font-color-gray-02;
+}
+
+@media (max-width: 550px) {
+  .appointment {
+    flex-direction: column;
+    row-gap: 5px;
+
+    > .appointmentItem {
+      &:not(:first-child)::before {
+        display: none;
       }
-    }
-
-    .controls {
-      display: flex;
-      flex-direction: row;
-      column-gap: 34px;
     }
   }
 
-  .body {
-    display: flex;
-    flex-direction: column;
-    row-gap: 12px;
-
-    .subject {
-      @extend .font-family-secondary;
-      @extend .font-weight-medium;
-      @extend .font-size-m;
-      @extend .line-height-xl;
-      @extend .font-color-dark;
-    }
-
-    .excerpt {
-      @extend .font-family-primary;
-      @extend .font-weight-regular;
-      @extend .font-size-xs;
-      @extend .line-height-2xl;
-      @extend .font-color-gray-02;
-    }
+  .controls {
+    flex-direction: column-reverse;
+    row-gap: 16px;
+    align-self: flex-start;
+    justify-content: center;
   }
 }

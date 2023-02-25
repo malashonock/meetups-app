@@ -85,3 +85,14 @@
 .actionButton {
   width: 152px;
 }
+
+@media (max-width: 420px) {
+  .main {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .actionButton {
+    width: 100%;
+  }
+}

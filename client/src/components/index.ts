@@ -35,3 +35,4 @@ export * from './SelectField/SelectField';
 export * from './RootStoreProvider/RootStoreProvider';
 export * from './LanguageSelect/LanguageSelect';
 export * from './ProtectedRoute/ProtectedRoute';
+export * from './AvatarGroup/AvatarGroup';

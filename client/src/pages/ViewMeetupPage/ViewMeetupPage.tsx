@@ -4,12 +4,12 @@ import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
 import {
+  AvatarGroup,
   Button,
   ButtonVariant,
   Typography,
   TypographyComponent,
   UserPreview,
-  UserPreviewVariant,
 } from 'components';
 import { MeetupStatus } from 'model';
 import { isPast, parseDate } from 'utils';
@@ -23,8 +23,6 @@ import defaultImage from 'assets/images/default-image.jpg';
 import calendar from './assets/calendar.svg';
 import clock from './assets/clock.svg';
 import pin from './assets/pin.svg';
-
-const MAX_PREVIEW_USERS = 8;
 
 export const ViewMeetupPage = observer(() => {
   const navigate = useNavigate();
@@ -234,8 +232,6 @@ export const ViewMeetupPage = observer(() => {
       return null;
     }
 
-    const previewVotedUsers = votedUsers?.slice(0, MAX_PREVIEW_USERS);
-
     return (
       <div className={styles.data}>
         <Typography
@@ -244,19 +240,8 @@ export const ViewMeetupPage = observer(() => {
         >
           {t('viewMeetupPage.supporters')}
         </Typography>
-        <div className={classNames(styles.dataContent, styles.votedUsers)}>
-          {previewVotedUsers?.map((votedUser: User) => (
-            <UserPreview
-              key={votedUser.id}
-              variant={UserPreviewVariant.Image}
-              user={votedUser}
-            />
-          ))}
-          {(votedUsers?.length ?? 0) - MAX_PREVIEW_USERS > 0 && (
-            <div className={styles.restCounter}>
-              +{(votedUsers?.length ?? 0) - MAX_PREVIEW_USERS}
-            </div>
-          )}
+        <div className={styles.dataContent}>
+          <AvatarGroup users={votedUsers ?? []} />
         </div>
       </div>
     );
@@ -266,7 +251,7 @@ export const ViewMeetupPage = observer(() => {
     return (
       <div className={classNames(styles.dataContent, styles.actions)}>
         <Button
-          className={styles.actionButton}
+          className={classNames(styles.actionButton, styles.backBtn)}
           variant={ButtonVariant.Default}
           onClick={handleBack}
         >
@@ -277,14 +262,14 @@ export const ViewMeetupPage = observer(() => {
             {status === MeetupStatus.REQUEST && (
               <>
                 <Button
-                  className={styles.actionButton}
+                  className={classNames(styles.actionButton, styles.deleteBtn)}
                   variant={ButtonVariant.Secondary}
                   onClick={handleDeleteTopic}
                 >
                   {t('formButtons.delete')}
                 </Button>
                 <Button
-                  className={styles.actionButton}
+                  className={classNames(styles.actionButton, styles.approveBtn)}
                   variant={ButtonVariant.Primary}
                   onClick={handleApproveTopic}
                 >
@@ -294,7 +279,7 @@ export const ViewMeetupPage = observer(() => {
             )}
             {status === MeetupStatus.DRAFT && (
               <Button
-                className={styles.actionButton}
+                className={classNames(styles.actionButton, styles.publishBtn)}
                 variant={ButtonVariant.Primary}
                 onClick={handlePublishMeetup}
                 disabled={!canPublish}
@@ -325,7 +310,7 @@ export const ViewMeetupPage = observer(() => {
             component={TypographyComponent.Span}
             className={styles.dataName}
           >
-            {t('viewMeetupPage.descriptions')}
+            {t('viewMeetupPage.description')}
           </Typography>
           <div className={styles.dataContent}>
             <Typography

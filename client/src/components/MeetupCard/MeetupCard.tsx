@@ -109,12 +109,12 @@ export const MeetupCard = observer(
               {start !== undefined ? (
                 <>
                   <li className={styles.appointmentItem} key="date">
-                    <Typography className={styles.date}>
+                    <Typography className={styles.date} noWrap>
                       {`${formattedWeekdayShort}, ${formattedDate}`}
                     </Typography>
                   </li>
                   <li className={styles.appointmentItem} key="time">
-                    <Typography className={styles.time}>
+                    <Typography className={styles.time} noWrap>
                       {formattedTime}
                     </Typography>
                   </li>
@@ -124,7 +124,9 @@ export const MeetupCard = observer(
               )}
               {place !== undefined && (
                 <li className={styles.appointmentItem} key="location">
-                  <Typography className={styles.location}>{place}</Typography>
+                  <Typography className={styles.location} noWrap>
+                    {place}
+                  </Typography>
                 </li>
               )}
             </ul>

@@ -24,25 +24,32 @@
   @extend .text-align-center;
 }
 
-.news {
-  &List {
-    list-style: none;
+.newsList {
+  list-style: none;
 
-    display: flex;
-    flex-direction: column;
-    row-gap: 8px;
-  }
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+}
 
-  &Item {
-    cursor: pointer;
-    @include smooth-transition(transform);
+.newsItem {
+  cursor: pointer;
+  @include smooth-transition(transform);
 
-    &:active {
-      transform: scale(0.99);
-    }
+  &:active {
+    transform: scale(0.99);
   }
 }
 
 .createNewsBtn {
   width: 168px;
+}
+
+@media (max-width: 425px) {
+  .header {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    row-gap: 16px;
+  }
 }

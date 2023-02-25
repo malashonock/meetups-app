@@ -26,11 +26,13 @@ type HTMLElement<TElementName extends HTMLElementName> =
 
 type TypographyProps = {
   component?: TypographyComponent;
+  noWrap?: boolean;
 } & PropsWithChildren &
   HTMLAttributes<unknown>;
 
 export const Typography = ({
   component = TypographyComponent.Span,
+  noWrap = false,
   children,
   ...nativeHtmlProps
 }: TypographyProps): JSX.Element => {
@@ -43,6 +45,7 @@ export const Typography = ({
         styles.typography,
         component,
         nativeHtmlProps.className,
+        { [styles.noWrap]: noWrap },
       )}
     >
       {children}

@@ -127,7 +127,7 @@ const EditMeetupForm = ({
               type="button"
               variant={ButtonVariant.Default}
               onClick={handleBack}
-              className={styles.actionButton}
+              className={classNames(styles.actionButton, styles.cancelBtn)}
             >
               {t('formButtons.cancel')}
             </Button>
@@ -136,7 +136,7 @@ const EditMeetupForm = ({
                 type="button"
                 variant={ButtonVariant.Secondary}
                 onClick={gotoPreview}
-                className={styles.actionButton}
+                className={classNames(styles.actionButton, styles.previewBtn)}
                 disabled={dirty}
               >
                 {t('formButtons.preview')}
@@ -144,7 +144,7 @@ const EditMeetupForm = ({
               <Button
                 type="submit"
                 variant={ButtonVariant.Primary}
-                className={styles.actionButton}
+                className={classNames(styles.actionButton, styles.saveBtn)}
                 disabled={!canSubmit}
               >
                 {t('formButtons.save')}

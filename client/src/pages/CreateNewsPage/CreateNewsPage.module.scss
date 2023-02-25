@@ -71,3 +71,28 @@
 .actionButton {
   width: 152px;
 }
+
+@media (max-width: 500px) {
+  .actionButton {
+    width: 120px;
+  }
+}
+
+@media (max-width: 420px) {
+  .main,
+  .actions {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .actions {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    row-gap: 16px;
+  }
+
+  .actionButton {
+    width: 100%;
+  }
+}
