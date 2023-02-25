@@ -66,7 +66,7 @@ export const MeetupTabContent = observer(
     }, [variant, meetups, meetups?.length]);
 
     return (
-      <section className={styles.topicsTab}>
+      <section className={styles.meetupsTab}>
         <div className={styles.wrapper}>
           <div className={styles.counter}>
             {t('meetupTabContent.meetupCount', {
@@ -84,7 +84,7 @@ export const MeetupTabContent = observer(
             </Button>
           )}
         </div>
-        <div className={styles.topics}>
+        <div className={styles.meetups}>
           {selectedMeetups?.map((meetup) => (
             <NavLink to={`/meetups/${meetup.id}`} key={meetup.id}>
               <MeetupCard meetup={meetup} />

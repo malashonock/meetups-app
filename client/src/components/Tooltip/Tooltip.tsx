@@ -73,6 +73,7 @@ export const Tooltip = ({
           styles[position],
           { [styles.visible]: visible },
         )}
+        role="tooltip"
       >
         <Typography
           component={TypographyComponent.Heading3}

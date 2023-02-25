@@ -1,0 +1,143 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CreateNewsPage should match snapshot 1`] = `
+<DocumentFragment>
+  <form
+    action="#"
+  >
+    <section
+      class="container"
+    >
+      <h1
+        class="typography h1 heading"
+      >
+        createNewsPage.title
+      </h1>
+      <div
+        class="contentWrapper"
+      >
+        <div
+          class="textSection main"
+        >
+          <div
+            class="container"
+          >
+            <label
+              class="inputLabel label"
+              for="title"
+            >
+              formFields.news.title.label
+            </label>
+            <input
+              class="input default"
+              data-testid="text-input"
+              id="title"
+              name="title"
+              type="text"
+              value=""
+            />
+          </div>
+          <div
+            class="container"
+          >
+            <label
+              class="inputLabel label"
+              for="text"
+            >
+              formFields.news.text.label
+            </label>
+            <div
+              class="container"
+            >
+              <textarea
+                class="input default textArea"
+                data-testid="text-area"
+                id="text"
+                name="text"
+                rows="1"
+                style="height: 2px;"
+              />
+            </div>
+          </div>
+          <div
+            class="container"
+          >
+            <label
+              class="inputLabel label"
+              for="image"
+            >
+              formFields.news.image.label
+            </label>
+            <div
+              class="container"
+            >
+              <div
+                class="dropbox"
+                data-testid="image-dropbox"
+                role="presentation"
+              >
+                <input
+                  accept="image/jpg,image/jpeg,image/png"
+                  data-testid="file-input"
+                  id="image"
+                  name="image"
+                  style="display: none;"
+                  tabindex="-1"
+                  type="file"
+                />
+                <svg>
+                  upload.svg
+                </svg>
+                <p
+                  class="typography p promptText"
+                >
+                  Перетащите изображения сюда
+                  <br />
+                  или
+                  <button
+                    class="browseFileLink"
+                    type="button"
+                  >
+                    загрузите
+                  </button>
+                </p>
+                <div
+                  class="constraints"
+                >
+                  <p
+                    class="typography p"
+                  >
+                    imageDropbox.acceptedExtensions
+                  </p>
+                  <p
+                    class="typography p"
+                  >
+                    imageDropbox.maxFileSize
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="textSection actions"
+        >
+          <button
+            class="actionButton button default"
+            type="button"
+          >
+            formButtons.back
+          </button>
+          <button
+            class="actionButton button primary"
+            disabled=""
+            type="submit"
+          >
+            formButtons.create
+          </button>
+        </div>
+      </div>
+    </section>
+  </form>
+</DocumentFragment>
+`;

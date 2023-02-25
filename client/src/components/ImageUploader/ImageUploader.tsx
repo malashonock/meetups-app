@@ -11,7 +11,7 @@ import { FileWithUrl } from 'types';
 type ImageUploaderProps = InputFieldExternalProps & {
   name: string;
   variant?: ImagePreviewMode;
-  containerAttributes?: Omit<React.HTMLAttributes<HTMLDivElement>, "children">;
+  containerAttributes?: Omit<React.HTMLAttributes<HTMLDivElement>, 'children'>;
 };
 
 export const ImageUploader = ({
@@ -43,7 +43,7 @@ export const ImageUploader = ({
       };
 
       return !image ? (
-        <ImageDropbox onDrop={handleUpload} externalError={error} />
+        <ImageDropbox name={name} onDrop={handleUpload} externalError={error} />
       ) : (
         <ImagePreview variant={variant} image={image} onClear={handleClear} />
       );

@@ -14,7 +14,7 @@ import {
   TypographyComponent,
 } from 'components';
 import { NewsFields } from 'model';
-import { useNewsStore, useTouchOnLocaleChanged, useUiStore } from 'hooks';
+import { useNewsStore, useTouchOnLocaleChanged, useLocale } from 'hooks';
 import { newsSchema } from 'validation';
 
 import styles from './CreateNewsPage.module.scss';
@@ -27,7 +27,7 @@ const CreateNewsForm = ({
 }: FormikProps<NewsFields>): JSX.Element => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { locale } = useUiStore();
+  const [locale] = useLocale();
   useTouchOnLocaleChanged(locale, errors, touched, setFieldTouched);
 
   const isTouched = Object.entries(touched).length > 0;

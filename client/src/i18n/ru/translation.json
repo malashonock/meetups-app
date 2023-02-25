@@ -172,7 +172,7 @@
     "login": "Войти"
   },
   "dateTimePicker": {
-    "defaultPlaceholder": "д МММ гггг чч:мм"
+    "defaultPlaceholder": "d MMM yyyy HH:mm"
   },
   "formattedWeekdays": {
     "short": ["Воскр.", "Пон.", "Вт.", "Ср.", "Четв.", "Пятн.", "Субб."],

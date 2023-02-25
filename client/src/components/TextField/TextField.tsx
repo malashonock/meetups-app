@@ -8,20 +8,25 @@ import {
 
 type TextInputOrAreaProps = {
   placeholderText?: string;
-  containerAttributes?: Omit<React.HTMLAttributes<HTMLDivElement>, "children">;
-} & ({
-  multiline?: false;
-} | {
-  multiline: true;
-  maxCharCount?: number;
-  showCharCounter?: boolean;
-});
+  containerAttributes?: Omit<React.HTMLAttributes<HTMLDivElement>, 'children'>;
+} & (
+  | {
+      multiline?: false;
+    }
+  | {
+      multiline: true;
+      maxCharCount?: number;
+      showCharCounter?: boolean;
+    }
+);
 
 type TextFieldProps = InputFieldExternalProps & TextInputOrAreaProps;
 
 export const TextField = (props: TextFieldProps): JSX.Element => {
   let placeholderText: string | undefined;
-  let containerAttributes: Omit<React.HTMLAttributes<HTMLDivElement>, "children"> | undefined;
+  let containerAttributes:
+    | Omit<React.HTMLAttributes<HTMLDivElement>, 'children'>
+    | undefined;
   let inputFieldProps: InputFieldExternalProps;
   let multiline: boolean | undefined;
   let maxCharCount: number | undefined;
@@ -29,13 +34,24 @@ export const TextField = (props: TextFieldProps): JSX.Element => {
 
   switch (props.multiline) {
     case true:
-      ({ placeholderText, containerAttributes, multiline, maxCharCount, showCharCounter, ...inputFieldProps } = props);
+      ({
+        placeholderText,
+        containerAttributes,
+        multiline,
+        maxCharCount,
+        showCharCounter,
+        ...inputFieldProps
+      } = props);
 
       return (
-        <InputField containerAttributes={containerAttributes} {...inputFieldProps}>
+        <InputField
+          containerAttributes={containerAttributes}
+          {...inputFieldProps}
+        >
           {({ field, className }: InputRenderProps): JSX.Element => (
             <TextArea
               {...field}
+              id={field.name}
               className={className}
               placeholder={placeholderText}
               maxCharCount={maxCharCount}
@@ -49,10 +65,14 @@ export const TextField = (props: TextFieldProps): JSX.Element => {
       ({ placeholderText, containerAttributes, ...inputFieldProps } = props);
 
       return (
-        <InputField containerAttributes={containerAttributes} {...inputFieldProps}>
+        <InputField
+          containerAttributes={containerAttributes}
+          {...inputFieldProps}
+        >
           {({ field, className }: InputRenderProps): JSX.Element => (
             <TextInput
               {...field}
+              id={field.name}
               className={className}
               placeholder={placeholderText}
             />

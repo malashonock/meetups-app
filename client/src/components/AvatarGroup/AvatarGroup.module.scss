@@ -2,12 +2,22 @@
 @import '~style/typography';
 
 .container {
+  --gap: 10px;
+
   width: 100%;
 
   display: flex;
-  justify-content: space-between;
+  column-gap: var(--gap);
 
   list-style: none;
+
+  &.stacked {
+    justify-content: flex-start;
+  }
+
+  &.justified {
+    justify-content: space-between;
+  }
 }
 
 .avatar {
@@ -15,8 +25,8 @@
 }
 
 .restCount {
-  min-width: 50px;
-  min-height: 50px;
+  min-width: 48px;
+  min-height: 48px;
 
   display: flex;
   align-items: center;

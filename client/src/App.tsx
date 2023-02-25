@@ -1,9 +1,10 @@
+import { Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import {
   Header,
   meetupTabsLinks,
-  meetupTabToDescriptor,
+  meetupTabsMapper,
   ProtectedRoute,
   RootStoreProvider,
 } from 'components';
@@ -21,7 +22,6 @@ import {
 } from 'pages';
 
 import styles from './App.module.scss';
-import { Suspense } from 'react';
 
 export const App = (): JSX.Element => (
   <RootStoreProvider>
@@ -49,7 +49,7 @@ export const App = (): JSX.Element => (
                   <Route
                     key={tabLink}
                     path={tabLink}
-                    element={meetupTabToDescriptor[tabLink].component}
+                    element={meetupTabsMapper[tabLink].component}
                   />
                 ))}
               </Route>

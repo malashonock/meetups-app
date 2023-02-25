@@ -15,7 +15,7 @@ import { MeetupStatus } from 'model';
 import { isPast, parseDate } from 'utils';
 import { NotFoundPage } from 'pages';
 import { User } from 'stores';
-import { useAuthStore, useMeetup, useUiStore, useUserStore } from 'hooks';
+import { useAuthStore, useMeetup, useLocale, useUserStore } from 'hooks';
 import { Optional } from 'types';
 
 import styles from './ViewMeetupPage.module.scss';
@@ -30,7 +30,7 @@ export const ViewMeetupPage = observer(() => {
   const meetup = useMeetup(id);
   const { userStore } = useUserStore();
   const { i18n, t } = useTranslation();
-  const { locale } = useUiStore();
+  const [locale] = useLocale();
   const { loggedUser } = useAuthStore();
 
   if (!meetup) {

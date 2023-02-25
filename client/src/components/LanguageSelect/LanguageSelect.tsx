@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 
 import { SelectOption } from 'components';
-import { useUiStore } from 'hooks';
+import { useLocale } from 'hooks';
 import { Locale } from 'stores';
 
 import styles from './LanguageSelect.module.scss';
@@ -14,21 +14,20 @@ const options: SelectOption<Locale>[] = [
 ];
 
 export const LanguageSelect = observer((): JSX.Element => {
-  const { uiStore } = useUiStore();
+  const [locale, setLocale] = useLocale();
 
   const handleChange = (newOption: unknown): void => {
-    if (uiStore) {
-      uiStore.locale = (newOption as SelectOption<Locale>).value;
-    }
+    const newLocale = (newOption as SelectOption<Locale>).value;
+    setLocale(newLocale);
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} data-testid="language-select">
       <ReactSelect
         options={options}
         value={
-          uiStore
-            ? options.find((option) => option.value === uiStore.locale)
+          locale
+            ? options.find((option) => option.value === locale)
             : options[0]
         }
         onChange={handleChange}

@@ -1,0 +1,118 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EditNewsPage should match snapshot 1`] = `
+<DocumentFragment>
+  <form
+    action="#"
+  >
+    <section
+      class="container"
+    >
+      <h1
+        class="typography h1 heading"
+      >
+        editNewsPage.title
+      </h1>
+      <div
+        class="contentWrapper"
+      >
+        <div
+          class="textSection main"
+        >
+          <div
+            class="container"
+          >
+            <label
+              class="inputLabel label"
+              for="image"
+            >
+              formFields.news.image.label
+            </label>
+            <div
+              class="preview large"
+              data-testid="image-preview"
+            >
+              <figure
+                class="image"
+              >
+                <img
+                  alt="imagePreview.imgAlt"
+                  src="http://localhost/test.jpg"
+                />
+              </figure>
+              <button
+                class="clearBtn"
+                data-testid="clear-button"
+                type="button"
+              >
+                <svg>
+                  change-photo.svg
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div
+            class="container"
+          >
+            <label
+              class="inputLabel label"
+              for="title"
+            >
+              formFields.news.title.label
+            </label>
+            <input
+              class="input default"
+              data-testid="text-input"
+              id="title"
+              name="title"
+              type="text"
+              value="Test news title"
+            />
+          </div>
+          <div
+            class="container"
+          >
+            <label
+              class="inputLabel label"
+              for="text"
+            >
+              formFields.news.text.label
+            </label>
+            <div
+              class="container"
+            >
+              <textarea
+                class="input default textArea"
+                data-testid="text-area"
+                id="text"
+                name="text"
+                rows="1"
+                style="height: 2px;"
+              >
+                Test news text
+              </textarea>
+            </div>
+          </div>
+        </div>
+        <div
+          class="textSection actions"
+        >
+          <button
+            class="actionButton button default"
+            type="button"
+          >
+            formButtons.cancel
+          </button>
+          <button
+            class="actionButton button primary"
+            disabled=""
+            type="submit"
+          >
+            formButtons.save
+          </button>
+        </div>
+      </div>
+    </section>
+  </form>
+</DocumentFragment>
+`;

@@ -34,7 +34,10 @@ export const ImagePreview = ({
   };
 
   return (
-    <div className={classNames(styles.preview, styles[variant])}>
+    <div
+      className={classNames(styles.preview, styles[variant])}
+      data-testid="image-preview"
+    >
       <figure className={styles.image}>
         {url ? (
           <img src={url} alt={t('imagePreview.imgAlt') || 'Uploaded image'} />
@@ -60,7 +63,12 @@ export const ImagePreview = ({
           </Typography>
         </div>
       )}
-      <button className={styles.clearBtn} onClick={handleClear}>
+      <button
+        type="button"
+        className={styles.clearBtn}
+        onClick={handleClear}
+        data-testid="clear-button"
+      >
         {variant === ImagePreviewMode.Thumbnail ? (
           <CloseIcon />
         ) : (

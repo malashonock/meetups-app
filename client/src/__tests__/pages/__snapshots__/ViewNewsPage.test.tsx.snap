@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ViewNewsPage should match snapshot 1`] = `
+<DocumentFragment>
+  <section
+    class="container"
+  >
+    <h1
+      class="typography h1 heading"
+    >
+      viewNewsPage.title
+    </h1>
+    <div
+      class="contentWrapper"
+    >
+      <figure
+        class="section imageWrapper"
+      >
+        <img
+          alt="viewNewsPage.imgAlt"
+          class="image"
+          src="http://localhost/test.jpg"
+        />
+      </figure>
+      <div
+        class="textSection main"
+      >
+        <h2
+          class="typography h2 title"
+        >
+          Test news title
+        </h2>
+        <p
+          class="typography p text"
+        >
+          Test news text
+        </p>
+      </div>
+      <div
+        class="textSection actions"
+      >
+        <button
+          class="actionButton backBtn button default"
+        >
+          formButtons.back
+        </button>
+        <div
+          class="actionGroup"
+        >
+          <button
+            class="actionButton editBtn button secondary"
+          >
+            formButtons.edit
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+</DocumentFragment>
+`;

@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import styles from './TextArea.module.scss';
 
-type TextAreaProps = {
+export type TextAreaProps = {
   maxCharCount?: number;
   showCharCounter?: boolean;
 } & AllHTMLAttributes<HTMLTextAreaElement>;
@@ -13,8 +13,8 @@ export const TextArea = ({
   showCharCounter = false,
   ...nativeHtmlProps
 }: TextAreaProps): JSX.Element => {
-  const { value, className } = nativeHtmlProps;
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
+  const value = textAreaRef.current?.value;
 
   // Auto-adjust height of textarea
   useEffect(() => {
@@ -25,7 +25,10 @@ export const TextArea = ({
       textArea.style.height = 'auto';
 
       // We also need to take account of border width, because scrollHeight doesn't include it
-      const borderWidth = +getComputedStyle(textArea).borderWidth.replace('px', '');
+      const borderWidth = +getComputedStyle(textArea).borderWidth.replace(
+        'px',
+        '',
+      );
 
       const { scrollHeight } = textArea;
       const textAreaHeight = scrollHeight + 2 * borderWidth;
@@ -45,16 +48,14 @@ export const TextArea = ({
         ref={textAreaRef}
         rows={1}
         maxLength={maxCharCount}
-        className={classNames(
-          className,
-          styles.textArea,
-          { [styles.showCharCounter]: showCharCounter },
-        )}
+        className={classNames(nativeHtmlProps.className, styles.textArea, {
+          [styles.showCharCounter]: showCharCounter,
+        })}
+        data-testid="text-area"
       ></textarea>
       {showCharCounter && maxCharCount && maxCharCount > 0 && (
-        <div className={styles.charCounter}>
-          <span className={styles.charCount}>{charCount}</span> /{' '}
-          {maxCharCount}
+        <div className={styles.charCounter} data-testid="char-counter">
+          <span className={styles.charCount}>{charCount}</span> / {maxCharCount}
         </div>
       )}
     </div>

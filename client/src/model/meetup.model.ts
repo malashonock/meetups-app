@@ -29,7 +29,7 @@ export interface MeetupDto {
   modified: string; // ISO datetime string
   start?: string; // ISO datetime string
   finish?: string; // ISO datetime string
-  author: ShortUser;
+  author: Nullable<ShortUser>;
   speakers: ShortUser[];
   subject: string;
   excerpt: string;

@@ -16,7 +16,7 @@ import {
 import { isPast, parseDate } from 'utils';
 import { MeetupStatus } from 'model';
 import { Meetup, User } from 'stores';
-import { useAuthStore, useUiStore, useUserStore } from 'hooks';
+import { useAuthStore, useLocale, useUser } from 'hooks';
 import { Optional } from 'types';
 
 import styles from './MeetupCard.module.scss';
@@ -46,9 +46,8 @@ export const MeetupCard = observer(
     } = meetup;
 
     const { loggedUser } = useAuthStore();
-    const { userStore } = useUserStore();
-    const author: Optional<User> = userStore?.findUser(authorData);
-    const { locale } = useUiStore();
+    const author: Optional<User> = useUser(authorData);
+    const [locale] = useLocale();
     const { i18n, t } = useTranslation();
 
     const navigate = useNavigate();
@@ -67,7 +66,7 @@ export const MeetupCard = observer(
         return;
       }
 
-      await meetup?.delete();
+      await meetup.delete();
     };
 
     let formattedWeekdayShort: string | undefined;
@@ -98,7 +97,10 @@ export const MeetupCard = observer(
     };
 
     return (
-      <article className={classNames(styles.card, styles[getVariant()])}>
+      <article
+        className={classNames(styles.card, styles[getVariant()])}
+        data-testid="meetup-card"
+      >
         <header className={styles.header}>
           {status === MeetupStatus.REQUEST ? (
             author !== undefined && (

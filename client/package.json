@@ -33,6 +33,7 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
     "@storybook/addon-essentials": "^6.5.14",
     "@storybook/addon-interactions": "^6.5.14",
     "@storybook/addon-links": "^6.5.14",
@@ -43,12 +44,14 @@
     "@storybook/preset-scss": "^1.0.3",
     "@storybook/react": "^6.5.14",
     "@storybook/testing-library": "0.0.13",
+    "@testing-library/cypress": "^9.0.0",
     "babel-plugin-named-exports-order": "0.0.2",
     "css-loader": "^6.7.3",
-    "cypress": "^12.0.2",
+    "cypress": "^12.6.0",
     "husky": "^8.0.2",
     "jest-junit": "^15.0.0",
     "lint-staged": "^13.1.0",
+    "msw": "^1.0.1",
     "prettier": "2.8.1",
     "prop-types": "^15.8.1",
     "sass": "^1.57.1",
@@ -67,7 +70,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "react-scripts test",
-    "test:coverage": "react-scripts test --coverage --watchAll=false",
+    "test:coverage": "react-scripts test --coverage --watchAll=false --collectCoverageFrom=\"src/**/*.{ts,tsx}\" --collectCoverageFrom=\"!src/**/*.stories.{ts,tsx}\"",
     "test:ci": "react-scripts test --coverage --watchAll=false --collectCoverage --coverageDirectory=\"./coverage\" --ci --reporters=default --reporters=jest-junit ",
     "test:e2e": "cypress open",
     "storybook": "start-storybook -p 6006 -s public",
@@ -101,7 +104,11 @@
       "text",
       "text-summary",
       "cobertura"
-    ]
+    ],
+    "moduleNameMapper": {
+      "axios": "axios/dist/node/axios.cjs",
+      "react-i18next": "<rootDir>/__mocks__/react-i18next.tsx"
+    }
   },
   "browserslist": {
     "production": [

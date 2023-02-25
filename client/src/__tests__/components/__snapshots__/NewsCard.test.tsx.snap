@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NewsCard should match snapshot 1`] = `
+<DocumentFragment>
+  <article
+    class="news"
+    data-testid="news-card"
+  >
+    <figure
+      class="image"
+    >
+      <img
+        alt="Test news title"
+        src="http://localhost/test.jpg"
+      />
+    </figure>
+    <div
+      class="content"
+    >
+      <p
+        class="typography p date"
+      >
+        1/10/23
+      </p>
+      <h2
+        class="typography h2 title"
+      >
+        Test news title
+      </h2>
+      <p
+        class="typography p text"
+      >
+        Test news text
+      </p>
+    </div>
+  </article>
+</DocumentFragment>
+`;
