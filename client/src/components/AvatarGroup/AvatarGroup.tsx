@@ -15,9 +15,14 @@ enum AvatarGroupVariant {
 interface AvatarGroupProps {
   users: User[];
   max?: number;
+  avatarWidth?: number;
 }
 
-export const AvatarGroup = ({ users, max }: AvatarGroupProps): JSX.Element => {
+export const AvatarGroup = ({
+  users,
+  max,
+  avatarWidth = 48,
+}: AvatarGroupProps): JSX.Element => {
   const containerRef = useRef<HTMLUListElement>(null);
   const [sliceCount, setSliceCount] = useState(0);
   const [restCount, setRestCount] = useState(0);
@@ -27,8 +32,6 @@ export const AvatarGroup = ({ users, max }: AvatarGroupProps): JSX.Element => {
   useResizeEffect<HTMLUListElement>(
     containerRef,
     (containerWidth: number): void => {
-      const avatarWidth = containerRef.current?.children[0]?.clientWidth;
-
       if (containerWidth && avatarWidth) {
         const fitCount =
           Math.min(Math.floor(containerWidth / avatarWidth), 1) +
