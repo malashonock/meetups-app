@@ -15,9 +15,7 @@ import {
 import { NotFoundPage } from 'pages';
 import { MeetupStatus } from 'model';
 import { isPast, parseDate } from 'utils';
-import { User } from 'stores';
-import { useAuthStore, useMeetup, useLocale, useUserStore } from 'hooks';
-import { Optional } from 'types';
+import { useAuthStore, useMeetup, useLocale } from 'hooks';
 
 import styles from './ViewMeetupPage.module.scss';
 import defaultImage from 'assets/images/default-image.jpg';
@@ -29,7 +27,6 @@ export const ViewMeetupPage = observer(() => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { meetup, isLoading, isError } = useMeetup(id);
-  const { userStore } = useUserStore();
   const { i18n, t } = useTranslation();
   const [locale] = useLocale();
   const { loggedUser } = useAuthStore();
@@ -49,15 +46,11 @@ export const ViewMeetupPage = observer(() => {
     status,
     subject,
     excerpt,
-    author: authorData,
-    votedUsers: votedUsersData,
-    speakers: speakersData,
+    author,
+    speakers,
+    votedUsers,
     image,
   } = meetup;
-
-  const author: Optional<User> = userStore?.findUser(authorData);
-  const speakers = userStore?.findUsers(speakersData);
-  const votedUsers = userStore?.findUsers(votedUsersData);
 
   const handleBack = (): void => navigate(-1);
 
@@ -223,9 +216,11 @@ export const ViewMeetupPage = observer(() => {
           author !== undefined && <UserPreview user={author} />
         ) : (
           <div className={styles.speakerWrapper}>
-            {speakers?.map((speaker) => (
-              <UserPreview key={speaker.id} user={speaker} />
-            ))}
+            {speakers.length === 1 ? (
+              <UserPreview user={speakers[0]} />
+            ) : (
+              <AvatarGroup users={speakers} />
+            )}
           </div>
         )}
       </div>
