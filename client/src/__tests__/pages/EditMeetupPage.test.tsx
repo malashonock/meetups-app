@@ -50,6 +50,7 @@ beforeEach(() => {
   });
   mockUseMeetup.mockReturnValue({
     meetup: mockMeetup,
+    isInitialized: true,
     isLoading: false,
     isError: false,
     errors: [],
@@ -270,6 +271,7 @@ describe('EditMeetupPage', () => {
   it('should render Not Found page if an error occurred while loading the meetup', () => {
     mockUseMeetup.mockReturnValue({
       meetup: mockMeetup,
+      isInitialized: true,
       isError: true,
     });
     render(<EditMeetupPage />, { wrapper: MockRouter });
