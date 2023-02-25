@@ -91,6 +91,7 @@ export class MeetupStore implements ILoadable {
 
 export class Meetup implements IMeetup, ILoadable {
   meetupStore: Nullable<MeetupStore> = null;
+  isInitialized: boolean;
   isLoading: boolean;
   isError: boolean;
   errors: unknown[];
@@ -140,13 +141,17 @@ export class Meetup implements IMeetup, ILoadable {
     this.votedUsers = votedUsersData.map(User.factory);
     this.participants = participantsData.map(User.factory);
 
+    this.isInitialized = false;
     this.isLoading = false;
     this.isError = false;
     this.errors = [];
   }
 
   async init(): Promise<Meetup> {
+    this.isInitialized = false;
+
     if (!this.imageUrl) {
+      this.isInitialized = true;
       return this;
     }
 
@@ -156,11 +161,12 @@ export class Meetup implements IMeetup, ILoadable {
       const image = await API.getStaticFile(this.imageUrl);
       runInAction(() => {
         this.image = image;
-      });
+        this.isInitialized = true;
 
-      this.isLoading = false;
-      this.isError = false;
-      this.errors.length = 0;
+        this.isLoading = false;
+        this.isError = false;
+        this.errors.length = 0;
+      });
     } catch (error) {
       this.isLoading = false;
       this.isError = true;
