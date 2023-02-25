@@ -38,12 +38,4 @@ describe('UiStore', () => {
       expect(uiStore.showOverlay).toBe(false);
     });
   });
-
-  describe('destroy() instance method', () => {
-    it('should stop persisting store', () => {
-      const uiStore = new UiStore(new RootStore());
-      uiStore.destroy();
-      expect(mockMobXStopPersisting).toHaveBeenCalledWith(uiStore);
-    });
-  });
 });

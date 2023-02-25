@@ -40,6 +40,12 @@ export class MeetupStore {
   findMeetup(id: string): Optional<Meetup> {
     return this.meetups.find((meetup: Meetup) => meetup.id === id);
   }
+
+  toJSON() {
+    return {
+      meetups: this.meetups,
+    };
+  }
 }
 
 export class Meetup implements IMeetup {

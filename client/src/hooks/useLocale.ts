@@ -16,7 +16,7 @@ export const useLocale = (): UseLocaleResult => {
 
   const setLocale = (locale: Locale): void => {
     if (uiStore) {
-      uiStore.locale = locale;
+      uiStore.setLocale(locale);
     }
   };
 

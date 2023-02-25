@@ -65,6 +65,7 @@ export const ViewNewsPage = observer(() => {
     return (
       <div className={classNames(styles.textSection, styles.actions)}>
         <Button
+          id="btn-back"
           variant={ButtonVariant.Default}
           className={classNames(styles.actionButton, styles.backBtn)}
           onClick={handleBack}
@@ -74,6 +75,7 @@ export const ViewNewsPage = observer(() => {
         {loggedUser ? (
           <div className={styles.actionGroup}>
             <Button
+              id="btn-edit"
               variant={ButtonVariant.Secondary}
               className={classNames(styles.actionButton, styles.editBtn)}
               onClick={handleEdit}

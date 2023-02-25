@@ -124,6 +124,7 @@ const EditMeetupForm = ({
           </div>
           <div className={classNames(styles.textSection, styles.actions)}>
             <Button
+              id="btn-cancel"
               type="button"
               variant={ButtonVariant.Default}
               onClick={handleBack}
@@ -133,6 +134,7 @@ const EditMeetupForm = ({
             </Button>
             <div className={styles.actionsWrapper}>
               <Button
+                id="btn-preview"
                 type="button"
                 variant={ButtonVariant.Secondary}
                 onClick={gotoPreview}
@@ -142,6 +144,7 @@ const EditMeetupForm = ({
                 {t('formButtons.preview')}
               </Button>
               <Button
+                id="btn-save"
                 type="submit"
                 variant={ButtonVariant.Primary}
                 className={classNames(styles.actionButton, styles.saveBtn)}

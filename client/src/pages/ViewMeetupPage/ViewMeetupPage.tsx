@@ -168,7 +168,7 @@ export const ViewMeetupPage = observer(() => {
             [styles.notFilledOutline]: !canPublish,
           })}
         >
-          <div className={styles.info}>
+          <div id="date" className={styles.info}>
             <img
               className={styles.image}
               src={calendar}
@@ -178,7 +178,7 @@ export const ViewMeetupPage = observer(() => {
               {date || '—'}
             </Typography>
           </div>
-          <div className={styles.info}>
+          <div id="time" className={styles.info}>
             <img
               className={styles.image}
               src={clock}
@@ -188,7 +188,7 @@ export const ViewMeetupPage = observer(() => {
               {time || '—'}
             </Typography>
           </div>
-          <div className={styles.info}>
+          <div id="location" className={styles.info}>
             <img
               className={styles.image}
               src={pin}
@@ -251,6 +251,7 @@ export const ViewMeetupPage = observer(() => {
     return (
       <div className={classNames(styles.dataContent, styles.actions)}>
         <Button
+          id="btn-back"
           className={classNames(styles.actionButton, styles.backBtn)}
           variant={ButtonVariant.Default}
           onClick={handleBack}
@@ -262,6 +263,7 @@ export const ViewMeetupPage = observer(() => {
             {status === MeetupStatus.REQUEST && (
               <>
                 <Button
+                  id="btn-delete"
                   className={classNames(styles.actionButton, styles.deleteBtn)}
                   variant={ButtonVariant.Secondary}
                   onClick={handleDeleteTopic}
@@ -269,6 +271,7 @@ export const ViewMeetupPage = observer(() => {
                   {t('formButtons.delete')}
                 </Button>
                 <Button
+                  id="btn-approve"
                   className={classNames(styles.actionButton, styles.approveBtn)}
                   variant={ButtonVariant.Primary}
                   onClick={handleApproveTopic}
@@ -279,6 +282,7 @@ export const ViewMeetupPage = observer(() => {
             )}
             {status === MeetupStatus.DRAFT && (
               <Button
+                id="btn-publish"
                 className={classNames(styles.actionButton, styles.publishBtn)}
                 variant={ButtonVariant.Primary}
                 onClick={handlePublishMeetup}

@@ -55,6 +55,7 @@ const LoginForm = ({
               labelText={t('formFields.login.password.label') || 'Password'}
             />
             <Button
+              id="btn-login"
               type="submit"
               variant={ButtonVariant.Primary}
               className={styles.actionButton}

@@ -124,6 +124,7 @@ exports[`CreateNewsPage should match snapshot 1`] = `
         >
           <button
             class="actionButton button default"
+            id="btn-back"
             type="button"
           >
             formButtons.back
@@ -131,6 +132,7 @@ exports[`CreateNewsPage should match snapshot 1`] = `
           <button
             class="actionButton button primary"
             disabled=""
+            id="btn-create"
             type="submit"
           >
             formButtons.create

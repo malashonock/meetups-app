@@ -57,6 +57,12 @@ export class UserStore {
       return ids.includes(user.id);
     });
   }
+
+  toJSON() {
+    return {
+      users: this.users,
+    };
+  }
 }
 
 export class User {

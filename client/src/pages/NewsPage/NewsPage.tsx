@@ -32,6 +32,7 @@ export const NewsPage = observer(() => {
           {t('news')}
         </Typography>
         <Button
+          id="btn-create-news"
           variant={ButtonVariant.Secondary}
           onClick={handleCreateNews}
           className={styles.createNewsBtn}

@@ -64,6 +64,7 @@ const CreateNewsForm = ({
           </div>
           <div className={classNames(styles.textSection, styles.actions)}>
             <Button
+              id="btn-back"
               type="button"
               variant={ButtonVariant.Default}
               onClick={handleBack}
@@ -72,6 +73,7 @@ const CreateNewsForm = ({
               {t('formButtons.back')}
             </Button>
             <Button
+              id="btn-create"
               type="submit"
               variant={ButtonVariant.Primary}
               className={styles.actionButton}

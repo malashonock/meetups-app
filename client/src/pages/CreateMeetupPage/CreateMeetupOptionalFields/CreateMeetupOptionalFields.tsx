@@ -89,6 +89,7 @@ export const CreateMeetupOptionalFields = ({
         </div>
         <div className={classNames(styles.textSection, styles.actions)}>
           <Button
+            id="btn-back"
             type="submit"
             onClick={handlePreviousStep}
             variant={ButtonVariant.Default}
@@ -98,6 +99,7 @@ export const CreateMeetupOptionalFields = ({
             {t('formButtons.back')}
           </Button>
           <Button
+            id="btn-create"
             type="submit"
             onClick={handleFinish}
             variant={ButtonVariant.Primary}

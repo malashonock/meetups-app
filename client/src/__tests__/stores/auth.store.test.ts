@@ -9,6 +9,7 @@ const spiedOnMobXMakeAutoObservable = jest.spyOn(MobX, 'makeAutoObservable');
 const spiedOnApiLogin = jest.spyOn(LoginApi, 'login');
 const spiedOnApiLogout = jest.spyOn(LoginApi, 'logout');
 const spiedOnUserStoreFindUser = jest.spyOn(UserStore.prototype, 'findUser');
+const spiedOnStorageGetItem = jest.spyOn(Storage.prototype, 'getItem');
 
 const testCredentials: Credentials = {
   username: mockFullUser.name,
@@ -41,6 +42,8 @@ describe('AuthStore', () => {
     });
 
     it('should find the logged in user in the user store and assign it to loggedUser field', async () => {
+      spiedOnUserStoreFindUser.mockReturnValue(mockUser);
+      spiedOnStorageGetItem.mockReturnValue(JSON.stringify(mockUser));
       const authStore = new AuthStore(new RootStore());
       await authStore.logIn(testCredentials);
       expect(spiedOnUserStoreFindUser).toHaveBeenCalledWith(mockFullUser.id);

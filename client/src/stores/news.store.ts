@@ -40,6 +40,12 @@ export class NewsStore {
   findNewsArticle(id: string): Optional<News> {
     return this.news.find((newsArticle: News) => newsArticle.id === id);
   }
+
+  toJSON() {
+    return {
+      news: this.news,
+    };
+  }
 }
 
 export class News implements INews {

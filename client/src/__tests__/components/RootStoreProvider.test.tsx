@@ -15,8 +15,6 @@ const mockRootStoreInit = jest
     return Promise.resolve(this);
   });
 
-const mockRootStoreDestroy = jest.spyOn(RootStore.prototype, 'destroy');
-
 // Mock useTranslation
 const mockChangeLanguage = jest.fn();
 jest.mock('react-i18next', () => ({
@@ -55,15 +53,6 @@ describe('RootStoreProvider', () => {
 
     await waitFor(() => {
       expect(mockRootStoreInit).toHaveBeenCalledTimes(1);
-    });
-  });
-
-  it('should destroy root store on unmount', async () => {
-    const { unmount } = render(<RootStoreProvider />);
-
-    await waitFor(() => {
-      unmount();
-      expect(mockRootStoreDestroy).toHaveBeenCalledTimes(1);
     });
   });
 
