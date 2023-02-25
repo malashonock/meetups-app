@@ -20,10 +20,10 @@ export interface IMeetup {
   excerpt: string;
   place?: string;
   status: MeetupStatus;
-  image: Nullable<FileWithUrl>;
+  imageUrl: Nullable<string>;
 }
 
-// Data structures exchanged with server
+// Data structure exchanged with server
 export interface MeetupDto {
   id: string;
   modified: string; // ISO datetime string
@@ -41,9 +41,12 @@ export interface MeetupDto {
 }
 
 // Data structure used in create/edit forms
-export type MeetupFields = Pick<
-  IMeetup,
-  'subject' | 'excerpt' | 'start' | 'finish' | 'place' | 'image'
-> & {
-  author?: IUser;
-};
+export interface MeetupFields {
+  subject: string;
+  excerpt: string;
+  start?: Date;
+  finish?: Date;
+  place?: string;
+  author: Nullable<IUser>;
+  image: Nullable<FileWithUrl>;
+}

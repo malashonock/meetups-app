@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import { IMeetup, MeetupDto, MeetupFields, MeetupStatus, IUser } from 'model';
+import { IMeetup, MeetupDto, MeetupFields, MeetupStatus } from 'model';
 import { Meetup, MeetupStore, RootStore } from 'stores';
 import {
   mockImageWithUrl,
@@ -28,13 +28,16 @@ export const mockMeetupFields: MeetupFields = {
   image: mockImageWithUrl,
 };
 
-export const mockTopicDto: MeetupDto = {
-  ...mockTopicFields,
+const { image: mockTopicImage, ...mockTopicDataFields } = mockTopicFields;
+const { image: mockMeetupImage, ...mockMeetupDataFields } = mockMeetupFields;
+
+export const mockTopicData: IMeetup = {
+  ...mockTopicDataFields,
   author: mockTopicFields.author!,
   id: 'aaa',
-  modified: new Date(2023, 0, 10).toISOString(),
-  start: mockTopicFields.start?.toISOString(),
-  finish: mockTopicFields.start?.toISOString(),
+  modified: new Date(2023, 0, 10),
+  start: mockTopicFields.start,
+  finish: mockTopicFields.start,
   speakers: [mockUserData],
   votedUsers: [mockUserData, mockUser2Data],
   participants: [mockUserData, mockUser2Data],
@@ -42,54 +45,61 @@ export const mockTopicDto: MeetupDto = {
   imageUrl: mockTopicFields.image?.url ?? null,
 };
 
-export const mockMeetupDraftDto: MeetupDto = {
-  ...mockTopicDto,
+export const mockMeetupDraftData: IMeetup = {
+  ...mockTopicData,
   status: MeetupStatus.DRAFT,
 };
 
-export const mockMeetupDraftFilledDto: MeetupDto = {
-  ...mockMeetupDraftDto,
-  ...mockMeetupFields,
-  start: mockMeetupFields.start?.toISOString(),
-  finish: mockMeetupFields.start?.toISOString(),
+export const mockMeetupDraftFilledData: IMeetup = {
+  ...mockMeetupDraftData,
+  ...mockMeetupDataFields,
+  author: mockMeetupDataFields.author!,
+  start: mockMeetupFields.start,
+  finish: mockMeetupFields.finish,
   imageUrl: mockMeetupFields.image?.url ?? null,
 };
 
-export const mockMeetupDto: MeetupDto = {
-  ...mockMeetupDraftFilledDto,
+export const mockMeetupData: IMeetup = {
+  ...mockMeetupDraftFilledData,
   status: MeetupStatus.CONFIRMED,
 };
 
-export const getMeetupDtoFromData = (meetupData: IMeetup): MeetupDto => ({
-  id: meetupData.id,
-  modified: meetupData.modified.toISOString(),
-  start: meetupData.start?.toISOString(),
-  finish: meetupData.finish?.toISOString(),
-  author: meetupData.author,
-  speakers: meetupData.speakers,
-  votedUsers: meetupData.votedUsers,
-  participants: meetupData.participants,
-  subject: meetupData.subject,
-  excerpt: meetupData.excerpt,
-  place: meetupData.place,
-  status: meetupData.status,
-  imageUrl: meetupData.image?.url ?? null,
-});
+export const getMeetupDtoFromData = (meetupData: IMeetup): MeetupDto => {
+  const {
+    modified: modifiedDate,
+    start: startDate,
+    finish: finishDate,
+    ...otherMeetupData
+  } = meetupData;
+
+  return {
+    modified: modifiedDate.toISOString(),
+    start: startDate?.toISOString(),
+    finish: finishDate?.toISOString(),
+    ...otherMeetupData,
+  };
+};
 
 export const mockMeetupStore = new MeetupStore(new RootStore());
 
-export const mockTopic: Meetup = new Meetup(mockTopicDto, mockMeetupStore);
-export const mockMeetupDraft = new Meetup(mockMeetupDraftDto, mockMeetupStore);
+export const mockTopic: Meetup = new Meetup(mockTopicData, mockMeetupStore);
+export const mockMeetupDraft = new Meetup(mockMeetupDraftData, mockMeetupStore);
 export const mockMeetupDraftFilled = new Meetup(
-  mockMeetupDraftFilledDto,
+  mockMeetupDraftFilledData,
   mockMeetupStore,
 );
-export const mockMeetup = new Meetup(mockMeetupDto, mockMeetupStore);
+export const mockMeetup: Meetup = new Meetup(mockMeetupData, mockMeetupStore);
 
-export const generateMeetupDto = (
+// Mock lazy image initialization
+Object.assign(mockTopic, { image: mockTopicFields.image });
+Object.assign(mockMeetupDraft, { image: mockTopicFields.image });
+Object.assign(mockMeetupDraftFilled, { image: mockMeetupFields.image });
+Object.assign(mockMeetup, { image: mockMeetupFields.image });
+
+export const generateMeetupData = (
   status?: MeetupStatus,
   dateConstraint?: 'upcoming' | 'finished',
-): MeetupDto => {
+): IMeetup => {
   let randomStartDate: Date;
   switch (dateConstraint) {
     case 'upcoming':
@@ -124,9 +134,9 @@ export const generateMeetupDto = (
 
   return {
     id: faker.datatype.uuid(),
-    modified: faker.date.recent().toISOString(),
-    start: randomStartDate.toISOString(),
-    finish: randomFinishDate.toISOString(),
+    modified: faker.date.recent(),
+    start: randomStartDate,
+    finish: randomFinishDate,
     author: mockUserData,
     speakers: generateArray(randomSpeakersCount, () =>
       faker.helpers.arrayElement(mockUsersData),
@@ -155,9 +165,9 @@ export const generateMeetupsData = (
   count: number,
   status?: MeetupStatus,
   dateConstraint?: 'upcoming' | 'finished',
-): MeetupDto[] => {
-  return generateArray<MeetupDto>(count, () =>
-    generateMeetupDto(status, dateConstraint),
+): IMeetup[] => {
+  return generateArray<IMeetup>(count, () =>
+    generateMeetupData(status, dateConstraint),
   );
 };
 
@@ -165,7 +175,7 @@ export const generateMeetup = (
   status?: MeetupStatus,
   dateConstraint?: 'upcoming' | 'finished',
 ): Meetup =>
-  new Meetup(generateMeetupDto(status, dateConstraint), mockMeetupStore);
+  new Meetup(generateMeetupData(status, dateConstraint), mockMeetupStore);
 
 export const generateMeetups = (
   count: number,
@@ -178,9 +188,9 @@ export const generateMeetups = (
 };
 
 export const mapMeetupsData = (
-  meetupsData: MeetupDto[],
+  meetupsData: IMeetup[],
   meetupStore: MeetupStore,
 ): Meetup[] =>
   meetupsData.map(
-    (meetupData: MeetupDto): Meetup => new Meetup(meetupData, meetupStore),
+    (meetupData: IMeetup): Meetup => new Meetup(meetupData, meetupStore),
   );

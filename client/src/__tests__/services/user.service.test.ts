@@ -5,27 +5,26 @@ import { setupServer } from 'msw/node';
 
 import { getParticipants, getUser, getUsers, getVotedUsers } from 'api';
 import {
-  mockIFullUser,
-  mockIFullUsers,
+  mockFullUser,
+  mockFullUsers,
   mockMeetup,
-  mockIUsersData,
-  mockUserData,
+  mockUsersData,
 } from 'model/__fakes__';
 import { apiUrl, RestResolver } from 'utils';
 
 const mockUsersGetSuccess: RestResolver = (req, res, ctx) => {
-  return res(ctx.status(200), ctx.json(mockIFullUsers));
+  return res(ctx.status(200), ctx.json(mockFullUsers));
 };
 
 const mockUserGetHandler: RestResolver = (req, res, ctx) => {
-  return req.params.id === mockIFullUser.id
-    ? res(ctx.status(200), ctx.json(mockIFullUser))
+  return req.params.id === mockFullUser.id
+    ? res(ctx.status(200), ctx.json(mockFullUser))
     : res(ctx.status(404));
 };
 
 const mockRelatedUsersGet: RestResolver = (req, res, ctx) => {
   return req.params.id === mockMeetup.id
-    ? res(ctx.status(200), ctx.json(mockIUsersData))
+    ? res(ctx.status(200), ctx.json(mockUsersData))
     : res(ctx.status(404));
 };
 
@@ -61,16 +60,16 @@ describe('User API service', () => {
     it('should return an array of users with full info', async () => {
       const fullUsers = await getUsers();
       expect(spiedOnUsersGetHandler).toHaveBeenCalled();
-      expect(fullUsers).toEqual(mockIFullUsers);
+      expect(fullUsers).toEqual(mockFullUsers);
     });
   });
 
   describe('getUser function', () => {
     describe('given the user was found', () => {
       it('should return full info about the user with the specified id', async () => {
-        const foundUser = await getUser(mockIFullUser.id);
+        const foundUser = await getUser(mockFullUser.id);
         expect(spiedOnUserGetHandler).toHaveBeenCalled();
-        expect(foundUser).toEqual(mockIFullUser);
+        expect(foundUser).toEqual(mockFullUser);
       });
     });
 
@@ -93,7 +92,7 @@ describe('User API service', () => {
       it('should return an array of users who voted for the specified meetup', async () => {
         const votedUsers = await getVotedUsers(mockMeetup.id);
         expect(spiedOnVotedUsersGetHandler).toHaveBeenCalled();
-        expect(votedUsers).toEqual(mockIUsersData);
+        expect(votedUsers).toEqual(mockUsersData);
       });
     });
 
@@ -116,7 +115,7 @@ describe('User API service', () => {
       it('should return an array of users who voted for the specified meetup', async () => {
         const participants = await getParticipants(mockMeetup.id);
         expect(spiedOnParticipantsGetHandler).toHaveBeenCalled();
-        expect(participants).toEqual(mockIUsersData);
+        expect(participants).toEqual(mockUsersData);
       });
     });
 

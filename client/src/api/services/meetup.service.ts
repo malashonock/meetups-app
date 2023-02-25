@@ -1,22 +1,21 @@
-import { getParticipants, getStaticFile, getVotedUsers } from 'api';
 import { httpClient } from 'api';
 import { MeetupDto, MeetupFields, MeetupStatus, IMeetup } from 'model';
 
-export const getMeetups = async (): Promise<MeetupDto[]> => {
+export const getMeetups = async (): Promise<IMeetup[]> => {
   const { data: meetupsData } = await httpClient.get<MeetupDto[]>('/meetups');
-  return meetupsData;
+  return meetupsData.map(getIMeetupFromJson);
 };
 
-export const getMeetup = async (id: string): Promise<MeetupDto> => {
+export const getMeetup = async (id: string): Promise<IMeetup> => {
   const { data: meetupData } = await httpClient.get<MeetupDto>(
     `/meetups/${id}`,
   );
-  return meetupData;
+  return getIMeetupFromJson(meetupData);
 };
 
 export const createMeetup = async (
   newMeetupFields: MeetupFields,
-): Promise<MeetupDto> => {
+): Promise<IMeetup> => {
   const formData = buildMeetupFormData(newMeetupFields);
 
   const { data: createdMeetupData } = await httpClient.post<MeetupDto>(
@@ -24,14 +23,14 @@ export const createMeetup = async (
     formData,
   );
 
-  return createdMeetupData;
+  return getIMeetupFromJson(createdMeetupData);
 };
 
 export const updateMeetup = async (
   id: string,
   updatedMeetupFields: Partial<MeetupFields>,
   meetupStatus?: MeetupStatus,
-): Promise<MeetupDto> => {
+): Promise<IMeetup> => {
   const formData = buildMeetupFormData(updatedMeetupFields, meetupStatus);
 
   const { data: updatedMeetupData } = await httpClient.patch<MeetupDto>(
@@ -39,11 +38,27 @@ export const updateMeetup = async (
     formData,
   );
 
-  return updatedMeetupData;
+  return getIMeetupFromJson(updatedMeetupData);
 };
 
 export const deleteMeetup = async (id: string): Promise<void> => {
   await httpClient.delete(`/meetups/${id}`);
+};
+
+const getIMeetupFromJson = (meetupData: MeetupDto): IMeetup => {
+  const {
+    modified: modifiedDateString,
+    start: startDateString,
+    finish: finishDateString,
+    ...otherMeetupData
+  } = meetupData;
+
+  return {
+    modified: new Date(modifiedDateString),
+    start: startDateString ? new Date(startDateString) : undefined,
+    finish: finishDateString ? new Date(finishDateString) : undefined,
+    ...otherMeetupData,
+  };
 };
 
 const buildMeetupFormData = (

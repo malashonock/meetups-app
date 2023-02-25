@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { MeetupCard } from 'components';
-import { MeetupDto, MeetupStatus } from 'model';
+import { IMeetup, MeetupStatus } from 'model';
 import { Meetup, User } from 'stores';
 import { withRouter } from 'storybook-addon-react-router-v6';
 
@@ -28,40 +28,40 @@ const author: User = new User({
   surname: 'Jackson',
 });
 
-const meetupTopicDto: MeetupDto = {
+const meetupTopicData: IMeetup = {
   id: 'AAA-AAA',
   status: MeetupStatus.REQUEST,
   author,
   subject: 'EF Core от практикующих',
   excerpt:
     'Основные темы, которые буду рассказывать: Database-first (EF Core), Db migrations, Software triggers, DbSet pre-filter (tenant-solution)',
-  modified: new Date().toISOString(),
+  modified: new Date(),
   speakers: [],
   votedUsers: [],
   participants: [],
   imageUrl: null,
 };
 
-const meetupDraftNoDateDto: MeetupDto = {
-  ...meetupTopicDto,
+const meetupDraftNoDateData: IMeetup = {
+  ...meetupTopicData,
   status: MeetupStatus.DRAFT,
 };
 
-const meetupDraftDto: MeetupDto = {
-  ...meetupDraftNoDateDto,
-  start: new Date(2022, 3, 23, 15, 0).toISOString(),
+const meetupDraftData: IMeetup = {
+  ...meetupDraftNoDateData,
+  start: new Date(2022, 3, 23, 15, 0),
 };
 
-const meetupUpcomingDto: MeetupDto = {
-  ...meetupDraftDto,
+const meetupUpcomingData: IMeetup = {
+  ...meetupDraftData,
   status: MeetupStatus.CONFIRMED,
   place: 'комн. 601b',
 };
 
-const meetupTopic: Meetup = new Meetup(meetupTopicDto);
-const meetupDraftNoDate: Meetup = new Meetup(meetupDraftNoDateDto);
-const meetupDraft: Meetup = new Meetup(meetupDraftDto);
-const meetupConfirmed: Meetup = new Meetup(meetupUpcomingDto);
+const meetupTopic: Meetup = new Meetup(meetupTopicData);
+const meetupDraftNoDate: Meetup = new Meetup(meetupDraftNoDateData);
+const meetupDraft: Meetup = new Meetup(meetupDraftData);
+const meetupConfirmed: Meetup = new Meetup(meetupUpcomingData);
 
 export const MeetupCard_Topic_NoExcerpt = Template.bind({});
 MeetupCard_Topic_NoExcerpt.args = {

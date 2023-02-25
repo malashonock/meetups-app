@@ -9,7 +9,7 @@ import {
   mockMeetupDraft,
   mockMeetupDraftFilled,
   mockMeetup,
-  mockUser,
+  mockFullUser,
 } from 'model/__fakes__';
 import { useAuthStore, useMeetup } from 'hooks';
 import { Meetup } from 'stores';
@@ -78,7 +78,7 @@ describe('ViewMeetupPage', () => {
     describe('given a user is logged in', () => {
       beforeEach(() => {
         mockUseAuthStore.mockReturnValue({
-          loggedUser: mockUser,
+          loggedUser: mockFullUser,
         });
       });
 
@@ -136,7 +136,7 @@ describe('ViewMeetupPage', () => {
     describe('given a user is logged in', () => {
       beforeEach(() => {
         mockUseAuthStore.mockReturnValue({
-          loggedUser: mockUser,
+          loggedUser: mockFullUser,
         });
       });
 
@@ -210,7 +210,7 @@ describe('ViewMeetupPage', () => {
     describe('given a user is logged in', () => {
       beforeEach(() => {
         mockUseAuthStore.mockReturnValue({
-          loggedUser: mockUser,
+          loggedUser: mockFullUser,
         });
       });
 
@@ -226,7 +226,7 @@ describe('ViewMeetupPage', () => {
   describe('regardless of meetup status', () => {
     beforeEach(() => {
       mockUseAuthStore.mockReturnValue({
-        loggedUser: mockUser,
+        loggedUser: mockFullUser,
       });
       mockUseMeetup.mockReturnValue({
         meetup: mockMeetup,

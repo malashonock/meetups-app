@@ -14,11 +14,15 @@ import {
 import userEvent from '@testing-library/user-event';
 
 import { CreateMeetupPage } from 'pages';
-import { mockImageWithUrl, mockMeetup, mockUser } from 'model/__fakes__';
+import {
+  mockImageWithUrl,
+  mockMeetup,
+  mockMeetupFields,
+  mockUser,
+} from 'model/__fakes__';
 import { dropFile } from 'utils';
 import { useMeetupStore, useUserStore, useAuthStore } from 'hooks';
-import { Meetup, MeetupStore, RootStore } from 'stores';
-import { MeetupFields } from 'model';
+import { MeetupStore, RootStore } from 'stores';
 
 jest.mock('utils/file');
 
@@ -96,33 +100,15 @@ const getBackBtn = () => screen.getByText('formButtons.back');
 const getNextBtn = () => screen.getByText('formButtons.next');
 const getCreateBtn = () => screen.getByText('formButtons.create');
 
-const newMeetupData: MeetupFields = (({
-  subject,
-  excerpt,
-  author,
-  start,
-  finish,
-  place,
-  image,
-}: Meetup): MeetupFields => ({
-  subject,
-  excerpt,
-  author,
-  start,
-  finish,
-  place,
-  image,
-}))(mockMeetup);
-
 const fillOutRequiredFields = async () => {
   // Fill out subject
   await act(() => {
-    userEvent.type(getSubjectInput(), newMeetupData.subject);
+    userEvent.type(getSubjectInput(), mockMeetupFields.subject);
   });
 
   // Fill out excerpt
   await act(() => {
-    userEvent.type(getExcerptInput(), newMeetupData.excerpt);
+    userEvent.type(getExcerptInput(), mockMeetupFields.excerpt);
   });
 
   // Select speaker
@@ -148,12 +134,12 @@ const fillOutOptionalFields = async () => {
 
   // Fill out location
   await act(() => {
-    userEvent.type(getLocationInput(), newMeetupData.place!);
+    userEvent.type(getLocationInput(), mockMeetupFields.place!);
   });
 
   // Upload image
   await act(() => {
-    dropFile(getImageDropbox(), newMeetupData.image!);
+    dropFile(getImageDropbox(), mockMeetupFields.image!);
   });
 };
 
@@ -223,8 +209,8 @@ describe('CreateMeetupPage', () => {
 
       await fillOutRequiredFields();
 
-      expect(getSubjectInput()).toHaveValue(newMeetupData.subject);
-      expect(getExcerptInput()).toHaveValue(newMeetupData.excerpt);
+      expect(getSubjectInput()).toHaveValue(mockMeetupFields.subject);
+      expect(getExcerptInput()).toHaveValue(mockMeetupFields.excerpt);
       expect(screen.getByText(mockUser.fullName)).toBeInTheDocument();
     });
 
@@ -315,11 +301,13 @@ describe('CreateMeetupPage', () => {
 
       await fillOutOptionalFields();
 
-      expect(new Date(getStartDatePicker().value)).toEqual(newMeetupData.start);
-      expect(new Date(getFinishDatePicker().value)).toEqual(
-        newMeetupData.finish,
+      expect(new Date(getStartDatePicker().value)).toEqual(
+        mockMeetupFields.start,
       );
-      expect(getLocationInput()).toHaveValue(newMeetupData.place);
+      expect(new Date(getFinishDatePicker().value)).toEqual(
+        mockMeetupFields.finish,
+      );
+      expect(getLocationInput()).toHaveValue(mockMeetupFields.place);
       expect(getImagePreview()).toBeInTheDocument();
       expect(getImage().src).toBe(mockImageWithUrl.url);
     });
@@ -383,7 +371,7 @@ describe('CreateMeetupPage', () => {
         userEvent.click(getCreateBtn());
       });
 
-      expect(mockCreateMeetup).toHaveBeenCalledWith(newMeetupData);
+      expect(mockCreateMeetup).toHaveBeenCalledWith(mockMeetupFields);
       expect(screen.getByText('View just created meetup')).toBeInTheDocument();
     });
   });

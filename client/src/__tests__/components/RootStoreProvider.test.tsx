@@ -11,8 +11,8 @@ import { useContext } from 'react';
 
 const mockRootStoreInit = jest
   .spyOn(RootStore.prototype, 'init')
-  .mockImplementation(function doNothing(this: RootStore): Promise<RootStore> {
-    return Promise.resolve(this);
+  .mockImplementation(function doNothing(this: RootStore): Promise<void> {
+    return Promise.resolve();
   });
 
 // Mock useTranslation

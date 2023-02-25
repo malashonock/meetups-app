@@ -4,17 +4,12 @@ import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 
 import { checkLogin, login, logout } from 'api';
-import { mockIFullUser, mockUserData } from 'model/__fakes__';
+import { mockFullUser, mockUserData } from 'model/__fakes__';
 import { apiUrl, RestResolver } from 'utils';
 import { Credentials } from 'model';
 
 const mockLoginGetSuccess: RestResolver = (req, res, ctx) => {
-  return res(
-    ctx.status(200),
-    ctx.json({
-      user: mockUserData,
-    }),
-  );
+  return res(ctx.status(200), ctx.json(mockUserData));
 };
 
 const mockLoginGetError: RestResolver = (req, res, ctx) => {
@@ -22,12 +17,7 @@ const mockLoginGetError: RestResolver = (req, res, ctx) => {
 };
 
 const mockLoginPostSuccess: RestResolver = (req, res, ctx) => {
-  return res(
-    ctx.status(201),
-    ctx.json({
-      user: mockIFullUser,
-    }),
-  );
+  return res(ctx.status(201), ctx.json(mockFullUser));
 };
 
 const mockLoginPostError: RestResolver = (req, res, ctx) => {
@@ -67,12 +57,12 @@ describe('Login API service', () => {
     describe('given correct credentials', () => {
       it('should return full info about the logged in user', async () => {
         const validCredentials: Credentials = {
-          username: mockIFullUser.name,
-          password: mockIFullUser.password,
+          username: mockFullUser.name,
+          password: 'private',
         };
         const fullUserData = await login(validCredentials);
         expect(spiedOnLoginPostHandler).toHaveBeenCalled();
-        expect(fullUserData).toEqual(mockIFullUser);
+        expect(fullUserData).toEqual(mockFullUser);
       });
     });
 
@@ -83,7 +73,7 @@ describe('Login API service', () => {
         expect.assertions(2);
         try {
           await login({
-            username: mockIFullUser.surname,
+            username: mockFullUser.surname,
             password: 'wrong password',
           });
         } catch (error) {

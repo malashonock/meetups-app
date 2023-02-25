@@ -40,7 +40,7 @@ export const CreateMeetupPage = observer((): JSX.Element => {
   const { i18n } = useTranslation();
 
   const initialValues: MeetupFields = {
-    author: loggedUser ?? undefined,
+    author: loggedUser ?? null,
     subject: '',
     excerpt: '',
     place: '',

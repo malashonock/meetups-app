@@ -157,15 +157,7 @@ describe('MeetupTabContent', () => {
     expect(renderedSubjects).toEqual(expectedSubjects);
   });
 
-  it('should render Not Found page if an error occurred while loading news', () => {
-    mockUseMeetupStore.mockReturnValue({});
-    render(<MeetupTabContent variant={MeetupCardVariant.Upcoming} />, {
-      wrapper: MockRouter,
-    });
-    expect(screen.getByText('notFoundPage.title')).toBeInTheDocument();
-  });
-
-  it('should render a Loading spinner while news are loading', () => {
+  it('should render a Loading spinner while meetups are loading', () => {
     mockUseMeetupStore.mockReturnValue({
       meetups: mockMeetups,
       isLoading: true,
@@ -174,6 +166,25 @@ describe('MeetupTabContent', () => {
       wrapper: MockRouter,
     });
     expect(screen.getByText('loadingText.meetups')).toBeInTheDocument();
+  });
+
+  it('should render a Loading spinner if meetups is undefined', () => {
+    mockUseMeetupStore.mockReturnValue({});
+    render(<MeetupTabContent variant={MeetupCardVariant.Upcoming} />, {
+      wrapper: MockRouter,
+    });
+    expect(screen.getByText('loadingText.meetups')).toBeInTheDocument();
+  });
+
+  it('should render Not Found page if an error occurred while loading meetups', () => {
+    mockUseMeetupStore.mockReturnValue({
+      meetups: mockMeetups,
+      isError: true,
+    });
+    render(<MeetupTabContent variant={MeetupCardVariant.Upcoming} />, {
+      wrapper: MockRouter,
+    });
+    expect(screen.getByText('notFoundPage.title')).toBeInTheDocument();
   });
 });
 
