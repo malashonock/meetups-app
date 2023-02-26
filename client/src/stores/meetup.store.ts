@@ -182,7 +182,7 @@ export class Meetup implements IMeetup, ILoadable {
 
       const updatedMeetupData = await API.updateMeetup(this.id, meetupData);
       runInAction(async () => {
-        Object.assign(this, updatedMeetupData);
+        Object.assign(this, new Meetup(updatedMeetupData));
         await this.init();
       });
 
