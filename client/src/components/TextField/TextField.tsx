@@ -5,6 +5,7 @@ import {
   TextInput,
   TextArea,
 } from 'components';
+import { Optional } from 'types';
 
 type TextInputOrAreaProps = {
   placeholderText?: string;
@@ -12,6 +13,7 @@ type TextInputOrAreaProps = {
 } & (
   | {
       multiline?: false;
+      type?: string;
     }
   | {
       multiline: true;
@@ -23,14 +25,15 @@ type TextInputOrAreaProps = {
 type TextFieldProps = InputFieldExternalProps & TextInputOrAreaProps;
 
 export const TextField = (props: TextFieldProps): JSX.Element => {
-  let placeholderText: string | undefined;
+  let placeholderText: Optional<string>;
   let containerAttributes:
     | Omit<React.HTMLAttributes<HTMLDivElement>, 'children'>
     | undefined;
   let inputFieldProps: InputFieldExternalProps;
-  let multiline: boolean | undefined;
-  let maxCharCount: number | undefined;
-  let showCharCounter: boolean | undefined;
+  let type: Optional<string>;
+  let multiline: Optional<boolean>;
+  let maxCharCount: Optional<number>;
+  let showCharCounter: Optional<boolean>;
 
   switch (props.multiline) {
     case true:
@@ -62,7 +65,8 @@ export const TextField = (props: TextFieldProps): JSX.Element => {
       );
     case false:
     default:
-      ({ placeholderText, containerAttributes, ...inputFieldProps } = props);
+      ({ placeholderText, type, containerAttributes, ...inputFieldProps } =
+        props);
 
       return (
         <InputField
@@ -72,6 +76,7 @@ export const TextField = (props: TextFieldProps): JSX.Element => {
           {({ field, className }: InputRenderProps): JSX.Element => (
             <TextInput
               {...field}
+              type={type ?? 'text'}
               id={field.name}
               className={className}
               placeholder={placeholderText}

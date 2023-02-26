@@ -52,6 +52,7 @@ const LoginForm = ({
             />
             <TextField
               name="password"
+              type="password"
               labelText={t('formFields.login.password.label') || 'Password'}
             />
             <Button
