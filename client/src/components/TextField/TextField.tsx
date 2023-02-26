@@ -1,3 +1,5 @@
+import { HTMLInputTypeAttribute } from 'react';
+
 import {
   InputFieldExternalProps,
   InputField,
@@ -13,7 +15,7 @@ type TextInputOrAreaProps = {
 } & (
   | {
       multiline?: false;
-      type?: string;
+      type?: HTMLInputTypeAttribute;
     }
   | {
       multiline: true;
