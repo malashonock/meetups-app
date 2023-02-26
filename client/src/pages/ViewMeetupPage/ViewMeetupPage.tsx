@@ -201,7 +201,7 @@ export const ViewMeetupPage = observer(() => {
     );
   };
 
-  const renderAuthor = () => (
+  const renderSpeakers = () => (
     <div className={styles.data}>
       <Typography
         component={TypographyComponent.Span}
@@ -308,7 +308,7 @@ export const ViewMeetupPage = observer(() => {
       <div className={styles.dataWrapper}>
         {renderHeader()}
         {renderTimePlace()}
-        {renderAuthor()}
+        {renderSpeakers()}
         <div className={styles.data}>
           <Typography
             component={TypographyComponent.Span}

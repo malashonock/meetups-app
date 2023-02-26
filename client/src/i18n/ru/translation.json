@@ -89,7 +89,7 @@
     "time": "Время",
     "location": "Место",
     "author": "Автор",
-    "speakers": "Спикеры",
+    "speakers": "Спикер(ы)",
     "supporters": "Поддерживают",
     "approveTopicBtn": "Одобрить тему",
     "deleteTopicPrompt": "Вы уверены, что хотите удалить тему?"
@@ -111,10 +111,10 @@
         "label": "Тема",
         "errorText": "Необходимо заполнить тему митапа"
       },
-      "speaker": {
-        "label": "Спикер",
-        "placeholder": "Выберите спикера...",
-        "errorText": "Необходимо указать спикера"
+      "speakers": {
+        "label": "Спикер(ы)",
+        "placeholder": "Выберите спикеров...",
+        "errorText": "Необходимо указать хотя бы 1 спикера"
       },
       "description": {
         "label": "Описание",

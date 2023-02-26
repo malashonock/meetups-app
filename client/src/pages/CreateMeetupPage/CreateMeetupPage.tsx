@@ -41,6 +41,7 @@ export const CreateMeetupPage = observer((): JSX.Element => {
 
   const initialValues: MeetupFields = {
     author: loggedUser ?? null,
+    speakers: loggedUser ? [loggedUser] : [],
     subject: '',
     excerpt: '',
     place: '',
