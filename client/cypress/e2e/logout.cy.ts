@@ -4,6 +4,7 @@ describe('Logout', () => {
   it('should log the current user out', () => {
     cy.loginAsChief();
     cy.visit('/');
+    cy.wait(1_000);
 
     cy.get('[data-testid="auth-toggle"]').click();
 
