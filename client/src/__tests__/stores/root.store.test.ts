@@ -7,10 +7,7 @@ import {
   UserStore,
 } from 'stores';
 
-const spiedOnAuthStoreOnLoginChanged = jest.spyOn(
-  AuthStore.prototype,
-  'onLoginChanged',
-);
+const spiedOnAuthStoreInit = jest.spyOn(AuthStore.prototype, 'init');
 
 describe('RootStore', () => {
   describe('constructor', () => {
@@ -40,10 +37,10 @@ describe('RootStore', () => {
   });
 
   describe('init() instance method', () => {
-    it('should call AuthStore onLoginChanged() method', async () => {
+    it('should call AuthStore init() method', async () => {
       const rootStore = new RootStore();
       await rootStore.init();
-      expect(spiedOnAuthStoreOnLoginChanged).toHaveBeenCalled();
+      expect(spiedOnAuthStoreInit).toHaveBeenCalled();
     });
   });
 });
