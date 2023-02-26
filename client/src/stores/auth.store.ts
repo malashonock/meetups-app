@@ -1,5 +1,5 @@
 import { makeAutoObservable, runInAction } from 'mobx';
-import { makePersistable } from 'mobx-persist-store';
+import { AxiosError } from 'axios';
 
 import { Credentials, IFullUser, UserRole } from 'model';
 import * as API from 'api';
@@ -13,26 +13,27 @@ export class AuthStore {
   constructor(public rootStore: RootStore) {
     makeAutoObservable(this);
 
-    makePersistable(this, {
-      name: 'auth',
-      properties: [
-        {
-          key: 'loggedUser',
-          serialize: (value: Nullable<FullUser>): string => {
-            return JSON.stringify(value);
-          },
-          deserialize: (value: string): Nullable<FullUser> => {
-            const userData = JSON.parse(value) as Nullable<IFullUser>;
-
-            return userData ? new FullUser(userData) : null;
-          },
-        },
-      ],
-      storage: window.localStorage,
-    });
-
     this.loggedUser = null;
     this.userStore = new UserStore(this);
+  }
+
+  async init(): Promise<void> {
+    await this.checkLogin();
+  }
+
+  async checkLogin(): Promise<void> {
+    try {
+      const userData: IFullUser = await API.checkLogin();
+      runInAction(() => {
+        this.loggedUser = new FullUser(userData);
+      });
+      await this.onLoginChanged();
+    } catch (error) {
+      const { code } = error as AxiosError;
+      if (code === '401') {
+        this.loggedUser = null;
+      }
+    }
   }
 
   async logIn(credentials: Credentials): Promise<void> {
