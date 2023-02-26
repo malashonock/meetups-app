@@ -17,9 +17,10 @@ describe('Create meetup', () => {
         cy.get('[name="finish"]').type('15 Mar 2024 14:00');
         cy.get('[name="place"]').type(faker.address.streetAddress());
 
-        cy.get('#btn-preview').should('be.disabled');
+        cy.get('#btn-preview').as('previewBtn').should('be.disabled');
         cy.get('#btn-save').click();
-        cy.get('#btn-preview').should('be.enabled').click();
+        cy.get('@previewBtn').should('be.enabled');
+        cy.get('@previewBtn').click();
 
         // Should redirect to view created meetup page
         cy.url().should('match', new RegExp(`\/meetups\/${createdTopicId}$`));

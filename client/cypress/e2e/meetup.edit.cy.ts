@@ -15,7 +15,7 @@ describe('Edit meetup', () => {
 
         const updatedSubject: string = faker.company.catchPhrase();
         const updatedExcerpt: string = faker.lorem.paragraph();
-        const updatedAuthor: string = 'employee Gerlach';
+        const updatedSpeaker: string = 'employee Gerlach';
         const startDate: string = '15 Mar 2023 12:00';
         const finishDate: string = '15 Mar 2023 14:00';
         const place: string = faker.address.streetAddress();
@@ -28,8 +28,9 @@ describe('Edit meetup', () => {
 
         cy.get('[data-testid="select-field"]').as('authorSelect').click();
         cy.get('@authorSelect').within(() => {
+          cy.get('[aria-label="Remove chief Blick"]').click();
           cy.get('[class*="SelectField_option"]')
-            .contains(updatedAuthor)
+            .contains(updatedSpeaker)
             .click();
         });
 
@@ -51,7 +52,7 @@ describe('Edit meetup', () => {
         );
         cy.get('[class*="excerpt"]').should('contain', updatedExcerpt);
         // Currently, author is editable, but is not shown on View Meetup Page
-        // cy.get('[class*="UserPreview"]').should('contain', updatedAuthor);
+        // cy.get('[class*="UserPreview"]').should('contain', updatedSpeaker);
         cy.get('#date > span')
           .invoke('text')
           .should('match', /(March 15, 2023|15 марта, 2023)/);
