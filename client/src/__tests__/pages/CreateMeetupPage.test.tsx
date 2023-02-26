@@ -169,7 +169,7 @@ describe('CreateMeetupPage', () => {
         expect(getExcerptInput()).toHaveValue('');
       });
 
-      it('should pre-populate speaker field with the currently logged in user, if they are authenticated', () => {
+      it('should pre-populate speakers field with the meetup author, if they are authenticated', () => {
         mockUseAuthStore.mockReturnValue({
           loggedUser: mockUser,
         });
@@ -183,7 +183,7 @@ describe('CreateMeetupPage', () => {
         render(<CreateMeetupPage />, { wrapper: MockRouter });
 
         expect(
-          screen.getByText('formFields.meetup.speaker.placeholder'),
+          screen.getByText('formFields.meetup.speakers.placeholder'),
         ).toBeInTheDocument();
       });
 
@@ -363,6 +363,10 @@ describe('CreateMeetupPage', () => {
     });
 
     it('should handle form submit', async () => {
+      mockUseAuthStore.mockReturnValue({
+        loggedUser: mockUser,
+      });
+
       await goToOptionalFields();
 
       await fillOutOptionalFields();

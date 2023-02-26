@@ -98,16 +98,16 @@ exports[`CreateMeetupPage Step 1 - required fields should match snapshot 1`] = `
               >
                 <label
                   class="inputLabel label"
-                  for="author"
+                  for="speakers"
                 >
-                  formFields.meetup.speaker.label
+                  formFields.meetup.speakers.label
                 </label>
                 <div
                   data-testid="select-field"
                 >
                   <div
                     class=" css-b62m3t-container"
-                    id="author"
+                    id="speakers"
                   >
                     <span
                       class="css-1f43avz-a11yText-A11yText"
@@ -129,7 +129,7 @@ exports[`CreateMeetupPage Step 1 - required fields should match snapshot 1`] = `
                           class="placeholder css-1jqq78o-placeholder"
                           id="react-select-2-placeholder"
                         >
-                          formFields.meetup.speaker.placeholder
+                          formFields.meetup.speakers.placeholder
                         </div>
                         <div
                           class=" css-qbdosj-Input"
@@ -140,7 +140,7 @@ exports[`CreateMeetupPage Step 1 - required fields should match snapshot 1`] = `
                             aria-describedby="react-select-2-placeholder"
                             aria-expanded="false"
                             aria-haspopup="true"
-                            aria-label="author"
+                            aria-label="speakers"
                             autocapitalize="none"
                             autocomplete="off"
                             autocorrect="off"
@@ -180,11 +180,13 @@ exports[`CreateMeetupPage Step 1 - required fields should match snapshot 1`] = `
                         </div>
                       </div>
                     </div>
-                    <input
-                      name="author"
-                      type="hidden"
-                      value=""
-                    />
+                    <div>
+                      <input
+                        name="speakers"
+                        type="hidden"
+                        value=""
+                      />
+                    </div>
                   </div>
                 </div>
               </div>

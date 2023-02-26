@@ -103,7 +103,8 @@ const getClearImageBtn = () => screen.getByTestId('clear-button');
 const mockUpdatedMeetup: MeetupFields = {
   subject: 'Updated meetup topic',
   excerpt: 'Updated meetup description',
-  author: mockUser2,
+  author: mockUser,
+  speakers: [mockUser, mockUser2],
   place: 'room 321',
   start: new Date(2023, 2, 20, 15, 0),
   finish: new Date(2023, 2, 20, 16, 30),

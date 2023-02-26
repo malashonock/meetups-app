@@ -160,16 +160,16 @@ exports[`EditMeetupPage should match snapshot 1`] = `
           >
             <label
               class="inputLabel label"
-              for="author"
+              for="speakers"
             >
-              formFields.meetup.speaker.label
+              formFields.meetup.speakers.label
             </label>
             <div
               data-testid="select-field"
             >
               <div
                 class=" css-b62m3t-container"
-                id="author"
+                id="speakers"
               >
                 <span
                   class="css-1f43avz-a11yText-A11yText"
@@ -185,12 +185,34 @@ exports[`EditMeetupPage should match snapshot 1`] = `
                   class="input default css-13cymwt-control"
                 >
                   <div
-                    class=" css-1fdsijx-ValueContainer"
+                    class=" css-3w2yfm-ValueContainer"
                   >
                     <div
-                      class=" css-1dimb5e-singleValue"
+                      class=" css-1p3m7a8-multiValue"
                     >
-                      John Doe
+                      <div
+                        class=" css-wsp0cs-MultiValueGeneric"
+                      >
+                        John Doe
+                      </div>
+                      <div
+                        aria-label="Remove John Doe"
+                        class=" css-12a83d4-MultiValueRemove"
+                        role="button"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="css-tj5bde-Svg"
+                          focusable="false"
+                          height="14"
+                          viewBox="0 0 20 20"
+                          width="14"
+                        >
+                          <path
+                            d="M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z"
+                          />
+                        </svg>
+                      </div>
                     </div>
                     <div
                       class=" css-qbdosj-Input"
@@ -200,7 +222,7 @@ exports[`EditMeetupPage should match snapshot 1`] = `
                         aria-autocomplete="list"
                         aria-expanded="false"
                         aria-haspopup="true"
-                        aria-label="author"
+                        aria-label="speakers"
                         autocapitalize="none"
                         autocomplete="off"
                         autocorrect="off"
@@ -218,6 +240,23 @@ exports[`EditMeetupPage should match snapshot 1`] = `
                   <div
                     class=" css-1hb7zxy-IndicatorsContainer"
                   >
+                    <div
+                      aria-hidden="true"
+                      class=" css-1xc3v61-indicatorContainer"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="css-tj5bde-Svg"
+                        focusable="false"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        width="20"
+                      >
+                        <path
+                          d="M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z"
+                        />
+                      </svg>
+                    </div>
                     <span
                       class=" css-1u9des2-indicatorSeparator"
                     />
@@ -240,11 +279,13 @@ exports[`EditMeetupPage should match snapshot 1`] = `
                     </div>
                   </div>
                 </div>
-                <input
-                  name="author"
-                  type="hidden"
-                  value="[object Object]"
-                />
+                <div>
+                  <input
+                    name="speakers"
+                    type="hidden"
+                    value="[object Object]"
+                  />
+                </div>
               </div>
             </div>
           </div>
