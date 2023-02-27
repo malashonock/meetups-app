@@ -72,7 +72,7 @@ export class FullUser extends User {
     ({ post: this.post, roles: this.roles } = userData);
   }
 
-  isAdmin(): boolean {
+  get isAdmin(): boolean {
     return this.roles === UserRole.CHIEF;
   }
 

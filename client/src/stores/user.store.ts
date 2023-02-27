@@ -31,7 +31,7 @@ export class UserStore implements ILoadable {
       return;
     }
 
-    if (!loggedUser.isAdmin()) {
+    if (!loggedUser.isAdmin) {
       this.users = [new User(loggedUser)];
       return;
     }
