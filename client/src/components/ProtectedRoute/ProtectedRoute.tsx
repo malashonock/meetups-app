@@ -21,11 +21,12 @@ export const ProtectedRoute = ({
   const { loggedUser } = useAuthStore();
 
   const doRedirect =
-    (!loggedUser && redirectIf === RedirectCondition.Unauthenticated) ||
-    (loggedUser && redirectIf === RedirectCondition.Authenticated);
+    (redirectIf === RedirectCondition.Unauthenticated && !loggedUser) ||
+    (redirectIf === RedirectCondition.NonAdmin && !loggedUser?.isAdmin) ||
+    (redirectIf === RedirectCondition.Authenticated && loggedUser);
 
   const defaultRedirect =
-    redirectIf === RedirectCondition.Unauthenticated ? '/login' : '/meetups';
+    redirectIf === RedirectCondition.Authenticated ? '/meetups' : '/login';
 
   const redirectTarget = redirectTo ?? defaultRedirect;
 
