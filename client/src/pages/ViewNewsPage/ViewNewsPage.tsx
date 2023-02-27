@@ -77,7 +77,7 @@ export const ViewNewsPage = observer(() => {
         >
           {t('formButtons.back')}
         </Button>
-        {loggedUser ? (
+        {loggedUser?.isAdmin ? (
           <div className={styles.actionGroup}>
             <Button
               id="btn-edit"

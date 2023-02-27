@@ -1,12 +1,12 @@
 import { useContext } from 'react';
 
-import { AuthStore, User } from 'stores';
+import { AuthStore, FullUser } from 'stores';
 import { RootContext } from 'components';
 import { Nullable } from 'types';
 
 export interface UseAuthStoreResult {
   authStore?: AuthStore;
-  loggedUser?: Nullable<User>;
+  loggedUser?: Nullable<FullUser>;
 }
 
 export const useAuthStore = (): UseAuthStoreResult => {

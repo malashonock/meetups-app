@@ -258,7 +258,7 @@ export const ViewMeetupPage = observer(() => {
         >
           {t('formButtons.back')}
         </Button>
-        {loggedUser ? (
+        {loggedUser?.isAdmin ? (
           <div className={styles.actionsWrapper}>
             {status === MeetupStatus.REQUEST && (
               <>
