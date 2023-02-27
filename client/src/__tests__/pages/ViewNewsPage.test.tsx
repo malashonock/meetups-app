@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { ViewNewsPage } from 'pages';
-import { mockNewsArticle, mockUser } from 'model/__fakes__';
+import { mockFullUser, mockNewsArticle } from 'model/__fakes__';
 import { useAuthStore, useNewsArticle } from 'hooks';
 
 // Mock useAuthStore & useNewsArticle hook
@@ -24,7 +24,7 @@ const mockUseNewsArticle = useNewsArticle as jest.MockedFunction<
 
 beforeEach(() => {
   mockUseAuthStore.mockReturnValue({
-    loggedUser: mockUser,
+    loggedUser: mockFullUser,
   });
   mockUseNewsArticle.mockReturnValue({
     newsArticle: mockNewsArticle,

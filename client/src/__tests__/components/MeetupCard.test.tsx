@@ -4,7 +4,7 @@ import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 
 import { MeetupCard } from 'components';
-import { mockMeetup, mockTopic, mockUser } from 'model/__fakes__';
+import { mockFullUser, mockMeetup, mockTopic, mockUser } from 'model/__fakes__';
 import { useAuthStore, useUser } from 'hooks';
 import { Meetup } from 'stores';
 
@@ -34,7 +34,7 @@ const MockLoginRouter = ({ children }: PropsWithChildren): JSX.Element => (
 
 beforeEach(() => {
   mockUseAuthStore.mockReturnValue({
-    loggedUser: mockUser,
+    loggedUser: mockFullUser,
   });
   mockUseUser.mockReturnValue(mockUser);
 });
