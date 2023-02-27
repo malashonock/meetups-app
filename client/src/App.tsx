@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 
 import {
+  RedirectCondition,
   Header,
   LoadingSpinner,
   meetupTabsLinks,
@@ -37,7 +38,7 @@ export const App = observer(
               <Route
                 path="login"
                 element={
-                  <ProtectedRoute redirectIf="authenticated">
+                  <ProtectedRoute redirectIf={RedirectCondition.Authenticated}>
                     <LoginPage />
                   </ProtectedRoute>
                 }
