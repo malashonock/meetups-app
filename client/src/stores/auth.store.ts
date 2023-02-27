@@ -9,16 +9,22 @@ import { Nullable } from 'types';
 export class AuthStore {
   loggedUser: Nullable<FullUser>;
   userStore: UserStore;
+  isInitialized: boolean;
 
   constructor(public rootStore: RootStore) {
     makeAutoObservable(this);
 
     this.loggedUser = null;
+    this.isInitialized = false;
     this.userStore = new UserStore(this);
   }
 
   async init(): Promise<void> {
-    await this.checkLogin();
+    try {
+      await this.checkLogin();
+    } finally {
+      this.isInitialized = true;
+    }
   }
 
   async checkLogin(): Promise<void> {

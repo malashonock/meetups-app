@@ -1,6 +1,9 @@
-import { useAuthStore } from 'hooks';
 import { PropsWithChildren } from 'react';
 import { Navigate } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
+
+import { LoadingSpinner } from 'components';
+import { useAuthStore } from 'hooks';
 
 export enum RedirectCondition {
   Authenticated = 'authenticated',
@@ -13,26 +16,32 @@ interface ProtectedRouteProps {
   redirectTo?: string;
 }
 
-export const ProtectedRoute = ({
-  redirectIf = RedirectCondition.Unauthenticated,
-  redirectTo,
-  children,
-}: PropsWithChildren<ProtectedRouteProps>): JSX.Element => {
-  const { loggedUser } = useAuthStore();
+export const ProtectedRoute = observer(
+  ({
+    redirectIf = RedirectCondition.Unauthenticated,
+    redirectTo,
+    children,
+  }: PropsWithChildren<ProtectedRouteProps>): JSX.Element => {
+    const { isInitialized, loggedUser } = useAuthStore();
 
-  const doRedirect =
-    (redirectIf === RedirectCondition.Unauthenticated && !loggedUser) ||
-    (redirectIf === RedirectCondition.NonAdmin && !loggedUser?.isAdmin) ||
-    (redirectIf === RedirectCondition.Authenticated && loggedUser);
+    if (!isInitialized) {
+      return <LoadingSpinner />;
+    }
 
-  const defaultRedirect =
-    redirectIf === RedirectCondition.Authenticated ? '/meetups' : '/login';
+    const doRedirect =
+      (redirectIf === RedirectCondition.Unauthenticated && !loggedUser) ||
+      (redirectIf === RedirectCondition.NonAdmin && !loggedUser?.isAdmin) ||
+      (redirectIf === RedirectCondition.Authenticated && loggedUser);
 
-  const redirectTarget = redirectTo ?? defaultRedirect;
+    const defaultRedirect =
+      redirectIf === RedirectCondition.Authenticated ? '/meetups' : '/login';
 
-  if (doRedirect) {
-    return <Navigate to={redirectTarget} replace />;
-  }
+    const redirectTarget = redirectTo ?? defaultRedirect;
 
-  return <>{children}</>;
-};
+    if (doRedirect) {
+      return <Navigate to={redirectTarget} replace />;
+    }
+
+    return <>{children}</>;
+  },
+);
