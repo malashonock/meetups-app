@@ -70,7 +70,7 @@ export const App = observer(
                   <Route
                     path="edit"
                     element={
-                      <ProtectedRoute>
+                      <ProtectedRoute redirectIf={RedirectCondition.NonAdmin}>
                         <EditMeetupPage />
                       </ProtectedRoute>
                     }
@@ -92,7 +92,7 @@ export const App = observer(
                   <Route
                     path="edit"
                     element={
-                      <ProtectedRoute>
+                      <ProtectedRoute redirectIf={RedirectCondition.NonAdmin}>
                         <EditNewsPage />
                       </ProtectedRoute>
                     }
