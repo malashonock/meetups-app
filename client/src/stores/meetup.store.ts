@@ -4,6 +4,7 @@ import * as API from 'api';
 import { RootStore, User } from 'stores';
 import { FileWithUrl, ILoadable, Nullable, Optional } from 'types';
 import { IMeetup, MeetupFields, MeetupStatus } from 'model';
+import { isPast } from 'utils';
 
 export class MeetupStore implements ILoadable {
   rootStore: RootStore;
@@ -210,7 +211,7 @@ export class Meetup implements IMeetup, ILoadable {
         MeetupStatus.DRAFT,
       );
       runInAction(() => {
-        Object.assign(this, updatedMeetupData);
+        Object.assign(this, new Meetup(updatedMeetupData));
       });
 
       this.isLoading = false;
@@ -241,7 +242,170 @@ export class Meetup implements IMeetup, ILoadable {
         MeetupStatus.CONFIRMED,
       );
       runInAction(() => {
-        Object.assign(this, updatedMeetupData);
+        Object.assign(this, new Meetup(updatedMeetupData));
+      });
+
+      this.isLoading = false;
+      this.isError = false;
+      this.errors.length = 0;
+    } catch (error) {
+      this.isLoading = false;
+      this.isError = true;
+      this.errors.push(error);
+    }
+  }
+
+  get canLoggedUserSupport(): boolean {
+    const loggedUser = this.meetupStore?.rootStore.authStore.loggedUser;
+    if (
+      loggedUser &&
+      loggedUser.id !== this.author.id &&
+      this.speakers.findIndex(
+        (speaker: User): boolean => speaker.id === loggedUser.id,
+      ) === -1
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  get hasLoggedUserVoted(): boolean {
+    const loggedUser = this.meetupStore?.rootStore.authStore.loggedUser;
+    if (!loggedUser) {
+      return false;
+    }
+
+    return (
+      this.votedUsers.findIndex(
+        (votedUser: User): boolean => votedUser.id === loggedUser.id,
+      ) > -1
+    );
+  }
+
+  async vote(): Promise<void> {
+    if (this.status !== MeetupStatus.REQUEST) {
+      return;
+    }
+
+    const loggedUser = this.meetupStore?.rootStore.authStore.loggedUser;
+    if (!loggedUser || !this.canLoggedUserSupport) {
+      return;
+    }
+
+    try {
+      this.isLoading = true;
+
+      await API.voteForMeetup(this.id);
+      runInAction(() => {
+        this.votedUsers.unshift(new User(loggedUser));
+      });
+
+      this.isLoading = false;
+      this.isError = false;
+      this.errors.length = 0;
+    } catch (error) {
+      this.isLoading = false;
+      this.isError = true;
+      this.errors.push(error);
+    }
+  }
+
+  async withdrawVote(): Promise<void> {
+    if (this.status !== MeetupStatus.REQUEST) {
+      return;
+    }
+
+    const loggedUser = this.meetupStore?.rootStore.authStore.loggedUser;
+    if (!loggedUser) {
+      return;
+    }
+
+    try {
+      this.isLoading = true;
+
+      await API.withdrawVoteForMeetup(this.id);
+      runInAction(() => {
+        this.votedUsers = this.votedUsers.filter(
+          (votedUser: User): boolean => votedUser.id !== loggedUser.id,
+        );
+      });
+
+      this.isLoading = false;
+      this.isError = false;
+      this.errors.length = 0;
+    } catch (error) {
+      this.isLoading = false;
+      this.isError = true;
+      this.errors.push(error);
+    }
+  }
+
+  get hasLoggedUserJoined(): boolean {
+    const loggedUser = this.meetupStore?.rootStore.authStore.loggedUser;
+    if (!loggedUser) {
+      return false;
+    }
+
+    return (
+      this.participants.findIndex(
+        (participant: User): boolean => participant.id === loggedUser.id,
+      ) > -1
+    );
+  }
+
+  async join(): Promise<void> {
+    if (
+      this.status !== MeetupStatus.CONFIRMED &&
+      (!this.start || (this.start && !isPast(this.start)))
+    ) {
+      return;
+    }
+
+    const loggedUser = this.meetupStore?.rootStore.authStore.loggedUser;
+    if (!loggedUser || !this.canLoggedUserSupport) {
+      return;
+    }
+
+    try {
+      this.isLoading = true;
+
+      await API.joinMeetup(this.id);
+      runInAction(() => {
+        this.participants.unshift(new User(loggedUser));
+      });
+
+      this.isLoading = false;
+      this.isError = false;
+      this.errors.length = 0;
+    } catch (error) {
+      this.isLoading = false;
+      this.isError = true;
+      this.errors.push(error);
+    }
+  }
+
+  async cancelJoin(): Promise<void> {
+    if (
+      this.status !== MeetupStatus.CONFIRMED &&
+      (!this.start || (this.start && !isPast(this.start)))
+    ) {
+      return;
+    }
+
+    const loggedUser = this.meetupStore?.rootStore.authStore.loggedUser;
+    if (!loggedUser) {
+      return;
+    }
+
+    try {
+      this.isLoading = true;
+
+      await API.cancelJoinMeetup(this.id);
+      runInAction(() => {
+        this.participants = this.participants.filter(
+          (participant: User): boolean => participant.id !== loggedUser.id,
+        );
       });
 
       this.isLoading = false;
