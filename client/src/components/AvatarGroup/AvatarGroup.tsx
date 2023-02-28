@@ -45,11 +45,12 @@ export const AvatarGroup = ({
         setRestCount(users.length - cappedShowCount);
       }
     },
+    [users.length],
   );
 
-  const variant = max
-    ? AvatarGroupVariant.Stacked
-    : AvatarGroupVariant.Justified;
+  const variant = restCount
+    ? AvatarGroupVariant.Justified
+    : AvatarGroupVariant.Stacked;
 
   return (
     <ul
