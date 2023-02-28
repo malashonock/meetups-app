@@ -178,7 +178,7 @@ export const meetupsRoutes = (db) => {
           return res.status(400).send({ message: 'Participant is already exist' });
         }
 
-        participants.push({ id, name, surname });
+        participants.unshift({ id, name, surname });
 
         await db.write();
         res.send(participants);
@@ -201,8 +201,8 @@ export const meetupsRoutes = (db) => {
           return res.status(400).send({ message: 'Invalid request data' });
         }
 
-        const findedUser = participants.find(u => u.id === userId);
-        if (!findedUser) {
+        const foundUser = participants.find(u => u.id === userId);
+        if (!foundUser) {
           return res.status(404).send({ message: 'Participant not found' });
         }
 
@@ -242,7 +242,7 @@ export const meetupsRoutes = (db) => {
           return res.status(400).send({ message: 'The user is already voted' });
         }
 
-        db.data.votedUsers[meetupId].push({ id, name, surname });
+        db.data.votedUsers[meetupId].unshift({ id, name, surname });
 
         await db.write();
         res.send(db.data.votedUsers[meetupId]);
@@ -261,8 +261,8 @@ export const meetupsRoutes = (db) => {
         const meetupId = req.params.id;
         const users = db.data.votedUsers[meetupId];
 
-        const findedUser = users.find(u => u.id === userId);
-        if (!findedUser) {
+        const foundUser = users.find(u => u.id === userId);
+        if (!foundUser) {
           return res.status(404).send({ message: 'User not found' });
         }
 
