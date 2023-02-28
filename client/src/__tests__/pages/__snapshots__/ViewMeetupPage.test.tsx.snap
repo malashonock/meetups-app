@@ -153,13 +153,13 @@ exports[`ViewMeetupPage after approval & publishing given a user is logged in sh
         <span
           class="typography span dataName"
         >
-          viewMeetupPage.supporters
+          viewMeetupPage.participants
         </span>
         <div
           class="dataContent"
         >
           <ul
-            class="container justified"
+            class="container stacked"
             style="--gap: 10px;"
           />
         </div>
@@ -335,13 +335,13 @@ exports[`ViewMeetupPage after approval & publishing given no user is logged in s
         <span
           class="typography span dataName"
         >
-          viewMeetupPage.supporters
+          viewMeetupPage.participants
         </span>
         <div
           class="dataContent"
         >
           <ul
-            class="container justified"
+            class="container stacked"
             style="--gap: 10px;"
           />
         </div>
@@ -506,23 +506,6 @@ exports[`ViewMeetupPage after topic approval, but before publishing given a user
           >
             Test meetup description
           </p>
-        </div>
-      </div>
-      <div
-        class="data"
-      >
-        <span
-          class="typography span dataName"
-        >
-          viewMeetupPage.supporters
-        </span>
-        <div
-          class="dataContent"
-        >
-          <ul
-            class="container justified"
-            style="--gap: 10px;"
-          />
         </div>
       </div>
       <div
@@ -698,23 +681,6 @@ exports[`ViewMeetupPage after topic approval, but before publishing given no use
         </div>
       </div>
       <div
-        class="data"
-      >
-        <span
-          class="typography span dataName"
-        >
-          viewMeetupPage.supporters
-        </span>
-        <div
-          class="dataContent"
-        >
-          <ul
-            class="container justified"
-            style="--gap: 10px;"
-          />
-        </div>
-      </div>
-      <div
         class="dataContent actions"
       >
         <button
@@ -822,7 +788,7 @@ exports[`ViewMeetupPage before topic approval given a user is logged in should m
           class="dataContent"
         >
           <ul
-            class="container justified"
+            class="container stacked"
             style="--gap: 10px;"
           />
         </div>
@@ -951,7 +917,7 @@ exports[`ViewMeetupPage before topic approval given no user is logged in should 
           class="dataContent"
         >
           <ul
-            class="container justified"
+            class="container stacked"
             style="--gap: 10px;"
           />
         </div>

@@ -11,7 +11,7 @@ import {
   deleteMeetup,
 } from 'api';
 import * as StaticApi from 'api/services/static.service';
-import * as UserApi from 'api/services/user.service';
+import * as MeetupApi from 'api/services/meetup.service';
 import {
   mockMeetupData,
   mockMeetup,
@@ -21,27 +21,24 @@ import {
 } from 'model/__fakes__';
 import { apiUrl, RestResolver } from 'utils';
 import { FileWithUrl } from 'types';
-import { MeetupDto, IUser } from 'model';
+import { IUser, IMeetup } from 'model';
 
 // Mock getNewsFromJson
 const mockGetStaticFile = jest.spyOn(StaticApi, 'getStaticFile');
 
 // Mock getVotedUsers & getParticipants
-const mockGetVotedUsers = jest.spyOn(UserApi, 'getVotedUsers');
-const mockGetParticipants = jest.spyOn(UserApi, 'getParticipants');
+const mockGetVotedUsers = jest.spyOn(MeetupApi, 'getVotedUsers');
+const mockGetParticipants = jest.spyOn(MeetupApi, 'getParticipants');
 
-const mockMeetupsDto: MeetupDto[] = [
-  mockMeetupData,
-  ...generateMeetupsData(20),
-];
+const mockMeetupsData: IMeetup[] = [mockMeetupData, ...generateMeetupsData(20)];
 const findMeetup = (id: string) => {
-  return mockMeetupsDto.filter(
-    (meetupDto: MeetupDto): boolean => meetupDto.id === id,
+  return mockMeetupsData.filter(
+    (meetupDto: IMeetup): boolean => meetupDto.id === id,
   )[0];
 };
 
 const mockMeetupsGetSuccess: RestResolver = (req, res, ctx) => {
-  return res(ctx.status(200), ctx.json(mockMeetupsDto));
+  return res(ctx.status(200), ctx.json(mockMeetupsData));
 };
 
 const mockMeetupGetHandler: RestResolver = (req, res, ctx) => {
@@ -124,7 +121,7 @@ describe('Meetups API service', () => {
     it('should return an array of all meetups', async () => {
       const meetups = await getMeetups();
       expect(spiedOnMeetupsGetHandler).toHaveBeenCalled();
-      expect(meetups).toEqual(mockMeetupsDto);
+      expect(meetups).toEqual(mockMeetupsData);
     });
   });
 
