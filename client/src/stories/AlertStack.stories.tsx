@@ -1,15 +1,15 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { RootStoreProvider, ToastStack } from 'components';
+import { RootStoreProvider, AlertStack } from 'components';
 import { useUiStore } from 'hooks';
 import { PropsWithChildren, useEffect } from 'react';
 import { UiStore, RootStore } from 'stores';
 import { Alert, AlertSeverity } from 'types';
 
 export default {
-  title: 'Components/ToastStack',
-  component: ToastStack,
-} as ComponentMeta<typeof ToastStack>;
+  title: 'Components/AlertStack',
+  component: AlertStack,
+} as ComponentMeta<typeof AlertStack>;
 
 const SeedAlerts = ({ children }: PropsWithChildren): JSX.Element => {
   const { uiStore } = useUiStore();
@@ -63,10 +63,10 @@ const SeedAlerts = ({ children }: PropsWithChildren): JSX.Element => {
   return <>{children}</>;
 };
 
-const Template: ComponentStory<typeof ToastStack> = () => (
+const Template: ComponentStory<typeof AlertStack> = () => (
   <RootStoreProvider>
     <SeedAlerts>
-      <ToastStack />
+      <AlertStack />
     </SeedAlerts>
   </RootStoreProvider>
 );

@@ -4,16 +4,22 @@ import { Portal, Toast } from 'components';
 import { useUiStore } from 'hooks';
 import { Alert } from 'types';
 
-import styles from './ToastStack.module.scss';
+import styles from './AlertStack.module.scss';
 
-export const ToastStack = observer((): JSX.Element => {
+export const AlertStack = observer((): JSX.Element => {
   const { alerts } = useUiStore();
 
   return (
     <Portal wrapperId="toasts-portal">
       <ul className={styles.toasts}>
         {alerts?.map((alert: Alert) => (
-          <Toast alert={alert} key={JSON.stringify(alert)} />
+          <Toast
+            key={JSON.stringify(alert)}
+            variant={alert.severity}
+            title={alert.title}
+            description={alert.text}
+            onClose={() => alert.dismiss()}
+          />
         ))}
       </ul>
     </Portal>
