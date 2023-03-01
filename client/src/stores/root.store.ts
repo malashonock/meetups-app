@@ -1,5 +1,5 @@
 import { AuthStore, MeetupStore, NewsStore, UiStore } from 'stores';
-import { Alert, AlertProps, AlertSeverity, Nullable } from 'types';
+import { Alert, AlertProps } from 'types';
 
 export class RootStore {
   authStore: AuthStore;

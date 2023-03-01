@@ -1,5 +1,4 @@
 import { action, makeObservable, observable, runInAction } from 'mobx';
-import { AxiosError } from 'axios';
 
 import * as API from 'api';
 import {
