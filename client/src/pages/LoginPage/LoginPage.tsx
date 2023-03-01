@@ -87,7 +87,9 @@ export const LoginPage = observer((): JSX.Element => {
   ): Promise<void> => {
     await authStore?.logIn(credentials);
     setSubmitting(false);
-    navigate('/meetups');
+    if (!authStore?.isError) {
+      navigate('/meetups');
+    }
   };
 
   return (

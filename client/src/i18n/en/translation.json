@@ -198,5 +198,10 @@
     "meetup": "Loading meetup",
     "news": "Loading news",
     "newsArticle": "Loading news article"
+  },
+  "alerts": {
+    "error": "Error",
+    "serverError": "Server error",
+    "invalidCredentials": "Invalid username and/or password"
   }
 }

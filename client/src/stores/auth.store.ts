@@ -5,6 +5,7 @@ import {
   observable,
   runInAction,
 } from 'mobx';
+import i18n from 'i18n';
 
 import { Credentials, IFullUser, UserRole } from 'model';
 import * as API from 'api';
@@ -28,8 +29,8 @@ export class AuthStore extends Loadable {
       const { code, message } = error;
       this.rootStore.onAlert({
         severity: AlertSeverity.Error,
-        title: 'Server Error',
-        text: `Error ${code}: ${message}`,
+        title: i18n.t('alerts.serverError'),
+        text: `${i18n.t('alerts.error')} ${code}: ${message}`,
       });
     };
   }
@@ -78,13 +79,34 @@ export class AuthStore extends Loadable {
   }
 
   async logIn(credentials: Credentials): Promise<void> {
-    await this.tryLoad(async () => {
-      const userData: IFullUser = await API.login(credentials);
-      runInAction(() => {
-        this.loggedUser = new FullUser(userData);
-      });
-      await this.onLoginChanged();
-    });
+    await this.tryLoad(
+      async () => {
+        const userData: IFullUser = await API.login(credentials);
+        runInAction(() => {
+          this.loggedUser = new FullUser(userData);
+        });
+        await this.onLoginChanged();
+      },
+      (error: LoadError) => {
+        const { status } = error;
+        if (this.onLoadError) {
+          if (status === 401) {
+            // Make alert more readable
+            if (this.onLoadError) {
+              this.onLoadError(
+                new LoadError(
+                  status.toString(),
+                  i18n.t('alerts.invalidCredentials'),
+                ),
+              );
+            }
+          } else {
+            // bubble other error types up
+            this.onLoadError(error);
+          }
+        }
+      },
+    );
   }
 
   async logOut(): Promise<void> {
