@@ -10,6 +10,7 @@ import {
   meetupTabsMapper,
   ProtectedRoute,
   RootStoreProvider,
+  AlertStack,
 } from 'components';
 import {
   LoginPage,
@@ -104,6 +105,7 @@ export const App = observer(
           </main>
         </Suspense>
       </BrowserRouter>
+      <AlertStack />
     </RootStoreProvider>
   ),
 );
