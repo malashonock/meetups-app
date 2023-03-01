@@ -11,58 +11,34 @@ export default {
 
 const Template: ComponentStory<typeof Toast> = (args) => <Toast {...args} />;
 
-const error = new Alert(
-  {
-    severity: AlertSeverity.Error,
-    title: 'Error, something is wrong!',
-    text: 'There seems to be a problem',
-  },
-  new UiStore(new RootStore()),
-);
-
-const warning = new Alert(
-  {
-    severity: AlertSeverity.Warning,
-    title: 'Damn!',
-    text: "Something went wrong, but we don't know what exactly",
-  },
-  new UiStore(new RootStore()),
-);
-
-const success = new Alert(
-  {
-    severity: AlertSeverity.Success,
-    title: 'Success!',
-    text: "Looks like everything is set up and ready to go! Let's roll!",
-  },
-  new UiStore(new RootStore()),
-);
-
-const info = new Alert(
-  {
-    severity: AlertSeverity.Info,
-    title: 'Need help?',
-    text: 'Just send us an email with your issue',
-  },
-  new UiStore(new RootStore()),
-);
-
 export const Error = Template.bind({});
 Error.args = {
-  alert: error,
+  variant: AlertSeverity.Error,
+  title: 'Error, something is wrong!',
+  description: 'There seems to be a problem',
+  onClose: () => {},
 };
 
 export const Warning = Template.bind({});
 Warning.args = {
-  alert: warning,
+  variant: AlertSeverity.Warning,
+  title: 'Damn!',
+  description: "Something went wrong, but we don't know what exactly",
+  onClose: () => {},
 };
 
 export const Success = Template.bind({});
 Success.args = {
-  alert: success,
+  variant: AlertSeverity.Success,
+  title: 'Success!',
+  description: "Looks like everything is set up and ready to go! Let's roll!",
+  onClose: () => {},
 };
 
 export const Info = Template.bind({});
 Info.args = {
-  alert: info,
+  variant: AlertSeverity.Info,
+  title: 'Need help?',
+  description: 'Just send us an email with your issue',
+  onClose: () => {},
 };

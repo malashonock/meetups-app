@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 
 import { Typography, IconButton } from 'components';
-import { Alert, AlertSeverity } from 'types';
+import { AlertSeverity } from 'types';
 
 import styles from './Toast.module.scss';
 import { ReactComponent as ErrorIcon } from './assets/error.svg';
@@ -11,18 +11,20 @@ import { ReactComponent as InfoIcon } from './assets/info.svg';
 import { ReactComponent as CloseIcon } from './assets/cross.svg';
 
 interface ToastProps {
-  alert: Alert;
+  variant: AlertSeverity;
+  title: string;
+  description: string;
+  onClose: () => void;
 }
 
-export const Toast = ({ alert }: ToastProps): JSX.Element => {
-  const { severity, title, text: description } = alert;
-
-  const handleClose = (): void => {
-    alert.dismiss();
-  };
-
+export const Toast = ({
+  variant,
+  title,
+  description,
+  onClose,
+}: ToastProps): JSX.Element => {
   const renderIcon = (): JSX.Element => {
-    switch (severity) {
+    switch (variant) {
       case AlertSeverity.Error:
         return <ErrorIcon className={styles.icon} />;
       case AlertSeverity.Warning:
@@ -35,7 +37,7 @@ export const Toast = ({ alert }: ToastProps): JSX.Element => {
   };
 
   return (
-    <div className={classNames(styles.toast, styles[severity])}>
+    <div className={classNames(styles.toast, styles[variant])}>
       <span className={styles.icon}>{renderIcon()}</span>
       <span className={styles.text}>
         <Typography className={styles.title}>{title}</Typography>
@@ -43,7 +45,7 @@ export const Toast = ({ alert }: ToastProps): JSX.Element => {
           {description}
         </Typography>
       </span>
-      <IconButton className={styles.closeBtn} onClick={handleClose}>
+      <IconButton className={styles.closeBtn} onClick={onClose}>
         <CloseIcon />
       </IconButton>
     </div>
