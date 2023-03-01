@@ -2,16 +2,13 @@
 
 $blue-01: #2a40bf;
 $blue-02: #314ad7;
+$blue-03: #7989e7;
 
 $purple: #8065ec;
 
 /* Gradient */
 
-$purple-gradient-01: linear-gradient(
-  63.5deg,
-  $purple 17%,
-  $blue-02 83%
-);
+$purple-gradient-01: linear-gradient(63.5deg, $purple 17%, $blue-02 83%);
 $purple-gradient-02: linear-gradient(
   132.17deg,
   $purple -2.22%,
