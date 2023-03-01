@@ -5,7 +5,7 @@ import { Credentials } from 'model';
 import * as LoginApi from 'api/services/login.service';
 import { mockFullUser } from 'model/__fakes__';
 
-const spiedOnMobXMakeAutoObservable = jest.spyOn(MobX, 'makeAutoObservable');
+const spiedOnMobXMakeObservable = jest.spyOn(MobX, 'makeObservable');
 const spiedOnApiLogin = jest.spyOn(LoginApi, 'login');
 const spiedOnApiLogout = jest.spyOn(LoginApi, 'logout');
 const spiedOnStorageGetItem = jest.spyOn(Storage.prototype, 'getItem');
@@ -20,7 +20,7 @@ describe('AuthStore', () => {
   describe('constructor', () => {
     it('should make the returned instance observable', () => {
       const authStore = new AuthStore(new RootStore());
-      expect(spiedOnMobXMakeAutoObservable).toHaveBeenCalledWith(authStore);
+      expect(spiedOnMobXMakeObservable).toHaveBeenCalled();
     });
 
     it('should initialize loggedUser field to null', () => {
