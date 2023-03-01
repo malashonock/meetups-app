@@ -7,8 +7,8 @@ import {
 } from 'mobx';
 
 import * as API from 'api';
-import { RootStore, User } from 'stores';
-import { FileWithUrl, Loadable, Nullable, Optional } from 'types';
+import { FullUser, RootStore, User } from 'stores';
+import { FileWithUrl, Loadable, Maybe, Nullable, Optional } from 'types';
 import { IMeetup, MeetupFields, MeetupStatus } from 'model';
 import { isPast } from 'utils';
 
@@ -157,6 +157,7 @@ export class Meetup extends Loadable implements IMeetup {
       update: action,
       approve: action,
       publish: action,
+      actor: computed,
       canLoggedUserSupport: computed,
       hasLoggedUserVoted: computed,
       vote: action,
@@ -235,13 +236,16 @@ export class Meetup extends Loadable implements IMeetup {
     });
   }
 
+  get actor(): Maybe<FullUser> {
+    return this.meetupStore?.rootStore.authStore.loggedUser;
+  }
+
   get canLoggedUserSupport(): boolean {
-    const loggedUser = this.meetupStore?.rootStore.authStore.loggedUser;
     if (
-      loggedUser &&
-      loggedUser.id !== this.author.id &&
+      this.actor &&
+      this.actor.id !== this.author.id &&
       this.speakers.findIndex(
-        (speaker: User): boolean => speaker.id === loggedUser.id,
+        (speaker: User): boolean => speaker.id === this.actor!.id,
       ) === -1
     ) {
       return true;
@@ -251,14 +255,13 @@ export class Meetup extends Loadable implements IMeetup {
   }
 
   get hasLoggedUserVoted(): boolean {
-    const loggedUser = this.meetupStore?.rootStore.authStore.loggedUser;
-    if (!loggedUser) {
+    if (!this.actor) {
       return false;
     }
 
     return (
       this.votedUsers.findIndex(
-        (votedUser: User): boolean => votedUser.id === loggedUser.id,
+        (votedUser: User): boolean => votedUser.id === this.actor!.id,
       ) > -1
     );
   }
@@ -268,15 +271,14 @@ export class Meetup extends Loadable implements IMeetup {
       return;
     }
 
-    const loggedUser = this.meetupStore?.rootStore.authStore.loggedUser;
-    if (!loggedUser || !this.canLoggedUserSupport) {
+    if (!this.actor || !this.canLoggedUserSupport) {
       return;
     }
 
     await this.tryLoad(async () => {
       await API.voteForMeetup(this.id);
       runInAction(() => {
-        this.votedUsers.unshift(new User(loggedUser));
+        this.votedUsers.unshift(new User(this.actor!));
       });
     });
   }
@@ -286,8 +288,7 @@ export class Meetup extends Loadable implements IMeetup {
       return;
     }
 
-    const loggedUser = this.meetupStore?.rootStore.authStore.loggedUser;
-    if (!loggedUser) {
+    if (!this.actor) {
       return;
     }
 
@@ -295,21 +296,20 @@ export class Meetup extends Loadable implements IMeetup {
       await API.withdrawVoteForMeetup(this.id);
       runInAction(() => {
         this.votedUsers = this.votedUsers.filter(
-          (votedUser: User): boolean => votedUser.id !== loggedUser.id,
+          (votedUser: User): boolean => votedUser.id !== this.actor!.id,
         );
       });
     });
   }
 
   get hasLoggedUserJoined(): boolean {
-    const loggedUser = this.meetupStore?.rootStore.authStore.loggedUser;
-    if (!loggedUser) {
+    if (!this.actor) {
       return false;
     }
 
     return (
       this.participants.findIndex(
-        (participant: User): boolean => participant.id === loggedUser.id,
+        (participant: User): boolean => participant.id === this.actor!.id,
       ) > -1
     );
   }
@@ -322,15 +322,14 @@ export class Meetup extends Loadable implements IMeetup {
       return;
     }
 
-    const loggedUser = this.meetupStore?.rootStore.authStore.loggedUser;
-    if (!loggedUser || !this.canLoggedUserSupport) {
+    if (!this.actor || !this.canLoggedUserSupport) {
       return;
     }
 
     await this.tryLoad(async () => {
       await API.joinMeetup(this.id);
       runInAction(() => {
-        this.participants.unshift(new User(loggedUser));
+        this.participants.unshift(new User(this.actor!));
       });
     });
   }
@@ -343,8 +342,7 @@ export class Meetup extends Loadable implements IMeetup {
       return;
     }
 
-    const loggedUser = this.meetupStore?.rootStore.authStore.loggedUser;
-    if (!loggedUser) {
+    if (!this.actor) {
       return;
     }
 
@@ -352,7 +350,7 @@ export class Meetup extends Loadable implements IMeetup {
       await API.cancelJoinMeetup(this.id);
       runInAction(() => {
         this.participants = this.participants.filter(
-          (participant: User): boolean => participant.id !== loggedUser.id,
+          (participant: User): boolean => participant.id !== this.actor!.id,
         );
       });
     });
