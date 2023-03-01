@@ -1,6 +1,5 @@
 import { makeAutoObservable } from 'mobx';
 import { UiStore } from 'stores';
-import { Optional } from './Maybe';
 
 export enum AlertSeverity {
   Info = 'info',
@@ -11,7 +10,7 @@ export enum AlertSeverity {
 
 export interface AlertProps {
   severity: AlertSeverity;
-  title?: string;
+  title: string;
   text: string;
   expiresIn?: number; // milliseconds
 }
@@ -19,7 +18,7 @@ export interface AlertProps {
 export class Alert {
   uiStore: UiStore;
   severity: AlertSeverity;
-  title: Optional<string>;
+  title: string;
   text: string;
 
   static DefaultTimeout = 3_000;
