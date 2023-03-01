@@ -1,67 +1,100 @@
 import {
+  action,
   computed,
-  makeAutoObservable,
   makeObservable,
   observable,
   runInAction,
 } from 'mobx';
-import { AxiosError } from 'axios';
 
 import { Credentials, IFullUser, UserRole } from 'model';
 import * as API from 'api';
 import { RootStore, User, UserStore } from 'stores';
-import { Nullable } from 'types';
+import { AlertSeverity, Loadable, LoadError, Nullable } from 'types';
 
-export class AuthStore {
+export class AuthStore extends Loadable {
   loggedUser: Nullable<FullUser>;
   userStore: UserStore;
   isInitialized: boolean;
 
   constructor(public rootStore: RootStore) {
-    makeAutoObservable(this);
+    super();
+    this.setupObservable();
 
     this.loggedUser = null;
     this.isInitialized = false;
     this.userStore = new UserStore(this);
+
+    this.onLoadError = (error: LoadError): void => {
+      const { code, message } = error;
+      this.rootStore.onAlert({
+        severity: AlertSeverity.Error,
+        title: 'Server Error',
+        text: `Error ${code}: ${message}`,
+      });
+    };
+  }
+
+  setupObservable(): void {
+    makeObservable(this, {
+      loggedUser: observable,
+      userStore: observable,
+      isInitialized: observable,
+      init: action,
+      checkLogin: action,
+      logIn: action,
+      logOut: action,
+      onLoginChanged: action,
+    });
   }
 
   async init(): Promise<void> {
-    try {
+    await this.tryLoad(async () => {
       await this.checkLogin();
-    } finally {
-      this.isInitialized = true;
-    }
+    });
+
+    this.isInitialized = true;
   }
 
   async checkLogin(): Promise<void> {
-    try {
-      const userData: IFullUser = await API.checkLogin();
+    await this.tryLoad(
+      async () => {
+        const userData: IFullUser = await API.checkLogin();
+        runInAction(() => {
+          this.loggedUser = new FullUser(userData);
+        });
+        await this.onLoginChanged();
+      },
+      (error: LoadError) => {
+        const { status } = error;
+        if (status === 401) {
+          // 401 is expected here intentionally
+          this.loggedUser = null;
+        } else if (this.onLoadError) {
+          // bubble other error types up
+          this.onLoadError(error);
+        }
+      },
+    );
+  }
+
+  async logIn(credentials: Credentials): Promise<void> {
+    await this.tryLoad(async () => {
+      const userData: IFullUser = await API.login(credentials);
       runInAction(() => {
         this.loggedUser = new FullUser(userData);
       });
       await this.onLoginChanged();
-    } catch (error) {
-      const { code } = error as AxiosError;
-      if (code === '401') {
-        this.loggedUser = null;
-      }
-    }
-  }
-
-  async logIn(credentials: Credentials): Promise<void> {
-    const userData: IFullUser = await API.login(credentials);
-    runInAction(() => {
-      this.loggedUser = new FullUser(userData);
     });
-    await this.onLoginChanged();
   }
 
   async logOut(): Promise<void> {
-    await API.logout();
-    runInAction(() => {
-      this.loggedUser = null;
+    await this.tryLoad(async () => {
+      await API.logout();
+      runInAction(() => {
+        this.loggedUser = null;
+      });
+      await this.onLoginChanged();
     });
-    await this.onLoginChanged();
   }
 
   async onLoginChanged(): Promise<void> {
