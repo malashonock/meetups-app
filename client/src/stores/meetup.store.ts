@@ -5,6 +5,7 @@ import {
   observable,
   runInAction,
 } from 'mobx';
+import i18n from 'i18n';
 
 import * as API from 'api';
 import { FullUser, RootStore, User } from 'stores';
@@ -38,8 +39,8 @@ export class MeetupStore extends Loadable {
       const { code, message } = error;
       this.rootStore.onAlert({
         severity: AlertSeverity.Error,
-        title: 'Server Error',
-        text: `Error ${code}: ${message}`,
+        title: i18n.t('alerts.serverError'),
+        text: `${i18n.t('alerts.error')} ${code}: ${message}`,
       });
     };
   }
