@@ -1,28 +1,37 @@
-import { makeAutoObservable, runInAction } from 'mobx';
+import {
+  action,
+  computed,
+  makeAutoObservable,
+  makeObservable,
+  observable,
+  runInAction,
+} from 'mobx';
 
 import * as API from 'api';
 import { AuthStore, FullUser } from 'stores';
 import { IUser } from 'model';
 import { getFirstLetter } from 'utils';
-import { ILoadable, Maybe, Nullable, Optional } from 'types';
+import { Loadable, Maybe, Nullable, Optional } from 'types';
 
-export class UserStore implements ILoadable {
+export class UserStore extends Loadable {
   authStore: AuthStore;
   users: User[];
 
-  isLoading: boolean;
-  isError: boolean;
-  errors: unknown[];
-
   constructor(authStore: AuthStore) {
-    makeAutoObservable(this);
+    super();
+    this.setupObservable();
 
     this.authStore = authStore;
     this.users = [];
+  }
 
-    this.isLoading = false;
-    this.isError = false;
-    this.errors = [];
+  setupObservable(): void {
+    makeObservable(this, {
+      authStore: observable,
+      users: observable,
+      init: action,
+      loadUsers: action,
+    });
   }
 
   async init(loggedUser: Nullable<FullUser>): Promise<void> {
@@ -40,24 +49,14 @@ export class UserStore implements ILoadable {
   }
 
   async loadUsers(): Promise<void> {
-    try {
-      this.isLoading = true;
-
+    await this.tryLoad(async () => {
       const usersData: IUser[] = await API.getUsers();
       runInAction(() => {
         this.users = usersData.map(
           (userData: IUser): User => new User(userData),
         );
       });
-
-      this.isLoading = false;
-      this.isError = false;
-      this.errors.length = 0;
-    } catch (error) {
-      this.isLoading = false;
-      this.isError = true;
-      this.errors.push(error);
-    }
+    });
   }
 
   findUser(idOrUser: Maybe<string> | Maybe<{ id: string }>): Optional<User> {
@@ -107,6 +106,14 @@ export class User implements IUser {
   surname: string;
 
   constructor(userData: IUser) {
+    makeObservable(this, {
+      id: observable,
+      name: observable,
+      surname: observable,
+      fullName: computed,
+      initials: computed,
+    });
+
     ({ id: this.id, name: this.name, surname: this.surname } = userData);
   }
 

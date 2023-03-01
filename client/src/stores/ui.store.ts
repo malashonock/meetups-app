@@ -1,5 +1,5 @@
-import { makeAutoObservable, runInAction } from 'mobx';
-import { makePersistable, stopPersisting } from 'mobx-persist-store';
+import { makeAutoObservable } from 'mobx';
+import { makePersistable } from 'mobx-persist-store';
 
 import { RootStore } from 'stores';
 

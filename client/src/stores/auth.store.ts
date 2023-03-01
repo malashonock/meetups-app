@@ -1,4 +1,10 @@
-import { makeAutoObservable, runInAction } from 'mobx';
+import {
+  computed,
+  makeAutoObservable,
+  makeObservable,
+  observable,
+  runInAction,
+} from 'mobx';
 import { AxiosError } from 'axios';
 
 import { Credentials, IFullUser, UserRole } from 'model';
@@ -75,6 +81,13 @@ export class FullUser extends User {
 
   constructor(userData: IFullUser) {
     super(userData);
+
+    makeObservable(this, {
+      post: observable,
+      roles: observable,
+      isAdmin: computed,
+    });
+
     ({ post: this.post, roles: this.roles } = userData);
   }
 

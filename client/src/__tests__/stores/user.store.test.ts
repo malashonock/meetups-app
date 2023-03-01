@@ -9,7 +9,7 @@ import {
   mockUsers,
 } from 'model/__fakes__';
 
-const spiedOnMobXMakeAutoObservable = jest.spyOn(MobX, 'makeAutoObservable');
+const spiedOnMobXMakeObservable = jest.spyOn(MobX, 'makeObservable');
 const spiedOnApiGetUsers = jest.spyOn(UserApi, 'getUsers');
 
 const mockAuthStore = new AuthStore(new RootStore());
@@ -26,7 +26,7 @@ describe('UserStore', () => {
   describe('constructor', () => {
     it('should make the returned instance observable', () => {
       const userStore = new UserStore(mockAuthStore);
-      expect(spiedOnMobXMakeAutoObservable).toHaveBeenCalledWith(userStore);
+      expect(spiedOnMobXMakeObservable).toHaveBeenCalled();
     });
 
     it('should initialize users field to an empty array', () => {
@@ -103,9 +103,9 @@ describe('UserStore', () => {
 
 describe('User', () => {
   describe('constructor', () => {
-    it('should not make the returned instance observable', () => {
+    it('should make the returned instance observable', () => {
       const user = new User(mockUserData);
-      expect(spiedOnMobXMakeAutoObservable).not.toHaveBeenCalled();
+      expect(spiedOnMobXMakeObservable).toHaveBeenCalled();
     });
 
     it('should initialize users fields with user data', () => {

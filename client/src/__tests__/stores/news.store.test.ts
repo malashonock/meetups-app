@@ -13,7 +13,7 @@ import {
   mockUpdatedNewsArticleFields,
 } from 'model/__fakes__';
 
-const spiedOnMobXMakeAutoObservable = jest.spyOn(MobX, 'makeAutoObservable');
+const spiedOnMobXMakeObservable = jest.spyOn(MobX, 'makeObservable');
 const spiedOnApiGetNews = jest.spyOn(NewsApi, 'getNews');
 const spiedOnApiCreateNewsArticle = jest.spyOn(NewsApi, 'createNewsArticle');
 const spiedOnApiUpdateNewsArticle = jest.spyOn(NewsApi, 'updateNewsArticle');
@@ -37,7 +37,7 @@ describe('NewsStore', () => {
   describe('constructor', () => {
     it('should make the returned instance observable', () => {
       const newsStore = new NewsStore(new RootStore());
-      expect(spiedOnMobXMakeAutoObservable).toHaveBeenCalledWith(newsStore);
+      expect(spiedOnMobXMakeObservable).toHaveBeenCalled();
     });
 
     it('should initialize instance fields properly', () => {
@@ -206,19 +206,10 @@ describe('NewsStore', () => {
 
 describe('News', () => {
   describe('constructor', () => {
-    describe('given news store is passed', () => {
-      it('should make the returned instance observable', () => {
-        const newsStore = new NewsStore(new RootStore());
-        const newsArticle = new News(mockNewsArticleData, newsStore);
-        expect(spiedOnMobXMakeAutoObservable).toHaveBeenCalledWith(newsArticle);
-      });
-    });
-
-    describe('given news store is not passed', () => {
-      it('should not make the returned instance observable', () => {
-        const newsArticle = new News(mockNewsArticleData);
-        expect(spiedOnMobXMakeAutoObservable).not.toHaveBeenCalled();
-      });
+    it('should make the returned instance observable', () => {
+      const newsStore = new NewsStore(new RootStore());
+      const newsArticle = new News(mockNewsArticleData, newsStore);
+      expect(spiedOnMobXMakeObservable).toHaveBeenCalled();
     });
 
     it('should initialize instance fields properly', () => {

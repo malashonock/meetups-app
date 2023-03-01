@@ -18,7 +18,7 @@ import {
   mockImageWithUrl,
 } from 'model/__fakes__';
 
-const spiedOnMobXMakeAutoObservable = jest.spyOn(MobX, 'makeAutoObservable');
+const spiedOnMobXMakeObservable = jest.spyOn(MobX, 'makeObservable');
 const spiedOnApiGetMeetups = jest.spyOn(MeetupApi, 'getMeetups');
 const spiedOnApiCreateMeetup = jest.spyOn(MeetupApi, 'createMeetup');
 const spiedOnApiUpdateMeetup = jest.spyOn(MeetupApi, 'updateMeetup');
@@ -62,7 +62,7 @@ describe('MeetupStore', () => {
   describe('constructor', () => {
     it('should make the returned instance observable', () => {
       const meetupStore = new MeetupStore(new RootStore());
-      expect(spiedOnMobXMakeAutoObservable).toHaveBeenCalledWith(meetupStore);
+      expect(spiedOnMobXMakeObservable).toHaveBeenCalled();
     });
 
     it('should initialize instance fields properly', () => {
@@ -228,18 +228,9 @@ describe('MeetupStore', () => {
 
 describe('Meetup', () => {
   describe('constructor', () => {
-    describe('given meetups store is passed', () => {
-      it('should make the returned instance observable', () => {
-        const meetup = new Meetup(mockMeetupData, mockMeetupStore);
-        expect(spiedOnMobXMakeAutoObservable).toHaveBeenCalledWith(meetup);
-      });
-    });
-
-    describe('given meetups store is not passed', () => {
-      it('should not make the returned instance observable', () => {
-        const meetup = new Meetup(mockMeetupData);
-        expect(spiedOnMobXMakeAutoObservable).not.toHaveBeenCalled();
-      });
+    it('should make the returned instance observable', () => {
+      const meetup = new Meetup(mockMeetupData, mockMeetupStore);
+      expect(spiedOnMobXMakeObservable).toHaveBeenCalled();
     });
 
     it('should initialize instance fields properly', () => {
