@@ -1,0 +1,111 @@
+@import '~style/colors';
+@import '~style/typography';
+@import '~style/mixins';
+
+.toast {
+  height: 56px;
+  width: 584px;
+  max-width: calc(100vw - 20px);
+  border-radius: 4px;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  position: relative;
+
+  > * {
+    height: 100%;
+  }
+
+  svg path {
+    fill: $white;
+  }
+
+  &.error {
+    background-color: $red-02;
+
+    .icon {
+      background-color: $red-01;
+    }
+  }
+
+  &.warning {
+    background-color: $orange-02;
+
+    .icon {
+      background-color: $orange-01;
+    }
+  }
+
+  &.success {
+    background-color: $green-03;
+
+    .icon {
+      background-color: $green-01;
+    }
+  }
+
+  &.info {
+    background-color: $blue-03;
+
+    .icon {
+      background-color: $blue-02;
+    }
+  }
+}
+
+.icon {
+  width: 56px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text {
+  flex-grow: 1;
+  margin-left: 16px;
+  margin-right: 52px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-content: center;
+  column-gap: 6px;
+  row-gap: 2px;
+  flex-wrap: wrap;
+
+  @extend .font-family-auxiliary;
+  @extend .font-color-white;
+  @extend .font-size-xs;
+}
+
+.title {
+  @extend .font-weight-bold;
+}
+
+.description {
+  @extend .font-weight-medium;
+}
+
+.closeBtn {
+  height: 14px;
+  width: 14px;
+
+  position: absolute;
+  right: 24px;
+  margin-top: auto;
+  margin-bottom: auto;
+
+  &:hover,
+  &:active {
+    filter: drop-shadow(0 0 2px $white) !important;
+    @include smooth-transition(all);
+  }
+
+  &:active {
+    transform: scale(0.99);
+  }
+}
