@@ -8,7 +8,15 @@ import {
 
 import * as API from 'api';
 import { FullUser, RootStore, User } from 'stores';
-import { FileWithUrl, Loadable, Maybe, Nullable, Optional } from 'types';
+import {
+  AlertSeverity,
+  FileWithUrl,
+  Loadable,
+  LoadError,
+  Maybe,
+  Nullable,
+  Optional,
+} from 'types';
 import { IMeetup, MeetupFields, MeetupStatus } from 'model';
 import { isPast } from 'utils';
 
@@ -25,6 +33,15 @@ export class MeetupStore extends Loadable {
 
     this.meetups = [];
     this.isInitialized = false;
+
+    this.onLoadError = (error: LoadError): void => {
+      const { code, message } = error;
+      this.rootStore.onAlert({
+        severity: AlertSeverity.Error,
+        title: 'Server Error',
+        text: `Error ${code}: ${message}`,
+      });
+    };
   }
 
   setupObservable(): void {
@@ -133,6 +150,12 @@ export class Meetup extends Loadable implements IMeetup {
     this.participants = participantsData.map(User.factory);
 
     this.isInitialized = false;
+
+    this.onLoadError = (error: LoadError): void => {
+      if (this.meetupStore?.onLoadError) {
+        this.meetupStore.onLoadError(error);
+      }
+    };
   }
 
   setupObservable(): void {

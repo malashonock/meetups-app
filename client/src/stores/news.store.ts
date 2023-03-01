@@ -1,9 +1,17 @@
 import { action, makeObservable, observable, runInAction } from 'mobx';
+import { AxiosError } from 'axios';
 
 import * as API from 'api';
-import { FileWithUrl, Loadable, Nullable, Optional } from 'types';
+import {
+  AlertSeverity,
+  FileWithUrl,
+  Loadable,
+  LoadError,
+  Nullable,
+  Optional,
+} from 'types';
 import { INews, NewsFields } from 'model';
-import { RootStore } from './root.store';
+import { RootStore } from 'stores';
 
 export class NewsStore extends Loadable {
   rootStore: RootStore;
@@ -18,6 +26,15 @@ export class NewsStore extends Loadable {
 
     this.news = [];
     this.isInitialized = false;
+
+    this.onLoadError = (error: LoadError): void => {
+      const { code, message } = error;
+      this.rootStore.onAlert({
+        severity: AlertSeverity.Error,
+        title: 'Server Error',
+        text: `Error ${code}: ${message}`,
+      });
+    };
   }
 
   setupObservable(): void {
@@ -100,6 +117,12 @@ export class News extends Loadable implements INews {
       text: this.text,
       image: this.image,
     } = newsArticleData);
+
+    this.onLoadError = (error: LoadError): void => {
+      if (this.newsStore?.onLoadError) {
+        this.newsStore.onLoadError(error);
+      }
+    };
   }
 
   setupObservable(): void {
