@@ -6,7 +6,7 @@ import {
   AlertSeverity,
   FileWithUrl,
   Loadable,
-  LoadError,
+  ServerError,
   Nullable,
   Optional,
 } from 'types';
@@ -27,7 +27,7 @@ export class NewsStore extends Loadable {
     this.news = [];
     this.isInitialized = false;
 
-    this.onLoadError = (error: LoadError): void => {
+    this.onError = (error: ServerError): void => {
       const { code, message } = error;
       this.rootStore.onAlert({
         severity: AlertSeverity.Error,
@@ -118,9 +118,9 @@ export class News extends Loadable implements INews {
       image: this.image,
     } = newsArticleData);
 
-    this.onLoadError = (error: LoadError): void => {
-      if (this.newsStore?.onLoadError) {
-        this.newsStore.onLoadError(error);
+    this.onError = (error: ServerError): void => {
+      if (this.newsStore?.onError) {
+        this.newsStore.onError(error);
       }
     };
   }

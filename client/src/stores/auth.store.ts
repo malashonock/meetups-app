@@ -10,7 +10,7 @@ import i18n from 'i18n';
 import { Credentials, IFullUser, UserRole } from 'model';
 import * as API from 'api';
 import { RootStore, User, UserStore } from 'stores';
-import { AlertSeverity, Loadable, LoadError, Nullable } from 'types';
+import { AlertSeverity, Loadable, ServerError, Nullable } from 'types';
 
 export class AuthStore extends Loadable {
   loggedUser: Nullable<FullUser>;
@@ -25,7 +25,7 @@ export class AuthStore extends Loadable {
     this.isInitialized = false;
     this.userStore = new UserStore(this);
 
-    this.onLoadError = (error: LoadError): void => {
+    this.onError = (error: ServerError): void => {
       const { code, message } = error;
       this.rootStore.onAlert({
         severity: AlertSeverity.Error,
@@ -65,14 +65,14 @@ export class AuthStore extends Loadable {
         });
         await this.onLoginChanged();
       },
-      (error: LoadError) => {
+      (error: ServerError) => {
         const { status } = error;
         if (status === 401) {
           // 401 is expected here intentionally
           this.loggedUser = null;
-        } else if (this.onLoadError) {
+        } else if (this.onError) {
           // bubble other error types up
-          this.onLoadError(error);
+          this.onError(error);
         }
       },
     );
@@ -87,14 +87,14 @@ export class AuthStore extends Loadable {
         });
         await this.onLoginChanged();
       },
-      (error: LoadError) => {
+      (error: ServerError) => {
         const { status } = error;
-        if (this.onLoadError) {
+        if (this.onError) {
           if (status === 401) {
             // Make alert more readable
-            if (this.onLoadError) {
-              this.onLoadError(
-                new LoadError(
+            if (this.onError) {
+              this.onError(
+                new ServerError(
                   status.toString(),
                   i18n.t('alerts.invalidCredentials'),
                 ),
@@ -102,7 +102,7 @@ export class AuthStore extends Loadable {
             }
           } else {
             // bubble other error types up
-            this.onLoadError(error);
+            this.onError(error);
           }
         }
       },

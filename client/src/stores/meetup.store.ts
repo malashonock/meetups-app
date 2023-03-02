@@ -13,7 +13,7 @@ import {
   AlertSeverity,
   FileWithUrl,
   Loadable,
-  LoadError,
+  ServerError,
   Maybe,
   Nullable,
   Optional,
@@ -35,7 +35,7 @@ export class MeetupStore extends Loadable {
     this.meetups = [];
     this.isInitialized = false;
 
-    this.onLoadError = (error: LoadError): void => {
+    this.onError = (error: ServerError): void => {
       const { code, message } = error;
       this.rootStore.onAlert({
         severity: AlertSeverity.Error,
@@ -152,9 +152,9 @@ export class Meetup extends Loadable implements IMeetup {
 
     this.isInitialized = false;
 
-    this.onLoadError = (error: LoadError): void => {
-      if (this.meetupStore?.onLoadError) {
-        this.meetupStore.onLoadError(error);
+    this.onError = (error: ServerError): void => {
+      if (this.meetupStore?.onError) {
+        this.meetupStore.onError(error);
       }
     };
   }
