@@ -10,7 +10,7 @@ export enum AlertSeverity {
 
 export interface AlertProps {
   severity: AlertSeverity;
-  title: string;
+  title?: string;
   text: string;
   expiresIn?: number; // milliseconds
 }
@@ -18,7 +18,7 @@ export interface AlertProps {
 export class Alert {
   uiStore: UiStore;
   severity: AlertSeverity;
-  title: string;
+  title?: string;
   text: string;
 
   static DefaultTimeout = 3_000;

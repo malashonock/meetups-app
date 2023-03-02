@@ -12,7 +12,7 @@ import { ReactComponent as CloseIcon } from './assets/cross.svg';
 
 interface ToastProps {
   variant: AlertSeverity;
-  title: string;
+  title?: string;
   description: string;
   onClose: () => void;
 }
@@ -40,7 +40,9 @@ export const Toast = ({
     <div className={classNames(styles.toast, styles[variant])}>
       <span className={styles.icon}>{renderIcon()}</span>
       <span className={styles.text}>
-        <Typography className={styles.title}>{title}</Typography>
+        {title !== undefined && (
+          <Typography className={styles.title}>{title}</Typography>
+        )}
         <Typography className={styles.description} noWrap>
           {description}
         </Typography>
