@@ -1,20 +1,20 @@
-import { AxiosError } from 'axios';
 import { makeObservable, observable } from 'mobx';
-import { Optional, ServerError } from 'types';
+import { AppError } from 'model';
+import { Optional } from 'types';
 
 export interface ILoadable {
   isLoading: boolean;
   isError: boolean;
-  errors: unknown[];
-  onError: Optional<(error: ServerError) => void>;
+  errors: AppError[];
+  onError: Optional<(error: AppError) => void>;
   tryLoad: <T>(task: () => Promise<T>) => Promise<Optional<T>>;
 }
 
 export class Loadable implements ILoadable {
   isLoading = false;
   isError = false;
-  errors: unknown[] = [];
-  onError: Optional<(error: ServerError) => void>;
+  errors: AppError[] = [];
+  onError: Optional<(error: AppError) => void>;
 
   constructor() {
     makeObservable(this, {
@@ -26,7 +26,7 @@ export class Loadable implements ILoadable {
 
   async tryLoad<T>(
     task: () => Promise<T>,
-    onErrorCallback?: (error: ServerError) => void,
+    onErrorCallback?: (error: AppError) => void,
   ): Promise<Optional<T>> {
     try {
       this.isLoading = true;
@@ -41,19 +41,13 @@ export class Loadable implements ILoadable {
       this.isLoading = false;
       this.isError = true;
 
-      const { code, message, response } = error as AxiosError;
-      const serverError = new ServerError(
-        code || 'UNKNOWN_ERROR',
-        message,
-        response?.status,
-      );
-
-      this.errors.push(serverError);
+      const appError = error as AppError;
+      this.errors.push(appError);
 
       if (onErrorCallback) {
-        onErrorCallback(serverError);
+        onErrorCallback(appError);
       } else if (this.onError) {
-        this.onError(serverError);
+        this.onError(appError);
       }
     }
   }

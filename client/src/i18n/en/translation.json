@@ -200,8 +200,29 @@
     "newsArticle": "Loading news article"
   },
   "alerts": {
-    "error": "Error",
-    "serverError": "Server error",
-    "invalidCredentials": "Invalid username and/or password"
+    "networkError": {
+      "problem": "Network error",
+      "hint": "Check connection with the server"
+    },
+    "notAuthenticatedError": {
+      "problem": "Access denied",
+      "hint": "Log in and retry"
+    },
+    "notAuthorizedError": {
+      "problem": "Access denied",
+      "hint": "You need admin rights to perform this operation"
+    },
+    "notFoundError": {
+      "problem": "Resource not found",
+      "hint": "Check the link address and retry"
+    },
+    "serverError": {
+      "problem": "Server error",
+      "hint": "Server failed to handle your request"
+    },
+    "unknownError": {
+      "problem": "Unknown error",
+      "hint": "File a ticket to the tech support"
+    }
   }
 }

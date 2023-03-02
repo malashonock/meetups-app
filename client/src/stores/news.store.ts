@@ -6,11 +6,10 @@ import {
   AlertSeverity,
   FileWithUrl,
   Loadable,
-  ServerError,
   Nullable,
   Optional,
 } from 'types';
-import { INews, NewsFields } from 'model';
+import { AppError, INews, NewsFields } from 'model';
 import { RootStore } from 'stores';
 
 export class NewsStore extends Loadable {
@@ -27,12 +26,12 @@ export class NewsStore extends Loadable {
     this.news = [];
     this.isInitialized = false;
 
-    this.onError = (error: ServerError): void => {
-      const { code, message } = error;
+    this.onError = (error: AppError): void => {
+      const { problem, hint } = error;
       this.rootStore.onAlert({
         severity: AlertSeverity.Error,
-        title: i18n.t('alerts.serverError'),
-        text: `${i18n.t('alerts.error')} ${code}: ${message}`,
+        title: problem,
+        text: hint,
       });
     };
   }
@@ -118,7 +117,7 @@ export class News extends Loadable implements INews {
       image: this.image,
     } = newsArticleData);
 
-    this.onError = (error: ServerError): void => {
+    this.onError = (error: AppError): void => {
       if (this.newsStore?.onError) {
         this.newsStore.onError(error);
       }
