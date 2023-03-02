@@ -39,5 +39,6 @@ export * from './ProtectedRoute/ProtectedRoute';
 export * from './AvatarGroup/AvatarGroup';
 export * from './LoadingSpinner/LoadingSpinner';
 export * from './Portal/Portal';
+export * from './Modal/Modal';
 export * from './Toast/Toast';
 export * from './AlertStack/AlertStack';
