@@ -21,9 +21,7 @@ const Template = (): JSX.Element => {
     <>
       <button onClick={openModal}>Open modal</button>
       <Modal show={showModal} onClose={closeModal}>
-        {(onClose: () => void) => (
-          <button onClick={onClose}>Close modal</button>
-        )}
+        <button onClick={closeModal}>Close modal</button>
       </Modal>
     </>
   );
