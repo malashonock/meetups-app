@@ -18,6 +18,7 @@ const mockRootStoreInit = jest
 // Mock useTranslation
 const mockChangeLanguage = jest.fn();
 jest.mock('react-i18next', () => ({
+  ...jest.requireActual('react-i18next'),
   useTranslation: () => ({
     i18n: {
       changeLanguage: mockChangeLanguage,
