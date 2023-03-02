@@ -223,6 +223,27 @@
     "unknownError": {
       "problem": "Unknown error",
       "hint": "File a ticket to the tech support"
+    },
+    "user": {
+      "loggedIn": "You have logged in successfully",
+      "loggedOut": "You have logged out of the system"
+    },
+    "localeChanged": "UI language has been changed",
+    "meetup": {
+      "created": "Meetup has been created",
+      "deleted": "Meetup has been deleted",
+      "updated": "Meetup has been updated",
+      "approved": "Meetup has been approved",
+      "published": "Meetup has been published",
+      "votedFor": "Your vote has been counted",
+      "unvotedFor": "Your vote has been revoked",
+      "joined": "Thanks for joining the meetup!",
+      "unjoined": "Sorry to hear you won't attend :("
+    },
+    "news": {
+      "created": "News article has been created",
+      "deleted": "News article has been deleted",
+      "updated": "News article has been updated"
     }
   }
 }

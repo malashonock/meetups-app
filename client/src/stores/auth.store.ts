@@ -10,7 +10,7 @@ import i18n from 'i18n';
 import { AppError, Credentials, IFullUser, UserRole } from 'model';
 import * as API from 'api';
 import { RootStore, User, UserStore } from 'stores';
-import { AlertSeverity, Loadable, Nullable } from 'types';
+import { Alert, AlertSeverity, Loadable, Nullable } from 'types';
 
 export class AuthStore extends Loadable {
   loggedUser: Nullable<FullUser>;
@@ -86,6 +86,16 @@ export class AuthStore extends Loadable {
       });
       await this.onLoginChanged();
     });
+
+    this.rootStore.onAlert(
+      new Alert(
+        {
+          severity: AlertSeverity.Success,
+          text: i18n.t('alerts.user.loggedIn'),
+        },
+        this.rootStore.uiStore,
+      ),
+    );
   }
 
   async logOut(): Promise<void> {
@@ -96,6 +106,16 @@ export class AuthStore extends Loadable {
       });
       await this.onLoginChanged();
     });
+
+    this.rootStore.onAlert(
+      new Alert(
+        {
+          severity: AlertSeverity.Success,
+          text: i18n.t('alerts.user.loggedOut'),
+        },
+        this.rootStore.uiStore,
+      ),
+    );
   }
 
   async onLoginChanged(): Promise<void> {

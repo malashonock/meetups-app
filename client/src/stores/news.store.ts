@@ -3,6 +3,7 @@ import i18n from 'i18n';
 
 import * as API from 'api';
 import {
+  Alert,
   AlertSeverity,
   FileWithUrl,
   Loadable,
@@ -73,12 +74,32 @@ export class NewsStore extends Loadable {
 
       this.news.push(newArticle);
 
+      this.rootStore.onAlert(
+        new Alert(
+          {
+            severity: AlertSeverity.Success,
+            text: i18n.t('alerts.news.created'),
+          },
+          this.rootStore.uiStore,
+        ),
+      );
+
       return newArticle;
     });
   }
 
   onNewsArticleDeleted(deletedArticle: News): void {
     this.news.splice(this.news.indexOf(deletedArticle), 1);
+
+    this.rootStore.onAlert(
+      new Alert(
+        {
+          severity: AlertSeverity.Success,
+          text: i18n.t('alerts.news.deleted'),
+        },
+        this.rootStore.uiStore,
+      ),
+    );
   }
 
   findNewsArticle(id: string): Optional<News> {
@@ -147,6 +168,16 @@ export class News extends Loadable implements INews {
         Object.assign(this, updatedNewsData);
       });
     });
+
+    this.newsStore?.rootStore.onAlert(
+      new Alert(
+        {
+          severity: AlertSeverity.Success,
+          text: i18n.t('alerts.news.updated'),
+        },
+        this.newsStore.rootStore.uiStore,
+      ),
+    );
   }
 
   async delete(): Promise<void> {

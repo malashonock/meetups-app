@@ -2,7 +2,7 @@ import { createContext, PropsWithChildren, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import { RootStore } from 'stores';
-import { Optional } from 'types';
+import { Alert, AlertSeverity, Optional } from 'types';
 import { useTranslation } from 'react-i18next';
 
 export const RootContext = createContext<Optional<RootStore>>(undefined);
@@ -22,6 +22,15 @@ export const RootStoreProvider = observer(
     const { i18n } = useTranslation();
     useEffect(() => {
       i18n.changeLanguage(rootStore.uiStore.locale);
+      rootStore.onAlert(
+        new Alert(
+          {
+            severity: AlertSeverity.Success,
+            text: i18n.t('alerts.localeChanged'),
+          },
+          rootStore.uiStore,
+        ),
+      );
     }, [rootStore.uiStore.locale, i18n]);
 
     return (
