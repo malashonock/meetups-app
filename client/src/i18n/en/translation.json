@@ -228,7 +228,6 @@
       "loggedIn": "You have logged in successfully",
       "loggedOut": "You have logged out of the system"
     },
-    "localeChanged": "UI language has been changed",
     "meetup": {
       "created": "Meetup has been created",
       "deleted": "Meetup has been deleted",
