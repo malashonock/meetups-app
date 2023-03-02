@@ -205,8 +205,8 @@
       "hint": "Check connection with the server"
     },
     "notAuthenticatedError": {
-      "problem": "Access denied",
-      "hint": "Log in and retry"
+      "problem": "Login failed",
+      "hint": "Check your credentials and retry"
     },
     "notAuthorizedError": {
       "problem": "Access denied",

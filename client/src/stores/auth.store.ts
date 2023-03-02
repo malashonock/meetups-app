@@ -84,18 +84,19 @@ export class AuthStore extends Loadable {
       runInAction(() => {
         this.loggedUser = new FullUser(userData);
       });
+
+      this.rootStore.onAlert(
+        new Alert(
+          {
+            severity: AlertSeverity.Success,
+            text: i18n.t('alerts.user.loggedIn'),
+          },
+          this.rootStore.uiStore,
+        ),
+      );
+
       await this.onLoginChanged();
     });
-
-    this.rootStore.onAlert(
-      new Alert(
-        {
-          severity: AlertSeverity.Success,
-          text: i18n.t('alerts.user.loggedIn'),
-        },
-        this.rootStore.uiStore,
-      ),
-    );
   }
 
   async logOut(): Promise<void> {
@@ -104,18 +105,19 @@ export class AuthStore extends Loadable {
       runInAction(() => {
         this.loggedUser = null;
       });
+
+      this.rootStore.onAlert(
+        new Alert(
+          {
+            severity: AlertSeverity.Success,
+            text: i18n.t('alerts.user.loggedOut'),
+          },
+          this.rootStore.uiStore,
+        ),
+      );
+
       await this.onLoginChanged();
     });
-
-    this.rootStore.onAlert(
-      new Alert(
-        {
-          severity: AlertSeverity.Success,
-          text: i18n.t('alerts.user.loggedOut'),
-        },
-        this.rootStore.uiStore,
-      ),
-    );
   }
 
   async onLoginChanged(): Promise<void> {

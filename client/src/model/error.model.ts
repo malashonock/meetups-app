@@ -21,8 +21,8 @@ export class NetworkError extends AppError {
 export class NotAuthenticatedError extends AppError {
   constructor(
     code: string = '401',
-    problem: string = i18n.t('alerts.notAuthenticated.problem'),
-    hint: string = i18n.t('alerts.notAuthenticated.hint'),
+    problem: string = i18n.t('alerts.notAuthenticatedError.problem'),
+    hint: string = i18n.t('alerts.notAuthenticatedError.hint'),
   ) {
     super(code, problem, hint);
   }
@@ -31,8 +31,8 @@ export class NotAuthenticatedError extends AppError {
 export class NotAuthorizedError extends AppError {
   constructor(
     code: string = '403',
-    problem: string = i18n.t('alerts.notAuthorized.problem'),
-    hint: string = i18n.t('alerts.notAuthorized.hint'),
+    problem: string = i18n.t('alerts.notAuthorizedError.problem'),
+    hint: string = i18n.t('alerts.notAuthorizedError.hint'),
   ) {
     super(code, problem, hint);
   }
@@ -41,8 +41,8 @@ export class NotAuthorizedError extends AppError {
 export class NotFoundError extends AppError {
   constructor(
     code: string = '404',
-    problem: string = i18n.t('alerts.notFound.problem'),
-    hint: string = i18n.t('alerts.notFound.hint'),
+    problem: string = i18n.t('alerts.notFoundError.problem'),
+    hint: string = i18n.t('alerts.notFoundError.hint'),
   ) {
     super(code, problem, hint);
   }
