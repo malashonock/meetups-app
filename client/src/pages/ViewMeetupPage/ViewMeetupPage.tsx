@@ -15,7 +15,7 @@ import {
 import { NotFoundPage } from 'pages';
 import { MeetupStatus } from 'model';
 import { isPast, parseDate } from 'utils';
-import { useAuthStore, useMeetup, useLocale } from 'hooks';
+import { useAuthStore, useMeetup, useLocale, useConfirmDialog } from 'hooks';
 
 import styles from './ViewMeetupPage.module.scss';
 import defaultImage from 'assets/images/default-image.jpg';
@@ -30,6 +30,7 @@ export const ViewMeetupPage = observer(() => {
   const { i18n, t } = useTranslation();
   const [locale] = useLocale();
   const { loggedUser } = useAuthStore();
+  const confirm = useConfirmDialog();
 
   if (!meetup || isLoading) {
     return <LoadingSpinner text={t('loadingText.meetup')} />;
@@ -59,17 +60,15 @@ export const ViewMeetupPage = observer(() => {
   const handleBack = (): void => navigate(-1);
 
   const handleDeleteTopic = async (): Promise<void> => {
-    if (
-      !window.confirm(
-        t('viewMeetupPage.deleteTopicPrompt') ||
-          'Are you sure you want to delete the topic?',
-      )
-    ) {
-      return;
-    }
+    const deleteConfirmed = await confirm({
+      prompt: t('meetupCard.deletePrompt') || '',
+      confirmBtnLabel: t('formButtons.delete') || 'Delete',
+    });
 
-    await meetup?.delete();
-    navigate(`/meetups/topics`);
+    if (deleteConfirmed) {
+      await meetup.delete();
+      navigate(`/meetups/topics`);
+    }
   };
 
   const handleApproveTopic = async (): Promise<void> => {
