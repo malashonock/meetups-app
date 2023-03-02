@@ -15,6 +15,7 @@ import userEvent from '@testing-library/user-event';
 
 import { CreateMeetupPage } from 'pages';
 import {
+  mockFullUser,
   mockImageWithUrl,
   mockMeetup,
   mockMeetupFields,
@@ -171,7 +172,7 @@ describe('CreateMeetupPage', () => {
 
       it('should pre-populate speakers field with the meetup author, if they are authenticated', () => {
         mockUseAuthStore.mockReturnValue({
-          loggedUser: mockUser,
+          loggedUser: mockFullUser,
         });
 
         render(<CreateMeetupPage />, { wrapper: MockRouter });
@@ -364,7 +365,7 @@ describe('CreateMeetupPage', () => {
 
     it('should handle form submit', async () => {
       mockUseAuthStore.mockReturnValue({
-        loggedUser: mockUser,
+        loggedUser: mockFullUser,
       });
 
       await goToOptionalFields();

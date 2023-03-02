@@ -9,6 +9,7 @@ import { StepConfig, Stepper, StepperContext } from 'components';
 import { CreateMeetupOptionalFields } from './CreateMeetupOptionalFields/CreateMeetupOptionalFields';
 import { CreateMeetupRequiredFields } from './CreateMeetupRequiredFields/CreateMeetupRequiredFields';
 import { MeetupFields } from 'model';
+import { User } from 'stores';
 import { useAuthStore, useMeetupStore } from 'hooks';
 import {
   meetupRequiredFieldsSchema,
@@ -40,8 +41,8 @@ export const CreateMeetupPage = observer((): JSX.Element => {
   const { i18n } = useTranslation();
 
   const initialValues: MeetupFields = {
-    author: loggedUser ?? null,
-    speakers: loggedUser ? [loggedUser] : [],
+    author: loggedUser ? new User(loggedUser) : null,
+    speakers: loggedUser ? [new User(loggedUser)] : [],
     subject: '',
     excerpt: '',
     place: '',
