@@ -11,7 +11,6 @@ export enum Locale {
 
 export class UiStore {
   locale: Locale;
-  showOverlay: boolean;
   alerts: Alert[];
 
   constructor(public rootStore: RootStore) {
@@ -19,12 +18,11 @@ export class UiStore {
 
     makePersistable(this, {
       name: 'ui',
-      properties: ['locale', 'showOverlay'],
+      properties: ['locale'],
       storage: window.localStorage,
     });
 
     this.locale = Locale.RU;
-    this.showOverlay = false;
     this.alerts = [];
   }
 
@@ -51,7 +49,6 @@ export class UiStore {
   toJSON() {
     return {
       locale: this.locale,
-      this: this.showOverlay,
     };
   }
 }
