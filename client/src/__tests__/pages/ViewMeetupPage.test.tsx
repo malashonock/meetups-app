@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { ViewMeetupPage } from 'pages';
@@ -13,6 +13,7 @@ import {
 } from 'model/__fakes__';
 import { useAuthStore, useMeetup } from 'hooks';
 import { Meetup } from 'stores';
+import { ConfirmDialogProvider } from 'components';
 
 // Mock useAuthStore & useMeetup hook
 jest.mock('hooks', () => {
@@ -36,17 +37,19 @@ afterEach(() => {
 });
 
 const MockRouter = ({ children }: PropsWithChildren): JSX.Element => (
-  <MemoryRouter initialEntries={['/meetups', '/meetups/aaa']}>
-    <Routes>
-      <Route path="/meetups">
-        <Route index element={<h1>Meetups page</h1>} />
-        <Route path=":id">
-          <Route index element={children} />
-          <Route path="edit" element={<h1>Edit meetup</h1>} />
+  <ConfirmDialogProvider>
+    <MemoryRouter initialEntries={['/meetups', '/meetups/aaa']}>
+      <Routes>
+        <Route path="/meetups">
+          <Route index element={<h1>Meetups page</h1>} />
+          <Route path=":id">
+            <Route index element={children} />
+            <Route path="edit" element={<h1>Edit meetup</h1>} />
+          </Route>
         </Route>
-      </Route>
-    </Routes>
-  </MemoryRouter>
+      </Routes>
+    </MemoryRouter>
+  </ConfirmDialogProvider>
 );
 
 describe('ViewMeetupPage', () => {
@@ -90,11 +93,15 @@ describe('ViewMeetupPage', () => {
       });
 
       describe('Delete button', () => {
-        it('on click, should call meetup.delete() method', () => {
-          jest.spyOn(window, 'confirm').mockImplementation(() => true);
+        it('on click, should call meetup.delete() method', async () => {
           render(<ViewMeetupPage />, { wrapper: MockRouter });
+
           userEvent.click(screen.getByText('formButtons.delete'));
-          expect(mockMeetupDelete).toHaveBeenCalled();
+          userEvent.click(screen.getByTestId('confirm-button'));
+
+          await waitFor(() => {
+            expect(mockMeetupDelete).toHaveBeenCalled();
+          });
         });
       });
 

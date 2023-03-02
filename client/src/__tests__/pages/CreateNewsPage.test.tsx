@@ -29,12 +29,15 @@ const mockNewsStoreCreateArticle = jest.fn();
 beforeEach(() => {
   mockUseNewsStore.mockReturnValue({
     newsStore: {
+      setupObservable: jest.fn(),
       rootStore: new RootStore(),
       news: [],
       isInitialized: true,
       isLoading: false,
       isError: false,
       errors: [],
+      onError: jest.fn(),
+      tryLoad: jest.fn().mockImplementation(async (fn: Function) => await fn()),
       loadNews: jest.fn(),
       createNewsArticle: mockNewsStoreCreateArticle,
       findNewsArticle: jest.fn(),

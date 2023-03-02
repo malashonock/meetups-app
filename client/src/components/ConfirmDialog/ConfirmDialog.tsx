@@ -47,6 +47,7 @@ export const ConfirmDialog = ({
             className={classNames(styles.actionBtn, styles.confirmBtn)}
             variant={ButtonVariant.Primary}
             onClick={confirmAndClose}
+            data-testid="confirm-button"
           >
             {confirmBtnLabel ?? 'OK'}
           </Button>
@@ -54,6 +55,7 @@ export const ConfirmDialog = ({
             className={classNames(styles.actionBtn, styles.cancelBtn)}
             variant={ButtonVariant.Default}
             onClick={onClose}
+            data-testid="cancel-button"
           >
             {t('formButtons.cancel')}
           </Button>

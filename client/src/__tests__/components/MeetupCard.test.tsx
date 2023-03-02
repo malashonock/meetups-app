@@ -1,9 +1,9 @@
 import { PropsWithChildren } from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 
-import { MeetupCard } from 'components';
+import { ConfirmDialogProvider, MeetupCard } from 'components';
 import { mockFullUser, mockMeetup, mockTopic, mockUser } from 'model/__fakes__';
 import { useAuthStore, useUser } from 'hooks';
 import { Meetup } from 'stores';
@@ -22,14 +22,16 @@ const mockUseAuthStore = useAuthStore as jest.MockedFunction<
 const mockUseUser = useUser as jest.MockedFunction<typeof useUser>;
 
 const MockLoginRouter = ({ children }: PropsWithChildren): JSX.Element => (
-  <MemoryRouter initialEntries={['/meetups']}>
-    <Routes>
-      <Route path="/meetups">
-        <Route index element={children} />
-        <Route path=":id/edit" element={<h1>Edit meetup</h1>} />
-      </Route>
-    </Routes>
-  </MemoryRouter>
+  <ConfirmDialogProvider>
+    <MemoryRouter initialEntries={['/meetups']}>
+      <Routes>
+        <Route path="/meetups">
+          <Route index element={children} />
+          <Route path=":id/edit" element={<h1>Edit meetup</h1>} />
+        </Route>
+      </Routes>
+    </MemoryRouter>
+  </ConfirmDialogProvider>
 );
 
 beforeEach(() => {
@@ -138,16 +140,17 @@ describe('MeetupCard', () => {
     });
   });
 
-  it('on delete button click, should call meetup.delete() method', () => {
+  it('on delete button click, should call meetup.delete() method', async () => {
     const spiedOnDelete = jest.spyOn(Meetup.prototype, 'delete');
-    jest.spyOn(window, 'confirm').mockImplementation(() => true);
 
     render(<MeetupCard meetup={mockMeetup} />, { wrapper: MockLoginRouter });
 
-    const deleteButton = screen.getByTestId('delete-button');
-    userEvent.click(deleteButton);
+    userEvent.click(screen.getByTestId('delete-button'));
+    userEvent.click(screen.getByTestId('confirm-button'));
 
-    expect(spiedOnDelete).toHaveBeenCalledTimes(1);
+    await waitFor(() => {
+      expect(spiedOnDelete).toHaveBeenCalledTimes(1);
+    });
   });
 
   it('on edit button click, should navigate to Edit meetup page', async () => {
