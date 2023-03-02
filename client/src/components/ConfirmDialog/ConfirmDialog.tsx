@@ -11,7 +11,7 @@ import {
 
 import styles from './ConfirmDialog.module.scss';
 
-interface ConfirmDialogProps {
+export interface ConfirmDialogProps {
   isOpen: boolean;
   prompt: string;
   confirmBtnLabel?: string;

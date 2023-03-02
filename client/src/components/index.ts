@@ -41,5 +41,6 @@ export * from './LoadingSpinner/LoadingSpinner';
 export * from './Portal/Portal';
 export * from './Modal/Modal';
 export * from './ConfirmDialog/ConfirmDialog';
+export * from './ConfirmDialogProvider/ConfirmDialogProvider';
 export * from './Toast/Toast';
 export * from './AlertStack/AlertStack';
