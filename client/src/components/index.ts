@@ -40,5 +40,6 @@ export * from './AvatarGroup/AvatarGroup';
 export * from './LoadingSpinner/LoadingSpinner';
 export * from './Portal/Portal';
 export * from './Modal/Modal';
+export * from './ConfirmDialog/ConfirmDialog';
 export * from './Toast/Toast';
 export * from './AlertStack/AlertStack';
