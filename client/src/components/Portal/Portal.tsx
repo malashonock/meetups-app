@@ -22,7 +22,7 @@ interface PortalProps {
 
 export const Portal = ({
   children,
-  wrapperId = 'modal-wrapper',
+  wrapperId = 'modal-root',
 }: PropsWithChildren<PortalProps>): Nullable<ReactPortal> => {
   const [wrapperElement, setWrapperElement] =
     useState<Nullable<HTMLElement>>(null);
