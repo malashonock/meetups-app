@@ -26,13 +26,17 @@ export const Toast = ({
   const renderIcon = (): JSX.Element => {
     switch (variant) {
       case AlertSeverity.Error:
-        return <ErrorIcon className={styles.icon} />;
+        return <ErrorIcon className={styles.icon} data-testid="icon-error" />;
       case AlertSeverity.Warning:
-        return <WarningIcon className={styles.icon} />;
+        return (
+          <WarningIcon className={styles.icon} data-testid="icon-warning" />
+        );
       case AlertSeverity.Success:
-        return <SuccessIcon className={styles.icon} />;
+        return (
+          <SuccessIcon className={styles.icon} data-testid="icon-success" />
+        );
       case AlertSeverity.Info:
-        return <InfoIcon className={styles.icon} />;
+        return <InfoIcon className={styles.icon} data-testid="icon-info" />;
     }
   };
 
@@ -47,7 +51,11 @@ export const Toast = ({
           {description}
         </Typography>
       </span>
-      <IconButton className={styles.closeBtn} onClick={onClose}>
+      <IconButton
+        className={styles.closeBtn}
+        onClick={onClose}
+        data-testid="btn-close"
+      >
         <CloseIcon />
       </IconButton>
     </div>
