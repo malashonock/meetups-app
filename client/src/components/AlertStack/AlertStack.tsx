@@ -10,7 +10,7 @@ export const AlertStack = observer((): JSX.Element => {
   const { alerts } = useUiStore();
 
   return (
-    <Portal wrapperId="toasts-portal">
+    <Portal wrapperId="toasts-root">
       <ul className={styles.toasts}>
         {alerts?.map((alert: Alert) => (
           <Toast

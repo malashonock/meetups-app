@@ -41,7 +41,10 @@ export const Toast = ({
   };
 
   return (
-    <div className={classNames(styles.toast, styles[variant])}>
+    <div
+      className={classNames(styles.toast, styles[variant])}
+      data-testid="toast"
+    >
       <span className={styles.icon}>{renderIcon()}</span>
       <span className={styles.text}>
         {title !== undefined && (
