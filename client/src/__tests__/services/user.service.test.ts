@@ -3,13 +3,8 @@
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 
-import { getParticipants, getUser, getUsers, getVotedUsers } from 'api';
-import {
-  mockFullUser,
-  mockFullUsers,
-  mockMeetup,
-  mockUsersData,
-} from 'model/__fakes__';
+import { getUser, getUsers } from 'api';
+import { mockFullUser, mockFullUsers } from 'model/__fakes__';
 import { apiUrl, RestResolver } from 'utils';
 
 const mockUsersGetSuccess: RestResolver = (req, res, ctx) => {
@@ -22,22 +17,12 @@ const mockUserGetHandler: RestResolver = (req, res, ctx) => {
     : res(ctx.status(404));
 };
 
-const mockRelatedUsersGet: RestResolver = (req, res, ctx) => {
-  return req.params.id === mockMeetup.id
-    ? res(ctx.status(200), ctx.json(mockUsersData))
-    : res(ctx.status(404));
-};
-
 const spiedOnUsersGetHandler = jest.fn();
 const spiedOnUserGetHandler = jest.fn();
-const spiedOnVotedUsersGetHandler = jest.fn();
-const spiedOnParticipantsGetHandler = jest.fn();
 
 const server = setupServer(
   rest.get(apiUrl('/users'), spiedOnUsersGetHandler),
   rest.get(apiUrl('/users/:id'), spiedOnUserGetHandler),
-  rest.get(apiUrl('/meetups/:id/votedusers'), spiedOnVotedUsersGetHandler),
-  rest.get(apiUrl('/meetups/:id/participants'), spiedOnParticipantsGetHandler),
 );
 
 beforeAll(() => server.listen());
@@ -46,8 +31,6 @@ afterAll(() => server.close());
 beforeEach(() => {
   spiedOnUsersGetHandler.mockImplementation(mockUsersGetSuccess);
   spiedOnUserGetHandler.mockImplementation(mockUserGetHandler);
-  spiedOnVotedUsersGetHandler.mockImplementation(mockRelatedUsersGet);
-  spiedOnParticipantsGetHandler.mockImplementation(mockRelatedUsersGet);
 });
 
 afterEach(() => {
@@ -82,52 +65,6 @@ describe('User API service', () => {
           expect(error).toBeTruthy();
         } finally {
           expect(spiedOnUserGetHandler).toHaveBeenCalled();
-        }
-      });
-    });
-  });
-
-  describe('getVotedUsers function', () => {
-    describe('given the meetup was found', () => {
-      it('should return an array of users who voted for the specified meetup', async () => {
-        const votedUsers = await getVotedUsers(mockMeetup.id);
-        expect(spiedOnVotedUsersGetHandler).toHaveBeenCalled();
-        expect(votedUsers).toEqual(mockUsersData);
-      });
-    });
-
-    describe('given no meetup was found', () => {
-      it('should reject with a 404 error', async () => {
-        expect.assertions(2);
-        try {
-          await getVotedUsers('invalid-id');
-        } catch (error) {
-          expect(error).toBeTruthy();
-        } finally {
-          expect(spiedOnVotedUsersGetHandler).toHaveBeenCalled();
-        }
-      });
-    });
-  });
-
-  describe('getParticipants function', () => {
-    describe('given the meetup was found', () => {
-      it('should return an array of users who voted for the specified meetup', async () => {
-        const participants = await getParticipants(mockMeetup.id);
-        expect(spiedOnParticipantsGetHandler).toHaveBeenCalled();
-        expect(participants).toEqual(mockUsersData);
-      });
-    });
-
-    describe('given no meetup was found', () => {
-      it('should reject with a 404 error', async () => {
-        expect.assertions(2);
-        try {
-          await getParticipants('invalid-id');
-        } catch (error) {
-          expect(error).toBeTruthy();
-        } finally {
-          expect(spiedOnParticipantsGetHandler).toHaveBeenCalled();
         }
       });
     });
