@@ -35,7 +35,7 @@ export const ConfirmDialog = ({
 
   return (
     <Modal show={isOpen} onClose={onClose}>
-      <div className={styles.dialog}>
+      <div className={styles.dialog} data-testid="confirm-dialog">
         <Typography
           className={styles.prompt}
           component={TypographyComponent.Paragraph}
