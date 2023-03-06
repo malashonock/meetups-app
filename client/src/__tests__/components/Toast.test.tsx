@@ -1,8 +1,8 @@
+import { ComponentProps } from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { Toast } from 'components';
-import { ComponentProps } from 'react';
 import { AlertSeverity } from 'types';
 
 const spiedOnClose = jest.fn();
