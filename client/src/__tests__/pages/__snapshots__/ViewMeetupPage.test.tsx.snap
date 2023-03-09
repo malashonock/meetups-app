@@ -1093,169 +1093,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given a user
 </DocumentFragment>
 `;
 
-exports[`ViewMeetupPage after topic approval, but before publishing given no user is logged in should match snapshot 1`] = `
-<DocumentFragment>
-  <section
-    class="container DRAFT"
-  >
-    <h1
-      class="typography h1 heading"
-    >
-      viewMeetupPage.title
-    </h1>
-    <div
-      class="dataWrapper"
-    >
-      <div
-        class="headerData"
-      >
-        <figure
-          class="imageWrapper"
-        >
-          <img
-            alt="viewMeetupPage.imgAlt"
-            class="image"
-            src="http://localhost/test.jpg"
-          />
-        </figure>
-        <div
-          class="headerDataContent"
-        >
-          <h2
-            class="typography h2 meetupHeading"
-          >
-            Test meetup topic
-          </h2>
-        </div>
-      </div>
-      <div
-        class="data"
-      >
-        <span
-          class="typography span dataName"
-        >
-          viewMeetupPage.timePlaceInfo.valid
-        </span>
-        <div
-          class="dataContent timePlaceInfo"
-        >
-          <div
-            class="info"
-            id="date"
-          >
-            <img
-              alt="viewMeetupPage.date"
-              class="image"
-              src="calendar.svg"
-            />
-            <span
-              class="typography span"
-            >
-              m, 15 марта, 2023
-            </span>
-          </div>
-          <div
-            class="info"
-            id="time"
-          >
-            <img
-              alt="viewMeetupPage.time"
-              class="image"
-              src="clock.svg"
-            />
-            <span
-              class="typography span"
-            >
-              14:00 — 15:30
-            </span>
-          </div>
-          <div
-            class="info"
-            id="location"
-          >
-            <img
-              alt="viewMeetupPage.location"
-              class="image"
-              src="pin.svg"
-            />
-            <span
-              class="typography span"
-            >
-              room 123
-            </span>
-          </div>
-        </div>
-      </div>
-      <div
-        class="data"
-      >
-        <span
-          class="typography span dataName"
-        >
-          viewMeetupPage.speakers
-        </span>
-        <div
-          class="dataContent"
-        >
-          <div
-            class="speakerWrapper"
-          >
-            <div
-              class="user default"
-              data-testid="user-preview"
-            >
-              <div
-                class="avatar"
-              >
-                <span
-                  class="typography span initials"
-                >
-                  JD
-                </span>
-              </div>
-              <span
-                class="typography span name noWrap"
-              >
-                John Doe
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="data"
-      >
-        <span
-          class="typography span dataName"
-        >
-          viewMeetupPage.description
-        </span>
-        <div
-          class="dataContent"
-        >
-          <p
-            class="typography p excerpt"
-          >
-            Test meetup description
-          </p>
-        </div>
-      </div>
-      <div
-        class="dataContent actions"
-      >
-        <button
-          class="actionButton backBtn button default"
-          id="btn-back"
-        >
-          formButtons.back
-        </button>
-      </div>
-    </div>
-  </section>
-</DocumentFragment>
-`;
-
-exports[`ViewMeetupPage after topic approval, but before publishing given no user is logged in should match snapshot 2`] = `
+exports[`ViewMeetupPage after topic approval, but before publishing given a user with non-admin rights is logged in should match snapshot 1`] = `
 <DocumentFragment>
   <section
     class="container DRAFT"
@@ -1414,6 +1252,168 @@ exports[`ViewMeetupPage after topic approval, but before publishing given no use
         <div
           class="actionsWrapper"
         />
+      </div>
+    </div>
+  </section>
+</DocumentFragment>
+`;
+
+exports[`ViewMeetupPage after topic approval, but before publishing given no user is logged in should match snapshot 1`] = `
+<DocumentFragment>
+  <section
+    class="container DRAFT"
+  >
+    <h1
+      class="typography h1 heading"
+    >
+      viewMeetupPage.title
+    </h1>
+    <div
+      class="dataWrapper"
+    >
+      <div
+        class="headerData"
+      >
+        <figure
+          class="imageWrapper"
+        >
+          <img
+            alt="viewMeetupPage.imgAlt"
+            class="image"
+            src="http://localhost/test.jpg"
+          />
+        </figure>
+        <div
+          class="headerDataContent"
+        >
+          <h2
+            class="typography h2 meetupHeading"
+          >
+            Test meetup topic
+          </h2>
+        </div>
+      </div>
+      <div
+        class="data"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.timePlaceInfo.valid
+        </span>
+        <div
+          class="dataContent timePlaceInfo"
+        >
+          <div
+            class="info"
+            id="date"
+          >
+            <img
+              alt="viewMeetupPage.date"
+              class="image"
+              src="calendar.svg"
+            />
+            <span
+              class="typography span"
+            >
+              m, 15 марта, 2023
+            </span>
+          </div>
+          <div
+            class="info"
+            id="time"
+          >
+            <img
+              alt="viewMeetupPage.time"
+              class="image"
+              src="clock.svg"
+            />
+            <span
+              class="typography span"
+            >
+              14:00 — 15:30
+            </span>
+          </div>
+          <div
+            class="info"
+            id="location"
+          >
+            <img
+              alt="viewMeetupPage.location"
+              class="image"
+              src="pin.svg"
+            />
+            <span
+              class="typography span"
+            >
+              room 123
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        class="data"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.speakers
+        </span>
+        <div
+          class="dataContent"
+        >
+          <div
+            class="speakerWrapper"
+          >
+            <div
+              class="user default"
+              data-testid="user-preview"
+            >
+              <div
+                class="avatar"
+              >
+                <span
+                  class="typography span initials"
+                >
+                  JD
+                </span>
+              </div>
+              <span
+                class="typography span name noWrap"
+              >
+                John Doe
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="data"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.description
+        </span>
+        <div
+          class="dataContent"
+        >
+          <p
+            class="typography p excerpt"
+          >
+            Test meetup description
+          </p>
+        </div>
+      </div>
+      <div
+        class="dataContent actions"
+      >
+        <button
+          class="actionButton backBtn button default"
+          id="btn-back"
+        >
+          formButtons.back
+        </button>
       </div>
     </div>
   </section>
