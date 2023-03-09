@@ -130,10 +130,7 @@ export class News extends Loadable implements INews {
   constructor(newsArticleData: INews, newsStore: Nullable<NewsStore>) {
     super();
     this.setupObservable();
-
-    if (newsStore) {
-      this.newsStore = newsStore;
-    }
+    this.newsStore = newsStore;
 
     ({
       id: this.id,
