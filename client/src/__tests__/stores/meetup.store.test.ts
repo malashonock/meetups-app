@@ -313,6 +313,7 @@ describe('Meetup', () => {
       );
       expect(meetup.imageUrl).toBe(mockMeetupData.imageUrl);
       expect(meetup.image).toBeNull();
+      expect(meetup.onError).toBeTruthy();
     });
   });
 
