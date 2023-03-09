@@ -76,7 +76,7 @@ describe('AuthToggle', () => {
         loggedUser: mockedLoggedUser,
         authStore: {
           rootStore: new RootStore(),
-          userStore: new UserStore(new AuthStore(new RootStore())),
+          userStore: new RootStore().authStore.userStore,
           loggedUser: mockedLoggedUser,
           isInitialized: true,
           isLoading: false,

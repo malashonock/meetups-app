@@ -26,8 +26,17 @@ beforeEach(() => {
   mockUseAuthStore.mockReturnValue({
     authStore: {
       rootStore: new RootStore(),
-      userStore: new UserStore(new AuthStore(new RootStore())),
+      userStore: new RootStore().authStore.userStore,
       loggedUser: null,
+      isInitialized: true,
+      isLoading: false,
+      isError: false,
+      errors: [],
+      onError: jest.fn(),
+      tryLoad: jest.fn(),
+      setupObservable: jest.fn(),
+      init: jest.fn(),
+      checkLogin: jest.fn(),
       logIn: mockLogIn,
       logOut: jest.fn(),
       onLoginChanged: jest.fn(),
