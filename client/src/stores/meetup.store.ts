@@ -412,8 +412,8 @@ export class Meetup extends Loadable implements IMeetup {
 
   async join(): Promise<void> {
     if (
-      this.status !== MeetupStatus.CONFIRMED &&
-      (!this.start || (this.start && !isPast(this.start)))
+      this.status !== MeetupStatus.CONFIRMED ||
+      (this.start && isPast(this.start))
     ) {
       return;
     }
@@ -442,8 +442,8 @@ export class Meetup extends Loadable implements IMeetup {
 
   async cancelJoin(): Promise<void> {
     if (
-      this.status !== MeetupStatus.CONFIRMED &&
-      (!this.start || (this.start && !isPast(this.start)))
+      this.status !== MeetupStatus.CONFIRMED ||
+      (this.start && isPast(this.start))
     ) {
       return;
     }
