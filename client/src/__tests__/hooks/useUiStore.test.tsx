@@ -19,7 +19,7 @@ const MockRootStoreProvider = ({
 
 describe('useUiStore hook', () => {
   describe('given root context is not yet set up', () => {
-    it('should return an empty object', () => {
+    it('should return an object with undefined uiStore and alerts', () => {
       const { result } = renderHook(() => useUiStore());
 
       expect(result.current.uiStore).toBeUndefined();
@@ -34,7 +34,7 @@ describe('useUiStore hook', () => {
       });
 
       expect(result.current.uiStore?.toJSON()).toStrictEqual(
-        mockRootStore.uiStore?.toJSON(),
+        mockRootStore.uiStore.toJSON(),
       );
       expect(result.current.alerts).toStrictEqual(mockRootStore.uiStore.alerts);
     });
