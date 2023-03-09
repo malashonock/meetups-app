@@ -9,11 +9,17 @@ import {
   mockMeetupDraft,
   mockMeetupDraftFilled,
   mockMeetup,
+  mockTopicData,
+  mockMeetupData,
   mockFullUser,
+  mockFullUser2,
+  mockUser,
+  mockUser2,
 } from 'model/__fakes__';
 import { useAuthStore, useMeetup } from 'hooks';
-import { Meetup } from 'stores';
+import { Meetup, RootStore } from 'stores';
 import { ConfirmDialogProvider } from 'components';
+import { IMeetup } from 'model';
 
 // Mock useAuthStore & useMeetup hook
 jest.mock('hooks', () => {
@@ -31,6 +37,10 @@ const mockUseMeetup = useMeetup as jest.MockedFunction<typeof useMeetup>;
 const mockMeetupApprove = jest.spyOn(Meetup.prototype, 'approve');
 const mockMeetupPublish = jest.spyOn(Meetup.prototype, 'publish');
 const mockMeetupDelete = jest.spyOn(Meetup.prototype, 'delete');
+const mockMeetupVote = jest.spyOn(Meetup.prototype, 'vote');
+const mockMeetupWithDrawVote = jest.spyOn(Meetup.prototype, 'withdrawVote');
+const mockMeetupJoin = jest.spyOn(Meetup.prototype, 'join');
+const mockMeetupCancelJoin = jest.spyOn(Meetup.prototype, 'cancelJoin');
 
 afterEach(() => {
   jest.resetAllMocks();
@@ -78,7 +88,85 @@ describe('ViewMeetupPage', () => {
       });
     });
 
-    describe('given a user is logged in', () => {
+    describe('given a user with non-admin rights is logged in', () => {
+      beforeEach(() => {
+        mockUseAuthStore.mockReturnValue({
+          loggedUser: mockFullUser2,
+        });
+      });
+
+      describe('Support Topic button', () => {
+        describe('given the logged user has not yet voted', () => {
+          beforeEach(() => {
+            const rootStore = new RootStore();
+            rootStore.authStore.loggedUser = mockFullUser2;
+            const topic = new Meetup(mockTopicData, rootStore.meetupStore);
+            mockUseMeetup.mockReturnValue({
+              meetup: topic,
+              isLoading: false,
+              isError: false,
+              errors: [],
+            });
+          });
+
+          it('should match snapshot', () => {
+            const { asFragment } = render(<ViewMeetupPage />, {
+              wrapper: MockRouter,
+            });
+            expect(asFragment()).toMatchSnapshot();
+          });
+
+          it('on click, should call meetup.vote() method', async () => {
+            render(<ViewMeetupPage />, { wrapper: MockRouter });
+
+            userEvent.click(screen.getByText('viewMeetupPage.supportTopicBtn'));
+
+            await waitFor(() => {
+              expect(mockMeetupVote).toHaveBeenCalled();
+            });
+          });
+        });
+
+        describe('given the logged user already voted', () => {
+          beforeEach(() => {
+            const rootStore = new RootStore();
+            rootStore.authStore.loggedUser = mockFullUser2;
+            const topicData: IMeetup = {
+              ...mockTopicData,
+              votedUsers: [mockUser, mockUser2],
+            };
+            const topic = new Meetup(topicData, rootStore.meetupStore);
+            mockUseMeetup.mockReturnValue({
+              meetup: topic,
+              isLoading: false,
+              isError: false,
+              errors: [],
+            });
+          });
+
+          it('should match snapshot', () => {
+            const { asFragment } = render(<ViewMeetupPage />, {
+              wrapper: MockRouter,
+            });
+            expect(asFragment()).toMatchSnapshot();
+          });
+
+          it('on click, should call meetup.withdrawVote() method', async () => {
+            render(<ViewMeetupPage />, { wrapper: MockRouter });
+
+            userEvent.click(
+              screen.getByText('viewMeetupPage.unsupportTopicBtn'),
+            );
+
+            await waitFor(() => {
+              expect(mockMeetupWithDrawVote).toHaveBeenCalled();
+            });
+          });
+        });
+      });
+    });
+
+    describe('given a user with admin rights is logged in', () => {
       beforeEach(() => {
         mockUseAuthStore.mockReturnValue({
           loggedUser: mockFullUser,
@@ -140,7 +228,22 @@ describe('ViewMeetupPage', () => {
       });
     });
 
-    describe('given a user is logged in', () => {
+    describe('given a user with non-admin rights is logged in', () => {
+      beforeEach(() => {
+        mockUseAuthStore.mockReturnValue({
+          loggedUser: mockFullUser2,
+        });
+      });
+
+      it('should match snapshot', () => {
+        const { asFragment } = render(<ViewMeetupPage />, {
+          wrapper: MockRouter,
+        });
+        expect(asFragment()).toMatchSnapshot();
+      });
+    });
+
+    describe('given a user with admin rights is logged in', () => {
       beforeEach(() => {
         mockUseAuthStore.mockReturnValue({
           loggedUser: mockFullUser,
@@ -214,7 +317,105 @@ describe('ViewMeetupPage', () => {
       });
     });
 
-    describe('given a user is logged in', () => {
+    describe('given a user with non-admin rights is logged in', () => {
+      beforeEach(() => {
+        mockUseAuthStore.mockReturnValue({
+          loggedUser: mockFullUser2,
+        });
+      });
+
+      describe('given meetup start has not passed', () => {
+        describe('Join Meetup toggler', () => {
+          describe('given the logged user has not yet joined', () => {
+            beforeEach(() => {
+              const rootStore = new RootStore();
+              rootStore.authStore.loggedUser = mockFullUser2;
+              const start: Date = new Date(2999, 0, 1);
+              const meetupData: IMeetup = {
+                ...mockMeetupData,
+                start,
+                finish: new Date(start.getTime() + 2 * 60 * 60 * 1000),
+              };
+              const meetup = new Meetup(meetupData, rootStore.meetupStore);
+              mockUseMeetup.mockReturnValue({
+                meetup,
+                isLoading: false,
+                isError: false,
+                errors: [],
+              });
+            });
+
+            it('should match snapshot', () => {
+              const { asFragment } = render(<ViewMeetupPage />, {
+                wrapper: MockRouter,
+              });
+              expect(asFragment()).toMatchSnapshot();
+            });
+
+            it('on click, should call meetup.join() method', async () => {
+              render(<ViewMeetupPage />, { wrapper: MockRouter });
+
+              userEvent.click(screen.getByText('viewMeetupPage.joinMeetupBtn'));
+
+              await waitFor(() => {
+                expect(mockMeetupJoin).toHaveBeenCalled();
+              });
+            });
+          });
+
+          describe('given the logged user already joined', () => {
+            beforeEach(() => {
+              const rootStore = new RootStore();
+              rootStore.authStore.loggedUser = mockFullUser2;
+              const start = new Date(2999, 0, 1);
+              const meetupData: IMeetup = {
+                ...mockMeetupData,
+                start,
+                finish: new Date(start.getTime() + 2 * 60 * 60 * 1000),
+                participants: [mockUser, mockUser2],
+              };
+              const meetup = new Meetup(meetupData, rootStore.meetupStore);
+              mockUseMeetup.mockReturnValue({
+                meetup,
+                isLoading: false,
+                isError: false,
+                errors: [],
+              });
+            });
+
+            it('should match snapshot', () => {
+              const { asFragment } = render(<ViewMeetupPage />, {
+                wrapper: MockRouter,
+              });
+              expect(asFragment()).toMatchSnapshot();
+            });
+
+            it('on click, should call meetup.cancelJoin() method', async () => {
+              render(<ViewMeetupPage />, { wrapper: MockRouter });
+
+              userEvent.click(
+                screen.getByText('viewMeetupPage.unjoinMeetupBtn'),
+              );
+
+              await waitFor(() => {
+                expect(mockMeetupCancelJoin).toHaveBeenCalled();
+              });
+            });
+          });
+        });
+      });
+
+      describe('given meetup start has passed', () => {
+        it('should match snapshot', () => {
+          const { asFragment } = render(<ViewMeetupPage />, {
+            wrapper: MockRouter,
+          });
+          expect(asFragment()).toMatchSnapshot();
+        });
+      });
+    });
+
+    describe('given a user with admin rights is logged in', () => {
       beforeEach(() => {
         mockUseAuthStore.mockReturnValue({
           loggedUser: mockFullUser,
@@ -230,7 +431,7 @@ describe('ViewMeetupPage', () => {
     });
   });
 
-  describe('regardless of meetup status', () => {
+  describe('regardless of meetup status and user role', () => {
     beforeEach(() => {
       mockUseAuthStore.mockReturnValue({
         loggedUser: mockFullUser,
