@@ -19,10 +19,10 @@ const MockRootStoreProvider = ({
   );
 };
 
-const spiedOnApiLoadNews = jest.spyOn(NewsApi, 'getNews');
+const spiedOnApiGetNews = jest.spyOn(NewsApi, 'getNews');
 
 beforeEach(() => {
-  spiedOnApiLoadNews.mockResolvedValue(mockNewsData);
+  spiedOnApiGetNews.mockResolvedValue(mockNewsData);
 });
 
 afterEach(() => {
