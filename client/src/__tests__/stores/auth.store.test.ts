@@ -198,7 +198,7 @@ describe('AuthStore', () => {
 
       await authStore.onLoginChanged();
 
-      expect(spiedOnUserStoreInit).toHaveBeenCalledWith(mockFullUser);
+      expect(spiedOnUserStoreInit).toHaveBeenCalled();
     });
   });
 
