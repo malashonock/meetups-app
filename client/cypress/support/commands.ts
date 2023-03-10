@@ -2,7 +2,9 @@
 
 import '@testing-library/cypress/add-commands';
 import { faker } from '@faker-js/faker';
+
 import { MeetupStatus, IUser } from 'model';
+import { AlertSeverity } from 'types';
 
 declare global {
   namespace Cypress {
@@ -14,6 +16,10 @@ declare global {
       createNewsArticle(): Chainable<string>;
       createTopic(): Chainable<string>;
       createMeetupDraft(): Chainable<string>;
+      expectToastToPopupAndDismiss(
+        variant: AlertSeverity,
+        shouldExpireIn?: number,
+      ): Chainable<void>;
     }
   }
 }
@@ -143,3 +149,16 @@ Cypress.Commands.add('createMeetupDraft', function () {
       .its('id');
   });
 });
+
+Cypress.Commands.add(
+  'expectToastToPopupAndDismiss',
+  (variant: AlertSeverity, shouldExpireIn: number = 3_000) => {
+    cy.get(`[data-testid="toast"] [data-testid="icon-${variant}"]`).should(
+      'exist',
+    );
+    cy.wait(shouldExpireIn);
+    cy.get(`[data-testid="toast"] [data-testid="icon-${variant}"]`).should(
+      'not.exist',
+    );
+  },
+);
