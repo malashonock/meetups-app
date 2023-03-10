@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 import { AlertSeverity } from 'types';
 
 describe('Create meetup', () => {
-  describe('given a user is logged in', () => {
+  describe('given a user with admin rights is logged in', () => {
     it('should guide the user to approve & publish the meetup', () => {
       cy.createTopic().then((createdTopicId: string) => {
         cy.visit(`/meetups/${createdTopicId}`);

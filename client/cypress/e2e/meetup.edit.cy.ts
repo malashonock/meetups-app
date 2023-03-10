@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 import { AlertSeverity } from 'types';
 
 describe('Edit meetup', () => {
-  describe('given a user is logged in', () => {
+  describe('given a user with admin rights is logged in', () => {
     it('should update an existing meetup', function () {
       cy.createMeetupDraft().then((createdMeetupId: string) => {
         cy.visit('/meetups/drafts');
@@ -69,6 +69,30 @@ describe('Edit meetup', () => {
     });
   });
 
+  describe('given a user with non-admin rights is logged in', () => {
+    it('there should be no Edit button on the meetup card', () => {
+      cy.loginAsEmployee();
+
+      cy.visit('/meetups/drafts');
+      cy.get('[class*="MeetupCard"]', { timeout: 10_000 })
+        .first()
+        .within(() => {
+          cy.get('[data-testid="edit-button"]').should('not.exist');
+        });
+    });
+
+    it('should not allow to navigate to edit route via browser address bar', () => {
+      cy.loginAsEmployee();
+
+      cy.visit('/meetups/aaa/edit');
+
+      cy.expectToastToPopupAndDismiss(AlertSeverity.Error);
+
+      // Should redirect to /meetups page
+      cy.url().should('contain', '/meetups');
+    });
+  });
+
   describe('given no user is logged in', () => {
     it('there should be no Edit button on the meetup card', () => {
       cy.visit('/meetups/drafts');
@@ -81,6 +105,8 @@ describe('Edit meetup', () => {
 
     it('should not allow to navigate to edit route via browser address bar', () => {
       cy.visit('/meetups/aaa/edit');
+
+      cy.expectToastToPopupAndDismiss(AlertSeverity.Error);
 
       // Should redirect to /login page
       cy.url().should('contain', 'login');

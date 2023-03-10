@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 import { AlertSeverity } from 'types';
 
 describe('Edit news article', () => {
-  describe('given a user is logged in', () => {
+  describe('given a user with admin rights is logged in', () => {
     it('should update an existing news article', function () {
       cy.createNewsArticle().then((createdNewsId: string) => {
         cy.visit(`/news/${createdNewsId}`);
@@ -41,6 +41,27 @@ describe('Edit news article', () => {
     });
   });
 
+  describe('given a user with non-admin is logged in', () => {
+    it('there should be no Edit button on the View News page', () => {
+      cy.visit('/news');
+      cy.get('[class*="NewsCard"]', { timeout: 10_000 }).first().click();
+
+      // Should open /news/:id page
+      cy.url().should('match', /\/news\/(.)+$/);
+
+      cy.get('#btn-edit').should('not.exist');
+    });
+
+    it('should not allow to navigate to edit route via browser address bar', () => {
+      cy.visit('/news/aaa/edit');
+
+      cy.expectToastToPopupAndDismiss(AlertSeverity.Error);
+
+      // Should redirect to /login page
+      cy.url().should('contain', 'login');
+    });
+  });
+
   describe('given no user is logged in', () => {
     it('there should be no Edit button on the View News page', () => {
       cy.visit('/news');
@@ -54,6 +75,8 @@ describe('Edit news article', () => {
 
     it('should not allow to navigate to edit route via browser address bar', () => {
       cy.visit('/news/aaa/edit');
+
+      cy.expectToastToPopupAndDismiss(AlertSeverity.Error);
 
       // Should redirect to /login page
       cy.url().should('contain', 'login');

@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 import { AlertSeverity } from 'types';
 
 describe('Create news article', () => {
-  describe('given a user is logged in', () => {
+  describe('given a user with admin rights is logged in', () => {
     it('should create a new news article', () => {
       cy.loginAsChief();
 
@@ -39,15 +39,32 @@ describe('Create news article', () => {
     });
   });
 
-  describe('given no user is logged in', () => {
-    it('should redirect to Login page', () => {
+  describe('given a user with non-admin rights is logged in', () => {
+    it('there should be no Create News button on the News page', () => {
       cy.visit('/news');
-      cy.get('[class*="createNewsBtn"]').click();
-      cy.url().should('contain', '/login');
+      cy.get('[class*="createNewsBtn"]').should('not.exist');
     });
 
     it('should not allow to navigate to /create route via browser address bar', () => {
       cy.visit('/news/create');
+
+      cy.expectToastToPopupAndDismiss(AlertSeverity.Error);
+
+      // Should redirect to /login page
+      cy.url().should('contain', 'login');
+    });
+  });
+
+  describe('given no user is logged in', () => {
+    it('there should be no Create News button on the News page', () => {
+      cy.visit('/news');
+      cy.get('[class*="createNewsBtn"]').should('not.exist');
+    });
+
+    it('should not allow to navigate to /create route via browser address bar', () => {
+      cy.visit('/news/create');
+
+      cy.expectToastToPopupAndDismiss(AlertSeverity.Error);
 
       // Should redirect to /login page
       cy.url().should('contain', 'login');
