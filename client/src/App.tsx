@@ -87,7 +87,7 @@ export const App = observer(
                   <Route
                     path="create"
                     element={
-                      <ProtectedRoute>
+                      <ProtectedRoute redirectIf={RedirectCondition.NonAdmin}>
                         <CreateNewsPage />
                       </ProtectedRoute>
                     }
