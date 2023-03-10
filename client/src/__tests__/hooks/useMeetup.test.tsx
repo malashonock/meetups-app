@@ -2,10 +2,12 @@ import { renderHook } from '@testing-library/react';
 
 import { useMeetup } from 'hooks';
 import { useMeetupStore } from 'hooks/useMeetupStore';
+import { NotFoundError } from 'model';
 import { mockMeetup } from 'model/__fakes__';
 import { RootStore } from 'stores';
 
 const mockRootStore = new RootStore();
+mockRootStore.meetupStore.isInitialized = true;
 const spiedOnMeetupStoreFindMeetup = jest.spyOn(
   mockRootStore.meetupStore,
   'findMeetup',
@@ -65,14 +67,38 @@ describe('useMeetup hook', () => {
   });
 
   describe('given id arg is not provided', () => {
-    it('should return undefined', () => {
+    it('should return undefined meetup', () => {
       const { result } = renderHook(() => useMeetup(undefined));
-
       expect(result.current.meetup).toBeUndefined();
       expect(result.current.isInitialized).toBeUndefined();
-      expect(result.current.isLoading).toBeUndefined();
-      expect(result.current.isError).toBeUndefined();
-      expect(result.current.errors).toBeUndefined();
+    });
+
+    it('should return isLoading state of the meetup store', () => {
+      const { result } = renderHook(() => useMeetup(undefined));
+      expect(result.current.isLoading).toBe(
+        mockRootStore.meetupStore.isLoading,
+      );
+    });
+
+    describe('given meetup store is initialized', () => {
+      it('should push a new Not Found error to errors', () => {
+        const { result } = renderHook(() => useMeetup(undefined));
+        expect(result.current.isError).toBe(true);
+        expect(result.current.errors?.length).toBe(1);
+        expect(result.current.errors![0] instanceof NotFoundError).toBe(true);
+      });
+    });
+
+    describe('given meetup store is undefined or uninitialized', () => {
+      it('should return undefined isError and errors', () => {
+        mockUseMeetupStore.mockReturnValue({
+          meetupStore: new RootStore().meetupStore,
+        });
+
+        const { result } = renderHook(() => useMeetup(undefined));
+        expect(result.current.isError).toBeUndefined();
+        expect(result.current.errors).toBeUndefined();
+      });
     });
   });
 });

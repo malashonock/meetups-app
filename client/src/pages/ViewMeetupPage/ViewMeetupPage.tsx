@@ -26,18 +26,22 @@ import pin from './assets/pin.svg';
 export const ViewMeetupPage = observer(() => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { meetup, isLoading, isError } = useMeetup(id);
+  const { meetup, isLoading, isInitialized, isError } = useMeetup(id);
   const { i18n, t } = useTranslation();
   const [locale] = useLocale();
   const { loggedUser } = useAuthStore();
   const confirm = useConfirmDialog();
 
-  if (!meetup || isLoading) {
+  if (isLoading || isInitialized === false) {
     return <LoadingSpinner text={t('loadingText.meetup')} />;
   }
 
   if (isError) {
     return <NotFoundPage />;
+  }
+
+  if (!meetup) {
+    return null;
   }
 
   const {

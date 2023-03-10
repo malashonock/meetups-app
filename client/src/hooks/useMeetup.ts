@@ -3,13 +3,14 @@ import { useEffect, useState } from 'react';
 import { Meetup } from 'stores';
 import { Maybe, Optional } from 'types';
 import { useMeetupStore } from 'hooks';
+import { AppError, NotFoundError } from 'model';
 
 interface UseMeetupResult {
   meetup?: Meetup;
   isInitialized?: boolean;
   isLoading?: boolean;
   isError?: boolean;
-  errors?: unknown[];
+  errors?: AppError[];
 }
 
 export const useMeetup = (id: Maybe<string>): UseMeetupResult => {
@@ -18,6 +19,10 @@ export const useMeetup = (id: Maybe<string>): UseMeetupResult => {
     useState<Optional<boolean>>(undefined);
 
   const meetup = id ? meetupStore?.findMeetup(id) : undefined;
+
+  let isLoading: Optional<boolean> = undefined;
+  let isError: Optional<boolean> = undefined;
+  let errors: Optional<AppError[]> = undefined;
 
   // Hydrate meetup on first load
   useEffect((): void => {
@@ -33,9 +38,15 @@ export const useMeetup = (id: Maybe<string>): UseMeetupResult => {
     setIsInitialized(meetup?.isInitialized);
   }, [meetup?.isInitialized]);
 
-  const isLoading = meetup?.isLoading;
-  const isError = meetup?.isError;
-  const errors = meetup?.errors;
+  isLoading = meetup?.isLoading ?? meetupStore?.isLoading;
+
+  if (meetupStore && meetupStore.isInitialized && !meetup) {
+    isError = true;
+    errors = [new NotFoundError()];
+  } else {
+    isError = meetup?.isError;
+    errors = meetup?.errors;
+  }
 
   return {
     meetup,

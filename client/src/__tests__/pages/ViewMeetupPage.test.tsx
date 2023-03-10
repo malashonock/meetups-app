@@ -452,12 +452,6 @@ describe('ViewMeetupPage', () => {
       });
     });
 
-    it('should render a Loading spinner if meetup is undefined', () => {
-      mockUseMeetup.mockReturnValue({});
-      render(<ViewMeetupPage />, { wrapper: MockRouter });
-      expect(screen.getByText('loadingText.meetup')).toBeInTheDocument();
-    });
-
     it('should render a Loading spinner while meetup is loading', () => {
       mockUseMeetup.mockReturnValue({
         meetup: mockMeetup,
@@ -474,6 +468,12 @@ describe('ViewMeetupPage', () => {
       });
       render(<ViewMeetupPage />, { wrapper: MockRouter });
       expect(screen.getByText('notFoundPage.title')).toBeInTheDocument();
+    });
+
+    it('should render nothing if meetup is undefined', () => {
+      mockUseMeetup.mockReturnValue({});
+      render(<ViewMeetupPage />, { wrapper: MockRouter });
+      expect(screen.queryByText('viewMeetupPage.title')).toBeNull();
     });
   });
 });
