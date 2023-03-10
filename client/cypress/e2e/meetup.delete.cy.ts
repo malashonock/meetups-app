@@ -1,4 +1,4 @@
-export {};
+import { AlertSeverity } from 'types';
 
 describe('Delete meetup', () => {
   describe('given a user is logged in', () => {
@@ -11,6 +11,8 @@ describe('Delete meetup', () => {
           cy.get('[data-testid="delete-button"]').click();
         });
         cy.get('[data-testid="confirm-button"]').click();
+
+        cy.expectToastToPopupAndDismiss(AlertSeverity.Success);
 
         // Should not redirect anywhere
         cy.url().should('contain', '/meetups/topics');

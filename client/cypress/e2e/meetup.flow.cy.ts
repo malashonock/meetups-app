@@ -1,5 +1,7 @@
 import { faker } from '@faker-js/faker';
 
+import { AlertSeverity } from 'types';
+
 describe('Create meetup', () => {
   describe('given a user is logged in', () => {
     it('should guide the user to approve & publish the meetup', () => {
@@ -11,6 +13,8 @@ describe('Create meetup', () => {
           .should('be.enabled');
         cy.get('@approveBtn').click();
 
+        cy.expectToastToPopupAndDismiss(AlertSeverity.Success);
+
         // Should redirect to edit topic page
         cy.url().should('contain', `/meetups/${createdTopicId}/edit`);
 
@@ -20,6 +24,9 @@ describe('Create meetup', () => {
 
         cy.get('#btn-preview').as('previewBtn').should('be.disabled');
         cy.get('#btn-save').click();
+
+        cy.expectToastToPopupAndDismiss(AlertSeverity.Success);
+
         cy.get('@previewBtn').should('be.enabled');
         cy.get('@previewBtn').click();
 
@@ -27,6 +34,8 @@ describe('Create meetup', () => {
         cy.url().should('match', new RegExp(`\/meetups\/${createdTopicId}$`));
 
         cy.get('#btn-publish').should('be.enabled').click();
+
+        cy.expectToastToPopupAndDismiss(AlertSeverity.Success);
 
         // Should redirect to upcoming meetups page
         cy.url().should('contain', '/meetups/upcoming');

@@ -1,5 +1,7 @@
 import { faker } from '@faker-js/faker';
 
+import { AlertSeverity } from 'types';
+
 describe('Create meetup', () => {
   describe('given a user is logged in', () => {
     it('should create a new meetup', () => {
@@ -35,6 +37,8 @@ describe('Create meetup', () => {
       );
 
       cy.get('#btn-create').click();
+
+      cy.expectToastToPopupAndDismiss(AlertSeverity.Success);
 
       // Should redirect to view created meetup page
       cy.url().should('match', /\/meetups\/(.)+$/);

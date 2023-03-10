@@ -1,5 +1,7 @@
 import { faker } from '@faker-js/faker';
 
+import { AlertSeverity } from 'types';
+
 describe('Edit news article', () => {
   describe('given a user is logged in', () => {
     it('should update an existing news article', function () {
@@ -22,6 +24,8 @@ describe('Edit news article', () => {
         );
 
         cy.get('#btn-save').click();
+
+        cy.expectToastToPopupAndDismiss(AlertSeverity.Success);
 
         // Should redirect to /news
         cy.url().should('match', /\/news$/);

@@ -1,5 +1,7 @@
 import { faker } from '@faker-js/faker';
 
+import { AlertSeverity } from 'types';
+
 describe('Edit meetup', () => {
   describe('given a user is logged in', () => {
     it('should update an existing meetup', function () {
@@ -41,6 +43,8 @@ describe('Edit meetup', () => {
         );
 
         cy.get('#btn-save').should('be.enabled').click();
+
+        cy.expectToastToPopupAndDismiss(AlertSeverity.Success);
 
         // Should not redirect anywhere
         cy.url().should('contain', `/meetups/${createdMeetupId}/edit`);

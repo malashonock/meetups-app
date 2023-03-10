@@ -1,5 +1,7 @@
 import { faker } from '@faker-js/faker';
 
+import { AlertSeverity } from 'types';
+
 describe('Create news article', () => {
   describe('given a user is logged in', () => {
     it('should create a new news article', () => {
@@ -21,6 +23,8 @@ describe('Create news article', () => {
         { action: 'drag-drop' },
       );
       cy.get('#btn-create').click();
+
+      cy.expectToastToPopupAndDismiss(AlertSeverity.Success);
 
       // Should redirect to /news
       cy.url().should('match', /\/news$/);

@@ -1,4 +1,4 @@
-export {};
+import { AlertSeverity } from 'types';
 
 describe('Login', () => {
   beforeEach(() => {
@@ -10,9 +10,12 @@ describe('Login', () => {
       cy.get('input[name="username"]').type('chief');
       cy.get('input[name="password"]').type('private');
       cy.get('button[type="submit"').click();
+
+      cy.expectToastToPopupAndDismiss(AlertSeverity.Success);
+
       cy.url().should('include', '/meetups');
       cy.getCookie('connect.sid').should('exist');
-      cy.get('header').should('contain', 'chief Blick');
+      cy.get('[class*="Header_userInfo"]').should('contain', 'chief Blick');
     });
   });
 
@@ -21,9 +24,12 @@ describe('Login', () => {
       cy.get('input[name="username"]').type('invalid-username');
       cy.get('input[name="password"]').type('invalid-password');
       cy.get('button[type="submit"').click();
+
+      cy.expectToastToPopupAndDismiss(AlertSeverity.Error);
+
       cy.url().should('include', '/login');
       cy.getCookie('connect.sid').should('not.exist');
-      cy.get('header').should('not.contain', 'chief Blick');
+      cy.get('[class*="Header_userInfo"]').should('not.contain', 'chief Blick');
     });
   });
 });
