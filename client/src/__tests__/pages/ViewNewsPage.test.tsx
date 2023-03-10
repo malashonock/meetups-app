@@ -89,12 +89,6 @@ describe('ViewNewsPage', () => {
     });
   });
 
-  it('should render a Loading spinner if news article is undefined', () => {
-    mockUseNewsArticle.mockReturnValue({});
-    render(<ViewNewsPage />, { wrapper: MockRouter });
-    expect(screen.getByText('loadingText.newsArticle')).toBeInTheDocument();
-  });
-
   it('should render a Loading spinner while news article is loading', () => {
     mockUseNewsArticle.mockReturnValue({
       newsArticle: mockNewsArticle,
@@ -111,5 +105,11 @@ describe('ViewNewsPage', () => {
     });
     render(<ViewNewsPage />, { wrapper: MockRouter });
     expect(screen.getByText('notFoundPage.title')).toBeInTheDocument();
+  });
+
+  it('should render nothing if news article is undefined', () => {
+    mockUseNewsArticle.mockReturnValue({});
+    render(<ViewNewsPage />, { wrapper: MockRouter });
+    expect(screen.queryByTestId('news-page')).toBeNull();
   });
 });

@@ -27,12 +27,16 @@ export const ViewNewsPage = observer(() => {
   const handleBack = (): void => navigate(-1);
   const handleEdit = (): void => navigate(pathname + '/edit');
 
-  if (!newsArticle || isLoading) {
+  if (isLoading) {
     return <LoadingSpinner text={t('loadingText.newsArticle')} />;
   }
 
   if (isError) {
     return <NotFoundPage />;
+  }
+
+  if (!newsArticle) {
+    return null;
   }
 
   const { image, title, text } = newsArticle;
@@ -94,7 +98,7 @@ export const ViewNewsPage = observer(() => {
   };
 
   return (
-    <section className={styles.container}>
+    <section className={styles.container} data-testid="news-page">
       <Typography
         className={styles.heading}
         component={TypographyComponent.Heading1}

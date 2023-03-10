@@ -4,6 +4,7 @@ exports[`ViewNewsPage should match snapshot 1`] = `
 <DocumentFragment>
   <section
     class="container"
+    data-testid="news-page"
   >
     <h1
       class="typography h1 heading"
