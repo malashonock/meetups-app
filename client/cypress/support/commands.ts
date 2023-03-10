@@ -16,6 +16,7 @@ declare global {
       createNewsArticle(): Chainable<string>;
       createTopic(): Chainable<string>;
       createMeetupDraft(): Chainable<string>;
+      createMeetup(): Chainable<string>;
       expectToastToPopupAndDismiss(
         variant: AlertSeverity,
         shouldExpireIn?: number,
@@ -132,6 +133,28 @@ Cypress.Commands.add('createMeetupDraft', function () {
   cy.createTopic().then((createdTopicId) => {
     const formData = new FormData();
     formData.append('status', MeetupStatus.DRAFT);
+
+    cy.request({
+      url: `http://localhost:8080/api/meetups/${createdTopicId}`,
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      body: formData,
+    })
+      .its('body')
+      .then((body: ArrayBuffer) => {
+        const bodyAsString = Cypress.Blob.arrayBufferToBinaryString(body);
+        return JSON.parse(bodyAsString);
+      })
+      .its('id');
+  });
+});
+
+Cypress.Commands.add('createMeetup', function () {
+  cy.createTopic().then((createdTopicId) => {
+    const formData = new FormData();
+    formData.append('status', MeetupStatus.CONFIRMED);
 
     cy.request({
       url: `http://localhost:8080/api/meetups/${createdTopicId}`,
