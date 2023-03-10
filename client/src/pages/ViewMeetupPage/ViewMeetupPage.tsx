@@ -227,28 +227,38 @@ export const ViewMeetupPage = observer(() => {
       return null;
     }
 
+    if (status === MeetupStatus.REQUEST) {
+      return (
+        <div className={styles.data} data-testid="author">
+          <Typography
+            component={TypographyComponent.Span}
+            className={styles.dataName}
+          >
+            {t('viewMeetupPage.author')}
+          </Typography>
+          <div className={styles.dataContent}>
+            <UserPreview user={author} />
+          </div>
+        </div>
+      );
+    }
+
     return (
-      <div className={styles.data}>
+      <div className={styles.data} data-testid="speakers">
         <Typography
           component={TypographyComponent.Span}
           className={styles.dataName}
         >
-          {status === MeetupStatus.REQUEST
-            ? t('viewMeetupPage.author')
-            : t('viewMeetupPage.speakers')}
+          {t('viewMeetupPage.speakers')}
         </Typography>
         <div className={styles.dataContent}>
-          {status === MeetupStatus.REQUEST ? (
-            author !== undefined && <UserPreview user={author} />
-          ) : (
-            <div className={styles.speakerWrapper}>
-              {speakers.length === 1 ? (
-                <UserPreview user={speakers[0]} />
-              ) : (
-                <AvatarGroup users={speakers} />
-              )}
-            </div>
-          )}
+          <div className={styles.speakerWrapper}>
+            {speakers.length === 1 ? (
+              <UserPreview user={speakers[0]} />
+            ) : (
+              <AvatarGroup users={speakers} />
+            )}
+          </div>
         </div>
       </div>
     );
@@ -257,7 +267,7 @@ export const ViewMeetupPage = observer(() => {
   const renderSupporters = () => {
     if (status === MeetupStatus.REQUEST) {
       return votedUsers?.length > 0 ? (
-        <div className={styles.data}>
+        <div className={styles.data} data-testid="voted-users">
           <Typography
             component={TypographyComponent.Span}
             className={styles.dataName}
@@ -273,7 +283,7 @@ export const ViewMeetupPage = observer(() => {
 
     if (status === MeetupStatus.CONFIRMED) {
       return participants?.length > 0 ? (
-        <div className={styles.data}>
+        <div className={styles.data} data-testid="participants">
           <Typography
             component={TypographyComponent.Span}
             className={styles.dataName}

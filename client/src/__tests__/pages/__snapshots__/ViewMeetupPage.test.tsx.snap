@@ -95,6 +95,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with admin righ
       </div>
       <div
         class="data"
+        data-testid="speakers"
       >
         <span
           class="typography span dataName"
@@ -149,6 +150,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with admin righ
       </div>
       <div
         class="data"
+        data-testid="participants"
       >
         <span
           class="typography span dataName"
@@ -277,6 +279,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with non-admin 
       </div>
       <div
         class="data"
+        data-testid="speakers"
       >
         <span
           class="typography span dataName"
@@ -331,6 +334,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with non-admin 
       </div>
       <div
         class="data"
+        data-testid="participants"
       >
         <span
           class="typography span dataName"
@@ -466,6 +470,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with non-admin 
       </div>
       <div
         class="data"
+        data-testid="speakers"
       >
         <span
           class="typography span dataName"
@@ -520,6 +525,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with non-admin 
       </div>
       <div
         class="data"
+        data-testid="participants"
       >
         <span
           class="typography span dataName"
@@ -655,6 +661,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with non-admin 
       </div>
       <div
         class="data"
+        data-testid="speakers"
       >
         <span
           class="typography span dataName"
@@ -709,6 +716,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with non-admin 
       </div>
       <div
         class="data"
+        data-testid="participants"
       >
         <span
           class="typography span dataName"
@@ -837,6 +845,7 @@ exports[`ViewMeetupPage after approval & publishing given no user is logged in s
       </div>
       <div
         class="data"
+        data-testid="speakers"
       >
         <span
           class="typography span dataName"
@@ -891,6 +900,7 @@ exports[`ViewMeetupPage after approval & publishing given no user is logged in s
       </div>
       <div
         class="data"
+        data-testid="participants"
       >
         <span
           class="typography span dataName"
@@ -1016,6 +1026,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given a user
       </div>
       <div
         class="data"
+        data-testid="speakers"
       >
         <span
           class="typography span dataName"
@@ -1188,6 +1199,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given a user
       </div>
       <div
         class="data"
+        data-testid="speakers"
       >
         <span
           class="typography span dataName"
@@ -1353,6 +1365,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given no use
       </div>
       <div
         class="data"
+        data-testid="speakers"
       >
         <span
           class="typography span dataName"
@@ -1453,6 +1466,7 @@ exports[`ViewMeetupPage before topic approval given a user with admin rights is 
       </div>
       <div
         class="data"
+        data-testid="author"
       >
         <span
           class="typography span dataName"
@@ -1503,6 +1517,7 @@ exports[`ViewMeetupPage before topic approval given a user with admin rights is 
       </div>
       <div
         class="data"
+        data-testid="voted-users"
       >
         <span
           class="typography span dataName"
@@ -1582,6 +1597,7 @@ exports[`ViewMeetupPage before topic approval given a user with non-admin rights
       </div>
       <div
         class="data"
+        data-testid="author"
       >
         <span
           class="typography span dataName"
@@ -1632,6 +1648,7 @@ exports[`ViewMeetupPage before topic approval given a user with non-admin rights
       </div>
       <div
         class="data"
+        data-testid="voted-users"
       >
         <span
           class="typography span dataName"
@@ -1705,6 +1722,7 @@ exports[`ViewMeetupPage before topic approval given a user with non-admin rights
       </div>
       <div
         class="data"
+        data-testid="author"
       >
         <span
           class="typography span dataName"
@@ -1755,6 +1773,7 @@ exports[`ViewMeetupPage before topic approval given a user with non-admin rights
       </div>
       <div
         class="data"
+        data-testid="voted-users"
       >
         <span
           class="typography span dataName"
@@ -1828,6 +1847,7 @@ exports[`ViewMeetupPage before topic approval given no user is logged in should 
       </div>
       <div
         class="data"
+        data-testid="author"
       >
         <span
           class="typography span dataName"
@@ -1878,6 +1898,7 @@ exports[`ViewMeetupPage before topic approval given no user is logged in should 
       </div>
       <div
         class="data"
+        data-testid="voted-users"
       >
         <span
           class="typography span dataName"
