@@ -8,6 +8,7 @@ declare global {
   namespace Cypress {
     interface Chainable {
       login(name: string, surname: string, password: string): Chainable<void>;
+      logout(): Chainable<void>;
       loginAsChief(): Chainable<void>;
       loginAsEmployee(): Chainable<void>;
       createNewsArticle(): Chainable<string>;
@@ -17,9 +18,17 @@ declare global {
   }
 }
 
+Cypress.Commands.add('logout', () => {
+  cy.request({
+    url: 'http://localhost:8080/api/logout',
+    method: 'GET',
+  });
+});
+
 Cypress.Commands.add(
   'login',
   (name: string, surname: string, password: string) => {
+    cy.logout();
     cy.request({
       url: 'http://localhost:8080/api/login',
       method: 'POST',
