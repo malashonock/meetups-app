@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 
 import { Typography, IconButton } from 'components';
-import { AlertSeverity } from 'types';
+import { AlertSeverity, Maybe } from 'types';
 
 import styles from './Toast.module.scss';
 import { ReactComponent as ErrorIcon } from './assets/error.svg';
@@ -12,7 +12,7 @@ import { ReactComponent as CloseIcon } from './assets/cross.svg';
 
 interface ToastProps {
   variant: AlertSeverity;
-  title?: string;
+  title?: Maybe<string>;
   description: string;
   onClose: () => void;
 }
