@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import {
   AuthToggle,
+  BurgerButton,
   LanguageSelect,
   TooltipPosition,
   Typography,
@@ -23,50 +24,57 @@ export const Header = observer((): JSX.Element => {
   return (
     <header className={styles.header}>
       <div className={styles.container}>
-        <div className={styles.navWrapper}>
-          <div className={styles.logoWrapper}>
-            <Link to="/">
-              <img
-                src={logo}
-                className={styles.logo}
-                alt={t('logoAlt') || 'Logo'}
-              />
-            </Link>
-            {loggedUser ? <LanguageSelect /> : null}
-          </div>
-          <nav className={styles.nav}>
-            <NavLink
-              to="/meetups"
-              className={({ isActive }) =>
-                classNames(styles.navLink, {
-                  [styles.active]: isActive,
-                })
-              }
-            >
-              <Typography>{t('meetups')}</Typography>
-            </NavLink>
-            <NavLink
-              to="/news"
-              className={({ isActive }) =>
-                classNames(styles.navLink, {
-                  [styles.active]: isActive,
-                })
-              }
-            >
-              <Typography>{t('news')}</Typography>
-            </NavLink>
-          </nav>
-          <div className={styles.userInfo}>
-            {loggedUser ? (
-              <UserPreview
-                variant={UserPreviewVariant.Header}
-                user={loggedUser}
-              />
-            ) : (
+        <div className={styles.logoWrapper}>
+          <Link to="/">
+            <img
+              src={logo}
+              className={styles.logo}
+              alt={t('logoAlt') || 'Logo'}
+            />
+          </Link>
+          {loggedUser ? (
+            <div className={styles.languageSelect}>
               <LanguageSelect />
-            )}
-            <AuthToggle tooltipPosition={TooltipPosition.BottomRight} />
-          </div>
+            </div>
+          ) : null}
+        </div>
+        <nav className={styles.nav}>
+          <NavLink
+            to="/meetups"
+            className={({ isActive }) =>
+              classNames(styles.navLink, {
+                [styles.active]: isActive,
+              })
+            }
+          >
+            <Typography>{t('meetups')}</Typography>
+          </NavLink>
+          <NavLink
+            to="/news"
+            className={({ isActive }) =>
+              classNames(styles.navLink, {
+                [styles.active]: isActive,
+              })
+            }
+          >
+            <Typography>{t('news')}</Typography>
+          </NavLink>
+        </nav>
+        <div className={styles.userInfo}>
+          {loggedUser ? (
+            <UserPreview
+              variant={UserPreviewVariant.Header}
+              user={loggedUser}
+            />
+          ) : (
+            <div className={styles.languageSelect}>
+              <LanguageSelect />
+            </div>
+          )}
+          <AuthToggle tooltipPosition={TooltipPosition.BottomRight} />
+        </div>
+        <div className={styles.burger}>
+          <BurgerButton />
         </div>
       </div>
     </header>

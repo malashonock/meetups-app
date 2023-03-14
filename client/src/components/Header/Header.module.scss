@@ -3,9 +3,6 @@
 @import '~style/mixins';
 
 .header {
-  --row-count: 1;
-  --row-height: 70px;
-
   position: sticky;
   top: 0;
   z-index: 10;
@@ -18,15 +15,10 @@
 }
 
 .container {
+  height: 70px;
   width: 90%;
   max-width: 1080px;
-  display: flex;
-  flex-direction: column;
-}
 
-.navWrapper {
-  height: calc(var(--row-height) * var(--row-count));
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -77,8 +69,10 @@
 
 .logoWrapper,
 .userInfo {
+  flex-grow: 1;
+  flex-basis: 0;
+
   display: flex;
-  flex-direction: row;
   column-gap: 20px;
 }
 
@@ -90,33 +84,29 @@
   justify-content: flex-end;
 }
 
-@media (max-width: 768px) {
-  .header {
-    --row-count: 2;
-    --row-height: 50px;
+.burger {
+  display: none;
+}
+
+@media (max-width: 960px) {
+  .burger {
+    display: flex;
+    flex-grow: 1;
+    flex-basis: 0;
+    justify-content: flex-end;
   }
 
-  .navWrapper {
-    flex-wrap: wrap;
-    column-gap: 30px;
+  .languageSelect {
+    display: none;
   }
 
-  .nav {
-    order: 3;
-    flex-basis: 100%;
-    column-gap: 70px;
-    margin-bottom: 10px;
+  .userInfo {
+    display: none;
   }
 }
 
-@media (max-width: 600px) {
-  .header {
-    --row-count: 3;
-  }
-
-  .logoWrapper,
-  .userInfo {
-    flex-basis: 100%;
-    justify-content: center;
+@media (max-width: 630px) {
+  .nav {
+    display: none;
   }
 }
