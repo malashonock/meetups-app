@@ -8,7 +8,7 @@ import './i18n';
 import 'style/index.scss';
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement,
+  document.getElementById('app-root') as HTMLElement,
 );
 root.render(
   <React.StrictMode>
