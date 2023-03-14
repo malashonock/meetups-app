@@ -3,15 +3,19 @@ import classNames from 'classnames';
 
 import styles from './BurgerButton.module.scss';
 
-export const BurgerButton = (): JSX.Element => {
-  const [isOpen, setIsOpen] = useState(false);
+interface BurgerButtonProps {
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+}
 
-  const toggleOpen = () => setIsOpen((prevState: boolean) => !prevState);
-
+export const BurgerButton = ({
+  isOpen,
+  setIsOpen,
+}: BurgerButtonProps): JSX.Element => {
   return (
     <button
       className={classNames(styles.wrapper, { [styles.open]: isOpen })}
-      onClick={toggleOpen}
+      onClick={() => setIsOpen(!isOpen)}
     >
       <div className={classNames(styles.line, styles.line1)} />
       <div className={classNames(styles.line, styles.line2)} />

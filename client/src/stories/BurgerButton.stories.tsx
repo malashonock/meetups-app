@@ -1,5 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { BurgerButton, ButtonVariant } from 'components';
+import { useState } from 'react';
 
 export default {
   title: 'Components/BurgerButton',
@@ -13,6 +14,10 @@ export default {
   },
 } as ComponentMeta<typeof BurgerButton>;
 
-const Template: ComponentStory<typeof BurgerButton> = () => <BurgerButton />;
+const Template: ComponentStory<typeof BurgerButton> = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return <BurgerButton isOpen={isOpen} setIsOpen={setIsOpen} />;
+};
 
 export const Default = Template.bind({});

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
@@ -20,6 +21,7 @@ import logo from 'assets/images/logo.svg';
 export const Header = observer((): JSX.Element => {
   const { loggedUser } = useAuthStore();
   const { t } = useTranslation();
+  const [isOffcanvasOpen, setIsOffcanvasOpen] = useState(false);
 
   return (
     <header className={styles.header}>
@@ -74,7 +76,10 @@ export const Header = observer((): JSX.Element => {
           <AuthToggle tooltipPosition={TooltipPosition.BottomRight} />
         </div>
         <div className={styles.burger}>
-          <BurgerButton />
+          <BurgerButton
+            isOpen={isOffcanvasOpen}
+            setIsOpen={setIsOffcanvasOpen}
+          />
         </div>
       </div>
     </header>
