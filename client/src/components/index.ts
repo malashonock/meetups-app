@@ -44,3 +44,4 @@ export * from './ConfirmDialog/ConfirmDialog';
 export * from './ConfirmDialogProvider/ConfirmDialogProvider';
 export * from './Toast/Toast';
 export * from './AlertStack/AlertStack';
+export * from './BurgerButton/BurgerButton';
