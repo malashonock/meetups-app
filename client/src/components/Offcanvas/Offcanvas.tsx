@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { Overlay } from 'components';
 
 import styles from './Offcanvas.module.scss';
+import { useOnKeyDown } from 'hooks';
 
 interface OffcanvasProps {
   isOpen: boolean;
@@ -18,6 +19,8 @@ export const Offcanvas = ({
   const handleOverlayClicked = (): void => {
     setIsOpen(!isOpen);
   };
+
+  useOnKeyDown('Escape', () => setIsOpen(!isOpen));
 
   return (
     <>
