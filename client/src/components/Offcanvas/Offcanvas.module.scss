@@ -1,0 +1,25 @@
+@import '~style/colors';
+@import '~style/mixins';
+
+.container {
+  position: fixed;
+  right: 0;
+
+  height: 100vh;
+  min-width: 290px;
+  max-width: 90vw;
+  padding: 70px 20px 20px;
+  background-color: $white;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  z-index: 10;
+  transform: translateX(100%);
+  @include smooth-transition(all);
+
+  &.open {
+    transform: translateX(0);
+  }
+}
