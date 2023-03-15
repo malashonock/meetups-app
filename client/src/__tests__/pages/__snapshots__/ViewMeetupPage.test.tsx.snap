@@ -58,7 +58,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with admin righ
             <span
               class="typography span"
             >
-              m, 15 марта, 2023
+              f, 15 марта, 2099
             </span>
           </div>
           <div
@@ -624,7 +624,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with non-admin 
             <span
               class="typography span"
             >
-              m, 15 марта, 2023
+              f, 15 марта, 2099
             </span>
           </div>
           <div
@@ -808,7 +808,7 @@ exports[`ViewMeetupPage after approval & publishing given no user is logged in s
             <span
               class="typography span"
             >
-              m, 15 марта, 2023
+              f, 15 марта, 2099
             </span>
           </div>
           <div
@@ -989,7 +989,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given a user
             <span
               class="typography span"
             >
-              m, 15 марта, 2023
+              f, 15 марта, 2099
             </span>
           </div>
           <div
@@ -1162,7 +1162,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given a user
             <span
               class="typography span"
             >
-              m, 15 марта, 2023
+              f, 15 марта, 2099
             </span>
           </div>
           <div
@@ -1328,7 +1328,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given no use
             <span
               class="typography span"
             >
-              m, 15 марта, 2023
+              f, 15 марта, 2099
             </span>
           </div>
           <div

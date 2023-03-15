@@ -5,7 +5,9 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import { AvatarGroup } from 'components';
+import { UserPreview } from 'components/UserPreview/UserPreview';
 import { generateUsers } from 'model/__fakes__';
+import { User } from 'stores';
 
 const mockContainerRef = (
   containerWidth: number = 500,
@@ -23,6 +25,25 @@ const mockContainerRef = (
 
   jest.spyOn(React, 'useRef').mockReturnValue(mockedContainerRef);
 };
+
+// Mock UserPreview component
+jest.mock('components/UserPreview/UserPreview', () => {
+  return {
+    ...jest.requireActual('components/UserPreview/UserPreview'),
+    UserPreview: jest.fn(),
+  };
+});
+const MockUserPreview = UserPreview as jest.MockedFunction<typeof UserPreview>;
+
+beforeEach(() => {
+  MockUserPreview.mockImplementation((props: { user: User }): JSX.Element => {
+    return (
+      <div style={{ width: '40px', height: '40px' }} className="initials">
+        {props.user.initials}
+      </div>
+    );
+  });
+});
 
 afterEach(() => {
   jest.resetAllMocks();
