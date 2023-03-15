@@ -5,7 +5,7 @@ describe('Logout', () => {
     cy.loginAsChief();
     cy.visit('/');
 
-    cy.get('[data-testid="auth-toggle"]').click();
+    cy.get('[data-testid="auth-toggle"]').first().click();
 
     cy.expectToastToPopupAndDismiss(AlertSeverity.Success);
 
