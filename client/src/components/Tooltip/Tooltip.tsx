@@ -1,8 +1,9 @@
-import React, { PropsWithChildren, useLayoutEffect, useState } from 'react';
+import { PropsWithChildren, useLayoutEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 
 import { Typography, TypographyComponent } from 'components';
 import { Nullable } from 'types';
+import { isElementDisplayed } from 'utils';
 
 import styles from './Tooltip.module.scss';
 
@@ -29,21 +30,6 @@ interface TooltipProps {
   description?: Nullable<string>;
 }
 
-const resetOffsetX = (): void => {
-  const tooltip = document.querySelector<HTMLDivElement>(`.${styles.tooltip}`);
-  const content = document.querySelector<HTMLDivElement>(`.${styles.content}`);
-  if (tooltip && content) {
-    const tooltipWidth: number = tooltip.clientWidth;
-    const contentWidth: number = content.clientWidth;
-    const paddingX = 25; // px
-    const offsetX: number = Math.max(
-      paddingX,
-      Math.min(contentWidth / 2, tooltipWidth / 2),
-    );
-    tooltip.style.setProperty('--offset-x', `${offsetX}px`);
-  }
-};
-
 export const Tooltip = ({
   children,
   variant = TooltipVariant.Dark,
@@ -52,16 +38,41 @@ export const Tooltip = ({
   description,
 }: PropsWithChildren<TooltipProps>) => {
   const [visible, setVisible] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   const showTooltip = () => setVisible(true);
   const hideTooltip = () => setVisible(false);
 
+  const isDisplayed = wrapperRef.current
+    ? isElementDisplayed<HTMLDivElement>(wrapperRef.current)
+    : false;
+
+  const resetOffsetX = (): void => {
+    const tooltip = wrapperRef.current?.querySelector<HTMLDivElement>(
+      `.${styles.tooltip}`,
+    );
+    const content = wrapperRef.current?.querySelector<HTMLDivElement>(
+      `.${styles.content}`,
+    );
+    if (tooltip && content) {
+      const tooltipWidth: number = tooltip.clientWidth;
+      const contentWidth: number = content.clientWidth;
+      const paddingX = 25; // px
+      const offsetX: number = Math.max(
+        paddingX,
+        Math.min(contentWidth / 2, tooltipWidth / 2),
+      );
+      tooltip.style.setProperty('--offset-x', `${offsetX}px`);
+    }
+  };
+
   useLayoutEffect(() => {
     resetOffsetX();
-  }, [children]);
+  }, [isDisplayed]);
 
   return (
     <div
+      ref={wrapperRef}
       className={styles.wrapper}
       onMouseEnter={showTooltip}
       onMouseLeave={hideTooltip}
