@@ -1,15 +1,26 @@
 import { ButtonHTMLAttributes, PropsWithChildren } from 'react';
 import classNames from 'classnames';
 
+import { Theme } from 'types';
+
 import styles from './IconButton.module.scss';
 
+type IconButtonProps = {
+  theme?: Theme;
+} & ButtonHTMLAttributes<HTMLButtonElement>;
+
 export const IconButton = ({
+  theme = Theme.Light,
   children,
   ...nativeButtonProps
-}: PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>): JSX.Element => (
+}: PropsWithChildren<IconButtonProps>): JSX.Element => (
   <button
     {...nativeButtonProps}
-    className={classNames(nativeButtonProps.className, styles.button)}
+    className={classNames(
+      styles.button,
+      styles[theme],
+      nativeButtonProps.className,
+    )}
   >
     {children}
   </button>
