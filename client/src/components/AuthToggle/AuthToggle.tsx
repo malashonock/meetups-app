@@ -19,12 +19,14 @@ import { Theme } from 'types';
 interface AuthToggleProps {
   theme?: Theme;
   tooltipPosition?: TooltipPosition;
+  onToggle?: () => void;
 }
 
 export const AuthToggle = observer(
   ({
     theme = Theme.Dark,
     tooltipPosition = TooltipPosition.BottomCenter,
+    onToggle,
   }: AuthToggleProps): JSX.Element => {
     const navigate = useNavigate();
     const { authStore, loggedUser } = useAuthStore();
@@ -33,6 +35,7 @@ export const AuthToggle = observer(
     const handleLogout = async (): Promise<void> => {
       await authStore?.logOut();
       navigate('/');
+      onToggle?.call(null);
     };
 
     const tooltipVariant: TooltipVariant =
@@ -57,7 +60,7 @@ export const AuthToggle = observer(
             </IconButton>
           </Tooltip>
         ) : (
-          <Link to="/login">
+          <Link to="/login" onClick={onToggle}>
             <Tooltip
               variant={tooltipVariant}
               position={tooltipPosition}

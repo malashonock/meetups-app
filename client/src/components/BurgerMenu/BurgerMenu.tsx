@@ -44,15 +44,16 @@ export const BurgerMenu = ({
                   ? TooltipPosition.BottomRight
                   : TooltipPosition.BottomCenter
               }
+              onToggle={onClose}
             />
           </div>
-          <LanguageSelect />
+          <LanguageSelect onSelect={onClose} />
         </div>
         <div className={styles.nav}>
-          <PageLink url="/meetups" theme={Theme.Light}>
+          <PageLink url="/meetups" onFollowLink={onClose} theme={Theme.Light}>
             {t('meetups')}
           </PageLink>
-          <PageLink url="/news" theme={Theme.Light}>
+          <PageLink url="/news" onFollowLink={onClose} theme={Theme.Light}>
             {t('news')}
           </PageLink>
         </div>
