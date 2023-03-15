@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { useTranslation } from 'react-i18next';
+import classNames from 'classnames';
 
 import {
   IconButton,
@@ -13,13 +14,16 @@ import { useAuthStore } from 'hooks';
 import styles from './AuthToggle.module.scss';
 import { ReactComponent as LoginIcon } from './assets/login.svg';
 import { ReactComponent as LogoutIcon } from './assets/logout.svg';
+import { Theme } from 'types';
 
 interface AuthToggleProps {
+  theme?: Theme;
   tooltipPosition?: TooltipPosition;
 }
 
 export const AuthToggle = observer(
   ({
+    theme = Theme.Dark,
     tooltipPosition = TooltipPosition.BottomCenter,
   }: AuthToggleProps): JSX.Element => {
     const navigate = useNavigate();
@@ -31,18 +35,22 @@ export const AuthToggle = observer(
       navigate('/');
     };
 
+    const tooltipVariant: TooltipVariant =
+      theme === Theme.Dark ? TooltipVariant.White : TooltipVariant.Colored;
+
     return (
       <div data-testid="auth-toggle">
         {loggedUser ? (
           <Tooltip
-            variant={TooltipVariant.White}
+            variant={tooltipVariant}
             position={tooltipPosition}
             title={t('logoutTooltip.title')}
             description={t('logoutTooltip.text')}
           >
             <IconButton
+              theme={theme}
+              className={classNames(styles.button, styles[theme])}
               onClick={handleLogout}
-              className={styles.button}
               aria-label="logout-button"
             >
               <LogoutIcon />
@@ -51,12 +59,16 @@ export const AuthToggle = observer(
         ) : (
           <Link to="/login">
             <Tooltip
-              variant={TooltipVariant.White}
+              variant={tooltipVariant}
               position={tooltipPosition}
               title={t('loginTooltip.title')}
               description={t('loginTooltip.text')}
             >
-              <IconButton className={styles.button} aria-label="login-button">
+              <IconButton
+                theme={theme}
+                className={classNames(styles.button, styles[theme])}
+                aria-label="login-button"
+              >
                 <LoginIcon />
               </IconButton>
             </Tooltip>

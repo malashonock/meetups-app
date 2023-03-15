@@ -8,25 +8,48 @@
 
   @include smooth-transition(all);
 
-  svg path {
-    fill: $white;
-    @include smooth-transition(fill);
-  }
-
   &:not(:disabled) {
-    &:hover,
-    &:active {
-      filter: none;
-
-      svg path {
-        fill: rgba($white, 0.4);
-        @include smooth-transition(fill);
-      }
-    }
-
     &:active {
       transform: scale(0.97);
       @include smooth-transition(transform);
+    }
+  }
+
+  &.light {
+    svg path {
+      fill: $gray-03;
+      @include smooth-transition(fill);
+    }
+
+    &:not(:disabled) {
+      &:hover,
+      &:active {
+        filter: none;
+
+        svg path {
+          fill: $purple;
+          @include smooth-transition(fill);
+        }
+      }
+    }
+  }
+
+  &.dark {
+    svg path {
+      fill: $white;
+      @include smooth-transition(fill);
+    }
+
+    &:not(:disabled) {
+      &:hover,
+      &:active {
+        filter: none;
+
+        svg path {
+          fill: rgba($white, 0.4);
+          @include smooth-transition(fill);
+        }
+      }
     }
   }
 }
