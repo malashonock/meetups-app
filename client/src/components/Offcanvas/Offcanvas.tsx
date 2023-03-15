@@ -8,23 +8,19 @@ import { useOnKeyDown } from 'hooks';
 
 interface OffcanvasProps {
   isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
+  onClose: () => void;
 }
 
 export const Offcanvas = ({
   isOpen,
-  setIsOpen,
+  onClose,
   children,
 }: PropsWithChildren<OffcanvasProps>): JSX.Element => {
-  const handleOverlayClicked = (): void => {
-    setIsOpen(!isOpen);
-  };
-
-  useOnKeyDown('Escape', () => setIsOpen(!isOpen));
+  useOnKeyDown('Escape', onClose);
 
   return (
     <>
-      {isOpen && <Overlay onClick={handleOverlayClicked} />}
+      {isOpen && <Overlay onClick={onClose} />}
       <nav className={classNames(styles.container, { [styles.open]: isOpen })}>
         {children}
       </nav>

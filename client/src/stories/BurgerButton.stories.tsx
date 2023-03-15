@@ -17,7 +17,11 @@ export default {
 const Template: ComponentStory<typeof BurgerButton> = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  return <BurgerButton isOpen={isOpen} setIsOpen={setIsOpen} />;
+  const toggleBurgerMenu = (): void => {
+    setIsOpen(!isOpen);
+  };
+
+  return <BurgerButton isOpen={isOpen} onToggleOpen={toggleBurgerMenu} />;
 };
 
 export const Default = Template.bind({});

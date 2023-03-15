@@ -16,18 +16,18 @@ import { Theme } from 'types';
 
 interface BurgerMenuProps {
   isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
+  onClose: () => void;
 }
 
 export const BurgerMenu = ({
   isOpen,
-  setIsOpen,
+  onClose,
 }: BurgerMenuProps): JSX.Element => {
   const { loggedUser } = useAuthStore();
   const { t } = useTranslation();
 
   return (
-    <Offcanvas isOpen={isOpen} setIsOpen={setIsOpen}>
+    <Offcanvas isOpen={isOpen} onClose={onClose}>
       <div className={styles.menu}>
         <div className={styles.header}>
           <div className={styles.userInfo}>

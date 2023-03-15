@@ -22,7 +22,15 @@ import logo from 'assets/images/logo.svg';
 export const Header = observer((): JSX.Element => {
   const { loggedUser } = useAuthStore();
   const { t } = useTranslation();
-  const [isOffcanvasOpen, setIsOffcanvasOpen] = useState(false);
+  const [isBurgerMenuOpen, setIsBurgerMenuOpen] = useState(false);
+
+  const toggleBurgerMenu = (): void => {
+    setIsBurgerMenuOpen(!isBurgerMenuOpen);
+  };
+
+  const closeBurgerMenu = (): void => {
+    setIsBurgerMenuOpen(false);
+  };
 
   return (
     <header className={styles.header}>
@@ -64,12 +72,12 @@ export const Header = observer((): JSX.Element => {
         </div>
         <div className={styles.burger}>
           <BurgerButton
-            isOpen={isOffcanvasOpen}
-            setIsOpen={setIsOffcanvasOpen}
+            isOpen={isBurgerMenuOpen}
+            onToggleOpen={toggleBurgerMenu}
           />
         </div>
       </div>
-      <BurgerMenu isOpen={isOffcanvasOpen} setIsOpen={setIsOffcanvasOpen} />
+      <BurgerMenu isOpen={isBurgerMenuOpen} onClose={closeBurgerMenu} />
     </header>
   );
 });

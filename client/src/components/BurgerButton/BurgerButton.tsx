@@ -5,17 +5,17 @@ import styles from './BurgerButton.module.scss';
 
 interface BurgerButtonProps {
   isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
+  onToggleOpen: () => void;
 }
 
 export const BurgerButton = ({
   isOpen,
-  setIsOpen,
+  onToggleOpen,
 }: BurgerButtonProps): JSX.Element => {
   return (
     <button
       className={classNames(styles.wrapper, { [styles.open]: isOpen })}
-      onClick={() => setIsOpen(!isOpen)}
+      onClick={onToggleOpen}
     >
       <div className={classNames(styles.line, styles.line1)} />
       <div className={classNames(styles.line, styles.line2)} />
