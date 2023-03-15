@@ -1,19 +1,20 @@
 import { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
-import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 
 import {
   AuthToggle,
   BurgerButton,
+  BurgerMenu,
   LanguageSelect,
+  PageLink,
   TooltipPosition,
-  Typography,
   UserPreview,
   UserPreviewVariant,
 } from 'components';
 import { useAuthStore } from 'hooks';
+import { Theme } from 'types';
 
 import styles from './Header.module.scss';
 import logo from 'assets/images/logo.svg';
@@ -41,26 +42,12 @@ export const Header = observer((): JSX.Element => {
           ) : null}
         </div>
         <nav className={styles.nav}>
-          <NavLink
-            to="/meetups"
-            className={({ isActive }) =>
-              classNames(styles.navLink, {
-                [styles.active]: isActive,
-              })
-            }
-          >
-            <Typography>{t('meetups')}</Typography>
-          </NavLink>
-          <NavLink
-            to="/news"
-            className={({ isActive }) =>
-              classNames(styles.navLink, {
-                [styles.active]: isActive,
-              })
-            }
-          >
-            <Typography>{t('news')}</Typography>
-          </NavLink>
+          <PageLink url="/meetups" theme={Theme.Dark}>
+            {t('meetups')}
+          </PageLink>
+          <PageLink url="/news" theme={Theme.Dark}>
+            {t('news')}
+          </PageLink>
         </nav>
         <div className={styles.userInfo}>
           {loggedUser ? (
@@ -82,6 +69,7 @@ export const Header = observer((): JSX.Element => {
           />
         </div>
       </div>
+      <BurgerMenu isOpen={isOffcanvasOpen} />
     </header>
   );
 });
