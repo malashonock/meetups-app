@@ -1,6 +1,6 @@
 import { PropsWithChildren, useEffect } from 'react';
 
-import { Portal } from 'components';
+import { Overlay, Portal } from 'components';
 import { Nullable } from 'types';
 
 import styles from './Modal.module.scss';
@@ -32,9 +32,9 @@ export const Modal = ({
 
   return show ? (
     <Portal wrapperId="modal-root">
-      <div className={styles.overlay} data-testid="modal-overlay">
+      <Overlay>
         <div className={styles.content}>{children}</div>
-      </div>
+      </Overlay>
     </Portal>
   ) : null;
 };
