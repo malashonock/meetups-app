@@ -69,7 +69,7 @@ export const Header = observer((): JSX.Element => {
           />
         </div>
       </div>
-      <BurgerMenu isOpen={isOffcanvasOpen} />
+      <BurgerMenu isOpen={isOffcanvasOpen} setIsOpen={setIsOffcanvasOpen} />
     </header>
   );
 });

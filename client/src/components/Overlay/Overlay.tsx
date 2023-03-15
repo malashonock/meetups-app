@@ -2,9 +2,20 @@ import { PropsWithChildren } from 'react';
 
 import styles from './Overlay.module.scss';
 
-export const Overlay = ({ children }: PropsWithChildren): JSX.Element => {
+interface OverlayProps {
+  onClick?: () => void;
+}
+
+export const Overlay = ({
+  onClick,
+  children,
+}: PropsWithChildren<OverlayProps>): JSX.Element => {
   return (
-    <div className={styles.container} data-testid="modal-overlay">
+    <div
+      onClick={onClick}
+      className={styles.container}
+      data-testid="modal-overlay"
+    >
       {children}
     </div>
   );
