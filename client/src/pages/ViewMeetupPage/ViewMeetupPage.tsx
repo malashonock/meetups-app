@@ -114,7 +114,7 @@ export const ViewMeetupPage = observer(() => {
           >
             {t('viewMeetupPage.topic')}
           </Typography>
-          <div className={styles.dataContent}>
+          <div className={styles.dataContent} data-testid="heading">
             <Typography
               className={styles.meetupHeading}
               component={TypographyComponent.Heading2}
@@ -128,14 +128,14 @@ export const ViewMeetupPage = observer(() => {
 
     return (
       <div className={styles.headerData}>
-        <figure className={styles.imageWrapper}>
+        <figure className={styles.imageWrapper} data-testid="image">
           <img
             className={styles.image}
             src={image?.url ?? defaultImage}
             alt={t('viewMeetupPage.imgAlt') || 'Meetup image'}
           />
         </figure>
-        <div className={styles.headerDataContent}>
+        <div className={styles.headerDataContent} data-testid="heading">
           <Typography
             className={styles.meetupHeading}
             component={TypographyComponent.Heading2}
@@ -187,7 +187,7 @@ export const ViewMeetupPage = observer(() => {
             [styles.notFilledOutline]: !canPublish,
           })}
         >
-          <div id="date" className={styles.info}>
+          <div id="date" className={styles.info} data-testid="date">
             <img
               className={styles.image}
               src={calendar}
@@ -197,7 +197,7 @@ export const ViewMeetupPage = observer(() => {
               {date || '—'}
             </Typography>
           </div>
-          <div id="time" className={styles.info}>
+          <div id="time" className={styles.info} data-testid="time">
             <img
               className={styles.image}
               src={clock}
@@ -207,7 +207,7 @@ export const ViewMeetupPage = observer(() => {
               {time || '—'}
             </Typography>
           </div>
-          <div id="location" className={styles.info}>
+          <div id="location" className={styles.info} data-testid="location">
             <img
               className={styles.image}
               src={pin}
@@ -411,7 +411,7 @@ export const ViewMeetupPage = observer(() => {
         {renderHeader()}
         {renderTimePlace()}
         {renderSpeakers()}
-        <div className={styles.data}>
+        <div className={styles.data} data-testid="description">
           <Typography
             component={TypographyComponent.Span}
             className={styles.dataName}

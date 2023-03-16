@@ -77,7 +77,7 @@ export const MeetupTabContent = observer(
         ) : (
           <>
             <div className={styles.wrapper}>
-              <div className={styles.counter}>
+              <div className={styles.counter} data-testid="meetup-counter">
                 {t('meetupTabContent.meetupCount', {
                   context: variant,
                   count: selectedMeetups?.length || 0,

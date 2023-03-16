@@ -10,15 +10,15 @@ describe('Create meetup', () => {
       cy.visit('/meetups');
       cy.url().should('contain', '/meetups/topics');
 
-      cy.get('#btn-create-meetup').click();
+      cy.getByTestId('btn-create-meetup').click();
       cy.url().should('contain', '/meetups/create');
 
       const subject: string = faker.company.catchPhrase();
       const excerpt: string = faker.lorem.paragraph();
 
-      cy.get('[name="subject"]').type(subject);
-      cy.get('[name="excerpt"]').type(excerpt);
-      cy.get('[data-testid="select-field"]').as('speakersSelect').click();
+      cy.getByTestId('text-input-subject').type(subject);
+      cy.getByTestId('text-area-excerpt').type(excerpt);
+      cy.getByTestId('select-speakers').as('speakersSelect').click();
       cy.get('@speakersSelect').within(() => {
         cy.get('[aria-label="Remove chief Blick"]').click();
         cy.get('[class*="SelectField_option"]')
@@ -26,17 +26,17 @@ describe('Create meetup', () => {
           .click();
       });
 
-      cy.get('#btn-next').click();
+      cy.getByTestId('btn-next').click();
 
       cy.get('[name="start"]').type('15 Mar 2023 12:00');
       cy.get('[name="finish"]').type('15 Mar 2023 14:00');
-      cy.get('[name="place"]').type('room 123');
-      cy.get('[data-testid="image-dropbox"]').selectFile(
+      cy.getByTestId('text-input-place').type('room 123');
+      cy.getByTestId('image-dropbox').selectFile(
         'cypress/fixtures/test-image-1.jpeg',
         { action: 'drag-drop' },
       );
 
-      cy.get('#btn-create').click();
+      cy.getByTestId('btn-create').click();
 
       cy.expectToastToPopupAndDismiss(AlertSeverity.Success);
 
@@ -45,9 +45,9 @@ describe('Create meetup', () => {
 
       // The just created meetup is in topic stage,
       // so the only visible fields should be subject, excerpt and author
-      cy.get('[class*="meetupHeading"]').should('contain', subject);
-      cy.get('[class*="excerpt"]').should('contain', excerpt);
-      cy.get('[data-testid="user-preview"]').should('contain', 'chief Blick');
+      cy.getByTestId('heading').should('contain', subject);
+      cy.getByTestId('description').should('contain', excerpt);
+      cy.getByTestId('author').should('contain', 'chief Blick');
     });
   });
 
@@ -58,15 +58,15 @@ describe('Create meetup', () => {
       cy.visit('/meetups');
       cy.url().should('contain', '/meetups/topics');
 
-      cy.get('#btn-create-meetup').click();
+      cy.getByTestId('btn-create-meetup').click();
       cy.url().should('contain', '/meetups/create');
 
       const subject: string = faker.company.catchPhrase();
       const excerpt: string = faker.lorem.paragraph();
 
-      cy.get('[name="subject"]').type(subject);
-      cy.get('[name="excerpt"]').type(excerpt);
-      cy.get('[data-testid="select-field"]').as('speakersSelect').click();
+      cy.getByTestId('text-input-subject').type(subject);
+      cy.getByTestId('text-area-excerpt').type(excerpt);
+      cy.getByTestId('select-speakers').as('speakersSelect').click();
       cy.get('@speakersSelect').within(() => {
         cy.get('[aria-label="Remove employee Gerlach"]').click();
         cy.get('[class*="SelectField_option"]')
@@ -74,17 +74,17 @@ describe('Create meetup', () => {
           .click();
       });
 
-      cy.get('#btn-next').click();
+      cy.getByTestId('btn-next').click();
 
       cy.get('[name="start"]').type('15 Mar 2023 12:00');
       cy.get('[name="finish"]').type('15 Mar 2023 14:00');
-      cy.get('[name="place"]').type('room 123');
-      cy.get('[data-testid="image-dropbox"]').selectFile(
+      cy.getByTestId('text-input-place').type('room 123');
+      cy.getByTestId('image-dropbox').selectFile(
         'cypress/fixtures/test-image-1.jpeg',
         { action: 'drag-drop' },
       );
 
-      cy.get('#btn-create').click();
+      cy.getByTestId('btn-create').click();
 
       cy.expectToastToPopupAndDismiss(AlertSeverity.Success);
 
@@ -93,12 +93,9 @@ describe('Create meetup', () => {
 
       // The just created meetup is in topic stage,
       // so the only visible fields should be subject, excerpt and author
-      cy.get('[class*="meetupHeading"]').should('contain', subject);
-      cy.get('[class*="excerpt"]').should('contain', excerpt);
-      cy.get('[data-testid="user-preview"]').should(
-        'contain',
-        'employee Gerlach',
-      );
+      cy.getByTestId('heading').should('contain', subject);
+      cy.getByTestId('description').should('contain', excerpt);
+      cy.getByTestId('author').should('contain', 'employee Gerlach');
     });
   });
 
@@ -107,7 +104,7 @@ describe('Create meetup', () => {
       cy.visit('/meetups');
       cy.url().should('contain', '/meetups/topics');
 
-      cy.get('[class*="createMeetupBtn"]').click();
+      cy.getByTestId('btn-create-meetup').click();
 
       cy.expectToastToPopupAndDismiss(AlertSeverity.Error);
 

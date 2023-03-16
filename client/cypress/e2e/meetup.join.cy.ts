@@ -8,7 +8,9 @@ describe('Join/cancel join meetup', () => {
 
         cy.visit(`/meetups/${createdMeetupId}`);
 
-        cy.get('#btn-join-toggle', { timeout: 10_000 }).should('not.exist');
+        cy.getByTestId('btn-join-toggle', { timeout: 10_000 }).should(
+          'not.exist',
+        );
       });
     });
   });
@@ -21,7 +23,9 @@ describe('Join/cancel join meetup', () => {
 
           cy.visit(`/meetups/${createdMeetupId}`);
 
-          cy.get('#btn-join-toggle', { timeout: 10_000 }).should('not.exist');
+          cy.getByTestId('btn-join-toggle', { timeout: 10_000 }).should(
+            'not.exist',
+          );
         });
       });
     });
@@ -34,23 +38,22 @@ describe('Join/cancel join meetup', () => {
           cy.visit(`/meetups/${createdMeetupId}`);
 
           // No one has joined yet
-          cy.get('[data-testid="participants"]').should('not.exist');
+          cy.getByTestId('participants').should('not.exist');
 
           // Now let's join
-          cy.get('#btn-join-toggle', { timeout: 10_000 })
+          cy.getByTestId('btn-join-toggle', { timeout: 10_000 })
             .as('joinToggleBtn')
             .should('be.enabled');
           cy.get('@joinToggleBtn').click();
 
           cy.expectToastToPopupAndDismiss(AlertSeverity.Success);
 
-          cy.get('[data-testid="participants"]')
+          cy.getByTestId('participants')
             .as('participants')
             .within(() => {
-              cy.get('[class*="UserPreview"]:first-of-type').should(
-                'contain.text',
-                'EG',
-              );
+              cy.getByTestId('user-preview')
+                .first()
+                .should('contain.text', 'EG');
             });
 
           // Now let's withdraw our join

@@ -22,9 +22,10 @@ export const Button = ({
     {...nativeButtonProps}
     className={classNames(
       nativeButtonProps.className,
-      styles.button, 
+      styles.button,
       styles[variant],
     )}
+    data-testid={nativeButtonProps.id}
   >
     {children}
   </button>

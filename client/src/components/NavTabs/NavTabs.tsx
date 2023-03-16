@@ -21,7 +21,7 @@ export const NavTabs = ({ className, children }: NavTabsProps) => {
 
   return (
     <div className={className}>
-      <div className={styles.tabsWrapper}>
+      <div className={styles.tabsWrapper} data-testid="nav-tabs">
         <div className={styles.tabs}>{children}</div>
         <TabsIndicator
           tabsCount={arrayChildren.length}

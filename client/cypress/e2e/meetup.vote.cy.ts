@@ -8,7 +8,9 @@ describe('Vote/withdraw vote for meetup', () => {
 
         cy.visit(`/meetups/${createdTopicId}`);
 
-        cy.get('#btn-vote-toggle', { timeout: 10_000 }).should('not.exist');
+        cy.getByTestId('btn-vote-toggle', { timeout: 10_000 }).should(
+          'not.exist',
+        );
       });
     });
   });
@@ -21,7 +23,9 @@ describe('Vote/withdraw vote for meetup', () => {
 
           cy.visit(`/meetups/${createdTopicId}`);
 
-          cy.get('#btn-vote-toggle', { timeout: 10_000 }).should('not.exist');
+          cy.getByTestId('btn-vote-toggle', { timeout: 10_000 }).should(
+            'not.exist',
+          );
         });
       });
     });
@@ -34,23 +38,22 @@ describe('Vote/withdraw vote for meetup', () => {
           cy.visit(`/meetups/${createdTopicId}`);
 
           // No one has voted yet
-          cy.get('[data-testid="voted-users"]').should('not.exist');
+          cy.getByTestId('voted-users').should('not.exist');
 
           // Now let's vote
-          cy.get('#btn-vote-toggle', { timeout: 10_000 })
+          cy.getByTestId('btn-vote-toggle', { timeout: 10_000 })
             .as('voteToggleBtn')
             .should('be.enabled');
           cy.get('@voteToggleBtn').click();
 
           cy.expectToastToPopupAndDismiss(AlertSeverity.Success);
 
-          cy.get('[data-testid="voted-users"]')
+          cy.getByTestId('voted-users')
             .as('votedUsers')
             .within(() => {
-              cy.get('[class*="UserPreview"]:first-of-type').should(
-                'contain.text',
-                'EG',
-              );
+              cy.getByTestId('user-preview')
+                .first()
+                .should('contain.text', 'EG');
             });
 
           // Now let's withdraw our vote

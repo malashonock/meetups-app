@@ -43,7 +43,10 @@ export const ViewNewsPage = observer(() => {
 
   const renderImage = (): JSX.Element => {
     return (
-      <figure className={classNames(styles.section, styles.imageWrapper)}>
+      <figure
+        className={classNames(styles.section, styles.imageWrapper)}
+        data-testid="image"
+      >
         <img
           className={styles.image}
           src={image?.url ?? defaultImage}
@@ -58,12 +61,14 @@ export const ViewNewsPage = observer(() => {
       <Typography
         className={styles.title}
         component={TypographyComponent.Heading2}
+        data-testid="title"
       >
         {title}
       </Typography>
       <Typography
         className={styles.text}
         component={TypographyComponent.Paragraph}
+        data-testid="text"
       >
         {text}
       </Typography>

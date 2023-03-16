@@ -5,11 +5,11 @@ describe('Logout', () => {
     cy.loginAsChief();
     cy.visit('/');
 
-    cy.get('[data-testid="auth-toggle"]').click();
+    cy.getByTestId('auth-toggle').click();
 
     cy.expectToastToPopupAndDismiss(AlertSeverity.Success);
 
     cy.url().should('include', '/meetups');
-    cy.get('[class*="Header_userInfo"]').should('not.contain', 'chief Blick');
+    cy.getByTestId('logged-user-info').should('not.contain', 'chief Blick');
   });
 });

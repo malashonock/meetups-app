@@ -8,7 +8,7 @@ describe('Create meetup', () => {
       cy.createTopic().then((createdTopicId: string) => {
         cy.visit(`/meetups/${createdTopicId}`);
 
-        cy.get('#btn-approve', { timeout: 10_000 })
+        cy.getByTestId('btn-approve', { timeout: 10_000 })
           .as('approveBtn')
           .should('be.enabled');
         cy.get('@approveBtn').click();
@@ -20,10 +20,10 @@ describe('Create meetup', () => {
 
         cy.get('[name="start"]').type('15 Mar 2024 12:00');
         cy.get('[name="finish"]').type('15 Mar 2024 14:00');
-        cy.get('[name="place"]').type(faker.address.streetAddress());
+        cy.getByTestId('text-input-place').type(faker.address.streetAddress());
 
-        cy.get('#btn-preview').as('previewBtn').should('be.disabled');
-        cy.get('#btn-save').click();
+        cy.getByTestId('btn-preview').as('previewBtn').should('be.disabled');
+        cy.getByTestId('btn-save').click();
 
         cy.expectToastToPopupAndDismiss(AlertSeverity.Success);
 
@@ -33,7 +33,7 @@ describe('Create meetup', () => {
         // Should redirect to view created meetup page
         cy.url().should('match', new RegExp(`\/meetups\/${createdTopicId}$`));
 
-        cy.get('#btn-publish').should('be.enabled').click();
+        cy.getByTestId('btn-publish').should('be.enabled').click();
 
         cy.expectToastToPopupAndDismiss(AlertSeverity.Success);
 

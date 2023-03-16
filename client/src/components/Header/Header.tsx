@@ -42,6 +42,7 @@ export const Header = observer((): JSX.Element => {
                   [styles.active]: isActive,
                 })
               }
+              data-testid="page-link"
             >
               <Typography>{t('meetups')}</Typography>
             </NavLink>
@@ -52,11 +53,12 @@ export const Header = observer((): JSX.Element => {
                   [styles.active]: isActive,
                 })
               }
+              data-testid="page-link"
             >
               <Typography>{t('news')}</Typography>
             </NavLink>
           </nav>
-          <div className={styles.userInfo}>
+          <div className={styles.userInfo} data-testid="logged-user-info">
             {loggedUser ? (
               <UserPreview
                 variant={UserPreviewVariant.Header}
