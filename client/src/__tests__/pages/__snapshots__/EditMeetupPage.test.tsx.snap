@@ -62,7 +62,7 @@ exports[`EditMeetupPage should match snapshot 1`] = `
             </label>
             <input
               class="input default"
-              data-testid="text-input"
+              data-testid="text-input-subject"
               id="subject"
               name="subject"
               type="text"
@@ -99,7 +99,7 @@ exports[`EditMeetupPage should match snapshot 1`] = `
                     name="start"
                     placeholder="dateTimePicker.defaultPlaceholder"
                     type="text"
-                    value="15 Mar 2023 14:00"
+                    value="15 Mar 2099 14:00"
                   />
                 </div>
               </div>
@@ -131,7 +131,7 @@ exports[`EditMeetupPage should match snapshot 1`] = `
                     name="finish"
                     placeholder="dateTimePicker.defaultPlaceholder"
                     type="text"
-                    value="15 Mar 2023 15:30"
+                    value="15 Mar 2099 15:30"
                   />
                 </div>
               </div>
@@ -148,7 +148,7 @@ exports[`EditMeetupPage should match snapshot 1`] = `
             </label>
             <input
               class="input default"
-              data-testid="text-input"
+              data-testid="text-input-place"
               id="place"
               name="place"
               type="text"
@@ -165,7 +165,7 @@ exports[`EditMeetupPage should match snapshot 1`] = `
               formFields.meetup.speakers.label
             </label>
             <div
-              data-testid="select-field"
+              data-testid="select-speakers"
             >
               <div
                 class=" css-b62m3t-container"
@@ -303,7 +303,7 @@ exports[`EditMeetupPage should match snapshot 1`] = `
             >
               <textarea
                 class="input default textArea"
-                data-testid="text-area"
+                data-testid="text-area-excerpt"
                 id="excerpt"
                 name="excerpt"
                 rows="1"
@@ -319,6 +319,7 @@ exports[`EditMeetupPage should match snapshot 1`] = `
         >
           <button
             class="actionButton cancelBtn button default"
+            data-testid="btn-cancel"
             id="btn-cancel"
             type="button"
           >
@@ -329,6 +330,7 @@ exports[`EditMeetupPage should match snapshot 1`] = `
           >
             <button
               class="actionButton previewBtn button secondary"
+              data-testid="btn-preview"
               id="btn-preview"
               type="button"
             >
@@ -336,6 +338,7 @@ exports[`EditMeetupPage should match snapshot 1`] = `
             </button>
             <button
               class="actionButton saveBtn button primary"
+              data-testid="btn-save"
               disabled=""
               id="btn-save"
               type="submit"

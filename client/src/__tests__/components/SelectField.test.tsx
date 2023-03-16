@@ -75,7 +75,7 @@ describe('SelectField', () => {
     );
 
     const select = screen
-      .getByTestId('select-field')
+      .getByTestId('select-user')
       .querySelector('input') as HTMLInputElement;
     userEvent.click(select);
 

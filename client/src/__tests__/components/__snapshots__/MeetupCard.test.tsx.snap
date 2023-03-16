@@ -18,7 +18,7 @@ exports[`MeetupCard after topic approval should match snapshot 1`] = `
           <span
             class="typography span date noWrap"
           >
-            m, 15 марта
+            f, 15 марта
           </span>
         </li>
         <li

@@ -82,7 +82,9 @@ const getSubjectInput = () =>
 const getExcerptInput = () =>
   screen.getByLabelText('formFields.meetup.description.label');
 const getSpeakerSelect = () =>
-  screen.getByTestId('select-field').querySelector('input') as HTMLInputElement;
+  screen
+    .getByTestId('select-speakers')
+    .querySelector('input') as HTMLInputElement;
 const getStartDatePicker = () =>
   screen.getByLabelText(
     'formFields.meetup.datetimeStart.label',
@@ -125,12 +127,12 @@ const fillOutRequiredFields = async () => {
 const fillOutOptionalFields = async () => {
   // Select start date/time
   await waitFor(() => {
-    userEvent.type(getStartDatePicker(), '15 Mar 2023 14:00');
+    userEvent.type(getStartDatePicker(), '15 Mar 2099 14:00');
   });
 
   // Select finish date/time
   await waitFor(() => {
-    userEvent.type(getFinishDatePicker(), '15 Mar 2023 15:30');
+    userEvent.type(getFinishDatePicker(), '15 Mar 2099 15:30');
   });
 
   // Fill out location

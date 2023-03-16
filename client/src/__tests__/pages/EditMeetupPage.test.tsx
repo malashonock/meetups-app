@@ -80,7 +80,9 @@ const getSubjectInput = () =>
 const getExcerptInput = () =>
   screen.getByLabelText('formFields.meetup.description.label');
 const getSpeakerSelect = () =>
-  screen.getByTestId('select-field').querySelector('input') as HTMLInputElement;
+  screen
+    .getByTestId('select-speakers')
+    .querySelector('input') as HTMLInputElement;
 const getStartDatePicker = () =>
   screen.getByLabelText(
     'formFields.meetup.datetimeStart.label',
@@ -106,8 +108,8 @@ const mockUpdatedMeetup: MeetupFields = {
   author: mockUser,
   speakers: [mockUser, mockUser2],
   place: 'room 321',
-  start: new Date(2023, 2, 20, 15, 0),
-  finish: new Date(2023, 2, 20, 16, 30),
+  start: new Date(2099, 2, 20, 15, 0),
+  finish: new Date(2099, 2, 20, 16, 30),
   image: mockImageWithUrl2,
 };
 
@@ -136,13 +138,13 @@ const editFields = async () => {
   // Select another start date/time
   await waitFor(() => {
     userEvent.clear(getStartDatePicker());
-    userEvent.type(getStartDatePicker(), '20 Mar 2023 15:00');
+    userEvent.type(getStartDatePicker(), '20 Mar 2099 15:00');
   });
 
   // Select another finish date/time
   await waitFor(() => {
     userEvent.clear(getFinishDatePicker());
-    userEvent.type(getFinishDatePicker(), '20 Mar 2023 16:30');
+    userEvent.type(getFinishDatePicker(), '20 Mar 2099 16:30');
   });
 
   // Edit location
