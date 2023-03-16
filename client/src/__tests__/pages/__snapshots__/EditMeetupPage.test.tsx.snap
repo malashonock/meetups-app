@@ -99,7 +99,7 @@ exports[`EditMeetupPage should match snapshot 1`] = `
                     name="start"
                     placeholder="dateTimePicker.defaultPlaceholder"
                     type="text"
-                    value="15 Mar 2023 14:00"
+                    value="15 Mar 2099 14:00"
                   />
                 </div>
               </div>
@@ -131,7 +131,7 @@ exports[`EditMeetupPage should match snapshot 1`] = `
                     name="finish"
                     placeholder="dateTimePicker.defaultPlaceholder"
                     type="text"
-                    value="15 Mar 2023 15:30"
+                    value="15 Mar 2099 15:30"
                   />
                 </div>
               </div>
