@@ -21,6 +21,10 @@ declare global {
         variant: AlertSeverity,
         shouldExpireIn?: number,
       ): Chainable<void>;
+      getByTestId<E extends Node = HTMLElement>(
+        testId: string,
+        options?: Partial<Loggable & Timeoutable & Withinable & Shadow>,
+      ): Chainable<JQuery<E>>;
     }
   }
 }
@@ -176,12 +180,18 @@ Cypress.Commands.add('createMeetup', function () {
 Cypress.Commands.add(
   'expectToastToPopupAndDismiss',
   (variant: AlertSeverity, shouldExpireIn: number = 3_000) => {
-    cy.get(`[data-testid="toast"] [data-testid="icon-${variant}"]`).should(
-      'exist',
-    );
+    cy.getByTestId('toast')
+      .should('exist')
+      .within(() => {
+        cy.getByTestId(`icon-${variant}`).should('exist');
+      });
+
     cy.wait(shouldExpireIn);
-    cy.get(`[data-testid="toast"] [data-testid="icon-${variant}"]`).should(
-      'not.exist',
-    );
+
+    cy.getByTestId('toast').should('not.exist');
   },
 );
+
+Cypress.Commands.add('getByTestId', (testId: string, options) => {
+  return cy.get(`[data-testid="${testId}"]`, options);
+});
