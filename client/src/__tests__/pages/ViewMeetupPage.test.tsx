@@ -12,7 +12,7 @@ import {
   mockFullUser,
 } from 'model/__fakes__';
 import { useAuthStore, useMeetup } from 'hooks';
-import { Meetup } from 'stores';
+import { Meetup, RootStore } from 'stores';
 import { ConfirmDialogProvider } from 'components';
 
 // Mock useAuthStore & useMeetup hook
@@ -65,9 +65,9 @@ describe('ViewMeetupPage', () => {
 
     describe('given no user is logged in', () => {
       beforeEach(() => {
-        mockUseAuthStore.mockReturnValue({
-          loggedUser: null,
-        });
+        const { authStore } = new RootStore();
+        authStore.loggedUser = null;
+        mockUseAuthStore.mockReturnValue(authStore);
       });
 
       it('should match snapshot', () => {
@@ -80,9 +80,9 @@ describe('ViewMeetupPage', () => {
 
     describe('given a user is logged in', () => {
       beforeEach(() => {
-        mockUseAuthStore.mockReturnValue({
-          loggedUser: mockFullUser,
-        });
+        const { authStore } = new RootStore();
+        authStore.loggedUser = mockFullUser;
+        mockUseAuthStore.mockReturnValue(authStore);
       });
 
       it('should match snapshot', () => {
@@ -127,9 +127,9 @@ describe('ViewMeetupPage', () => {
 
     describe('given no user is logged in', () => {
       beforeEach(() => {
-        mockUseAuthStore.mockReturnValue({
-          loggedUser: null,
-        });
+        const { authStore } = new RootStore();
+        authStore.loggedUser = null;
+        mockUseAuthStore.mockReturnValue(authStore);
       });
 
       it('should match snapshot', () => {
@@ -142,9 +142,9 @@ describe('ViewMeetupPage', () => {
 
     describe('given a user is logged in', () => {
       beforeEach(() => {
-        mockUseAuthStore.mockReturnValue({
-          loggedUser: mockFullUser,
-        });
+        const { authStore } = new RootStore();
+        authStore.loggedUser = mockFullUser;
+        mockUseAuthStore.mockReturnValue(authStore);
       });
 
       it('should match snapshot', () => {
@@ -201,9 +201,9 @@ describe('ViewMeetupPage', () => {
 
     describe('given no user is logged in', () => {
       beforeEach(() => {
-        mockUseAuthStore.mockReturnValue({
-          loggedUser: null,
-        });
+        const { authStore } = new RootStore();
+        authStore.loggedUser = null;
+        mockUseAuthStore.mockReturnValue(authStore);
       });
 
       it('should match snapshot', () => {
@@ -216,9 +216,9 @@ describe('ViewMeetupPage', () => {
 
     describe('given a user is logged in', () => {
       beforeEach(() => {
-        mockUseAuthStore.mockReturnValue({
-          loggedUser: mockFullUser,
-        });
+        const { authStore } = new RootStore();
+        authStore.loggedUser = mockFullUser;
+        mockUseAuthStore.mockReturnValue(authStore);
       });
 
       it('should match snapshot', () => {
@@ -232,9 +232,9 @@ describe('ViewMeetupPage', () => {
 
   describe('regardless of meetup status', () => {
     beforeEach(() => {
-      mockUseAuthStore.mockReturnValue({
-        loggedUser: mockFullUser,
-      });
+      const { authStore } = new RootStore();
+      authStore.loggedUser = mockFullUser;
+      mockUseAuthStore.mockReturnValue(authStore);
       mockUseMeetup.mockReturnValue({
         meetup: mockMeetup,
         isLoading: false,

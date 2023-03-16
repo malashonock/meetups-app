@@ -6,6 +6,7 @@ import userEvent from '@testing-library/user-event';
 import { ViewNewsPage } from 'pages';
 import { mockFullUser, mockNewsArticle } from 'model/__fakes__';
 import { useAuthStore, useNewsArticle } from 'hooks';
+import { RootStore } from 'stores';
 
 // Mock useAuthStore & useNewsArticle hook
 jest.mock('hooks', () => {
@@ -23,9 +24,10 @@ const mockUseNewsArticle = useNewsArticle as jest.MockedFunction<
 >;
 
 beforeEach(() => {
-  mockUseAuthStore.mockReturnValue({
-    loggedUser: mockFullUser,
-  });
+  const { authStore } = new RootStore();
+  authStore.loggedUser = mockFullUser;
+  mockUseAuthStore.mockReturnValue(authStore);
+
   mockUseNewsArticle.mockReturnValue({
     newsArticle: mockNewsArticle,
     isLoading: false,
@@ -69,9 +71,9 @@ describe('ViewNewsPage', () => {
   describe('Edit News button', () => {
     describe('given no user is logged in', () => {
       beforeEach(() => {
-        mockUseAuthStore.mockReturnValue({
-          loggedUser: null,
-        });
+        const { authStore } = new RootStore();
+        authStore.loggedUser = null;
+        mockUseAuthStore.mockReturnValue(authStore);
       });
 
       it('should not be rendered', () => {

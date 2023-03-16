@@ -49,15 +49,18 @@ const mockUseMeetupStore = useMeetupStore as jest.MockedFunction<
 const mockCreateMeetup = jest.spyOn(MeetupStore.prototype, 'createMeetup');
 
 beforeEach(() => {
-  mockUseAuthStore.mockReturnValue({
-    loggedUser: null,
-  });
+  const { authStore } = new RootStore();
+  authStore.loggedUser = null;
+  mockUseAuthStore.mockReturnValue(authStore);
+
   mockUseUserStore.mockReturnValue({
     users: [mockUser],
   });
+
   mockUseMeetupStore.mockReturnValue({
     meetupStore: new MeetupStore(new RootStore()),
   });
+
   mockCreateMeetup.mockReturnValue(Promise.resolve(mockMeetup));
 });
 
@@ -125,12 +128,12 @@ const fillOutRequiredFields = async () => {
 const fillOutOptionalFields = async () => {
   // Select start date/time
   await waitFor(() => {
-    userEvent.type(getStartDatePicker(), '15 Mar 2023 14:00');
+    userEvent.type(getStartDatePicker(), '15 Mar 2099 14:00');
   });
 
   // Select finish date/time
   await waitFor(() => {
-    userEvent.type(getFinishDatePicker(), '15 Mar 2023 15:30');
+    userEvent.type(getFinishDatePicker(), '15 Mar 2099 15:30');
   });
 
   // Fill out location
@@ -171,9 +174,9 @@ describe('CreateMeetupPage', () => {
       });
 
       it('should pre-populate speakers field with the meetup author, if they are authenticated', () => {
-        mockUseAuthStore.mockReturnValue({
-          loggedUser: mockFullUser,
-        });
+        const { authStore } = new RootStore();
+        authStore.loggedUser = mockFullUser;
+        mockUseAuthStore.mockReturnValue(authStore);
 
         render(<CreateMeetupPage />, { wrapper: MockRouter });
 
@@ -364,9 +367,9 @@ describe('CreateMeetupPage', () => {
     });
 
     it('should handle form submit', async () => {
-      mockUseAuthStore.mockReturnValue({
-        loggedUser: mockFullUser,
-      });
+      const { authStore } = new RootStore();
+      authStore.loggedUser = mockFullUser;
+      mockUseAuthStore.mockReturnValue(authStore);
 
       await goToOptionalFields();
 

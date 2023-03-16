@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event';
 import { ConfirmDialogProvider, MeetupCard } from 'components';
 import { mockFullUser, mockMeetup, mockTopic, mockUser } from 'model/__fakes__';
 import { useAuthStore, useUser } from 'hooks';
-import { Meetup } from 'stores';
+import { Meetup, RootStore } from 'stores';
 
 // Mock useAuthStore and useUser hooks
 jest.mock('hooks', () => {
@@ -35,9 +35,10 @@ const MockLoginRouter = ({ children }: PropsWithChildren): JSX.Element => (
 );
 
 beforeEach(() => {
-  mockUseAuthStore.mockReturnValue({
-    loggedUser: mockFullUser,
-  });
+  const { authStore } = new RootStore();
+  authStore.loggedUser = mockFullUser;
+  mockUseAuthStore.mockReturnValue(authStore);
+
   mockUseUser.mockReturnValue(mockUser);
 });
 
@@ -106,9 +107,9 @@ describe('MeetupCard', () => {
 
   describe('edit & delete buttons', () => {
     it('should not be rendered unless user is logged in', () => {
-      mockUseAuthStore.mockReturnValue({
-        loggedUser: null,
-      });
+      const { authStore } = new RootStore();
+      authStore.loggedUser = null;
+      mockUseAuthStore.mockReturnValue(authStore);
 
       render(<MeetupCard meetup={mockMeetup} />, { wrapper: MockLoginRouter });
 

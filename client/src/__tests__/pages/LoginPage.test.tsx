@@ -20,20 +20,13 @@ jest.mock('hooks', () => {
 const mockUseAuthStore = useAuthStore as jest.MockedFunction<
   typeof useAuthStore
 >;
-const mockLogIn = jest.fn();
+
+const spiedOnAuthStoreLogIn = jest.spyOn(AuthStore.prototype, 'logIn');
 
 beforeEach(() => {
-  mockUseAuthStore.mockReturnValue({
-    authStore: {
-      rootStore: new RootStore(),
-      userStore: new UserStore(new AuthStore(new RootStore())),
-      loggedUser: null,
-      logIn: mockLogIn,
-      logOut: jest.fn(),
-      onLoginChanged: jest.fn(),
-      toJSON: jest.fn(),
-    },
-  });
+  const { authStore } = new RootStore();
+  authStore.loggedUser = null;
+  mockUseAuthStore.mockReturnValue(authStore);
 });
 
 afterEach(() => {
@@ -123,7 +116,7 @@ describe('LoginPage', () => {
       userEvent.click(getLoginBtn());
     });
 
-    expect(mockLogIn).toHaveBeenCalledWith(mockCredentials);
+    expect(spiedOnAuthStoreLogIn).toHaveBeenCalledWith(mockCredentials);
     expect(screen.getByText('Meetups page')).toBeInTheDocument();
   });
 });
