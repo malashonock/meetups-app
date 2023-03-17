@@ -129,7 +129,7 @@ describe('AvatarGroup', () => {
 
   describe('if container has zero width', () => {
     it('should not render any avatars', () => {
-      mockContainerRef(0, 0, 0);
+      mockContainerRef(0, 0);
 
       const { container } = render(<AvatarGroup users={generateUsers(10)} />);
 
