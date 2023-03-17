@@ -5,13 +5,6 @@ import { useUserStore } from 'hooks';
 export const useUser = (
   idOrString: Maybe<string | { id: string }>,
 ): Optional<User> => {
-  const { userStore } = useUserStore();
-
-  if (!idOrString) {
-    return undefined;
-  }
-
-  const user = userStore?.findUser(idOrString);
-
-  return user;
+  const userStore = useUserStore();
+  return idOrString ? userStore.findUser(idOrString) : undefined;
 };

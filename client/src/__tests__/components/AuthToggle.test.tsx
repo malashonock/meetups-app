@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import { AuthToggle } from 'components';
-import { AuthStore, RootStore, UserStore } from 'stores';
+import { AuthStore, RootStore } from 'stores';
 import { mockFullUser as mockedLoggedUser } from 'model/__fakes__';
 import { useAuthStore } from 'hooks';
 
@@ -32,9 +32,9 @@ const MockLoginRouter = ({ children }: PropsWithChildren): JSX.Element => (
 describe('AuthToggle', () => {
   describe('if no user is authenticated', () => {
     beforeEach(() => {
-      mockUseAuthStore.mockReturnValue({
-        loggedUser: null,
-      });
+      const { authStore } = new RootStore();
+      authStore.loggedUser = null;
+      mockUseAuthStore.mockReturnValue(authStore);
     });
 
     it('on click, redirects to login page', async () => {
@@ -69,30 +69,12 @@ describe('AuthToggle', () => {
   });
 
   describe('if a user is authenticated', () => {
-    const mockedLogout = jest.fn();
+    const spiedOnAuthStoreLogOut = jest.spyOn(AuthStore.prototype, 'logOut');
 
     beforeEach(() => {
-      mockUseAuthStore.mockReturnValue({
-        loggedUser: mockedLoggedUser,
-        authStore: {
-          rootStore: new RootStore(),
-          userStore: new RootStore().authStore.userStore,
-          loggedUser: mockedLoggedUser,
-          isInitialized: true,
-          isLoading: false,
-          isError: false,
-          errors: [],
-          onError: jest.fn(),
-          tryLoad: jest.fn(),
-          setupObservable: jest.fn(),
-          init: jest.fn(),
-          checkLogin: jest.fn(),
-          logIn: jest.fn(),
-          logOut: mockedLogout,
-          onLoginChanged: jest.fn(),
-          toJSON: jest.fn(),
-        },
-      });
+      const { authStore } = new RootStore();
+      authStore.loggedUser = mockedLoggedUser;
+      mockUseAuthStore.mockReturnValue(authStore);
     });
 
     it("on click, calls the auth store's logout function and redirects to home page", async () => {
@@ -103,7 +85,7 @@ describe('AuthToggle', () => {
 
       userEvent.click(logoutButton);
 
-      expect(mockedLogout).toBeCalledTimes(1);
+      expect(spiedOnAuthStoreLogOut).toHaveBeenCalledTimes(1);
 
       const homePage = await screen.findByText('Home page');
       expect(homePage).toBeInTheDocument();

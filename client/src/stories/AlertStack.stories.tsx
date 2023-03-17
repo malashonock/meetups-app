@@ -3,7 +3,6 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { RootStoreProvider, AlertStack } from 'components';
 import { useUiStore } from 'hooks';
 import { PropsWithChildren, useEffect } from 'react';
-import { UiStore, RootStore } from 'stores';
 import { Alert, AlertSeverity } from 'types';
 
 export default {
@@ -12,7 +11,7 @@ export default {
 } as ComponentMeta<typeof AlertStack>;
 
 const SeedAlerts = ({ children }: PropsWithChildren): JSX.Element => {
-  const { uiStore } = useUiStore();
+  const uiStore = useUiStore();
 
   useEffect(() => {
     if (uiStore) {

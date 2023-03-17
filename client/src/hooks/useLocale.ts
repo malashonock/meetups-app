@@ -1,24 +1,13 @@
-import { useContext } from 'react';
-
-import { UiStore, Locale } from 'stores';
-import { RootContext } from 'components';
-import { Optional } from 'types';
+import { Locale } from 'stores';
+import { useUiStore } from 'hooks';
 
 export type UseLocaleResult = [
-  locale: Optional<Locale>,
+  locale: Locale,
   setLocale: (locale: Locale) => void,
 ];
 
 export const useLocale = (): UseLocaleResult => {
-  const uiStore: Optional<UiStore> = useContext(RootContext)?.uiStore;
-
-  const locale = uiStore?.locale;
-
-  const setLocale = (locale: Locale): void => {
-    if (uiStore) {
-      uiStore.setLocale(locale);
-    }
-  };
-
-  return [locale, setLocale];
+  const uiStore = useUiStore();
+  const { locale, setLocale } = uiStore;
+  return [locale, setLocale.bind(uiStore)];
 };

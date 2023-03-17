@@ -13,16 +13,10 @@ interface UseMeetupResult {
   errors?: AppError[];
 }
 
-export const useMeetup = (id: Maybe<string>): UseMeetupResult => {
-  const { meetupStore } = useMeetupStore();
-  const [isInitialized, setIsInitialized] =
-    useState<Optional<boolean>>(undefined);
+export const useMeetup = (id: Maybe<string>): Optional<Meetup> => {
+  const meetupStore = useMeetupStore();
 
-  const meetup = id ? meetupStore?.findMeetup(id) : undefined;
-
-  let isLoading: Optional<boolean> = undefined;
-  let isError: Optional<boolean> = undefined;
-  let errors: Optional<AppError[]> = undefined;
+  const meetup = id ? meetupStore.findMeetup(id) : undefined;
 
   // Hydrate meetup on first load
   useEffect((): void => {
@@ -33,26 +27,5 @@ export const useMeetup = (id: Maybe<string>): UseMeetupResult => {
     })();
   }, [meetup, meetup?.isInitialized]);
 
-  // Keep track of isInitialized field
-  useEffect(() => {
-    setIsInitialized(meetup?.isInitialized);
-  }, [meetup?.isInitialized]);
-
-  isLoading = meetup?.isLoading ?? meetupStore?.isLoading;
-
-  if (meetupStore && meetupStore.isInitialized && !meetup) {
-    isError = true;
-    errors = [new NotFoundError()];
-  } else {
-    isError = meetup?.isError;
-    errors = meetup?.errors;
-  }
-
-  return {
-    meetup,
-    isInitialized,
-    isLoading,
-    isError,
-    errors,
-  };
+  return meetup;
 };

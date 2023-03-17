@@ -30,48 +30,16 @@ afterEach(() => {
 });
 
 describe('useMeetupStore hook', () => {
-  describe('given root context is not yet set up', () => {
-    it('should return an object with undefined properties', () => {
-      const { result } = renderHook(() => useMeetupStore());
-
-      expect(result.current.meetupStore).toBeUndefined();
-      expect(result.current.meetups).toBeUndefined();
-      expect(result.current.isLoading).toBeUndefined();
-      expect(result.current.isError).toBeUndefined();
-      expect(result.current.errors).toBeUndefined();
-      expect(result.current.createMeetup).toBeUndefined();
-      expect(result.current.findMeetup).toBeUndefined();
+  it('should return the meetup store', async () => {
+    const { result, rerender } = renderHook(() => useMeetupStore(), {
+      wrapper: MockRootStoreProvider,
     });
-  });
 
-  describe('given root context is set up', () => {
-    it('should return an object containing correctly initialized properties', async () => {
-      const { result, rerender } = renderHook(() => useMeetupStore(), {
-        wrapper: MockRootStoreProvider,
-      });
+    // loadMeetups is run async, need to wait for next update
+    rerender();
 
-      // loadMeetups is run async, need to wait for next update
-      rerender();
-
-      expect(result.current.meetupStore?.toJSON()).toStrictEqual(
-        mockRootStore.meetupStore.toJSON(),
-      );
-      expect(result.current.meetups).toStrictEqual(
-        mockRootStore.meetupStore.meetups,
-      );
-      expect(result.current.isLoading).toBe(
-        mockRootStore.meetupStore.isLoading,
-      );
-      expect(result.current.isError).toBe(mockRootStore.meetupStore.isError);
-      expect(result.current.errors).toStrictEqual(
-        mockRootStore.meetupStore.errors,
-      );
-      expect(result.current.createMeetup).toBe(
-        mockRootStore.meetupStore.createMeetup,
-      );
-      expect(result.current.findMeetup).toBe(
-        mockRootStore.meetupStore.findMeetup,
-      );
-    });
+    expect(result.current.toJSON()).toStrictEqual(
+      mockRootStore.meetupStore.toJSON(),
+    );
   });
 });

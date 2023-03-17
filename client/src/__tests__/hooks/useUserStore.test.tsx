@@ -18,35 +18,13 @@ const MockRootStoreProvider = ({
 };
 
 describe('useUserStore hook', () => {
-  describe('given root context is not yet set up', () => {
-    it('should return an object with undefined properties', () => {
-      const { result } = renderHook(() => useUserStore());
-
-      expect(result.current.userStore).toBeUndefined();
-      expect(result.current.users).toBeUndefined();
-      expect(result.current.findUser).toBeUndefined();
-      expect(result.current.findUsers).toBeUndefined();
+  it('should return the user store', () => {
+    const { result } = renderHook(() => useUserStore(), {
+      wrapper: MockRootStoreProvider,
     });
-  });
 
-  describe('given root context is set up', () => {
-    it('should return an object containing correctly initialized properties', () => {
-      const { result } = renderHook(() => useUserStore(), {
-        wrapper: MockRootStoreProvider,
-      });
-
-      expect(result.current.userStore?.toJSON()).toStrictEqual(
-        mockRootStore.authStore.userStore.toJSON(),
-      );
-      expect(result.current.users).toStrictEqual(
-        mockRootStore.authStore.userStore.users,
-      );
-      expect(result.current.findUser).toBe(
-        mockRootStore.authStore.userStore.findUser,
-      );
-      expect(result.current.findUsers).toBe(
-        mockRootStore.authStore.userStore.findUsers,
-      );
-    });
+    expect(result.current.toJSON()).toStrictEqual(
+      mockRootStore.authStore.userStore.toJSON(),
+    );
   });
 });

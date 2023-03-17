@@ -23,11 +23,12 @@ export const AuthToggle = observer(
     tooltipPosition = TooltipPosition.BottomCenter,
   }: AuthToggleProps): JSX.Element => {
     const navigate = useNavigate();
-    const { authStore, loggedUser } = useAuthStore();
+    const authStore = useAuthStore();
+    const { loggedUser } = authStore;
     const { t } = useTranslation();
 
     const handleLogout = async (): Promise<void> => {
-      await authStore?.logOut();
+      await authStore.logOut();
       navigate('/');
     };
 
