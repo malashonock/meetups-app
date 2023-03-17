@@ -21,7 +21,7 @@ $line-height: 0.25rem;
   flex-direction: column;
   justify-content: space-between;
 
-  z-index: 100;
+  z-index: 11;
   @include smooth-transition(all);
 
   &:hover {

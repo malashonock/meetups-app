@@ -20,7 +20,7 @@ export const Offcanvas = ({
 
   return (
     <>
-      {isOpen && <Overlay onClick={onClose} />}
+      {isOpen && <Overlay onClick={onClose} zIndex={9} />}
       <nav className={classNames(styles.container, { [styles.open]: isOpen })}>
         {children}
       </nav>

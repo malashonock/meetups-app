@@ -4,10 +4,12 @@ import styles from './Overlay.module.scss';
 
 interface OverlayProps {
   onClick?: () => void;
+  zIndex?: number;
 }
 
 export const Overlay = ({
   onClick,
+  zIndex = 100,
   children,
 }: PropsWithChildren<OverlayProps>): JSX.Element => {
   return (
@@ -15,6 +17,9 @@ export const Overlay = ({
       onClick={onClick}
       className={styles.container}
       data-testid="modal-overlay"
+      style={{
+        zIndex,
+      }}
     >
       {children}
     </div>
