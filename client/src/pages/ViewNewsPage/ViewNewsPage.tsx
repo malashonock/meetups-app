@@ -20,18 +20,18 @@ export const ViewNewsPage = observer(() => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { pathname } = useLocation();
-  const { newsArticle, isLoading, isError } = useNewsArticle(id);
+  const newsArticle = useNewsArticle(id);
   const { t } = useTranslation();
   const { loggedUser } = useAuthStore();
 
   const handleBack = (): void => navigate(-1);
   const handleEdit = (): void => navigate(pathname + '/edit');
 
-  if (!newsArticle || isLoading) {
+  if (!newsArticle || newsArticle.isLoading) {
     return <LoadingSpinner text={t('loadingText.newsArticle')} />;
   }
 
-  if (isError) {
+  if (newsArticle?.isError) {
     return <NotFoundPage />;
   }
 

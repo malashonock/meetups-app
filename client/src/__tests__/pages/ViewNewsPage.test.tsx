@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event';
 import { ViewNewsPage } from 'pages';
 import { mockFullUser, mockNewsArticle } from 'model/__fakes__';
 import { useAuthStore, useNewsArticle } from 'hooks';
-import { RootStore } from 'stores';
+import { News, RootStore } from 'stores';
 
 // Mock useAuthStore & useNewsArticle hook
 jest.mock('hooks', () => {
@@ -28,12 +28,7 @@ beforeEach(() => {
   authStore.loggedUser = mockFullUser;
   mockUseAuthStore.mockReturnValue(authStore);
 
-  mockUseNewsArticle.mockReturnValue({
-    newsArticle: mockNewsArticle,
-    isLoading: false,
-    isError: false,
-    errors: [],
-  });
+  mockUseNewsArticle.mockReturnValue(mockNewsArticle);
 });
 
 afterEach(() => {
@@ -92,25 +87,23 @@ describe('ViewNewsPage', () => {
   });
 
   it('should render a Loading spinner if news article is undefined', () => {
-    mockUseNewsArticle.mockReturnValue({});
+    mockUseNewsArticle.mockReturnValue(undefined);
     render(<ViewNewsPage />, { wrapper: MockRouter });
     expect(screen.getByText('loadingText.newsArticle')).toBeInTheDocument();
   });
 
   it('should render a Loading spinner while news article is loading', () => {
-    mockUseNewsArticle.mockReturnValue({
-      newsArticle: mockNewsArticle,
-      isLoading: true,
-    });
+    const newsArticle = new News(mockNewsArticle);
+    newsArticle.isLoading = true;
+    mockUseNewsArticle.mockReturnValue(newsArticle);
     render(<ViewNewsPage />, { wrapper: MockRouter });
     expect(screen.getByText('loadingText.newsArticle')).toBeInTheDocument();
   });
 
   it('should render Not Found page if an error occurred while loading the news article', () => {
-    mockUseNewsArticle.mockReturnValue({
-      newsArticle: mockNewsArticle,
-      isError: true,
-    });
+    const newsArticle = new News(mockNewsArticle);
+    newsArticle.isError = true;
+    mockUseNewsArticle.mockReturnValue(newsArticle);
     render(<ViewNewsPage />, { wrapper: MockRouter });
     expect(screen.getByText('notFoundPage.title')).toBeInTheDocument();
   });

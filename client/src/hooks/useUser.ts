@@ -6,12 +6,5 @@ export const useUser = (
   idOrString: Maybe<string | { id: string }>,
 ): Optional<User> => {
   const userStore = useUserStore();
-
-  if (!idOrString) {
-    return undefined;
-  }
-
-  const user = userStore.findUser(idOrString);
-
-  return user;
+  return idOrString ? userStore.findUser(idOrString) : undefined;
 };

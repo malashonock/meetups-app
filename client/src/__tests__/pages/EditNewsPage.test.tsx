@@ -29,13 +29,7 @@ const mockUseLocale = useLocale as jest.MockedFunction<typeof useLocale>;
 const mockUpdatedNewsArticleUpdate = jest.spyOn(News.prototype, 'update');
 
 beforeEach(() => {
-  mockUseNewsArticle.mockReturnValue({
-    newsArticle: mockNewsArticle,
-    isLoading: false,
-    isError: false,
-    errors: [],
-  });
-
+  mockUseNewsArticle.mockReturnValue(mockNewsArticle);
   mockUseLocale.mockReturnValue([Locale.RU, jest.fn()]);
 });
 
@@ -178,25 +172,23 @@ describe('EditNewsPage', () => {
   });
 
   it('should render a Loading spinner if news article is undefined', () => {
-    mockUseNewsArticle.mockReturnValue({});
+    mockUseNewsArticle.mockReturnValue(undefined);
     render(<EditNewsPage />, { wrapper: MockRouter });
     expect(screen.getByText('loadingText.newsArticle')).toBeInTheDocument();
   });
 
   it('should render a Loading spinner while news article is loading', () => {
-    mockUseNewsArticle.mockReturnValue({
-      newsArticle: mockNewsArticle,
-      isLoading: true,
-    });
+    const newsArticle = new News(mockNewsArticle);
+    newsArticle.isLoading = true;
+    mockUseNewsArticle.mockReturnValue(newsArticle);
     render(<EditNewsPage />, { wrapper: MockRouter });
     expect(screen.getByText('loadingText.newsArticle')).toBeInTheDocument();
   });
 
   it('should render Not Found page if an error occurred while loading the news article', () => {
-    mockUseNewsArticle.mockReturnValue({
-      newsArticle: mockNewsArticle,
-      isError: true,
-    });
+    const newsArticle = new News(mockNewsArticle);
+    newsArticle.isError = true;
+    mockUseNewsArticle.mockReturnValue(newsArticle);
     render(<EditNewsPage />, { wrapper: MockRouter });
     expect(screen.getByText('notFoundPage.title')).toBeInTheDocument();
   });
