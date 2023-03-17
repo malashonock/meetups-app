@@ -7,29 +7,29 @@ describe('Login', () => {
 
   describe('given valid credentials', () => {
     it('sends the credentials to server, receives the auth cookie and redirects to the Meetups page', () => {
-      cy.get('input[name="username"]').type('chief');
-      cy.get('input[name="password"]').type('private');
-      cy.get('button[type="submit"').click();
+      cy.getByTestId('text-input-username').type('chief');
+      cy.getByTestId('text-input-password').type('private');
+      cy.getByTestId('btn-login').click();
 
       cy.expectToastToPopupAndDismiss(AlertSeverity.Success);
 
       cy.url().should('include', '/meetups');
       cy.getCookie('connect.sid').should('exist');
-      cy.get('[class*="Header_userInfo"]').should('contain', 'chief Blick');
+      cy.getByTestId('logged-user-info').should('contain', 'chief Blick');
     });
   });
 
   describe('given invalid credentials', () => {
     it('keeps Login page open', () => {
-      cy.get('input[name="username"]').type('invalid-username');
-      cy.get('input[name="password"]').type('invalid-password');
-      cy.get('button[type="submit"').click();
+      cy.getByTestId('text-input-username').type('invalid-username');
+      cy.getByTestId('text-input-password').type('invalid-password');
+      cy.getByTestId('btn-login').click();
 
       cy.expectToastToPopupAndDismiss(AlertSeverity.Error);
 
       cy.url().should('include', '/login');
       cy.getCookie('connect.sid').should('not.exist');
-      cy.get('[class*="Header_userInfo"]').should('not.contain', 'chief Blick');
+      cy.getByTestId('logged-user-info').should('not.contain', 'chief Blick');
     });
   });
 });

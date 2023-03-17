@@ -30,7 +30,7 @@ exports[`CreateNewsPage should match snapshot 1`] = `
             </label>
             <input
               class="input default"
-              data-testid="text-input"
+              data-testid="text-input-title"
               id="title"
               name="title"
               type="text"
@@ -51,7 +51,7 @@ exports[`CreateNewsPage should match snapshot 1`] = `
             >
               <textarea
                 class="input default textArea"
-                data-testid="text-area"
+                data-testid="text-area-text"
                 id="text"
                 name="text"
                 rows="1"
@@ -124,6 +124,7 @@ exports[`CreateNewsPage should match snapshot 1`] = `
         >
           <button
             class="actionButton button default"
+            data-testid="btn-back"
             id="btn-back"
             type="button"
           >
@@ -131,6 +132,7 @@ exports[`CreateNewsPage should match snapshot 1`] = `
           </button>
           <button
             class="actionButton button primary"
+            data-testid="btn-create"
             disabled=""
             id="btn-create"
             type="submit"

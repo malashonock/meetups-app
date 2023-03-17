@@ -9,42 +9,34 @@ import { CreateNewsPage } from 'pages';
 import { NewsFields } from 'model';
 import { mockImageWithUrl } from 'model/__fakes__';
 import { dropFile } from 'utils';
-import { useNewsStore } from 'hooks';
-import { RootStore } from 'stores';
+import { useLocale, useNewsStore } from 'hooks';
+import { Locale, NewsStore, RootStore } from 'stores';
 
 jest.mock('utils/file');
 
-// Mock useNewsStore hook
+// Mock hooks
 jest.mock('hooks', () => {
   return {
     ...jest.requireActual('hooks'),
     useNewsStore: jest.fn(),
+    useLocale: jest.fn(),
   };
 });
 const mockUseNewsStore = useNewsStore as jest.MockedFunction<
   typeof useNewsStore
 >;
-const mockNewsStoreCreateArticle = jest.fn();
+const mockUseLocale = useLocale as jest.MockedFunction<typeof useLocale>;
+
+const spiedOnNewsStoreCreateNewsArticle = jest.spyOn(
+  NewsStore.prototype,
+  'createNewsArticle',
+);
 
 beforeEach(() => {
-  mockUseNewsStore.mockReturnValue({
-    newsStore: {
-      setupObservable: jest.fn(),
-      rootStore: new RootStore(),
-      news: [],
-      isInitialized: true,
-      isLoading: false,
-      isError: false,
-      errors: [],
-      onError: jest.fn(),
-      tryLoad: jest.fn().mockImplementation(async (fn: Function) => await fn()),
-      loadNews: jest.fn(),
-      createNewsArticle: mockNewsStoreCreateArticle,
-      findNewsArticle: jest.fn(),
-      onNewsArticleDeleted: jest.fn(),
-      toJSON: jest.fn(),
-    },
-  });
+  const { newsStore } = new RootStore();
+  mockUseNewsStore.mockReturnValue(newsStore);
+
+  mockUseLocale.mockReturnValue([Locale.RU, jest.fn()]);
 });
 
 afterEach(() => {
@@ -148,7 +140,7 @@ describe('CreateNewsPage', () => {
       userEvent.click(getSubmitBtn());
     });
 
-    expect(mockNewsStoreCreateArticle).toHaveBeenCalledWith(mockNews);
+    expect(spiedOnNewsStoreCreateNewsArticle).toHaveBeenCalledWith(mockNews);
     expect(screen.getByText('News page')).toBeInTheDocument();
   });
 

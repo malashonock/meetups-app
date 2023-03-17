@@ -24,9 +24,7 @@ const mockUseMeetupStore = useMeetupStore as jest.MockedFunction<
 >;
 
 beforeEach(() => {
-  mockUseMeetupStore.mockReturnValue({
-    meetupStore: mockRootStore.meetupStore,
-  });
+  mockUseMeetupStore.mockReturnValue(mockRootStore.meetupStore);
 });
 
 afterEach(() => {
@@ -34,71 +32,26 @@ afterEach(() => {
 });
 
 describe('useMeetup hook', () => {
-  describe('given id arg is provided', () => {
-    describe('given useMeetupStore() hook returns an undefined meetupStore', () => {
-      it('should return undefined', () => {
-        mockUseMeetupStore.mockReturnValue({
-          meetupStore: undefined,
-        });
-
-        const { result } = renderHook(() => useMeetup(mockMeetup.id));
-
-        expect(result.current.meetup).toBeUndefined();
-        expect(result.current.isInitialized).toBeUndefined();
-        expect(result.current.isLoading).toBeUndefined();
-        expect(result.current.isError).toBeUndefined();
-        expect(result.current.errors).toBeUndefined();
-      });
+  describe('given the id of an existing meetup is provided', () => {
+    it('should return the news article with the specified id', () => {
+      spiedOnMeetupStoreFindMeetup.mockReturnValue(mockMeetup);
+      const { result } = renderHook(() => useMeetup(mockMeetup.id));
+      expect(result.current).toStrictEqual(mockMeetup);
     });
+  });
 
-    describe('given useMeetupStore() hook returns an initialized NewsStore instance', () => {
-      it('should return the news article with the specified id', () => {
-        spiedOnMeetupStoreFindMeetup.mockReturnValue(mockMeetup);
-
-        const { result } = renderHook(() => useMeetup(mockMeetup.id));
-
-        expect(result.current.meetup).toStrictEqual(mockMeetup);
-        expect(result.current.isInitialized).toBe(mockMeetup.isInitialized);
-        expect(result.current.isLoading).toBe(mockMeetup.isLoading);
-        expect(result.current.isError).toBe(mockMeetup.isError);
-        expect(result.current.errors).toStrictEqual(mockMeetup.errors);
-      });
+  describe('given the id of a non-existing meetup is provided', () => {
+    it('should return undefined', () => {
+      spiedOnMeetupStoreFindMeetup.mockReturnValue(undefined);
+      const { result } = renderHook(() => useMeetup(mockMeetup.id));
+      expect(result.current).toBeUndefined();
     });
   });
 
   describe('given id arg is not provided', () => {
-    it('should return undefined meetup', () => {
+    it('should return undefined', () => {
       const { result } = renderHook(() => useMeetup(undefined));
-      expect(result.current.meetup).toBeUndefined();
-      expect(result.current.isInitialized).toBeUndefined();
-    });
-
-    it('should return isLoading state of the meetup store', () => {
-      const { result } = renderHook(() => useMeetup(undefined));
-      expect(result.current.isLoading).toBe(
-        mockRootStore.meetupStore.isLoading,
-      );
-    });
-
-    describe('given meetup store is initialized', () => {
-      it('should push a new Not Found error to errors', () => {
-        const { result } = renderHook(() => useMeetup(undefined));
-        expect(result.current.isError).toBe(true);
-        expect(result.current.errors?.length).toBe(1);
-        expect(result.current.errors![0] instanceof NotFoundError).toBe(true);
-      });
-    });
-
-    describe('given meetup store is undefined or uninitialized', () => {
-      it('should return undefined isError and errors', () => {
-        mockUseMeetupStore.mockReturnValue({
-          meetupStore: new RootStore().meetupStore,
-        });
-
-        const { result } = renderHook(() => useMeetup(undefined));
-        expect(result.current.isError).toBeUndefined();
-        expect(result.current.errors).toBeUndefined();
-      });
+      expect(result.current).toBeUndefined();
     });
   });
 });

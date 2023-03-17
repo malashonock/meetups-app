@@ -18,6 +18,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with admin righ
       >
         <figure
           class="imageWrapper"
+          data-testid="image"
         >
           <img
             alt="viewMeetupPage.imgAlt"
@@ -27,6 +28,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with admin righ
         </figure>
         <div
           class="headerDataContent"
+          data-testid="heading"
         >
           <h2
             class="typography h2 meetupHeading"
@@ -48,6 +50,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with admin righ
         >
           <div
             class="info"
+            data-testid="date"
             id="date"
           >
             <img
@@ -63,6 +66,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with admin righ
           </div>
           <div
             class="info"
+            data-testid="time"
             id="time"
           >
             <img
@@ -78,6 +82,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with admin righ
           </div>
           <div
             class="info"
+            data-testid="location"
             id="location"
           >
             <img
@@ -132,6 +137,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with admin righ
       </div>
       <div
         class="data"
+        data-testid="description"
       >
         <span
           class="typography span dataName"
@@ -171,6 +177,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with admin righ
       >
         <button
           class="actionButton backBtn button default"
+          data-testid="btn-back"
           id="btn-back"
         >
           formButtons.back
@@ -202,6 +209,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with non-admin 
       >
         <figure
           class="imageWrapper"
+          data-testid="image"
         >
           <img
             alt="viewMeetupPage.imgAlt"
@@ -211,6 +219,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with non-admin 
         </figure>
         <div
           class="headerDataContent"
+          data-testid="heading"
         >
           <h2
             class="typography h2 meetupHeading"
@@ -232,6 +241,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with non-admin 
         >
           <div
             class="info"
+            data-testid="date"
             id="date"
           >
             <img
@@ -247,6 +257,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with non-admin 
           </div>
           <div
             class="info"
+            data-testid="time"
             id="time"
           >
             <img
@@ -262,6 +273,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with non-admin 
           </div>
           <div
             class="info"
+            data-testid="location"
             id="location"
           >
             <img
@@ -316,6 +328,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with non-admin 
       </div>
       <div
         class="data"
+        data-testid="description"
       >
         <span
           class="typography span dataName"
@@ -355,6 +368,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with non-admin 
       >
         <button
           class="actionButton backBtn button default"
+          data-testid="btn-back"
           id="btn-back"
         >
           formButtons.back
@@ -364,6 +378,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with non-admin 
         >
           <button
             class="actionButton toggleJoinBtn button secondary"
+            data-testid="btn-join-toggle"
             id="btn-join-toggle"
           >
             viewMeetupPage.unjoinMeetupBtn
@@ -393,6 +408,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with non-admin 
       >
         <figure
           class="imageWrapper"
+          data-testid="image"
         >
           <img
             alt="viewMeetupPage.imgAlt"
@@ -402,6 +418,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with non-admin 
         </figure>
         <div
           class="headerDataContent"
+          data-testid="heading"
         >
           <h2
             class="typography h2 meetupHeading"
@@ -423,6 +440,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with non-admin 
         >
           <div
             class="info"
+            data-testid="date"
             id="date"
           >
             <img
@@ -438,6 +456,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with non-admin 
           </div>
           <div
             class="info"
+            data-testid="time"
             id="time"
           >
             <img
@@ -453,6 +472,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with non-admin 
           </div>
           <div
             class="info"
+            data-testid="location"
             id="location"
           >
             <img
@@ -507,6 +527,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with non-admin 
       </div>
       <div
         class="data"
+        data-testid="description"
       >
         <span
           class="typography span dataName"
@@ -546,6 +567,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with non-admin 
       >
         <button
           class="actionButton backBtn button default"
+          data-testid="btn-back"
           id="btn-back"
         >
           formButtons.back
@@ -555,6 +577,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with non-admin 
         >
           <button
             class="actionButton toggleJoinBtn button primary"
+            data-testid="btn-join-toggle"
             id="btn-join-toggle"
           >
             viewMeetupPage.joinMeetupBtn
@@ -584,6 +607,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with non-admin 
       >
         <figure
           class="imageWrapper"
+          data-testid="image"
         >
           <img
             alt="viewMeetupPage.imgAlt"
@@ -593,6 +617,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with non-admin 
         </figure>
         <div
           class="headerDataContent"
+          data-testid="heading"
         >
           <h2
             class="typography h2 meetupHeading"
@@ -614,6 +639,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with non-admin 
         >
           <div
             class="info"
+            data-testid="date"
             id="date"
           >
             <img
@@ -629,6 +655,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with non-admin 
           </div>
           <div
             class="info"
+            data-testid="time"
             id="time"
           >
             <img
@@ -644,6 +671,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with non-admin 
           </div>
           <div
             class="info"
+            data-testid="location"
             id="location"
           >
             <img
@@ -698,6 +726,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with non-admin 
       </div>
       <div
         class="data"
+        data-testid="description"
       >
         <span
           class="typography span dataName"
@@ -737,6 +766,7 @@ exports[`ViewMeetupPage after approval & publishing given a user with non-admin 
       >
         <button
           class="actionButton backBtn button default"
+          data-testid="btn-back"
           id="btn-back"
         >
           formButtons.back
@@ -768,6 +798,7 @@ exports[`ViewMeetupPage after approval & publishing given no user is logged in s
       >
         <figure
           class="imageWrapper"
+          data-testid="image"
         >
           <img
             alt="viewMeetupPage.imgAlt"
@@ -777,6 +808,7 @@ exports[`ViewMeetupPage after approval & publishing given no user is logged in s
         </figure>
         <div
           class="headerDataContent"
+          data-testid="heading"
         >
           <h2
             class="typography h2 meetupHeading"
@@ -798,6 +830,7 @@ exports[`ViewMeetupPage after approval & publishing given no user is logged in s
         >
           <div
             class="info"
+            data-testid="date"
             id="date"
           >
             <img
@@ -813,6 +846,7 @@ exports[`ViewMeetupPage after approval & publishing given no user is logged in s
           </div>
           <div
             class="info"
+            data-testid="time"
             id="time"
           >
             <img
@@ -828,6 +862,7 @@ exports[`ViewMeetupPage after approval & publishing given no user is logged in s
           </div>
           <div
             class="info"
+            data-testid="location"
             id="location"
           >
             <img
@@ -882,6 +917,7 @@ exports[`ViewMeetupPage after approval & publishing given no user is logged in s
       </div>
       <div
         class="data"
+        data-testid="description"
       >
         <span
           class="typography span dataName"
@@ -921,6 +957,7 @@ exports[`ViewMeetupPage after approval & publishing given no user is logged in s
       >
         <button
           class="actionButton backBtn button default"
+          data-testid="btn-back"
           id="btn-back"
         >
           formButtons.back
@@ -949,6 +986,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given a user
       >
         <figure
           class="imageWrapper"
+          data-testid="image"
         >
           <img
             alt="viewMeetupPage.imgAlt"
@@ -958,6 +996,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given a user
         </figure>
         <div
           class="headerDataContent"
+          data-testid="heading"
         >
           <h2
             class="typography h2 meetupHeading"
@@ -979,6 +1018,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given a user
         >
           <div
             class="info"
+            data-testid="date"
             id="date"
           >
             <img
@@ -994,6 +1034,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given a user
           </div>
           <div
             class="info"
+            data-testid="time"
             id="time"
           >
             <img
@@ -1009,6 +1050,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given a user
           </div>
           <div
             class="info"
+            data-testid="location"
             id="location"
           >
             <img
@@ -1063,6 +1105,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given a user
       </div>
       <div
         class="data"
+        data-testid="description"
       >
         <span
           class="typography span dataName"
@@ -1084,6 +1127,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given a user
       >
         <button
           class="actionButton backBtn button default"
+          data-testid="btn-back"
           id="btn-back"
         >
           formButtons.back
@@ -1093,6 +1137,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given a user
         >
           <button
             class="actionButton publishBtn button primary"
+            data-testid="btn-publish"
             id="btn-publish"
           >
             formButtons.publish
@@ -1122,6 +1167,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given a user
       >
         <figure
           class="imageWrapper"
+          data-testid="image"
         >
           <img
             alt="viewMeetupPage.imgAlt"
@@ -1131,6 +1177,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given a user
         </figure>
         <div
           class="headerDataContent"
+          data-testid="heading"
         >
           <h2
             class="typography h2 meetupHeading"
@@ -1152,6 +1199,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given a user
         >
           <div
             class="info"
+            data-testid="date"
             id="date"
           >
             <img
@@ -1167,6 +1215,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given a user
           </div>
           <div
             class="info"
+            data-testid="time"
             id="time"
           >
             <img
@@ -1182,6 +1231,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given a user
           </div>
           <div
             class="info"
+            data-testid="location"
             id="location"
           >
             <img
@@ -1236,6 +1286,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given a user
       </div>
       <div
         class="data"
+        data-testid="description"
       >
         <span
           class="typography span dataName"
@@ -1257,6 +1308,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given a user
       >
         <button
           class="actionButton backBtn button default"
+          data-testid="btn-back"
           id="btn-back"
         >
           formButtons.back
@@ -1288,6 +1340,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given no use
       >
         <figure
           class="imageWrapper"
+          data-testid="image"
         >
           <img
             alt="viewMeetupPage.imgAlt"
@@ -1297,6 +1350,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given no use
         </figure>
         <div
           class="headerDataContent"
+          data-testid="heading"
         >
           <h2
             class="typography h2 meetupHeading"
@@ -1318,6 +1372,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given no use
         >
           <div
             class="info"
+            data-testid="date"
             id="date"
           >
             <img
@@ -1333,6 +1388,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given no use
           </div>
           <div
             class="info"
+            data-testid="time"
             id="time"
           >
             <img
@@ -1348,6 +1404,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given no use
           </div>
           <div
             class="info"
+            data-testid="location"
             id="location"
           >
             <img
@@ -1402,6 +1459,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given no use
       </div>
       <div
         class="data"
+        data-testid="description"
       >
         <span
           class="typography span dataName"
@@ -1423,6 +1481,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given no use
       >
         <button
           class="actionButton backBtn button default"
+          data-testid="btn-back"
           id="btn-back"
         >
           formButtons.back
@@ -1456,6 +1515,7 @@ exports[`ViewMeetupPage before topic approval given a user with admin rights is 
         </span>
         <div
           class="dataContent"
+          data-testid="heading"
         >
           <h2
             class="typography h2 meetupHeading"
@@ -1499,6 +1559,7 @@ exports[`ViewMeetupPage before topic approval given a user with admin rights is 
       </div>
       <div
         class="data"
+        data-testid="description"
       >
         <span
           class="typography span dataName"
@@ -1538,6 +1599,7 @@ exports[`ViewMeetupPage before topic approval given a user with admin rights is 
       >
         <button
           class="actionButton backBtn button default"
+          data-testid="btn-back"
           id="btn-back"
         >
           formButtons.back
@@ -1547,12 +1609,14 @@ exports[`ViewMeetupPage before topic approval given a user with admin rights is 
         >
           <button
             class="actionButton deleteBtn button secondary"
+            data-testid="btn-delete"
             id="btn-delete"
           >
             formButtons.delete
           </button>
           <button
             class="actionButton approveBtn button primary"
+            data-testid="btn-approve"
             id="btn-approve"
           >
             viewMeetupPage.approveTopicBtn
@@ -1587,6 +1651,7 @@ exports[`ViewMeetupPage before topic approval given a user with non-admin rights
         </span>
         <div
           class="dataContent"
+          data-testid="heading"
         >
           <h2
             class="typography h2 meetupHeading"
@@ -1630,6 +1695,7 @@ exports[`ViewMeetupPage before topic approval given a user with non-admin rights
       </div>
       <div
         class="data"
+        data-testid="description"
       >
         <span
           class="typography span dataName"
@@ -1669,6 +1735,7 @@ exports[`ViewMeetupPage before topic approval given a user with non-admin rights
       >
         <button
           class="actionButton backBtn button default"
+          data-testid="btn-back"
           id="btn-back"
         >
           formButtons.back
@@ -1678,6 +1745,7 @@ exports[`ViewMeetupPage before topic approval given a user with non-admin rights
         >
           <button
             class="actionButton toggleSupportBtn button secondary"
+            data-testid="btn-vote-toggle"
             id="btn-vote-toggle"
           >
             viewMeetupPage.unsupportTopicBtn
@@ -1712,6 +1780,7 @@ exports[`ViewMeetupPage before topic approval given a user with non-admin rights
         </span>
         <div
           class="dataContent"
+          data-testid="heading"
         >
           <h2
             class="typography h2 meetupHeading"
@@ -1755,6 +1824,7 @@ exports[`ViewMeetupPage before topic approval given a user with non-admin rights
       </div>
       <div
         class="data"
+        data-testid="description"
       >
         <span
           class="typography span dataName"
@@ -1794,6 +1864,7 @@ exports[`ViewMeetupPage before topic approval given a user with non-admin rights
       >
         <button
           class="actionButton backBtn button default"
+          data-testid="btn-back"
           id="btn-back"
         >
           formButtons.back
@@ -1803,6 +1874,7 @@ exports[`ViewMeetupPage before topic approval given a user with non-admin rights
         >
           <button
             class="actionButton toggleSupportBtn button primary"
+            data-testid="btn-vote-toggle"
             id="btn-vote-toggle"
           >
             viewMeetupPage.supportTopicBtn
@@ -1837,6 +1909,7 @@ exports[`ViewMeetupPage before topic approval given no user is logged in should 
         </span>
         <div
           class="dataContent"
+          data-testid="heading"
         >
           <h2
             class="typography h2 meetupHeading"
@@ -1880,6 +1953,7 @@ exports[`ViewMeetupPage before topic approval given no user is logged in should 
       </div>
       <div
         class="data"
+        data-testid="description"
       >
         <span
           class="typography span dataName"
@@ -1919,6 +1993,7 @@ exports[`ViewMeetupPage before topic approval given no user is logged in should 
       >
         <button
           class="actionButton backBtn button default"
+          data-testid="btn-back"
           id="btn-back"
         >
           formButtons.back

@@ -39,7 +39,7 @@ exports[`LoginPage should match snapshot 1`] = `
             </label>
             <input
               class="input default"
-              data-testid="text-input"
+              data-testid="text-input-username"
               id="username"
               name="username"
               type="text"
@@ -57,7 +57,7 @@ exports[`LoginPage should match snapshot 1`] = `
             </label>
             <input
               class="input default"
-              data-testid="text-input"
+              data-testid="text-input-password"
               id="password"
               name="password"
               type="password"
@@ -66,6 +66,7 @@ exports[`LoginPage should match snapshot 1`] = `
           </div>
           <button
             class="actionButton button primary"
+            data-testid="btn-login"
             disabled=""
             id="btn-login"
             type="submit"

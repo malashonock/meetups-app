@@ -17,12 +17,13 @@ import { News } from 'stores';
 import styles from './NewsPage.module.scss';
 
 export const NewsPage = observer(() => {
+  const newsStore = useNewsStore();
+  const { news } = newsStore;
   const { loggedUser } = useAuthStore();
-  const { news, isLoading, isError } = useNewsStore();
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  if (isError) {
+  if (newsStore.isError) {
     return <NotFoundPage />;
   }
 
@@ -48,7 +49,7 @@ export const NewsPage = observer(() => {
           </Button>
         )}
       </div>
-      {!news || isLoading ? (
+      {newsStore.isLoading ? (
         <LoadingSpinner text={t('loadingText.news')} />
       ) : (
         <ul className={styles.newsList}>

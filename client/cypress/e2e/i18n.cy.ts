@@ -6,7 +6,7 @@ describe('Internationalization', () => {
     cy.visit('/');
     cy.wait(1_000);
 
-    cy.get('[data-testid="language-select"]')
+    cy.getByTestId('language-select')
       .first()
       .click()
       .within(() => {
@@ -14,35 +14,35 @@ describe('Internationalization', () => {
       });
 
     // Describe /meetups/topics page
-    cy.get('[class*=navLink]').contains('Meetups').should('exist');
-    cy.get('[class*=navLink]').contains('News').should('exist');
-    cy.get('[class*=MeetupStagesTabs]').contains('Topics').should('exist');
-    cy.get('[class*=MeetupStagesTabs]')
+    cy.getByTestId('page-link').contains('Meetups').should('exist');
+    cy.getByTestId('page-link').contains('News').should('exist');
+    cy.getByTestId('nav-tabs').contains('Topics').should('exist');
+    cy.getByTestId('nav-tabs')
       .contains('On moderation')
       .as('draftTab')
       .should('exist');
-    cy.get('[class*=MeetupStagesTabs]')
+    cy.getByTestId('nav-tabs')
       .contains('Upcoming')
       .as('upcomingTab')
       .should('exist');
-    cy.get('[class*=MeetupStagesTabs]')
+    cy.getByTestId('nav-tabs')
       .contains('Finished')
       .as('finishedTab')
       .should('exist');
     cy.get('button').contains('Create meetup').should('exist');
-    cy.get('[class*=counter]').contains(' suggested').should('exist');
+    cy.getByTestId('meetup-counter').contains(' suggested').should('exist');
 
     // Describe /meetups/moderation page
     cy.get('@draftTab').click();
-    cy.get('[class*=counter]').contains(' on moderation').should('exist');
+    cy.getByTestId('meetup-counter').contains(' on moderation').should('exist');
 
     // Describe /meetups/upcoming page
     cy.get('@upcomingTab').click();
-    cy.get('[class*=counter]').contains(' scheduled').should('exist');
+    cy.getByTestId('meetup-counter').contains(' scheduled').should('exist');
 
     // Describe /meetups/finished page
     cy.get('@finishedTab').click();
-    cy.get('[class*=counter]').contains(' passed').should('exist');
+    cy.getByTestId('meetup-counter').contains(' passed').should('exist');
 
     // Describe /news page
     cy.visit('/news');
@@ -56,7 +56,7 @@ describe('Internationalization', () => {
     cy.visit('/');
     cy.wait(1_000);
 
-    cy.get('[data-testid="language-select"]', { timeout: 10_000 })
+    cy.getByTestId('language-select', { timeout: 10_000 })
       .first()
       .click()
       .within(() => {
@@ -64,35 +64,35 @@ describe('Internationalization', () => {
       });
 
     // Describe /meetups/topics page
-    cy.get('[class*=navLink]').contains('Митапы').should('exist');
-    cy.get('[class*=navLink]').contains('Новости').should('exist');
-    cy.get('[class*=MeetupStagesTabs]').contains('Темы').should('exist');
-    cy.get('[class*=MeetupStagesTabs]')
+    cy.getByTestId('page-link').contains('Митапы').should('exist');
+    cy.getByTestId('page-link').contains('Новости').should('exist');
+    cy.getByTestId('nav-tabs').contains('Темы').should('exist');
+    cy.getByTestId('nav-tabs')
       .contains('На модерации')
       .as('draftTab')
       .should('exist');
-    cy.get('[class*=MeetupStagesTabs]')
+    cy.getByTestId('nav-tabs')
       .contains('Будущие')
       .as('upcomingTab')
       .should('exist');
-    cy.get('[class*=MeetupStagesTabs]')
+    cy.getByTestId('nav-tabs')
       .contains('Прошедшие')
       .as('finishedTab')
       .should('exist');
     cy.get('button').contains('Создать митап').should('exist');
-    cy.get('[class*=counter]').contains(' предложен').should('exist');
+    cy.getByTestId('meetup-counter').contains(' предложен').should('exist');
 
     // Describe /meetups/moderation page
     cy.get('@draftTab').click();
-    cy.get('[class*=counter]').contains(' на модерации').should('exist');
+    cy.getByTestId('meetup-counter').contains(' на модерации').should('exist');
 
     // Describe /meetups/upcoming page
     cy.get('@upcomingTab').click();
-    cy.get('[class*=counter]').contains(' опубликован').should('exist');
+    cy.getByTestId('meetup-counter').contains(' опубликован').should('exist');
 
     // Describe /meetups/finished page
     cy.get('@finishedTab').click();
-    cy.get('[class*=counter]').contains(' прош').should('exist');
+    cy.getByTestId('meetup-counter').contains(' прош').should('exist');
 
     // Describe /news page
     cy.visit('/news');

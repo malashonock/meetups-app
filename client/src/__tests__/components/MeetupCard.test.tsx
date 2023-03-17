@@ -4,22 +4,22 @@ import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 
 import { ConfirmDialogProvider, MeetupCard } from 'components';
-import { mockFullUser, mockMeetup, mockTopic, mockUser } from 'model/__fakes__';
-import { useAuthStore, useUser } from 'hooks';
-import { Meetup } from 'stores';
+import { mockFullUser, mockMeetup, mockTopic } from 'model/__fakes__';
+import { useAuthStore, useLocale } from 'hooks';
+import { Locale, Meetup, RootStore } from 'stores';
 
-// Mock useAuthStore and useUser hooks
+// Mock hooks
 jest.mock('hooks', () => {
   return {
     ...jest.requireActual('hooks'),
     useAuthStore: jest.fn(),
-    useUser: jest.fn(),
+    useLocale: jest.fn(),
   };
 });
 const mockUseAuthStore = useAuthStore as jest.MockedFunction<
   typeof useAuthStore
 >;
-const mockUseUser = useUser as jest.MockedFunction<typeof useUser>;
+const mockUseLocale = useLocale as jest.MockedFunction<typeof useLocale>;
 
 const MockLoginRouter = ({ children }: PropsWithChildren): JSX.Element => (
   <ConfirmDialogProvider>
@@ -35,10 +35,11 @@ const MockLoginRouter = ({ children }: PropsWithChildren): JSX.Element => (
 );
 
 beforeEach(() => {
-  mockUseAuthStore.mockReturnValue({
-    loggedUser: mockFullUser,
-  });
-  mockUseUser.mockReturnValue(mockUser);
+  const { authStore } = new RootStore();
+  authStore.loggedUser = mockFullUser;
+  mockUseAuthStore.mockReturnValue(authStore);
+
+  mockUseLocale.mockReturnValue([Locale.RU, jest.fn()]);
 });
 
 afterEach(() => {
@@ -106,9 +107,9 @@ describe('MeetupCard', () => {
 
   describe('edit & delete buttons', () => {
     it('should not be rendered unless user is logged in', () => {
-      mockUseAuthStore.mockReturnValue({
-        loggedUser: null,
-      });
+      const { authStore } = new RootStore();
+      authStore.loggedUser = null;
+      mockUseAuthStore.mockReturnValue(authStore);
 
       render(<MeetupCard meetup={mockMeetup} />, { wrapper: MockLoginRouter });
 

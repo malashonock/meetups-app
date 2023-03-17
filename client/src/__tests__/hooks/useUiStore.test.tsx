@@ -18,25 +18,13 @@ const MockRootStoreProvider = ({
 };
 
 describe('useUiStore hook', () => {
-  describe('given root context is not yet set up', () => {
-    it('should return an object with undefined uiStore and alerts', () => {
-      const { result } = renderHook(() => useUiStore());
-
-      expect(result.current.uiStore).toBeUndefined();
-      expect(result.current.alerts).toBeUndefined();
+  it('should return the UI store', () => {
+    const { result } = renderHook(() => useUiStore(), {
+      wrapper: MockRootStoreProvider,
     });
-  });
 
-  describe('given root context is set up', () => {
-    it('should return an object containing uiStore and alerts', () => {
-      const { result } = renderHook(() => useUiStore(), {
-        wrapper: MockRootStoreProvider,
-      });
-
-      expect(result.current.uiStore?.toJSON()).toStrictEqual(
-        mockRootStore.uiStore.toJSON(),
-      );
-      expect(result.current.alerts).toStrictEqual(mockRootStore.uiStore.alerts);
-    });
+    expect(result.current.toJSON()).toStrictEqual(
+      mockRootStore.uiStore.toJSON(),
+    );
   });
 });

@@ -26,6 +26,7 @@ export const PageLink = ({
       className={({ isActive }) =>
         classNames(styles.navLink, styles[theme], { [styles.active]: isActive })
       }
+      data-testid="page-link"
     >
       <Typography>{children}</Typography>
     </NavLink>

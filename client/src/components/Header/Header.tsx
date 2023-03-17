@@ -57,7 +57,7 @@ export const Header = observer((): JSX.Element => {
             {t('news')}
           </PageLink>
         </nav>
-        <div className={styles.userInfo}>
+        <div className={styles.userInfo} data-testid="logged-user-info">
           {loggedUser ? (
             <UserPreview
               variant={UserPreviewVariant.Header}

@@ -22,9 +22,7 @@ const mockUseUserStore = useUserStore as jest.MockedFunction<
 >;
 
 beforeEach(() => {
-  mockUseUserStore.mockReturnValue({
-    userStore: mockRootStore.authStore.userStore,
-  });
+  mockUseUserStore.mockReturnValue(mockRootStore.authStore.userStore);
 });
 
 afterEach(() => {
@@ -32,23 +30,19 @@ afterEach(() => {
 });
 
 describe('useUser hook', () => {
-  describe('given id arg is provided', () => {
-    describe('given useUserStore() hook returns an undefined userStore', () => {
-      it('should return undefined', () => {
-        mockUseUserStore.mockReturnValue({
-          userStore: undefined,
-        });
-        const { result } = renderHook(() => useUser(mockFullUser.id));
-        expect(result.current).toBeUndefined();
-      });
+  describe('given the id of an existing user is provided', () => {
+    it('should return the user with the specified id', () => {
+      spiedOnUserStoreFindUser.mockReturnValue(mockFullUser);
+      const { result } = renderHook(() => useUser(mockFullUser.id));
+      expect(result.current).toBe(mockFullUser);
     });
+  });
 
-    describe('given useUserStore() hook returns an initialized UserStore instance', () => {
-      it('should return the user with the specified id', () => {
-        spiedOnUserStoreFindUser.mockReturnValue(mockFullUser);
-        const { result } = renderHook(() => useUser(mockFullUser.id));
-        expect(result.current).toBe(mockFullUser);
-      });
+  describe('given the id of a non-existing user is provided', () => {
+    it('should return the user with the specified id', () => {
+      spiedOnUserStoreFindUser.mockReturnValue(undefined);
+      const { result } = renderHook(() => useUser(mockFullUser.id));
+      expect(result.current).toBeUndefined();
     });
   });
 

@@ -11,7 +11,8 @@ import {
   TypographyComponent,
 } from 'components';
 import { NotFoundPage } from 'pages';
-import { useAuthStore, useNewsArticle } from 'hooks';
+import { useAuthStore, useNewsArticle, useNewsStore } from 'hooks';
+import { Optional } from 'types';
 
 import styles from './ViewNewsPage.module.scss';
 import defaultImage from 'assets/images/default-background-blue.jpg';
@@ -20,12 +21,21 @@ export const ViewNewsPage = observer(() => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { pathname } = useLocation();
-  const { newsArticle, isLoading, isError } = useNewsArticle(id);
+  const newsStore = useNewsStore();
+  const newsArticle = useNewsArticle(id);
   const { t } = useTranslation();
   const { loggedUser } = useAuthStore();
 
-  const handleBack = (): void => navigate(-1);
-  const handleEdit = (): void => navigate(pathname + '/edit');
+  let isLoading: boolean;
+  let isError: Optional<boolean>;
+
+  isLoading = newsArticle?.isLoading ?? newsStore.isLoading;
+
+  if (newsStore.isInitialized && !newsArticle) {
+    isError = true;
+  } else {
+    isError = newsArticle?.isError;
+  }
 
   if (isLoading) {
     return <LoadingSpinner text={t('loadingText.newsArticle')} />;
@@ -41,9 +51,15 @@ export const ViewNewsPage = observer(() => {
 
   const { image, title, text } = newsArticle;
 
+  const handleBack = (): void => navigate(-1);
+  const handleEdit = (): void => navigate(pathname + '/edit');
+
   const renderImage = (): JSX.Element => {
     return (
-      <figure className={classNames(styles.section, styles.imageWrapper)}>
+      <figure
+        className={classNames(styles.section, styles.imageWrapper)}
+        data-testid="image"
+      >
         <img
           className={styles.image}
           src={image?.url ?? defaultImage}
@@ -58,12 +74,14 @@ export const ViewNewsPage = observer(() => {
       <Typography
         className={styles.title}
         component={TypographyComponent.Heading2}
+        data-testid="title"
       >
         {title}
       </Typography>
       <Typography
         className={styles.text}
         component={TypographyComponent.Paragraph}
+        data-testid="text"
       >
         {text}
       </Typography>

@@ -22,39 +22,42 @@ import {
   mockUser2,
 } from 'model/__fakes__';
 import { dropFile } from 'utils';
-import { useMeetup, useUserStore } from 'hooks';
-import { Meetup } from 'stores';
+import { useLocale, useMeetup, useUserStore } from 'hooks';
+import { Locale, Meetup, RootStore } from 'stores';
 
 jest.setTimeout(15 * 1000);
 
 jest.mock('utils/file');
 
-// Mock useMeetup & useUsers hook
+// Mock hooks
 jest.mock('hooks', () => {
   return {
     ...jest.requireActual('hooks'),
     useUserStore: jest.fn(),
     useMeetup: jest.fn(),
+    useLocale: jest.fn(),
   };
 });
 const mockUseUserStore = useUserStore as jest.MockedFunction<
   typeof useUserStore
 >;
 const mockUseMeetup = useMeetup as jest.MockedFunction<typeof useMeetup>;
+const mockUseLocale = useLocale as jest.MockedFunction<typeof useLocale>;
 
 const mockMeetupUpdate = jest.spyOn(Meetup.prototype, 'update');
 
 beforeEach(() => {
-  mockUseUserStore.mockReturnValue({
-    users: [mockUser, mockUser2],
-  });
-  mockUseMeetup.mockReturnValue({
-    meetup: mockMeetup,
-    isInitialized: true,
-    isLoading: false,
-    isError: false,
-    errors: [],
-  });
+  const { authStore, meetupStore } = new RootStore();
+  const { userStore } = authStore;
+  userStore.users = [mockUser, mockUser2];
+  mockUseUserStore.mockReturnValue(userStore);
+
+  const mockInitializedMeetup = new Meetup(mockMeetup, meetupStore);
+  mockInitializedMeetup.image = mockMeetup.image;
+  mockInitializedMeetup.isInitialized = true;
+  mockUseMeetup.mockReturnValue(mockInitializedMeetup);
+
+  mockUseLocale.mockReturnValue([Locale.RU, jest.fn()]);
 });
 
 afterEach(() => {
@@ -80,7 +83,9 @@ const getSubjectInput = () =>
 const getExcerptInput = () =>
   screen.getByLabelText('formFields.meetup.description.label');
 const getSpeakerSelect = () =>
-  screen.getByTestId('select-field').querySelector('input') as HTMLInputElement;
+  screen
+    .getByTestId('select-speakers')
+    .querySelector('input') as HTMLInputElement;
 const getStartDatePicker = () =>
   screen.getByLabelText(
     'formFields.meetup.datetimeStart.label',
@@ -106,8 +111,8 @@ const mockUpdatedMeetup: MeetupFields = {
   author: mockUser,
   speakers: [mockUser, mockUser2],
   place: 'room 321',
-  start: new Date(2023, 2, 20, 15, 0),
-  finish: new Date(2023, 2, 20, 16, 30),
+  start: new Date(2099, 2, 20, 15, 0),
+  finish: new Date(2099, 2, 20, 16, 30),
   image: mockImageWithUrl2,
 };
 
@@ -136,13 +141,13 @@ const editFields = async () => {
   // Select another start date/time
   await waitFor(() => {
     userEvent.clear(getStartDatePicker());
-    userEvent.type(getStartDatePicker(), '20 Mar 2023 15:00');
+    userEvent.type(getStartDatePicker(), '20 Mar 2099 15:00');
   });
 
   // Select another finish date/time
   await waitFor(() => {
     userEvent.clear(getFinishDatePicker());
-    userEvent.type(getFinishDatePicker(), '20 Mar 2023 16:30');
+    userEvent.type(getFinishDatePicker(), '20 Mar 2099 16:30');
   });
 
   // Edit location
@@ -255,27 +260,31 @@ describe('EditMeetupPage', () => {
   });
 
   it('should render a Loading spinner if meetup is undefined', () => {
-    mockUseMeetup.mockReturnValue({});
+    mockUseMeetup.mockReturnValue(undefined);
     render(<EditMeetupPage />, { wrapper: MockRouter });
     expect(screen.getByText('loadingText.meetup')).toBeInTheDocument();
   });
 
   it('should render a Loading spinner while meetup is loading', () => {
-    mockUseMeetup.mockReturnValue({
-      meetup: mockMeetup,
-      isLoading: true,
-    });
+    const { meetupStore } = new RootStore();
+    const mockLoadingMeetup = new Meetup(mockMeetup, meetupStore);
+    mockLoadingMeetup.isLoading = true;
+    mockUseMeetup.mockReturnValue(mockLoadingMeetup);
+
     render(<EditMeetupPage />, { wrapper: MockRouter });
+
     expect(screen.getByText('loadingText.meetup')).toBeInTheDocument();
   });
 
   it('should render Not Found page if an error occurred while loading the meetup', () => {
-    mockUseMeetup.mockReturnValue({
-      meetup: mockMeetup,
-      isInitialized: true,
-      isError: true,
-    });
+    const { meetupStore } = new RootStore();
+    const mockFailedMeetup = new Meetup(mockMeetup, meetupStore);
+    mockFailedMeetup.isInitialized = true;
+    mockFailedMeetup.isError = true;
+    mockUseMeetup.mockReturnValue(mockFailedMeetup);
+
     render(<EditMeetupPage />, { wrapper: MockRouter });
+
     expect(screen.getByText('notFoundPage.title')).toBeInTheDocument();
   });
 });

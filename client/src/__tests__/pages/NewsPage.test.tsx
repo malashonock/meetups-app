@@ -6,38 +6,41 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { NewsPage } from 'pages';
-import { useAuthStore, useNewsStore } from 'hooks';
+import { useLocale, useAuthStore, useNewsStore } from 'hooks';
 import { generateNews, mockFullUser, mockFullUser2 } from 'model/__fakes__';
+import { Locale, RootStore } from 'stores';
 
 const NEWS_COUNT = 12;
 
 const mockNews = generateNews(NEWS_COUNT);
 
-// Mock useNewsStore & useAuthStore hooks
+// Mock hooks
 jest.mock('hooks', () => {
   return {
     ...jest.requireActual('hooks'),
     useNewsStore: jest.fn(),
+    useLocale: jest.fn(),
     useAuthStore: jest.fn(),
   };
 });
 const mockUseNewsStore = useNewsStore as jest.MockedFunction<
   typeof useNewsStore
 >;
+const mockUseLocale = useLocale as jest.MockedFunction<typeof useLocale>;
 const mockUseAuthStore = useAuthStore as jest.MockedFunction<
   typeof useAuthStore
 >;
 
 beforeEach(() => {
-  mockUseNewsStore.mockReturnValue({
-    news: mockNews,
-    isLoading: false,
-    isError: false,
-    errors: [],
-  });
-  mockUseAuthStore.mockReturnValue({
-    loggedUser: mockFullUser,
-  });
+  const { authStore, newsStore } = new RootStore();
+
+  newsStore.news = mockNews;
+  mockUseNewsStore.mockReturnValue(newsStore);
+
+  mockUseLocale.mockReturnValue([Locale.RU, jest.fn()]);
+
+  authStore.loggedUser = mockFullUser;
+  mockUseAuthStore.mockReturnValue(authStore);
 });
 
 afterEach(() => {
@@ -81,9 +84,9 @@ describe('NewsPage', () => {
 
     describe('given a user with non-admin rights is logged in', () => {
       it('should not be rendered', () => {
-        mockUseAuthStore.mockReturnValue({
-          loggedUser: mockFullUser2,
-        });
+        const { authStore } = new RootStore();
+        authStore.loggedUser = mockFullUser2;
+        mockUseAuthStore.mockReturnValue(authStore);
 
         render(<NewsPage />, { wrapper: MockRouter });
 
@@ -93,9 +96,9 @@ describe('NewsPage', () => {
 
     describe('given no user is logged in', () => {
       it('should not be rendered', () => {
-        mockUseAuthStore.mockReturnValue({
-          loggedUser: null,
-        });
+        const { authStore } = new RootStore();
+        authStore.loggedUser = null;
+        mockUseAuthStore.mockReturnValue(authStore);
 
         render(<NewsPage />, { wrapper: MockRouter });
 
@@ -104,27 +107,23 @@ describe('NewsPage', () => {
     });
   });
 
-  it('should render a Loading spinner if news are undefined', () => {
-    mockUseNewsStore.mockReturnValue({});
-    render(<NewsPage />, { wrapper: MockRouter });
-    expect(screen.getByText('loadingText.news')).toBeInTheDocument();
-  });
-
   it('should render a Loading spinner while news are loading', () => {
-    mockUseNewsStore.mockReturnValue({
-      news: mockNews,
-      isLoading: true,
-    });
+    const { newsStore } = new RootStore();
+    newsStore.isLoading = true;
+    mockUseNewsStore.mockReturnValue(newsStore);
+
     render(<NewsPage />, { wrapper: MockRouter });
+
     expect(screen.getByText('loadingText.news')).toBeInTheDocument();
   });
 
   it('should render Not Found page if an error occurred while loading news', () => {
-    mockUseNewsStore.mockReturnValue({
-      news: mockNews,
-      isError: true,
-    });
+    const { newsStore } = new RootStore();
+    newsStore.isError = true;
+    mockUseNewsStore.mockReturnValue(newsStore);
+
     render(<NewsPage />, { wrapper: MockRouter });
+
     expect(screen.getByText('notFoundPage.title')).toBeInTheDocument();
   });
 });

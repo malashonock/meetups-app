@@ -24,8 +24,9 @@ export const ProtectedRoute = observer(
     redirectTo,
     children,
   }: PropsWithChildren<ProtectedRouteProps>): JSX.Element => {
-    const { isInitialized, loggedUser } = useAuthStore();
     const rootStore = useContext(RootContext);
+    const authStore = useAuthStore();
+    const { loggedUser } = authStore;
 
     const doRedirect =
       (redirectIf === RedirectCondition.Unauthenticated && !loggedUser) ||
@@ -62,7 +63,7 @@ export const ProtectedRoute = observer(
       }
     }, [doRedirect, redirectIf]);
 
-    if (!isInitialized) {
+    if (!authStore.isInitialized) {
       return <LoadingSpinner />;
     }
 

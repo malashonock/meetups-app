@@ -48,7 +48,7 @@ describe('TextField', () => {
       wrapper: TestForm,
     });
 
-    const textInput = screen.queryByTestId('text-input');
+    const textInput = screen.queryByTestId('text-input-email');
     expect(textInput).toBeInTheDocument();
 
     const textArea = screen.queryByTestId('text-area');
@@ -60,7 +60,7 @@ describe('TextField', () => {
       wrapper: TestForm,
     });
 
-    const textInput = screen.queryByTestId('text-input');
+    const textInput = screen.queryByTestId('text-input-email');
     expect(textInput).toBeInTheDocument();
 
     const textArea = screen.queryByTestId('text-area');
@@ -72,10 +72,10 @@ describe('TextField', () => {
       wrapper: TestForm,
     });
 
-    const textInput = screen.queryByTestId('text-input');
+    const textInput = screen.queryByTestId('text-input-email');
     expect(textInput).toBeNull();
 
-    const textArea = screen.queryByTestId('text-area');
+    const textArea = screen.queryByTestId('text-area-email');
     expect(textArea).toBeInTheDocument();
   });
 
@@ -86,7 +86,9 @@ describe('TextField', () => {
       });
 
       await waitFor(async () => {
-        const input = screen.queryByTestId('text-input') as HTMLInputElement;
+        const input = screen.queryByTestId(
+          'text-input-email',
+        ) as HTMLInputElement;
         userEvent.type(input, VALID_EMAIL);
 
         await waitFor(async () => {
@@ -104,7 +106,9 @@ describe('TextField', () => {
         wrapper: TestForm,
       });
 
-      const input = screen.queryByTestId('text-input') as HTMLInputElement;
+      const input = screen.queryByTestId(
+        'text-input-email',
+      ) as HTMLInputElement;
       expect(input.value).toBe(VALID_EMAIL);
     });
   });
@@ -116,7 +120,9 @@ describe('TextField', () => {
       });
 
       await waitFor(async () => {
-        const input = screen.queryByTestId('text-area') as HTMLTextAreaElement;
+        const input = screen.queryByTestId(
+          'text-area-email',
+        ) as HTMLTextAreaElement;
         userEvent.type(input, VALID_EMAIL);
 
         await waitFor(async () => {
@@ -134,7 +140,9 @@ describe('TextField', () => {
         wrapper: TestForm,
       });
 
-      const input = screen.queryByTestId('text-area') as HTMLTextAreaElement;
+      const input = screen.queryByTestId(
+        'text-area-email',
+      ) as HTMLTextAreaElement;
       expect(input.value).toBe(VALID_EMAIL);
     });
   });
@@ -195,7 +203,9 @@ describe('TextField', () => {
       const errorText = screen.getByText(ERR_MSG_FIELD_NONEMPTY);
       expect(errorText).toBeInTheDocument();
 
-      const input = screen.queryByTestId('text-input') as HTMLInputElement;
+      const input = screen.queryByTestId(
+        'text-input-email',
+      ) as HTMLInputElement;
       userEvent.type(input, INVALID_EMAIL);
       userEvent.click(submitBtn);
 

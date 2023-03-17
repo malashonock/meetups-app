@@ -164,14 +164,14 @@ const EditMeetupForm = ({
 
 export const EditMeetupPage = observer((): JSX.Element => {
   const { id } = useParams();
-  const { meetup, isInitialized, isLoading, isError } = useMeetup(id);
+  const meetup = useMeetup(id);
   const { i18n, t } = useTranslation();
 
-  if (!meetup || !isInitialized || isLoading) {
+  if (!meetup || !meetup.isInitialized || meetup.isLoading) {
     return <LoadingSpinner text={t('loadingText.meetup')} />;
   }
 
-  if (isError) {
+  if (meetup.isError) {
     return <NotFoundPage />;
   }
 

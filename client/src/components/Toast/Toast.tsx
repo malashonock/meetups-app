@@ -1,3 +1,4 @@
+import { FunctionComponent, SVGProps } from 'react';
 import classNames from 'classnames';
 
 import { Typography, IconButton } from 'components';
@@ -24,20 +25,24 @@ export const Toast = ({
   onClose,
 }: ToastProps): JSX.Element => {
   const renderIcon = (): JSX.Element => {
+    let Icon: FunctionComponent<SVGProps<SVGSVGElement>>;
+
     switch (variant) {
       case AlertSeverity.Error:
-        return <ErrorIcon className={styles.icon} data-testid="icon-error" />;
+        Icon = ErrorIcon;
+        break;
       case AlertSeverity.Warning:
-        return (
-          <WarningIcon className={styles.icon} data-testid="icon-warning" />
-        );
+        Icon = WarningIcon;
+        break;
       case AlertSeverity.Success:
-        return (
-          <SuccessIcon className={styles.icon} data-testid="icon-success" />
-        );
+        Icon = SuccessIcon;
+        break;
       case AlertSeverity.Info:
-        return <InfoIcon className={styles.icon} data-testid="icon-info" />;
+        Icon = InfoIcon;
+        break;
     }
+
+    return <Icon data-testid={`icon-${variant}`} />;
   };
 
   return (

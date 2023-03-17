@@ -15,7 +15,14 @@ import {
 import { NotFoundPage } from 'pages';
 import { MeetupStatus } from 'model';
 import { isPast, parseDate } from 'utils';
-import { useAuthStore, useMeetup, useLocale, useConfirmDialog } from 'hooks';
+import {
+  useAuthStore,
+  useMeetupStore,
+  useMeetup,
+  useLocale,
+  useConfirmDialog,
+} from 'hooks';
+import { Optional } from 'types';
 
 import styles from './ViewMeetupPage.module.scss';
 import defaultImage from 'assets/images/default-image.jpg';
@@ -26,13 +33,25 @@ import pin from './assets/pin.svg';
 export const ViewMeetupPage = observer(() => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { meetup, isLoading, isInitialized, isError } = useMeetup(id);
+  const meetupStore = useMeetupStore();
+  const meetup = useMeetup(id);
   const { i18n, t } = useTranslation();
   const [locale] = useLocale();
   const { loggedUser } = useAuthStore();
   const confirm = useConfirmDialog();
 
-  if (isLoading || isInitialized === false) {
+  let isLoading: boolean;
+  let isError: Optional<boolean>;
+
+  isLoading = meetup?.isLoading ?? meetupStore.isLoading;
+
+  if (meetupStore && meetupStore.isInitialized && !meetup) {
+    isError = true;
+  } else {
+    isError = meetup?.isError;
+  }
+
+  if (isLoading || meetup?.isInitialized === false) {
     return <LoadingSpinner text={t('loadingText.meetup')} />;
   }
 
@@ -58,8 +77,8 @@ export const ViewMeetupPage = observer(() => {
     image,
   } = meetup;
 
-  const isFinished = meetup?.finish && isPast(meetup.finish);
-  const canPublish = meetup?.start && meetup?.finish && meetup?.place;
+  const isFinished = finish && isPast(finish);
+  const canPublish = start && finish && place;
 
   const handleBack = (): void => navigate(-1);
 
@@ -76,28 +95,28 @@ export const ViewMeetupPage = observer(() => {
   };
 
   const handleApproveTopic = async (): Promise<void> => {
-    await meetup?.approve();
+    await meetup.approve();
     navigate(`/meetups/${id}/edit`);
   };
 
   const toggleSupportTopic = async (): Promise<void> => {
-    if (!meetup?.hasLoggedUserVoted) {
-      await meetup?.vote();
+    if (!meetup.hasLoggedUserVoted) {
+      await meetup.vote();
     } else {
       await meetup?.withdrawVote();
     }
   };
 
   const toggleJoinMeetup = async (): Promise<void> => {
-    if (!meetup?.hasLoggedUserJoined) {
-      await meetup?.join();
+    if (!meetup.hasLoggedUserJoined) {
+      await meetup.join();
     } else {
-      await meetup?.cancelJoin();
+      await meetup.cancelJoin();
     }
   };
 
   const handlePublishMeetup = async (): Promise<void> => {
-    await meetup?.publish();
+    await meetup.publish();
 
     const tab = start && isPast(start) ? 'finished' : 'upcoming';
 
@@ -114,7 +133,7 @@ export const ViewMeetupPage = observer(() => {
           >
             {t('viewMeetupPage.topic')}
           </Typography>
-          <div className={styles.dataContent}>
+          <div className={styles.dataContent} data-testid="heading">
             <Typography
               className={styles.meetupHeading}
               component={TypographyComponent.Heading2}
@@ -128,14 +147,14 @@ export const ViewMeetupPage = observer(() => {
 
     return (
       <div className={styles.headerData}>
-        <figure className={styles.imageWrapper}>
+        <figure className={styles.imageWrapper} data-testid="image">
           <img
             className={styles.image}
             src={image?.url ?? defaultImage}
             alt={t('viewMeetupPage.imgAlt') || 'Meetup image'}
           />
         </figure>
-        <div className={styles.headerDataContent}>
+        <div className={styles.headerDataContent} data-testid="heading">
           <Typography
             className={styles.meetupHeading}
             component={TypographyComponent.Heading2}
@@ -187,7 +206,7 @@ export const ViewMeetupPage = observer(() => {
             [styles.notFilledOutline]: !canPublish,
           })}
         >
-          <div id="date" className={styles.info}>
+          <div id="date" className={styles.info} data-testid="date">
             <img
               className={styles.image}
               src={calendar}
@@ -197,7 +216,7 @@ export const ViewMeetupPage = observer(() => {
               {date || '—'}
             </Typography>
           </div>
-          <div id="time" className={styles.info}>
+          <div id="time" className={styles.info} data-testid="time">
             <img
               className={styles.image}
               src={clock}
@@ -207,7 +226,7 @@ export const ViewMeetupPage = observer(() => {
               {time || '—'}
             </Typography>
           </div>
-          <div id="location" className={styles.info}>
+          <div id="location" className={styles.info} data-testid="location">
             <img
               className={styles.image}
               src={pin}
@@ -411,7 +430,7 @@ export const ViewMeetupPage = observer(() => {
         {renderHeader()}
         {renderTimePlace()}
         {renderSpeakers()}
-        <div className={styles.data}>
+        <div className={styles.data} data-testid="description">
           <Typography
             component={TypographyComponent.Span}
             className={styles.dataName}

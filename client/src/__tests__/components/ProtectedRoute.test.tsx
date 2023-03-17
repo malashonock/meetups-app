@@ -5,8 +5,8 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { ProtectedRoute, RedirectCondition, RootContext } from 'components';
 import { mockFullUser, mockFullUser2 } from 'model/__fakes__';
 import { useAuthStore } from 'hooks';
-import { RootStore } from 'stores';
 import { AlertSeverity } from 'types';
+import { RootStore } from 'stores';
 
 // Mock useAuthStore hook
 jest.mock('hooks', () => {
@@ -20,10 +20,10 @@ const mockUseAuthStore = useAuthStore as jest.MockedFunction<
 >;
 
 beforeEach(() => {
-  mockUseAuthStore.mockReturnValue({
-    loggedUser: null,
-    isInitialized: true,
-  });
+  const { authStore } = new RootStore();
+  authStore.loggedUser = null;
+  authStore.isInitialized = true;
+  mockUseAuthStore.mockReturnValue(authStore);
 });
 
 afterEach(() => {
@@ -59,10 +59,10 @@ const ProtectedPage = (): JSX.Element => <h1>Protected page</h1>;
 describe('ProtectedRoute', () => {
   describe('if redirectIf is set to "unauthenticated" or omitted', () => {
     it('if a user is logged in, navigates to the protected route', () => {
-      mockUseAuthStore.mockReturnValue({
-        loggedUser: mockFullUser,
-        isInitialized: true,
-      });
+      const { authStore } = new RootStore();
+      authStore.loggedUser = mockFullUser;
+      authStore.isInitialized = true;
+      mockUseAuthStore.mockReturnValue(authStore);
 
       render(
         <ProtectedRoute>
@@ -132,10 +132,10 @@ describe('ProtectedRoute', () => {
 
   describe('if redirectIf is set to "nonAdmin"', () => {
     it('if a user with admin rights is logged in, navigates to the protected route', () => {
-      mockUseAuthStore.mockReturnValue({
-        loggedUser: mockFullUser,
-        isInitialized: true,
-      });
+      const { authStore } = new RootStore();
+      authStore.loggedUser = mockFullUser;
+      authStore.isInitialized = true;
+      mockUseAuthStore.mockReturnValue(authStore);
 
       render(
         <ProtectedRoute redirectIf={RedirectCondition.NonAdmin}>
@@ -152,10 +152,10 @@ describe('ProtectedRoute', () => {
 
     describe('if a user with non-admin-rights is logged in', () => {
       beforeEach(() => {
-        mockUseAuthStore.mockReturnValue({
-          loggedUser: mockFullUser2,
-          isInitialized: true,
-        });
+        const { authStore } = new RootStore();
+        authStore.loggedUser = mockFullUser2;
+        authStore.isInitialized = true;
+        mockUseAuthStore.mockReturnValue(authStore);
       });
 
       it('if redirectTo is omitted, redirects to login page', () => {
@@ -285,10 +285,10 @@ describe('ProtectedRoute', () => {
 
     describe('if a user is logged in', () => {
       beforeEach(() => {
-        mockUseAuthStore.mockReturnValue({
-          loggedUser: mockFullUser,
-          isInitialized: true,
-        });
+        const { authStore } = new RootStore();
+        authStore.loggedUser = mockFullUser;
+        authStore.isInitialized = true;
+        mockUseAuthStore.mockReturnValue(authStore);
       });
 
       it('if redirectTo is omitted, redirects to meetups page', () => {
@@ -332,10 +332,10 @@ describe('ProtectedRoute', () => {
 
   describe('given authStore is not initialized', () => {
     it('should render a loading spinner', () => {
-      mockUseAuthStore.mockReturnValue({
-        loggedUser: null,
-        isInitialized: false,
-      });
+      const { authStore } = new RootStore();
+      authStore.loggedUser = null;
+      authStore.isInitialized = false;
+      mockUseAuthStore.mockReturnValue(authStore);
 
       render(
         <ProtectedRoute>
