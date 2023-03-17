@@ -23,7 +23,7 @@ import {
 } from 'model/__fakes__';
 import { dropFile } from 'utils';
 import { useLocale, useMeetup, useUserStore } from 'hooks';
-import { Locale, Meetup } from 'stores';
+import { Locale, Meetup, RootStore } from 'stores';
 
 jest.setTimeout(15 * 1000);
 
@@ -47,9 +47,10 @@ const mockUseLocale = useLocale as jest.MockedFunction<typeof useLocale>;
 const mockMeetupUpdate = jest.spyOn(Meetup.prototype, 'update');
 
 beforeEach(() => {
-  mockUseUserStore.mockReturnValue({
-    users: [mockUser, mockUser2],
-  });
+  const { authStore } = new RootStore();
+  const { userStore } = authStore;
+  userStore.users = [mockUser, mockUser2];
+  mockUseUserStore.mockReturnValue(userStore);
 
   mockUseMeetup.mockReturnValue({
     meetup: mockMeetup,

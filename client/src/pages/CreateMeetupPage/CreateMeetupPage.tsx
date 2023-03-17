@@ -35,7 +35,7 @@ const createMeetupSteps = (): StepConfig<FormikProps<MeetupFields>>[] => [
 
 export const CreateMeetupPage = observer((): JSX.Element => {
   const { loggedUser } = useAuthStore();
-  const { meetupStore } = useMeetupStore();
+  const meetupStore = useMeetupStore();
   const [finished, setFinished] = useState(false);
   const navigate = useNavigate();
   const { i18n } = useTranslation();
@@ -54,7 +54,7 @@ export const CreateMeetupPage = observer((): JSX.Element => {
   const handleSubmit = async (newMeetupData: MeetupFields): Promise<void> => {
     if (finished) {
       (async () => {
-        const newMeetup = await meetupStore?.createMeetup(newMeetupData);
+        const newMeetup = await meetupStore.createMeetup(newMeetupData);
         navigate(newMeetup ? `/meetups/${newMeetup.id}` : '/meetups');
       })();
     }

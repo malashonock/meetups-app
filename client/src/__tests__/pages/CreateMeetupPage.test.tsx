@@ -51,21 +51,20 @@ const mockUseMeetupStore = useMeetupStore as jest.MockedFunction<
 const mockCreateMeetup = jest.spyOn(MeetupStore.prototype, 'createMeetup');
 
 beforeEach(() => {
-  const { authStore } = new RootStore();
+  const { authStore, meetupStore } = new RootStore();
+
   authStore.loggedUser = null;
   mockUseAuthStore.mockReturnValue(authStore);
 
-  mockUseUserStore.mockReturnValue({
-    users: [mockUser],
-  });
+  const { userStore } = authStore;
+  userStore.users = [mockUser];
+  mockUseUserStore.mockReturnValue(userStore);
 
   mockUseLocale.mockReturnValue([Locale.RU, jest.fn()]);
 
-  mockUseMeetupStore.mockReturnValue({
-    meetupStore: new MeetupStore(new RootStore()),
-  });
+  mockUseMeetupStore.mockReturnValue(meetupStore);
 
-  mockCreateMeetup.mockReturnValue(Promise.resolve(mockMeetup));
+  mockCreateMeetup.mockResolvedValue(mockMeetup);
 });
 
 afterEach(() => {

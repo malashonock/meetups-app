@@ -13,10 +13,10 @@ interface UseMeetupResult {
 }
 
 export const useMeetup = (id: Maybe<string>): UseMeetupResult => {
-  const { meetupStore } = useMeetupStore();
+  const meetupStore = useMeetupStore();
   const [isInitialized, setIsInitialized] = useState<Optional<boolean>>(false);
 
-  const meetup = id ? meetupStore?.findMeetup(id) : undefined;
+  const meetup = id ? meetupStore.findMeetup(id) : undefined;
 
   // Hydrate meetup on first load
   useEffect((): void => {
