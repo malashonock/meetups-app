@@ -11,26 +11,32 @@ import {
   mockMeetup,
   mockFullUser,
 } from 'model/__fakes__';
-import { useAuthStore, useMeetup } from 'hooks';
-import { Meetup, RootStore } from 'stores';
+import { useAuthStore, useLocale, useMeetup } from 'hooks';
+import { Locale, Meetup, RootStore } from 'stores';
 import { ConfirmDialogProvider } from 'components';
 
-// Mock useAuthStore & useMeetup hook
+// Mock hooks
 jest.mock('hooks', () => {
   return {
     ...jest.requireActual('hooks'),
     useAuthStore: jest.fn(),
     useMeetup: jest.fn(),
+    useLocale: jest.fn(),
   };
 });
 const mockUseAuthStore = useAuthStore as jest.MockedFunction<
   typeof useAuthStore
 >;
 const mockUseMeetup = useMeetup as jest.MockedFunction<typeof useMeetup>;
+const mockUseLocale = useLocale as jest.MockedFunction<typeof useLocale>;
 
 const mockMeetupApprove = jest.spyOn(Meetup.prototype, 'approve');
 const mockMeetupPublish = jest.spyOn(Meetup.prototype, 'publish');
 const mockMeetupDelete = jest.spyOn(Meetup.prototype, 'delete');
+
+beforeEach(() => {
+  mockUseLocale.mockReturnValue([Locale.RU, jest.fn()]);
+});
 
 afterEach(() => {
   jest.resetAllMocks();

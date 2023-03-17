@@ -6,23 +6,26 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { NewsPage } from 'pages';
-import { useNewsStore } from 'hooks';
+import { useLocale, useNewsStore } from 'hooks';
 import { generateNews } from 'model/__fakes__';
+import { Locale } from 'stores';
 
 const NEWS_COUNT = 12;
 
 const mockNews = generateNews(NEWS_COUNT);
 
-// Mock useNewsStore hook
+// Mock hooks
 jest.mock('hooks', () => {
   return {
     ...jest.requireActual('hooks'),
     useNewsStore: jest.fn(),
+    useLocale: jest.fn(),
   };
 });
 const mockUseNewsStore = useNewsStore as jest.MockedFunction<
   typeof useNewsStore
 >;
+const mockUseLocale = useLocale as jest.MockedFunction<typeof useLocale>;
 
 beforeEach(() => {
   mockUseNewsStore.mockReturnValue({
@@ -31,6 +34,8 @@ beforeEach(() => {
     isError: false,
     errors: [],
   });
+
+  mockUseLocale.mockReturnValue([Locale.RU, jest.fn()]);
 });
 
 afterEach(() => {

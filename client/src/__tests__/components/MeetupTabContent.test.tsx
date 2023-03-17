@@ -3,12 +3,13 @@
 import { PropsWithChildren } from 'react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { MeetupCardVariant, MeetupTabContent } from 'components';
 import { useMeetupStore } from 'hooks';
 import { MeetupStatus } from 'model';
 import { generateMeetups } from 'model/__fakes__';
-import userEvent from '@testing-library/user-event';
+import { Meetup } from 'stores';
 
 const TOPICS_COUNT = 10;
 const ONMODERATION_COUNT = 3;
@@ -48,6 +49,20 @@ jest.mock('hooks', () => {
 const mockUseMeetupStore = useMeetupStore as jest.MockedFunction<
   typeof useMeetupStore
 >;
+
+// Mock MeetupCard
+jest.mock('components/MeetupCard/MeetupCard', () => {
+  return {
+    ...jest.requireActual('components/MeetupCard/MeetupCard'),
+    MeetupCard: (props: { meetup: Meetup }): JSX.Element => {
+      return (
+        <div data-testid="meetup-card">
+          <div className="subject">{props.meetup.subject}</div>
+        </div>
+      );
+    },
+  };
+});
 
 beforeEach(() => {
   mockUseMeetupStore.mockReturnValue({

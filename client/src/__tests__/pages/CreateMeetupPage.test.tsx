@@ -22,17 +22,18 @@ import {
   mockUser,
 } from 'model/__fakes__';
 import { dropFile } from 'utils';
-import { useMeetupStore, useUserStore, useAuthStore } from 'hooks';
-import { MeetupStore, RootStore } from 'stores';
+import { useMeetupStore, useLocale, useAuthStore, useUserStore } from 'hooks';
+import { Locale, MeetupStore, RootStore } from 'stores';
 
 jest.mock('utils/file');
 
-// Mock useMeetupStore & useUsers hook
+// Mock hooks
 jest.mock('hooks', () => {
   return {
     ...jest.requireActual('hooks'),
     useAuthStore: jest.fn(),
     useUserStore: jest.fn(),
+    useLocale: jest.fn(),
     useMeetupStore: jest.fn(),
   };
 });
@@ -42,6 +43,7 @@ const mockUseAuthStore = useAuthStore as jest.MockedFunction<
 const mockUseUserStore = useUserStore as jest.MockedFunction<
   typeof useUserStore
 >;
+const mockUseLocale = useLocale as jest.MockedFunction<typeof useLocale>;
 const mockUseMeetupStore = useMeetupStore as jest.MockedFunction<
   typeof useMeetupStore
 >;
@@ -56,6 +58,8 @@ beforeEach(() => {
   mockUseUserStore.mockReturnValue({
     users: [mockUser],
   });
+
+  mockUseLocale.mockReturnValue([Locale.RU, jest.fn()]);
 
   mockUseMeetupStore.mockReturnValue({
     meetupStore: new MeetupStore(new RootStore()),

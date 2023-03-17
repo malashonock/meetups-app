@@ -9,21 +9,23 @@ import { EditNewsPage } from 'pages';
 import { NewsFields } from 'model';
 import { mockImageWithUrl, mockNewsArticle } from 'model/__fakes__';
 import { dropFile } from 'utils';
-import { useNewsArticle } from 'hooks';
-import { News } from 'stores';
+import { useLocale, useNewsArticle } from 'hooks';
+import { Locale, News } from 'stores';
 
 jest.mock('utils/file');
 
-// Mock useNewsArticle hook
+// Mock hooks
 jest.mock('hooks', () => {
   return {
     ...jest.requireActual('hooks'),
     useNewsArticle: jest.fn(),
+    useLocale: jest.fn(),
   };
 });
 const mockUseNewsArticle = useNewsArticle as jest.MockedFunction<
   typeof useNewsArticle
 >;
+const mockUseLocale = useLocale as jest.MockedFunction<typeof useLocale>;
 const mockUpdatedNewsArticleUpdate = jest.spyOn(News.prototype, 'update');
 
 beforeEach(() => {
@@ -33,6 +35,8 @@ beforeEach(() => {
     isError: false,
     errors: [],
   });
+
+  mockUseLocale.mockReturnValue([Locale.RU, jest.fn()]);
 });
 
 afterEach(() => {

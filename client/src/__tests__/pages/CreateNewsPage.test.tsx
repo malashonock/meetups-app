@@ -9,22 +9,24 @@ import { CreateNewsPage } from 'pages';
 import { NewsFields } from 'model';
 import { mockImageWithUrl } from 'model/__fakes__';
 import { dropFile } from 'utils';
-import { useNewsStore } from 'hooks';
-import { RootStore } from 'stores';
+import { useLocale, useNewsStore } from 'hooks';
+import { Locale, RootStore } from 'stores';
 
 jest.mock('utils/file');
 
-// Mock useNewsStore hook
+// Mock hooks
 jest.mock('hooks', () => {
   return {
     ...jest.requireActual('hooks'),
     useNewsStore: jest.fn(),
+    useLocale: jest.fn(),
   };
 });
 const mockUseNewsStore = useNewsStore as jest.MockedFunction<
   typeof useNewsStore
 >;
 const mockNewsStoreCreateArticle = jest.fn();
+const mockUseLocale = useLocale as jest.MockedFunction<typeof useLocale>;
 
 beforeEach(() => {
   mockUseNewsStore.mockReturnValue({
@@ -45,6 +47,8 @@ beforeEach(() => {
       toJSON: jest.fn(),
     },
   });
+
+  mockUseLocale.mockReturnValue([Locale.RU, jest.fn()]);
 });
 
 afterEach(() => {
