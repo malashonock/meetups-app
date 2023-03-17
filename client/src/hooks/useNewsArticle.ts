@@ -1,6 +1,6 @@
 import { News } from 'stores';
 import { Maybe } from 'types';
-import { useNewsStore } from './useNewsStore';
+import { useNewsStore } from 'hooks';
 
 interface UseNewsArticleResult {
   newsArticle?: News;
@@ -10,7 +10,7 @@ interface UseNewsArticleResult {
 }
 
 export const useNewsArticle = (id: Maybe<string>): UseNewsArticleResult => {
-  const { newsStore } = useNewsStore();
+  const newsStore = useNewsStore();
 
   if (!id) {
     return {};
