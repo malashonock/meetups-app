@@ -10,7 +10,7 @@ import { NewsFields } from 'model';
 import { mockImageWithUrl, mockNewsArticle } from 'model/__fakes__';
 import { dropFile } from 'utils';
 import { useLocale, useNewsArticle } from 'hooks';
-import { Locale, News } from 'stores';
+import { Locale, News, RootStore } from 'stores';
 
 jest.mock('utils/file');
 
@@ -178,18 +178,24 @@ describe('EditNewsPage', () => {
   });
 
   it('should render a Loading spinner while news article is loading', () => {
-    const newsArticle = new News(mockNewsArticle);
-    newsArticle.isLoading = true;
-    mockUseNewsArticle.mockReturnValue(newsArticle);
+    const { newsStore } = new RootStore();
+    const mockLoadingNewsArticle = new News(mockNewsArticle, newsStore);
+    mockLoadingNewsArticle.isLoading = true;
+    mockUseNewsArticle.mockReturnValue(mockLoadingNewsArticle);
+
     render(<EditNewsPage />, { wrapper: MockRouter });
+
     expect(screen.getByText('loadingText.newsArticle')).toBeInTheDocument();
   });
 
   it('should render Not Found page if an error occurred while loading the news article', () => {
-    const newsArticle = new News(mockNewsArticle);
-    newsArticle.isError = true;
-    mockUseNewsArticle.mockReturnValue(newsArticle);
+    const { newsStore } = new RootStore();
+    const mockFailedNewsArticle = new News(mockNewsArticle, newsStore);
+    mockFailedNewsArticle.isError = true;
+    mockUseNewsArticle.mockReturnValue(mockFailedNewsArticle);
+
     render(<EditNewsPage />, { wrapper: MockRouter });
+
     expect(screen.getByText('notFoundPage.title')).toBeInTheDocument();
   });
 });

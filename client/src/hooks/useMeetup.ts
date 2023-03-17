@@ -12,9 +12,8 @@ interface UseMeetupResult {
   errors?: unknown[];
 }
 
-export const useMeetup = (id: Maybe<string>): UseMeetupResult => {
+export const useMeetup = (id: Maybe<string>): Optional<Meetup> => {
   const meetupStore = useMeetupStore();
-  const [isInitialized, setIsInitialized] = useState<Optional<boolean>>(false);
 
   const meetup = id ? meetupStore.findMeetup(id) : undefined;
 
@@ -27,20 +26,5 @@ export const useMeetup = (id: Maybe<string>): UseMeetupResult => {
     })();
   }, [meetup, meetup?.isInitialized]);
 
-  // Keep track of isInitialized field
-  useEffect(() => {
-    setIsInitialized(meetup?.isInitialized);
-  }, [meetup?.isInitialized]);
-
-  const isLoading = meetupStore?.isLoading;
-  const isError = meetupStore?.isError;
-  const errors = meetupStore?.errors;
-
-  return {
-    meetup,
-    isInitialized,
-    isLoading,
-    isError,
-    errors,
-  };
+  return meetup;
 };

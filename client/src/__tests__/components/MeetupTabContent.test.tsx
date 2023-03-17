@@ -9,7 +9,7 @@ import { MeetupCardVariant, MeetupTabContent } from 'components';
 import { useMeetupStore } from 'hooks';
 import { MeetupStatus } from 'model';
 import { generateMeetups } from 'model/__fakes__';
-import { Meetup } from 'stores';
+import { Meetup, RootStore } from 'stores';
 
 const TOPICS_COUNT = 10;
 const ONMODERATION_COUNT = 3;
@@ -65,12 +65,9 @@ jest.mock('components/MeetupCard/MeetupCard', () => {
 });
 
 beforeEach(() => {
-  mockUseMeetupStore.mockReturnValue({
-    meetups: mockMeetups,
-    isLoading: false,
-    isError: false,
-    errors: [],
-  });
+  const { meetupStore } = new RootStore();
+  meetupStore.meetups = mockMeetups;
+  mockUseMeetupStore.mockReturnValue(meetupStore);
 });
 
 afterEach(() => {
@@ -173,32 +170,28 @@ describe('MeetupTabContent', () => {
   });
 
   it('should render a Loading spinner while meetups are loading', () => {
-    mockUseMeetupStore.mockReturnValue({
-      meetups: mockMeetups,
-      isLoading: true,
-    });
-    render(<MeetupTabContent variant={MeetupCardVariant.Upcoming} />, {
-      wrapper: MockRouter,
-    });
-    expect(screen.getByText('loadingText.meetups')).toBeInTheDocument();
-  });
+    const { meetupStore } = new RootStore();
+    meetupStore.meetups = mockMeetups;
+    meetupStore.isLoading = true;
+    mockUseMeetupStore.mockReturnValue(meetupStore);
 
-  it('should render a Loading spinner if meetups is undefined', () => {
-    mockUseMeetupStore.mockReturnValue({});
     render(<MeetupTabContent variant={MeetupCardVariant.Upcoming} />, {
       wrapper: MockRouter,
     });
+
     expect(screen.getByText('loadingText.meetups')).toBeInTheDocument();
   });
 
   it('should render Not Found page if an error occurred while loading meetups', () => {
-    mockUseMeetupStore.mockReturnValue({
-      meetups: mockMeetups,
-      isError: true,
-    });
+    const { meetupStore } = new RootStore();
+    meetupStore.meetups = mockMeetups;
+    meetupStore.isError = true;
+    mockUseMeetupStore.mockReturnValue(meetupStore);
+
     render(<MeetupTabContent variant={MeetupCardVariant.Upcoming} />, {
       wrapper: MockRouter,
     });
+
     expect(screen.getByText('notFoundPage.title')).toBeInTheDocument();
   });
 });

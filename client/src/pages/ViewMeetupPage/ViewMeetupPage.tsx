@@ -26,17 +26,17 @@ import pin from './assets/pin.svg';
 export const ViewMeetupPage = observer(() => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { meetup, isLoading, isError } = useMeetup(id);
+  const meetup = useMeetup(id);
   const { i18n, t } = useTranslation();
   const [locale] = useLocale();
   const { loggedUser } = useAuthStore();
   const confirm = useConfirmDialog();
 
-  if (!meetup || isLoading) {
+  if (!meetup || meetup.isLoading) {
     return <LoadingSpinner text={t('loadingText.meetup')} />;
   }
 
-  if (isError) {
+  if (meetup.isError) {
     return <NotFoundPage />;
   }
 
@@ -54,8 +54,8 @@ export const ViewMeetupPage = observer(() => {
     image,
   } = meetup;
 
-  const isFinished = meetup?.finish && isPast(meetup.finish);
-  const canPublish = meetup?.start && meetup?.finish && meetup?.place;
+  const isFinished = finish && isPast(finish);
+  const canPublish = start && finish && place;
 
   const handleBack = (): void => navigate(-1);
 
@@ -72,28 +72,28 @@ export const ViewMeetupPage = observer(() => {
   };
 
   const handleApproveTopic = async (): Promise<void> => {
-    await meetup?.approve();
+    await meetup.approve();
     navigate(`/meetups/${id}/edit`);
   };
 
   const toggleSupportTopic = async (): Promise<void> => {
-    if (!meetup?.hasLoggedUserVoted) {
-      await meetup?.vote();
+    if (!meetup.hasLoggedUserVoted) {
+      await meetup.vote();
     } else {
       await meetup?.withdrawVote();
     }
   };
 
   const toggleJoinMeetup = async (): Promise<void> => {
-    if (!meetup?.hasLoggedUserJoined) {
-      await meetup?.join();
+    if (!meetup.hasLoggedUserJoined) {
+      await meetup.join();
     } else {
-      await meetup?.cancelJoin();
+      await meetup.cancelJoin();
     }
   };
 
   const handlePublishMeetup = async (): Promise<void> => {
-    await meetup?.publish();
+    await meetup.publish();
 
     const tab = start && isPast(start) ? 'finished' : 'upcoming';
 
