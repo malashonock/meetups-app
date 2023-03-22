@@ -22,9 +22,10 @@ export const ProtectedRoute = observer(
     redirectTo,
     children,
   }: PropsWithChildren<ProtectedRouteProps>): JSX.Element => {
-    const { isInitialized, loggedUser } = useAuthStore();
+    const authStore = useAuthStore();
+    const { loggedUser } = authStore;
 
-    if (!isInitialized) {
+    if (!authStore.isInitialized) {
       return <LoadingSpinner />;
     }
 

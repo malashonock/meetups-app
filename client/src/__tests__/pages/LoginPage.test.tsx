@@ -6,34 +6,31 @@ import { act, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { LoginPage } from 'pages';
-import { useAuthStore } from 'hooks';
-import { AuthStore, RootStore, UserStore } from 'stores';
+import { useAuthStore, useLocale } from 'hooks';
+import { AuthStore, Locale, RootStore } from 'stores';
 import { Credentials } from 'model';
 
-// Mock useAuthStore hook
+// Mock hooks
 jest.mock('hooks', () => {
   return {
     ...jest.requireActual('hooks'),
     useAuthStore: jest.fn(),
+    useLocale: jest.fn(),
   };
 });
 const mockUseAuthStore = useAuthStore as jest.MockedFunction<
   typeof useAuthStore
 >;
-const mockLogIn = jest.fn();
+const mockUseLocale = useLocale as jest.MockedFunction<typeof useLocale>;
+
+const spiedOnAuthStoreLogIn = jest.spyOn(AuthStore.prototype, 'logIn');
 
 beforeEach(() => {
-  mockUseAuthStore.mockReturnValue({
-    authStore: {
-      rootStore: new RootStore(),
-      userStore: new UserStore(new AuthStore(new RootStore())),
-      loggedUser: null,
-      logIn: mockLogIn,
-      logOut: jest.fn(),
-      onLoginChanged: jest.fn(),
-      toJSON: jest.fn(),
-    },
-  });
+  const { authStore } = new RootStore();
+  authStore.loggedUser = null;
+  mockUseAuthStore.mockReturnValue(authStore);
+
+  mockUseLocale.mockReturnValue([Locale.RU, jest.fn()]);
 });
 
 afterEach(() => {
@@ -123,7 +120,7 @@ describe('LoginPage', () => {
       userEvent.click(getLoginBtn());
     });
 
-    expect(mockLogIn).toHaveBeenCalledWith(mockCredentials);
+    expect(spiedOnAuthStoreLogIn).toHaveBeenCalledWith(mockCredentials);
     expect(screen.getByText('Meetups page')).toBeInTheDocument();
   });
 });

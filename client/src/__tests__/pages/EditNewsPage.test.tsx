@@ -9,30 +9,28 @@ import { EditNewsPage } from 'pages';
 import { NewsFields } from 'model';
 import { mockImageWithUrl, mockNewsArticle } from 'model/__fakes__';
 import { dropFile } from 'utils';
-import { useNewsArticle } from 'hooks';
-import { News } from 'stores';
+import { useLocale, useNewsArticle } from 'hooks';
+import { Locale, News, RootStore } from 'stores';
 
 jest.mock('utils/file');
 
-// Mock useNewsArticle hook
+// Mock hooks
 jest.mock('hooks', () => {
   return {
     ...jest.requireActual('hooks'),
     useNewsArticle: jest.fn(),
+    useLocale: jest.fn(),
   };
 });
 const mockUseNewsArticle = useNewsArticle as jest.MockedFunction<
   typeof useNewsArticle
 >;
+const mockUseLocale = useLocale as jest.MockedFunction<typeof useLocale>;
 const mockUpdatedNewsArticleUpdate = jest.spyOn(News.prototype, 'update');
 
 beforeEach(() => {
-  mockUseNewsArticle.mockReturnValue({
-    newsArticle: mockNewsArticle,
-    isLoading: false,
-    isError: false,
-    errors: [],
-  });
+  mockUseNewsArticle.mockReturnValue(mockNewsArticle);
+  mockUseLocale.mockReturnValue([Locale.RU, jest.fn()]);
 });
 
 afterEach(() => {
@@ -174,26 +172,30 @@ describe('EditNewsPage', () => {
   });
 
   it('should render a Loading spinner if news article is undefined', () => {
-    mockUseNewsArticle.mockReturnValue({});
+    mockUseNewsArticle.mockReturnValue(undefined);
     render(<EditNewsPage />, { wrapper: MockRouter });
     expect(screen.getByText('loadingText.newsArticle')).toBeInTheDocument();
   });
 
   it('should render a Loading spinner while news article is loading', () => {
-    mockUseNewsArticle.mockReturnValue({
-      newsArticle: mockNewsArticle,
-      isLoading: true,
-    });
+    const { newsStore } = new RootStore();
+    const mockLoadingNewsArticle = new News(mockNewsArticle, newsStore);
+    mockLoadingNewsArticle.isLoading = true;
+    mockUseNewsArticle.mockReturnValue(mockLoadingNewsArticle);
+
     render(<EditNewsPage />, { wrapper: MockRouter });
+
     expect(screen.getByText('loadingText.newsArticle')).toBeInTheDocument();
   });
 
   it('should render Not Found page if an error occurred while loading the news article', () => {
-    mockUseNewsArticle.mockReturnValue({
-      newsArticle: mockNewsArticle,
-      isError: true,
-    });
+    const { newsStore } = new RootStore();
+    const mockFailedNewsArticle = new News(mockNewsArticle, newsStore);
+    mockFailedNewsArticle.isError = true;
+    mockUseNewsArticle.mockReturnValue(mockFailedNewsArticle);
+
     render(<EditNewsPage />, { wrapper: MockRouter });
+
     expect(screen.getByText('notFoundPage.title')).toBeInTheDocument();
   });
 });

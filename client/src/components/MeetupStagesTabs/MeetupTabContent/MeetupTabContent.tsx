@@ -25,7 +25,8 @@ interface MeetupTabContentProps {
 
 export const MeetupTabContent = observer(
   ({ variant }: MeetupTabContentProps) => {
-    const { meetups, isLoading, isError } = useMeetupStore();
+    const meetupStore = useMeetupStore();
+    const { meetups } = meetupStore;
     const [selectedMeetups, setSelectedMeetups] = useState<Meetup[]>();
     const { t } = useTranslation();
     const navigate = useNavigate();
@@ -36,17 +37,17 @@ export const MeetupTabContent = observer(
       switch (variant) {
         case MeetupCardVariant.Topic:
           setSelectedMeetups(
-            meetups?.filter((meetup) => meetup.status === MeetupStatus.REQUEST),
+            meetups.filter((meetup) => meetup.status === MeetupStatus.REQUEST),
           );
           break;
         case MeetupCardVariant.Draft:
           setSelectedMeetups(
-            meetups?.filter((meetup) => meetup.status === MeetupStatus.DRAFT),
+            meetups.filter((meetup) => meetup.status === MeetupStatus.DRAFT),
           );
           break;
         case MeetupCardVariant.Upcoming:
           setSelectedMeetups(
-            meetups?.filter(
+            meetups.filter(
               (meetup) =>
                 meetup.status === MeetupStatus.CONFIRMED &&
                 (!meetup.start || (meetup.start && !isPast(meetup.start))),
@@ -55,7 +56,7 @@ export const MeetupTabContent = observer(
           break;
         case MeetupCardVariant.Finished:
           setSelectedMeetups(
-            meetups?.filter(
+            meetups.filter(
               (meetup) =>
                 meetup.status === MeetupStatus.CONFIRMED &&
                 meetup.start &&
@@ -64,15 +65,15 @@ export const MeetupTabContent = observer(
           );
           break;
       }
-    }, [variant, meetups, meetups?.length]);
+    }, [variant, meetups, meetups.length]);
 
-    if (isError) {
+    if (meetupStore.isError) {
       return <NotFoundPage />;
     }
 
     return (
       <section className={styles.meetupsTab}>
-        {!meetups || isLoading ? (
+        {meetupStore.isLoading ? (
           <LoadingSpinner text={t('loadingText.meetups')} />
         ) : (
           <>

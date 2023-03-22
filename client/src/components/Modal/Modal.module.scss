@@ -1,0 +1,21 @@
+@import '~style/colors';
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba($black, 0.5);
+  z-index: 999;
+}
+
+.content {
+  width: 550px;
+  max-width: 90%;
+}
+
+.overlay,
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

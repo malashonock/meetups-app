@@ -1,42 +1,45 @@
 import { PropsWithChildren } from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 
-import { MeetupCard } from 'components';
-import { mockFullUser, mockMeetup, mockTopic, mockUser } from 'model/__fakes__';
-import { useAuthStore, useUser } from 'hooks';
-import { Meetup } from 'stores';
+import { ConfirmDialogProvider, MeetupCard } from 'components';
+import { mockFullUser, mockMeetup, mockTopic } from 'model/__fakes__';
+import { useAuthStore, useLocale } from 'hooks';
+import { Locale, Meetup, RootStore } from 'stores';
 
-// Mock useAuthStore and useUser hooks
+// Mock hooks
 jest.mock('hooks', () => {
   return {
     ...jest.requireActual('hooks'),
     useAuthStore: jest.fn(),
-    useUser: jest.fn(),
+    useLocale: jest.fn(),
   };
 });
 const mockUseAuthStore = useAuthStore as jest.MockedFunction<
   typeof useAuthStore
 >;
-const mockUseUser = useUser as jest.MockedFunction<typeof useUser>;
+const mockUseLocale = useLocale as jest.MockedFunction<typeof useLocale>;
 
 const MockLoginRouter = ({ children }: PropsWithChildren): JSX.Element => (
-  <MemoryRouter initialEntries={['/meetups']}>
-    <Routes>
-      <Route path="/meetups">
-        <Route index element={children} />
-        <Route path=":id/edit" element={<h1>Edit meetup</h1>} />
-      </Route>
-    </Routes>
-  </MemoryRouter>
+  <ConfirmDialogProvider>
+    <MemoryRouter initialEntries={['/meetups']}>
+      <Routes>
+        <Route path="/meetups">
+          <Route index element={children} />
+          <Route path=":id/edit" element={<h1>Edit meetup</h1>} />
+        </Route>
+      </Routes>
+    </MemoryRouter>
+  </ConfirmDialogProvider>
 );
 
 beforeEach(() => {
-  mockUseAuthStore.mockReturnValue({
-    loggedUser: mockFullUser,
-  });
-  mockUseUser.mockReturnValue(mockUser);
+  const { authStore } = new RootStore();
+  authStore.loggedUser = mockFullUser;
+  mockUseAuthStore.mockReturnValue(authStore);
+
+  mockUseLocale.mockReturnValue([Locale.RU, jest.fn()]);
 });
 
 afterEach(() => {
@@ -104,9 +107,9 @@ describe('MeetupCard', () => {
 
   describe('edit & delete buttons', () => {
     it('should not be rendered unless user is logged in', () => {
-      mockUseAuthStore.mockReturnValue({
-        loggedUser: null,
-      });
+      const { authStore } = new RootStore();
+      authStore.loggedUser = null;
+      mockUseAuthStore.mockReturnValue(authStore);
 
       render(<MeetupCard meetup={mockMeetup} />, { wrapper: MockLoginRouter });
 
@@ -138,16 +141,17 @@ describe('MeetupCard', () => {
     });
   });
 
-  it('on delete button click, should call meetup.delete() method', () => {
+  it('on delete button click, should call meetup.delete() method', async () => {
     const spiedOnDelete = jest.spyOn(Meetup.prototype, 'delete');
-    jest.spyOn(window, 'confirm').mockImplementation(() => true);
 
     render(<MeetupCard meetup={mockMeetup} />, { wrapper: MockLoginRouter });
 
-    const deleteButton = screen.getByTestId('delete-button');
-    userEvent.click(deleteButton);
+    userEvent.click(screen.getByTestId('delete-button'));
+    userEvent.click(screen.getByTestId('confirm-button'));
 
-    expect(spiedOnDelete).toHaveBeenCalledTimes(1);
+    await waitFor(() => {
+      expect(spiedOnDelete).toHaveBeenCalledTimes(1);
+    });
   });
 
   it('on edit button click, should navigate to Edit meetup page', async () => {

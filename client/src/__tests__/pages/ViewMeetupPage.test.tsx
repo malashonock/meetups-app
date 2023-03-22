@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { ViewMeetupPage } from 'pages';
@@ -11,60 +11,64 @@ import {
   mockMeetup,
   mockFullUser,
 } from 'model/__fakes__';
-import { useAuthStore, useMeetup } from 'hooks';
-import { Meetup } from 'stores';
+import { useAuthStore, useLocale, useMeetup } from 'hooks';
+import { Locale, Meetup, RootStore } from 'stores';
+import { ConfirmDialogProvider } from 'components';
 
-// Mock useAuthStore & useMeetup hook
+// Mock hooks
 jest.mock('hooks', () => {
   return {
     ...jest.requireActual('hooks'),
     useAuthStore: jest.fn(),
     useMeetup: jest.fn(),
+    useLocale: jest.fn(),
   };
 });
 const mockUseAuthStore = useAuthStore as jest.MockedFunction<
   typeof useAuthStore
 >;
 const mockUseMeetup = useMeetup as jest.MockedFunction<typeof useMeetup>;
+const mockUseLocale = useLocale as jest.MockedFunction<typeof useLocale>;
 
 const mockMeetupApprove = jest.spyOn(Meetup.prototype, 'approve');
 const mockMeetupPublish = jest.spyOn(Meetup.prototype, 'publish');
 const mockMeetupDelete = jest.spyOn(Meetup.prototype, 'delete');
+
+beforeEach(() => {
+  mockUseLocale.mockReturnValue([Locale.RU, jest.fn()]);
+});
 
 afterEach(() => {
   jest.resetAllMocks();
 });
 
 const MockRouter = ({ children }: PropsWithChildren): JSX.Element => (
-  <MemoryRouter initialEntries={['/meetups', '/meetups/aaa']}>
-    <Routes>
-      <Route path="/meetups">
-        <Route index element={<h1>Meetups page</h1>} />
-        <Route path=":id">
-          <Route index element={children} />
-          <Route path="edit" element={<h1>Edit meetup</h1>} />
+  <ConfirmDialogProvider>
+    <MemoryRouter initialEntries={['/meetups', '/meetups/aaa']}>
+      <Routes>
+        <Route path="/meetups">
+          <Route index element={<h1>Meetups page</h1>} />
+          <Route path=":id">
+            <Route index element={children} />
+            <Route path="edit" element={<h1>Edit meetup</h1>} />
+          </Route>
         </Route>
-      </Route>
-    </Routes>
-  </MemoryRouter>
+      </Routes>
+    </MemoryRouter>
+  </ConfirmDialogProvider>
 );
 
 describe('ViewMeetupPage', () => {
   describe('before topic approval', () => {
     beforeEach(() => {
-      mockUseMeetup.mockReturnValue({
-        meetup: mockTopic,
-        isLoading: false,
-        isError: false,
-        errors: [],
-      });
+      mockUseMeetup.mockReturnValue(mockTopic);
     });
 
     describe('given no user is logged in', () => {
       beforeEach(() => {
-        mockUseAuthStore.mockReturnValue({
-          loggedUser: null,
-        });
+        const { authStore } = new RootStore();
+        authStore.loggedUser = null;
+        mockUseAuthStore.mockReturnValue(authStore);
       });
 
       it('should match snapshot', () => {
@@ -77,9 +81,9 @@ describe('ViewMeetupPage', () => {
 
     describe('given a user is logged in', () => {
       beforeEach(() => {
-        mockUseAuthStore.mockReturnValue({
-          loggedUser: mockFullUser,
-        });
+        const { authStore } = new RootStore();
+        authStore.loggedUser = mockFullUser;
+        mockUseAuthStore.mockReturnValue(authStore);
       });
 
       it('should match snapshot', () => {
@@ -90,11 +94,15 @@ describe('ViewMeetupPage', () => {
       });
 
       describe('Delete button', () => {
-        it('on click, should call meetup.delete() method', () => {
-          jest.spyOn(window, 'confirm').mockImplementation(() => true);
+        it('on click, should call meetup.delete() method', async () => {
           render(<ViewMeetupPage />, { wrapper: MockRouter });
+
           userEvent.click(screen.getByText('formButtons.delete'));
-          expect(mockMeetupDelete).toHaveBeenCalled();
+          userEvent.click(screen.getByTestId('confirm-button'));
+
+          await waitFor(() => {
+            expect(mockMeetupDelete).toHaveBeenCalled();
+          });
         });
       });
 
@@ -110,19 +118,14 @@ describe('ViewMeetupPage', () => {
 
   describe('after topic approval, but before publishing', () => {
     beforeEach(() => {
-      mockUseMeetup.mockReturnValue({
-        meetup: mockMeetupDraftFilled,
-        isLoading: false,
-        isError: false,
-        errors: [],
-      });
+      mockUseMeetup.mockReturnValue(mockMeetupDraftFilled);
     });
 
     describe('given no user is logged in', () => {
       beforeEach(() => {
-        mockUseAuthStore.mockReturnValue({
-          loggedUser: null,
-        });
+        const { authStore } = new RootStore();
+        authStore.loggedUser = null;
+        mockUseAuthStore.mockReturnValue(authStore);
       });
 
       it('should match snapshot', () => {
@@ -135,9 +138,9 @@ describe('ViewMeetupPage', () => {
 
     describe('given a user is logged in', () => {
       beforeEach(() => {
-        mockUseAuthStore.mockReturnValue({
-          loggedUser: mockFullUser,
-        });
+        const { authStore } = new RootStore();
+        authStore.loggedUser = mockFullUser;
+        mockUseAuthStore.mockReturnValue(authStore);
       });
 
       it('should match snapshot', () => {
@@ -158,12 +161,7 @@ describe('ViewMeetupPage', () => {
 
         describe('given time or location have not been filled out', () => {
           beforeEach(() => {
-            mockUseMeetup.mockReturnValue({
-              meetup: mockMeetupDraft,
-              isLoading: false,
-              isError: false,
-              errors: [],
-            });
+            mockUseMeetup.mockReturnValue(mockMeetupDraft);
           });
 
           it('should be disabled', () => {
@@ -184,19 +182,14 @@ describe('ViewMeetupPage', () => {
 
   describe('after approval & publishing', () => {
     beforeEach(() => {
-      mockUseMeetup.mockReturnValue({
-        meetup: mockMeetup,
-        isLoading: false,
-        isError: false,
-        errors: [],
-      });
+      mockUseMeetup.mockReturnValue(mockMeetup);
     });
 
     describe('given no user is logged in', () => {
       beforeEach(() => {
-        mockUseAuthStore.mockReturnValue({
-          loggedUser: null,
-        });
+        const { authStore } = new RootStore();
+        authStore.loggedUser = null;
+        mockUseAuthStore.mockReturnValue(authStore);
       });
 
       it('should match snapshot', () => {
@@ -209,9 +202,9 @@ describe('ViewMeetupPage', () => {
 
     describe('given a user is logged in', () => {
       beforeEach(() => {
-        mockUseAuthStore.mockReturnValue({
-          loggedUser: mockFullUser,
-        });
+        const { authStore } = new RootStore();
+        authStore.loggedUser = mockFullUser;
+        mockUseAuthStore.mockReturnValue(authStore);
       });
 
       it('should match snapshot', () => {
@@ -225,15 +218,11 @@ describe('ViewMeetupPage', () => {
 
   describe('regardless of meetup status', () => {
     beforeEach(() => {
-      mockUseAuthStore.mockReturnValue({
-        loggedUser: mockFullUser,
-      });
-      mockUseMeetup.mockReturnValue({
-        meetup: mockMeetup,
-        isLoading: false,
-        isError: false,
-        errors: [],
-      });
+      const { authStore } = new RootStore();
+      authStore.loggedUser = mockFullUser;
+      mockUseAuthStore.mockReturnValue(authStore);
+
+      mockUseMeetup.mockReturnValue(mockMeetup);
     });
 
     describe('Back button', () => {
@@ -245,26 +234,30 @@ describe('ViewMeetupPage', () => {
     });
 
     it('should render a Loading spinner if meetup is undefined', () => {
-      mockUseMeetup.mockReturnValue({});
+      mockUseMeetup.mockReturnValue(undefined);
       render(<ViewMeetupPage />, { wrapper: MockRouter });
       expect(screen.getByText('loadingText.meetup')).toBeInTheDocument();
     });
 
     it('should render a Loading spinner while meetup is loading', () => {
-      mockUseMeetup.mockReturnValue({
-        meetup: mockMeetup,
-        isLoading: true,
-      });
+      const { meetupStore } = new RootStore();
+      const mockLoadingMeetup = new Meetup(mockMeetup, meetupStore);
+      mockLoadingMeetup.isLoading = true;
+      mockUseMeetup.mockReturnValue(mockLoadingMeetup);
+
       render(<ViewMeetupPage />, { wrapper: MockRouter });
+
       expect(screen.getByText('loadingText.meetup')).toBeInTheDocument();
     });
 
     it('should render Not Found page if an error occurred while loading the meetup', () => {
-      mockUseMeetup.mockReturnValue({
-        meetup: mockMeetup,
-        isError: true,
-      });
+      const { meetupStore } = new RootStore();
+      const mockFailedMeetup = new Meetup(mockMeetup, meetupStore);
+      mockFailedMeetup.isError = true;
+      mockUseMeetup.mockReturnValue(mockFailedMeetup);
+
       render(<ViewMeetupPage />, { wrapper: MockRouter });
+
       expect(screen.getByText('notFoundPage.title')).toBeInTheDocument();
     });
   });

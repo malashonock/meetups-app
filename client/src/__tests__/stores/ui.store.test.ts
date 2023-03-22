@@ -18,7 +18,7 @@ describe('UiStore', () => {
     it('should make the returned store persistable', () => {
       const defaultOptions = {
         name: 'ui',
-        properties: ['locale', 'showOverlay'],
+        properties: ['locale'],
         storage: window.localStorage,
       };
       const uiStore = new UiStore(new RootStore());
@@ -31,11 +31,6 @@ describe('UiStore', () => {
     it('should initialize locale field to ru-RU', () => {
       const uiStore = new UiStore(new RootStore());
       expect(uiStore.locale).toBe(Locale.RU);
-    });
-
-    it('should initialize showOverlay field to false', () => {
-      const uiStore = new UiStore(new RootStore());
-      expect(uiStore.showOverlay).toBe(false);
     });
   });
 });

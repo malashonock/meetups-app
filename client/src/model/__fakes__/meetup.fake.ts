@@ -23,8 +23,8 @@ export const mockTopicFields: MeetupFields = {
 
 export const mockMeetupFields: MeetupFields = {
   ...mockTopicFields,
-  start: new Date(2023, 2, 15, 14, 0),
-  finish: new Date(2023, 2, 15, 15, 30),
+  start: new Date(2099, 2, 15, 14, 0),
+  finish: new Date(2099, 2, 15, 15, 30),
   place: 'room 123',
   image: mockImageWithUrl,
 };

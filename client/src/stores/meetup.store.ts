@@ -1,30 +1,59 @@
-import { makeAutoObservable, runInAction } from 'mobx';
+import {
+  action,
+  computed,
+  makeObservable,
+  observable,
+  runInAction,
+} from 'mobx';
+import i18n from 'i18n';
 
 import * as API from 'api';
-import { RootStore, User } from 'stores';
-import { FileWithUrl, ILoadable, Nullable, Optional } from 'types';
-import { IMeetup, MeetupFields, MeetupStatus } from 'model';
+import { FullUser, RootStore, User } from 'stores';
+import {
+  Alert,
+  AlertSeverity,
+  FileWithUrl,
+  Loadable,
+  Maybe,
+  Nullable,
+  Optional,
+} from 'types';
+import { AppError, IMeetup, MeetupFields, MeetupStatus } from 'model';
 import { isPast } from 'utils';
 
-export class MeetupStore implements ILoadable {
+export class MeetupStore extends Loadable {
   rootStore: RootStore;
   meetups: Meetup[];
   isInitialized: boolean;
 
-  isLoading: boolean;
-  isError: boolean;
-  errors: unknown[];
-
   constructor(rootStore: RootStore) {
+    super();
+
     this.rootStore = rootStore;
-    makeAutoObservable(this);
+    this.setupObservable();
 
     this.meetups = [];
     this.isInitialized = false;
 
-    this.isLoading = false;
-    this.isError = false;
-    this.errors = [];
+    this.onError = (error: AppError): void => {
+      const { problem, hint } = error;
+      this.rootStore.onAlert({
+        severity: AlertSeverity.Error,
+        title: problem,
+        text: hint,
+      });
+    };
+  }
+
+  setupObservable(): void {
+    makeObservable(this, {
+      rootStore: observable,
+      meetups: observable,
+      isInitialized: observable,
+      loadMeetups: action,
+      createMeetup: action,
+      onMeetupDeleted: action,
+    });
   }
 
   async loadMeetups(): Promise<void> {
@@ -32,9 +61,7 @@ export class MeetupStore implements ILoadable {
       return;
     }
 
-    try {
-      this.isLoading = true;
-
+    await this.tryLoad(async () => {
       const meetupsData: IMeetup[] = await API.getMeetups();
       runInAction(() => {
         this.meetups = meetupsData.map(
@@ -42,41 +69,43 @@ export class MeetupStore implements ILoadable {
         );
 
         this.isInitialized = true;
-
-        this.isLoading = false;
-        this.isError = false;
-        this.errors.length = 0;
       });
-    } catch (error) {
-      this.isLoading = false;
-      this.isError = true;
-      this.errors.push(error);
-    }
+    });
   }
 
   async createMeetup(meetupData: MeetupFields): Promise<Optional<Meetup>> {
-    try {
-      this.isLoading = true;
-
+    return await this.tryLoad(async () => {
       const newMeetupData = await API.createMeetup(meetupData);
       const newMeetup = new Meetup(newMeetupData, this);
 
       this.meetups.push(newMeetup);
 
-      this.isLoading = false;
-      this.isError = false;
-      this.errors.length = 0;
+      this.rootStore.onAlert(
+        new Alert(
+          {
+            severity: AlertSeverity.Success,
+            text: i18n.t('alerts.meetup.created'),
+          },
+          this.rootStore.uiStore,
+        ),
+      );
 
       return newMeetup;
-    } catch (error) {
-      this.isLoading = false;
-      this.isError = true;
-      this.errors.push(error);
-    }
+    });
   }
 
   onMeetupDeleted(deletedMeetup: Meetup): void {
     this.meetups.splice(this.meetups.indexOf(deletedMeetup), 1);
+
+    this.rootStore.onAlert(
+      new Alert(
+        {
+          severity: AlertSeverity.Success,
+          text: i18n.t('alerts.meetup.deleted'),
+        },
+        this.rootStore.uiStore,
+      ),
+    );
   }
 
   findMeetup(id: string): Optional<Meetup> {
@@ -90,12 +119,9 @@ export class MeetupStore implements ILoadable {
   }
 }
 
-export class Meetup implements IMeetup, ILoadable {
+export class Meetup extends Loadable implements IMeetup {
   meetupStore: Nullable<MeetupStore> = null;
   isInitialized: boolean;
-  isLoading: boolean;
-  isError: boolean;
-  errors: unknown[];
 
   id: string;
   status: MeetupStatus;
@@ -113,8 +139,10 @@ export class Meetup implements IMeetup, ILoadable {
   image: Nullable<FileWithUrl> = null;
 
   constructor(meetupData: IMeetup, meetupStore?: MeetupStore) {
+    super();
+    this.setupObservable();
+
     if (meetupStore) {
-      makeAutoObservable(this);
       this.meetupStore = meetupStore;
     }
 
@@ -143,9 +171,46 @@ export class Meetup implements IMeetup, ILoadable {
     this.participants = participantsData.map(User.factory);
 
     this.isInitialized = false;
-    this.isLoading = false;
-    this.isError = false;
-    this.errors = [];
+
+    this.onError = (error: AppError): void => {
+      if (this.meetupStore?.onError) {
+        this.meetupStore.onError(error);
+      }
+    };
+  }
+
+  setupObservable(): void {
+    makeObservable(this, {
+      meetupStore: observable,
+      isInitialized: observable,
+      id: observable,
+      status: observable,
+      modified: observable,
+      start: observable,
+      finish: observable,
+      place: observable,
+      subject: observable,
+      excerpt: observable,
+      author: observable,
+      speakers: observable,
+      votedUsers: observable,
+      participants: observable,
+      imageUrl: observable,
+      image: observable,
+      init: action,
+      update: action,
+      approve: action,
+      publish: action,
+      actor: computed,
+      canLoggedUserSupport: computed,
+      hasLoggedUserVoted: computed,
+      vote: action,
+      withdrawVote: action,
+      hasLoggedUserJoined: computed,
+      join: action,
+      cancelJoin: action,
+      delete: action,
+    });
   }
 
   async init(): Promise<Meetup> {
@@ -156,45 +221,35 @@ export class Meetup implements IMeetup, ILoadable {
       return this;
     }
 
-    try {
-      this.isLoading = true;
-
-      const image = await API.getStaticFile(this.imageUrl);
+    await this.tryLoad(async () => {
+      const image = await API.getStaticFile(this.imageUrl!);
       runInAction(() => {
         this.image = image;
         this.isInitialized = true;
-
-        this.isLoading = false;
-        this.isError = false;
-        this.errors.length = 0;
       });
-    } catch (error) {
-      this.isLoading = false;
-      this.isError = true;
-      this.errors.push(error);
-    } finally {
-      return this;
-    }
+    });
+
+    return this;
   }
 
   async update(meetupData: Partial<MeetupFields>): Promise<void> {
-    try {
-      this.isLoading = true;
-
+    await this.tryLoad(async () => {
       const updatedMeetupData = await API.updateMeetup(this.id, meetupData);
       runInAction(async () => {
         Object.assign(this, new Meetup(updatedMeetupData));
         await this.init();
       });
+    });
 
-      this.isLoading = false;
-      this.isError = false;
-      this.errors.length = 0;
-    } catch (error) {
-      this.isLoading = false;
-      this.isError = true;
-      this.errors.push(error);
-    }
+    this.meetupStore?.rootStore.onAlert(
+      new Alert(
+        {
+          severity: AlertSeverity.Success,
+          text: i18n.t('alerts.meetup.updated'),
+        },
+        this.meetupStore.rootStore.uiStore,
+      ),
+    );
   }
 
   async approve(): Promise<void> {
@@ -202,9 +257,7 @@ export class Meetup implements IMeetup, ILoadable {
       return;
     }
 
-    try {
-      this.isLoading = true;
-
+    await this.tryLoad(async () => {
       const updatedMeetupData = await API.updateMeetup(
         this.id,
         {},
@@ -213,15 +266,17 @@ export class Meetup implements IMeetup, ILoadable {
       runInAction(() => {
         Object.assign(this, new Meetup(updatedMeetupData));
       });
+    });
 
-      this.isLoading = false;
-      this.isError = false;
-      this.errors.length = 0;
-    } catch (error) {
-      this.isLoading = false;
-      this.isError = true;
-      this.errors.push(error);
-    }
+    this.meetupStore?.rootStore.onAlert(
+      new Alert(
+        {
+          severity: AlertSeverity.Success,
+          text: i18n.t('alerts.meetup.approved'),
+        },
+        this.meetupStore.rootStore.uiStore,
+      ),
+    );
   }
 
   async publish(): Promise<void> {
@@ -233,9 +288,7 @@ export class Meetup implements IMeetup, ILoadable {
       return;
     }
 
-    try {
-      this.isLoading = true;
-
+    await this.tryLoad(async () => {
       const updatedMeetupData = await API.updateMeetup(
         this.id,
         {},
@@ -244,24 +297,29 @@ export class Meetup implements IMeetup, ILoadable {
       runInAction(() => {
         Object.assign(this, new Meetup(updatedMeetupData));
       });
+    });
 
-      this.isLoading = false;
-      this.isError = false;
-      this.errors.length = 0;
-    } catch (error) {
-      this.isLoading = false;
-      this.isError = true;
-      this.errors.push(error);
-    }
+    this.meetupStore?.rootStore.onAlert(
+      new Alert(
+        {
+          severity: AlertSeverity.Success,
+          text: i18n.t('alerts.meetup.published'),
+        },
+        this.meetupStore.rootStore.uiStore,
+      ),
+    );
+  }
+
+  get actor(): Maybe<FullUser> {
+    return this.meetupStore?.rootStore.authStore.loggedUser;
   }
 
   get canLoggedUserSupport(): boolean {
-    const loggedUser = this.meetupStore?.rootStore.authStore.loggedUser;
     if (
-      loggedUser &&
-      loggedUser.id !== this.author.id &&
+      this.actor &&
+      this.actor.id !== this.author.id &&
       this.speakers.findIndex(
-        (speaker: User): boolean => speaker.id === loggedUser.id,
+        (speaker: User): boolean => speaker.id === this.actor!.id,
       ) === -1
     ) {
       return true;
@@ -271,14 +329,13 @@ export class Meetup implements IMeetup, ILoadable {
   }
 
   get hasLoggedUserVoted(): boolean {
-    const loggedUser = this.meetupStore?.rootStore.authStore.loggedUser;
-    if (!loggedUser) {
+    if (!this.actor) {
       return false;
     }
 
     return (
       this.votedUsers.findIndex(
-        (votedUser: User): boolean => votedUser.id === loggedUser.id,
+        (votedUser: User): boolean => votedUser.id === this.actor!.id,
       ) > -1
     );
   }
@@ -288,27 +345,26 @@ export class Meetup implements IMeetup, ILoadable {
       return;
     }
 
-    const loggedUser = this.meetupStore?.rootStore.authStore.loggedUser;
-    if (!loggedUser || !this.canLoggedUserSupport) {
+    if (!this.actor || !this.canLoggedUserSupport) {
       return;
     }
 
-    try {
-      this.isLoading = true;
-
+    await this.tryLoad(async () => {
       await API.voteForMeetup(this.id);
       runInAction(() => {
-        this.votedUsers.unshift(new User(loggedUser));
+        this.votedUsers.unshift(new User(this.actor!));
       });
+    });
 
-      this.isLoading = false;
-      this.isError = false;
-      this.errors.length = 0;
-    } catch (error) {
-      this.isLoading = false;
-      this.isError = true;
-      this.errors.push(error);
-    }
+    this.meetupStore?.rootStore.onAlert(
+      new Alert(
+        {
+          severity: AlertSeverity.Success,
+          text: i18n.t('alerts.meetup.votedFor'),
+        },
+        this.meetupStore.rootStore.uiStore,
+      ),
+    );
   }
 
   async withdrawVote(): Promise<void> {
@@ -316,40 +372,38 @@ export class Meetup implements IMeetup, ILoadable {
       return;
     }
 
-    const loggedUser = this.meetupStore?.rootStore.authStore.loggedUser;
-    if (!loggedUser) {
+    if (!this.actor) {
       return;
     }
 
-    try {
-      this.isLoading = true;
-
+    await this.tryLoad(async () => {
       await API.withdrawVoteForMeetup(this.id);
       runInAction(() => {
         this.votedUsers = this.votedUsers.filter(
-          (votedUser: User): boolean => votedUser.id !== loggedUser.id,
+          (votedUser: User): boolean => votedUser.id !== this.actor!.id,
         );
       });
+    });
 
-      this.isLoading = false;
-      this.isError = false;
-      this.errors.length = 0;
-    } catch (error) {
-      this.isLoading = false;
-      this.isError = true;
-      this.errors.push(error);
-    }
+    this.meetupStore?.rootStore.onAlert(
+      new Alert(
+        {
+          severity: AlertSeverity.Success,
+          text: i18n.t('alerts.meetup.unvotedFor'),
+        },
+        this.meetupStore.rootStore.uiStore,
+      ),
+    );
   }
 
   get hasLoggedUserJoined(): boolean {
-    const loggedUser = this.meetupStore?.rootStore.authStore.loggedUser;
-    if (!loggedUser) {
+    if (!this.actor) {
       return false;
     }
 
     return (
       this.participants.findIndex(
-        (participant: User): boolean => participant.id === loggedUser.id,
+        (participant: User): boolean => participant.id === this.actor!.id,
       ) > -1
     );
   }
@@ -362,27 +416,26 @@ export class Meetup implements IMeetup, ILoadable {
       return;
     }
 
-    const loggedUser = this.meetupStore?.rootStore.authStore.loggedUser;
-    if (!loggedUser || !this.canLoggedUserSupport) {
+    if (!this.actor || !this.canLoggedUserSupport) {
       return;
     }
 
-    try {
-      this.isLoading = true;
-
+    await this.tryLoad(async () => {
       await API.joinMeetup(this.id);
       runInAction(() => {
-        this.participants.unshift(new User(loggedUser));
+        this.participants.unshift(new User(this.actor!));
       });
+    });
 
-      this.isLoading = false;
-      this.isError = false;
-      this.errors.length = 0;
-    } catch (error) {
-      this.isLoading = false;
-      this.isError = true;
-      this.errors.push(error);
-    }
+    this.meetupStore?.rootStore.onAlert(
+      new Alert(
+        {
+          severity: AlertSeverity.Success,
+          text: i18n.t('alerts.meetup.joined'),
+        },
+        this.meetupStore.rootStore.uiStore,
+      ),
+    );
   }
 
   async cancelJoin(): Promise<void> {
@@ -393,48 +446,37 @@ export class Meetup implements IMeetup, ILoadable {
       return;
     }
 
-    const loggedUser = this.meetupStore?.rootStore.authStore.loggedUser;
-    if (!loggedUser) {
+    if (!this.actor) {
       return;
     }
 
-    try {
-      this.isLoading = true;
-
+    await this.tryLoad(async () => {
       await API.cancelJoinMeetup(this.id);
       runInAction(() => {
         this.participants = this.participants.filter(
-          (participant: User): boolean => participant.id !== loggedUser.id,
+          (participant: User): boolean => participant.id !== this.actor!.id,
         );
       });
+    });
 
-      this.isLoading = false;
-      this.isError = false;
-      this.errors.length = 0;
-    } catch (error) {
-      this.isLoading = false;
-      this.isError = true;
-      this.errors.push(error);
-    }
+    this.meetupStore?.rootStore.onAlert(
+      new Alert(
+        {
+          severity: AlertSeverity.Success,
+          text: i18n.t('alerts.meetup.unjoined'),
+        },
+        this.meetupStore.rootStore.uiStore,
+      ),
+    );
   }
 
   async delete(): Promise<void> {
-    try {
-      this.isLoading = true;
-
+    await this.tryLoad(async () => {
       await API.deleteMeetup(this.id);
       runInAction(() => {
         this.meetupStore?.onMeetupDeleted(this);
       });
-
-      this.isLoading = false;
-      this.isError = false;
-      this.errors.length = 0;
-    } catch (error) {
-      this.isLoading = false;
-      this.isError = true;
-      this.errors.push(error);
-    }
+    });
   }
 
   toJSON(): IMeetup {

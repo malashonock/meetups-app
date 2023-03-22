@@ -6,31 +6,33 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { NewsPage } from 'pages';
-import { useNewsStore } from 'hooks';
+import { useLocale, useNewsStore } from 'hooks';
 import { generateNews } from 'model/__fakes__';
+import { Locale, RootStore } from 'stores';
 
 const NEWS_COUNT = 12;
 
 const mockNews = generateNews(NEWS_COUNT);
 
-// Mock useNewsStore hook
+// Mock hooks
 jest.mock('hooks', () => {
   return {
     ...jest.requireActual('hooks'),
     useNewsStore: jest.fn(),
+    useLocale: jest.fn(),
   };
 });
 const mockUseNewsStore = useNewsStore as jest.MockedFunction<
   typeof useNewsStore
 >;
+const mockUseLocale = useLocale as jest.MockedFunction<typeof useLocale>;
 
 beforeEach(() => {
-  mockUseNewsStore.mockReturnValue({
-    news: mockNews,
-    isLoading: false,
-    isError: false,
-    errors: [],
-  });
+  const { newsStore } = new RootStore();
+  newsStore.news = mockNews;
+  mockUseNewsStore.mockReturnValue(newsStore);
+
+  mockUseLocale.mockReturnValue([Locale.RU, jest.fn()]);
 });
 
 afterEach(() => {
@@ -71,27 +73,23 @@ describe('NewsPage', () => {
     });
   });
 
-  it('should render a Loading spinner if news are undefined', () => {
-    mockUseNewsStore.mockReturnValue({});
-    render(<NewsPage />, { wrapper: MockRouter });
-    expect(screen.getByText('loadingText.news')).toBeInTheDocument();
-  });
-
   it('should render a Loading spinner while news are loading', () => {
-    mockUseNewsStore.mockReturnValue({
-      news: mockNews,
-      isLoading: true,
-    });
+    const { newsStore } = new RootStore();
+    newsStore.isLoading = true;
+    mockUseNewsStore.mockReturnValue(newsStore);
+
     render(<NewsPage />, { wrapper: MockRouter });
+
     expect(screen.getByText('loadingText.news')).toBeInTheDocument();
   });
 
   it('should render Not Found page if an error occurred while loading news', () => {
-    mockUseNewsStore.mockReturnValue({
-      news: mockNews,
-      isError: true,
-    });
+    const { newsStore } = new RootStore();
+    newsStore.isError = true;
+    mockUseNewsStore.mockReturnValue(newsStore);
+
     render(<NewsPage />, { wrapper: MockRouter });
+
     expect(screen.getByText('notFoundPage.title')).toBeInTheDocument();
   });
 });

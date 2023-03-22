@@ -93,15 +93,15 @@ const EditNewsForm = ({
 
 export const EditNewsPage = observer((): JSX.Element => {
   const { id } = useParams();
-  const { newsArticle, isLoading, isError } = useNewsArticle(id);
+  const newsArticle = useNewsArticle(id);
   const navigate = useNavigate();
   const { i18n, t } = useTranslation();
 
-  if (!newsArticle || isLoading) {
+  if (!newsArticle || newsArticle.isLoading) {
     return <LoadingSpinner text={t('loadingText.newsArticle')} />;
   }
 
-  if (isError) {
+  if (newsArticle?.isError) {
     return <NotFoundPage />;
   }
 

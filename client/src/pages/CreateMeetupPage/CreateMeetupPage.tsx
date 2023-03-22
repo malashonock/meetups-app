@@ -9,6 +9,7 @@ import { StepConfig, Stepper, StepperContext } from 'components';
 import { CreateMeetupOptionalFields } from './CreateMeetupOptionalFields/CreateMeetupOptionalFields';
 import { CreateMeetupRequiredFields } from './CreateMeetupRequiredFields/CreateMeetupRequiredFields';
 import { MeetupFields } from 'model';
+import { User } from 'stores';
 import { useAuthStore, useMeetupStore } from 'hooks';
 import {
   meetupRequiredFieldsSchema,
@@ -34,14 +35,14 @@ const createMeetupSteps = (): StepConfig<FormikProps<MeetupFields>>[] => [
 
 export const CreateMeetupPage = observer((): JSX.Element => {
   const { loggedUser } = useAuthStore();
-  const { meetupStore } = useMeetupStore();
+  const meetupStore = useMeetupStore();
   const [finished, setFinished] = useState(false);
   const navigate = useNavigate();
   const { i18n } = useTranslation();
 
   const initialValues: MeetupFields = {
-    author: loggedUser ?? null,
-    speakers: loggedUser ? [loggedUser] : [],
+    author: loggedUser ? new User(loggedUser) : null,
+    speakers: loggedUser ? [new User(loggedUser)] : [],
     subject: '',
     excerpt: '',
     place: '',
@@ -53,7 +54,7 @@ export const CreateMeetupPage = observer((): JSX.Element => {
   const handleSubmit = async (newMeetupData: MeetupFields): Promise<void> => {
     if (finished) {
       (async () => {
-        const newMeetup = await meetupStore?.createMeetup(newMeetupData);
+        const newMeetup = await meetupStore.createMeetup(newMeetupData);
         navigate(newMeetup ? `/meetups/${newMeetup.id}` : '/meetups');
       })();
     }

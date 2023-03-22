@@ -107,7 +107,7 @@
     ],
     "moduleNameMapper": {
       "axios": "axios/dist/node/axios.cjs",
-      "react-i18next": "<rootDir>/__mocks__/react-i18next.tsx"
+      "react-i18next": "<rootDir>/src/i18n/__mocks__/react-i18next.tsx"
     }
   },
   "browserslist": {

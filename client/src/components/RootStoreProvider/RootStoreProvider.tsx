@@ -1,16 +1,14 @@
-import { createContext, PropsWithChildren, useEffect, useState } from 'react';
+import { createContext, PropsWithChildren, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import { RootStore } from 'stores';
-import { Optional } from 'types';
 import { useTranslation } from 'react-i18next';
 
-export const RootContext = createContext<Optional<RootStore>>(undefined);
+const rootStore = new RootStore();
+export const RootContext = createContext<RootStore>(rootStore);
 
 export const RootStoreProvider = observer(
   ({ children }: PropsWithChildren): JSX.Element => {
-    const [rootStore] = useState((): RootStore => new RootStore());
-
     // Initialize root store
     useEffect((): void => {
       (async (): Promise<void> => {

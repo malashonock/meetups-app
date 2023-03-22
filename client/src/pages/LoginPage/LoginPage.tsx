@@ -73,8 +73,8 @@ const LoginForm = ({
 
 export const LoginPage = observer((): JSX.Element => {
   const navigate = useNavigate();
-  const { authStore } = useAuthStore();
-  const { i18n, t } = useTranslation();
+  const authStore = useAuthStore();
+  const { i18n } = useTranslation();
 
   const initialValues: Credentials = {
     username: '',
@@ -85,9 +85,11 @@ export const LoginPage = observer((): JSX.Element => {
     credentials: Credentials,
     { setSubmitting }: FormikHelpers<Credentials>,
   ): Promise<void> => {
-    await authStore?.logIn(credentials);
+    await authStore.logIn(credentials);
     setSubmitting(false);
-    navigate('/meetups');
+    if (!authStore.isError) {
+      navigate('/meetups');
+    }
   };
 
   return (

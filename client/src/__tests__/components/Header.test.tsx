@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import { Header } from 'components';
-import { AuthStore, RootStore, UserStore } from 'stores';
+import { RootStore } from 'stores';
 import { mockFullUser as mockedLoggedUser } from 'model/__fakes__';
 import { useAuthStore } from 'hooks';
 
@@ -20,9 +20,9 @@ const mockUseAuthStore = useAuthStore as jest.MockedFunction<
 >;
 
 beforeEach(() => {
-  mockUseAuthStore.mockReturnValue({
-    loggedUser: null,
-  });
+  const { authStore } = new RootStore();
+  authStore.loggedUser = null;
+  mockUseAuthStore.mockReturnValue(authStore);
 });
 
 const MockLoginRouter = ({ children }: PropsWithChildren): JSX.Element => (
@@ -36,6 +36,15 @@ const MockLoginRouter = ({ children }: PropsWithChildren): JSX.Element => (
     </Routes>
   </MemoryRouter>
 );
+
+// Mock LanguageSelect
+jest.mock('components/LanguageSelect/LanguageSelect', () => {
+  return {
+    LanguageSelect: (): JSX.Element => {
+      return <div data-testid="language-select" />;
+    },
+  };
+});
 
 describe('Header', () => {
   it('renders logo with link to homepage', async () => {
@@ -90,9 +99,9 @@ describe('Header', () => {
 
   describe('if no user is authenticated', () => {
     beforeEach(() => {
-      mockUseAuthStore.mockReturnValue({
-        loggedUser: null,
-      });
+      const { authStore } = new RootStore();
+      authStore.loggedUser = null;
+      mockUseAuthStore.mockReturnValue(authStore);
     });
 
     it('no user preview is rendered', async () => {
@@ -105,18 +114,9 @@ describe('Header', () => {
 
   describe('if a user is authenticated', () => {
     beforeEach(() => {
-      mockUseAuthStore.mockReturnValue({
-        loggedUser: mockedLoggedUser,
-        authStore: {
-          rootStore: new RootStore(),
-          userStore: new UserStore(new AuthStore(new RootStore())),
-          loggedUser: mockedLoggedUser,
-          logIn: jest.fn(),
-          logOut: jest.fn(),
-          onLoginChanged: jest.fn(),
-          toJSON: jest.fn(),
-        },
-      });
+      const { authStore } = new RootStore();
+      authStore.loggedUser = mockedLoggedUser;
+      mockUseAuthStore.mockReturnValue(authStore);
     });
 
     it('renders the user preview', async () => {

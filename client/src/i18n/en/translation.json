@@ -198,5 +198,51 @@
     "meetup": "Loading meetup",
     "news": "Loading news",
     "newsArticle": "Loading news article"
+  },
+  "alerts": {
+    "networkError": {
+      "problem": "Network error",
+      "hint": "Check connection with the server"
+    },
+    "notAuthenticatedError": {
+      "problem": "Login failed",
+      "hint": "Check your credentials and retry"
+    },
+    "notAuthorizedError": {
+      "problem": "Access denied",
+      "hint": "You need admin rights to perform this operation"
+    },
+    "notFoundError": {
+      "problem": "Resource not found",
+      "hint": "Check the link address and retry"
+    },
+    "serverError": {
+      "problem": "Server error",
+      "hint": "Server failed to handle your request"
+    },
+    "unknownError": {
+      "problem": "Unknown error",
+      "hint": "File a ticket to the tech support"
+    },
+    "user": {
+      "loggedIn": "You have logged in successfully",
+      "loggedOut": "You have logged out of the system"
+    },
+    "meetup": {
+      "created": "Meetup has been created",
+      "deleted": "Meetup has been deleted",
+      "updated": "Meetup has been updated",
+      "approved": "Meetup has been approved",
+      "published": "Meetup has been published",
+      "votedFor": "Your vote has been counted",
+      "unvotedFor": "Your vote has been revoked",
+      "joined": "Thanks for joining the meetup!",
+      "unjoined": "Sorry to hear you won't attend :("
+    },
+    "news": {
+      "created": "News article has been created",
+      "deleted": "News article has been deleted",
+      "updated": "News article has been updated"
+    }
   }
 }

@@ -1,29 +1,51 @@
-import { makeAutoObservable, runInAction } from 'mobx';
+import { action, makeObservable, observable, runInAction } from 'mobx';
+import i18n from 'i18n';
 
 import * as API from 'api';
-import { FileWithUrl, ILoadable, Nullable, Optional } from 'types';
-import { INews, NewsFields } from 'model';
-import { RootStore } from './root.store';
+import {
+  Alert,
+  AlertSeverity,
+  FileWithUrl,
+  Loadable,
+  Nullable,
+  Optional,
+} from 'types';
+import { AppError, INews, NewsFields } from 'model';
+import { RootStore } from 'stores';
 
-export class NewsStore implements ILoadable {
+export class NewsStore extends Loadable {
   rootStore: RootStore;
   news: News[];
   isInitialized: boolean;
 
-  isLoading: boolean;
-  isError: boolean;
-  errors: unknown[];
-
   constructor(rootStore: RootStore) {
+    super();
+    this.setupObservable();
+
     this.rootStore = rootStore;
-    makeAutoObservable(this);
 
     this.news = [];
     this.isInitialized = false;
 
-    this.isLoading = false;
-    this.isError = false;
-    this.errors = [];
+    this.onError = (error: AppError): void => {
+      const { problem, hint } = error;
+      this.rootStore.onAlert({
+        severity: AlertSeverity.Error,
+        title: problem,
+        text: hint,
+      });
+    };
+  }
+
+  setupObservable(): void {
+    makeObservable(this, {
+      rootStore: observable,
+      news: observable,
+      isInitialized: observable,
+      loadNews: action,
+      createNewsArticle: action,
+      onNewsArticleDeleted: action,
+    });
   }
 
   async loadNews(): Promise<void> {
@@ -31,9 +53,7 @@ export class NewsStore implements ILoadable {
       return;
     }
 
-    try {
-      this.isLoading = true;
-
+    await this.tryLoad(async () => {
       const newsData: INews[] = await API.getNews();
       runInAction(() => {
         this.news = newsData.map(
@@ -41,43 +61,45 @@ export class NewsStore implements ILoadable {
         );
 
         this.isInitialized = true;
-
-        this.isLoading = false;
-        this.isError = false;
-        this.errors.length = 0;
       });
-    } catch (error) {
-      this.isLoading = false;
-      this.isError = true;
-      this.errors.push(error);
-    }
+    });
   }
 
   async createNewsArticle(
     newsArticleData: NewsFields,
   ): Promise<Optional<News>> {
-    try {
-      this.isLoading = true;
-
+    return await this.tryLoad(async () => {
       const newArticleData = await API.createNewsArticle(newsArticleData);
       const newArticle = new News(newArticleData, this);
 
       this.news.push(newArticle);
 
-      this.isLoading = false;
-      this.isError = false;
-      this.errors.length = 0;
+      this.rootStore.onAlert(
+        new Alert(
+          {
+            severity: AlertSeverity.Success,
+            text: i18n.t('alerts.news.created'),
+          },
+          this.rootStore.uiStore,
+        ),
+      );
 
       return newArticle;
-    } catch (error) {
-      this.isLoading = false;
-      this.isError = true;
-      this.errors.push(error);
-    }
+    });
   }
 
   onNewsArticleDeleted(deletedArticle: News): void {
     this.news.splice(this.news.indexOf(deletedArticle), 1);
+
+    this.rootStore.onAlert(
+      new Alert(
+        {
+          severity: AlertSeverity.Success,
+          text: i18n.t('alerts.news.deleted'),
+        },
+        this.rootStore.uiStore,
+      ),
+    );
   }
 
   findNewsArticle(id: string): Optional<News> {
@@ -91,11 +113,8 @@ export class NewsStore implements ILoadable {
   }
 }
 
-export class News implements INews, ILoadable {
+export class News extends Loadable implements INews {
   newsStore: Nullable<NewsStore> = null;
-  isLoading: boolean;
-  isError: boolean;
-  errors: unknown[];
 
   id: string;
   publicationDate: Date;
@@ -104,8 +123,10 @@ export class News implements INews, ILoadable {
   image: Nullable<FileWithUrl>;
 
   constructor(newsArticleData: INews, newsStore?: NewsStore) {
+    super();
+    this.setupObservable();
+
     if (newsStore) {
-      makeAutoObservable(this);
       this.newsStore = newsStore;
     }
 
@@ -117,15 +138,28 @@ export class News implements INews, ILoadable {
       image: this.image,
     } = newsArticleData);
 
-    this.isLoading = false;
-    this.isError = false;
-    this.errors = [];
+    this.onError = (error: AppError): void => {
+      if (this.newsStore?.onError) {
+        this.newsStore.onError(error);
+      }
+    };
+  }
+
+  setupObservable(): void {
+    makeObservable(this, {
+      newsStore: observable,
+      id: observable,
+      publicationDate: observable,
+      title: observable,
+      text: observable,
+      image: observable,
+      update: action,
+      delete: action,
+    });
   }
 
   async update(newsArticleData: Partial<NewsFields>): Promise<void> {
-    try {
-      this.isLoading = true;
-
+    await this.tryLoad(async () => {
       const updatedNewsData = await API.updateNewsArticle(
         this.id,
         newsArticleData,
@@ -133,34 +167,26 @@ export class News implements INews, ILoadable {
       runInAction(() => {
         Object.assign(this, updatedNewsData);
       });
+    });
 
-      this.isLoading = false;
-      this.isError = false;
-      this.errors.length = 0;
-    } catch (error) {
-      this.isLoading = false;
-      this.isError = true;
-      this.errors.push(error);
-    }
+    this.newsStore?.rootStore.onAlert(
+      new Alert(
+        {
+          severity: AlertSeverity.Success,
+          text: i18n.t('alerts.news.updated'),
+        },
+        this.newsStore.rootStore.uiStore,
+      ),
+    );
   }
 
   async delete(): Promise<void> {
-    try {
-      this.isLoading = true;
-
+    await this.tryLoad(async () => {
       await API.deleteNewsArticle(this.id);
       runInAction(() => {
         this.newsStore?.onNewsArticleDeleted(this);
       });
-
-      this.isLoading = false;
-      this.isError = false;
-      this.errors.length = 0;
-    } catch (error) {
-      this.isLoading = false;
-      this.isError = true;
-      this.errors.push(error);
-    }
+    });
   }
 
   toJSON(): INews {

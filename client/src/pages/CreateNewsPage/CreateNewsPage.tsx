@@ -89,7 +89,7 @@ const CreateNewsForm = ({
 };
 
 export const CreateNewsPage = observer((): JSX.Element => {
-  const { newsStore } = useNewsStore();
+  const newsStore = useNewsStore();
   const navigate = useNavigate();
   const { i18n } = useTranslation();
 
@@ -100,7 +100,7 @@ export const CreateNewsPage = observer((): JSX.Element => {
   };
 
   const handleSubmit = async (newArticleData: NewsFields): Promise<void> => {
-    await newsStore?.createNewsArticle(newArticleData);
+    await newsStore.createNewsArticle(newArticleData);
     navigate('/news');
   };
 

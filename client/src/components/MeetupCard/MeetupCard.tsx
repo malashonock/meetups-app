@@ -16,7 +16,7 @@ import {
 import { isPast, parseDate } from 'utils';
 import { MeetupStatus } from 'model';
 import { Meetup } from 'stores';
-import { useAuthStore, useLocale } from 'hooks';
+import { useAuthStore, useConfirmDialog, useLocale } from 'hooks';
 
 import styles from './MeetupCard.module.scss';
 
@@ -39,6 +39,7 @@ export const MeetupCard = observer(
     const { loggedUser } = useAuthStore();
     const [locale] = useLocale();
     const { i18n, t } = useTranslation();
+    const confirm = useConfirmDialog();
 
     const navigate = useNavigate();
 
@@ -52,11 +53,14 @@ export const MeetupCard = observer(
     ): Promise<void> => {
       event.preventDefault();
 
-      if (!window.confirm(t('meetupCard.deletePrompt') || '')) {
-        return;
-      }
+      const deleteConfirmed = await confirm({
+        prompt: t('meetupCard.deletePrompt') || '',
+        confirmBtnLabel: t('formButtons.delete') || 'Delete',
+      });
 
-      await meetup.delete();
+      if (deleteConfirmed) {
+        await meetup.delete();
+      }
     };
 
     let formattedWeekdayShort: string | undefined;

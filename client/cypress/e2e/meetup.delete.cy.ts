@@ -10,6 +10,7 @@ describe('Delete meetup', () => {
         }).within(() => {
           cy.get('[data-testid="delete-button"]').click();
         });
+        cy.get('[data-testid="confirm-button"]').click();
 
         // Should not redirect anywhere
         cy.url().should('contain', '/meetups/topics');
@@ -27,6 +28,7 @@ describe('Delete meetup', () => {
         cy.get('#btn-delete', {
           timeout: 10_000,
         }).click();
+        cy.get('[data-testid="confirm-button"]').click();
 
         // Should redirect to topics
         cy.url().should('contain', '/meetups/topics');

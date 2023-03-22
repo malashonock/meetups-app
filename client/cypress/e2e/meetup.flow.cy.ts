@@ -7,8 +7,9 @@ describe('Create meetup', () => {
         cy.visit(`/meetups/${createdTopicId}`);
 
         cy.get('#btn-approve', { timeout: 10_000 })
-          .should('be.enabled')
-          .click();
+          .as('approveBtn')
+          .should('be.enabled');
+        cy.get('@approveBtn').click();
 
         // Should redirect to edit topic page
         cy.url().should('contain', `/meetups/${createdTopicId}/edit`);
