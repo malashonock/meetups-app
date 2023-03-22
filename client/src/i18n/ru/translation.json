@@ -191,5 +191,12 @@
     "Kb": "{{fileSize}} Кб",
     "bytes": "{{fileSize}} байт"
   },
-  "logoAlt": "Логотип"
+  "logoAlt": "Логотип",
+  "loadingText": {
+    "default": "Загрузка",
+    "meetups": "Загрузка митапов",
+    "meetup": "Загрузка митапа",
+    "news": "Загрузка новостей",
+    "newsArticle": "Загрузка новости"
+  }
 }

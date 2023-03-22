@@ -27,6 +27,9 @@ const mockUseNewsStore = useNewsStore as jest.MockedFunction<
 beforeEach(() => {
   mockUseNewsStore.mockReturnValue({
     news: mockNews,
+    isLoading: false,
+    isError: false,
+    errors: [],
   });
 });
 
@@ -66,5 +69,20 @@ describe('NewsPage', () => {
       userEvent.click(screen.getByText('newsPage.createNewsBtn'));
       expect(screen.getByText('Create news article')).toBeInTheDocument();
     });
+  });
+
+  it('should render Not Found page if an error occurred while loading news', () => {
+    mockUseNewsStore.mockReturnValue({});
+    render(<NewsPage />, { wrapper: MockRouter });
+    expect(screen.getByText('notFoundPage.title')).toBeInTheDocument();
+  });
+
+  it('should render a Loading spinner while news are loading', () => {
+    mockUseNewsStore.mockReturnValue({
+      news: mockNews,
+      isLoading: true,
+    });
+    render(<NewsPage />, { wrapper: MockRouter });
+    expect(screen.getByText('loadingText.news')).toBeInTheDocument();
   });
 });

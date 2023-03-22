@@ -52,6 +52,9 @@ const mockUseMeetupStore = useMeetupStore as jest.MockedFunction<
 beforeEach(() => {
   mockUseMeetupStore.mockReturnValue({
     meetups: mockMeetups,
+    isLoading: false,
+    isError: false,
+    errors: [],
   });
 });
 
@@ -154,6 +157,25 @@ describe('MeetupTabContent', () => {
       (meetup) => meetup.subject,
     );
     expect(renderedSubjects).toEqual(expectedSubjects);
+  });
+
+  it('should render Not Found page if an error occurred while loading news', () => {
+    mockUseMeetupStore.mockReturnValue({});
+    render(<MeetupTabContent variant={MeetupCardVariant.Upcoming} />, {
+      wrapper: MockRouter,
+    });
+    expect(screen.getByText('notFoundPage.title')).toBeInTheDocument();
+  });
+
+  it('should render a Loading spinner while news are loading', () => {
+    mockUseMeetupStore.mockReturnValue({
+      meetups: mockMeetups,
+      isLoading: true,
+    });
+    render(<MeetupTabContent variant={MeetupCardVariant.Upcoming} />, {
+      wrapper: MockRouter,
+    });
+    expect(screen.getByText('loadingText.meetups')).toBeInTheDocument();
   });
 });
 

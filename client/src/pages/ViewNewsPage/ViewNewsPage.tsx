@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import {
   Button,
   ButtonVariant,
+  LoadingSpinner,
   Typography,
   TypographyComponent,
 } from 'components';
@@ -19,14 +20,18 @@ export const ViewNewsPage = observer(() => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { pathname } = useLocation();
-  const newsArticle = useNewsArticle(id);
+  const { newsArticle, isLoading, isError } = useNewsArticle(id);
   const { t } = useTranslation();
   const { loggedUser } = useAuthStore();
 
   const handleBack = (): void => navigate(-1);
   const handleEdit = (): void => navigate(pathname + '/edit');
 
-  if (!newsArticle) {
+  if (!newsArticle || isLoading) {
+    return <LoadingSpinner text={t('loadingText.newsArticle')} />;
+  }
+
+  if (isError) {
     return <NotFoundPage />;
   }
 

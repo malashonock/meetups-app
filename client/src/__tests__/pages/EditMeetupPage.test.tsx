@@ -48,7 +48,12 @@ beforeEach(() => {
   mockUseUserStore.mockReturnValue({
     users: [mockUser, mockUser2],
   });
-  mockUseMeetup.mockReturnValue(mockMeetup);
+  mockUseMeetup.mockReturnValue({
+    meetup: mockMeetup,
+    isLoading: false,
+    isError: false,
+    errors: [],
+  });
 });
 
 afterEach(() => {
@@ -247,11 +252,27 @@ describe('EditMeetupPage', () => {
     expect(screen.getByText('View meetup')).toBeInTheDocument();
   });
 
-  it('should render a Not Found page if useMeetup returns undefined', () => {
-    mockUseMeetup.mockReturnValue(undefined);
-
+  it('should render a Loading spinner if meetup is undefined', () => {
+    mockUseMeetup.mockReturnValue({});
     render(<EditMeetupPage />, { wrapper: MockRouter });
+    expect(screen.getByText('loadingText.meetup')).toBeInTheDocument();
+  });
 
+  it('should render a Loading spinner while meetup is loading', () => {
+    mockUseMeetup.mockReturnValue({
+      meetup: mockMeetup,
+      isLoading: true,
+    });
+    render(<EditMeetupPage />, { wrapper: MockRouter });
+    expect(screen.getByText('loadingText.meetup')).toBeInTheDocument();
+  });
+
+  it('should render Not Found page if an error occurred while loading the meetup', () => {
+    mockUseMeetup.mockReturnValue({
+      meetup: mockMeetup,
+      isError: true,
+    });
+    render(<EditMeetupPage />, { wrapper: MockRouter });
     expect(screen.getByText('notFoundPage.title')).toBeInTheDocument();
   });
 });

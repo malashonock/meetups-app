@@ -10,6 +10,7 @@ import {
   DateTimePicker,
   ImagePreviewMode,
   ImageUploader,
+  LoadingSpinner,
   SelectField,
   SelectOption,
   TextField,
@@ -162,10 +163,14 @@ const EditMeetupForm = ({
 
 export const EditMeetupPage = observer((): JSX.Element => {
   const { id } = useParams();
-  const meetup = useMeetup(id);
-  const { i18n } = useTranslation();
+  const { meetup, isLoading, isError } = useMeetup(id);
+  const { i18n, t } = useTranslation();
 
-  if (!meetup) {
+  if (!meetup || isLoading) {
+    return <LoadingSpinner text={t('loadingText.meetup')} />;
+  }
+
+  if (isError) {
     return <NotFoundPage />;
   }
 

@@ -1,13 +1,16 @@
 @import '~style/typography';
 
 .meetupsTab {
-  margin-top: 36px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
   display: flex;
   flex-direction: column;
   row-gap: 25px;
 }
 
 .wrapper {
+  margin-top: 36px;
   display: flex;
   justify-content: space-between;
 }
@@ -20,6 +23,7 @@
 }
 
 .meetups {
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   row-gap: 20px;

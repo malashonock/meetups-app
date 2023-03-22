@@ -9,6 +9,7 @@ import {
   ButtonVariant,
   ImagePreviewMode,
   ImageUploader,
+  LoadingSpinner,
   TextField,
   Typography,
   TypographyComponent,
@@ -92,11 +93,15 @@ const EditNewsForm = ({
 
 export const EditNewsPage = observer((): JSX.Element => {
   const { id } = useParams();
-  const newsArticle = useNewsArticle(id);
+  const { newsArticle, isLoading, isError } = useNewsArticle(id);
   const navigate = useNavigate();
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
 
-  if (!newsArticle) {
+  if (!newsArticle || isLoading) {
+    return <LoadingSpinner text={t('loadingText.newsArticle')} />;
+  }
+
+  if (isError) {
     return <NotFoundPage />;
   }
 

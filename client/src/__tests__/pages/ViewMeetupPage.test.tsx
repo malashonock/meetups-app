@@ -52,7 +52,12 @@ const MockRouter = ({ children }: PropsWithChildren): JSX.Element => (
 describe('ViewMeetupPage', () => {
   describe('before topic approval', () => {
     beforeEach(() => {
-      mockUseMeetup.mockReturnValue(mockTopic);
+      mockUseMeetup.mockReturnValue({
+        meetup: mockTopic,
+        isLoading: false,
+        isError: false,
+        errors: [],
+      });
     });
 
     describe('given no user is logged in', () => {
@@ -105,7 +110,12 @@ describe('ViewMeetupPage', () => {
 
   describe('after topic approval, but before publishing', () => {
     beforeEach(() => {
-      mockUseMeetup.mockReturnValue(mockMeetupDraftFilled);
+      mockUseMeetup.mockReturnValue({
+        meetup: mockMeetupDraftFilled,
+        isLoading: false,
+        isError: false,
+        errors: [],
+      });
     });
 
     describe('given no user is logged in', () => {
@@ -148,7 +158,12 @@ describe('ViewMeetupPage', () => {
 
         describe('given time or location have not been filled out', () => {
           beforeEach(() => {
-            mockUseMeetup.mockReturnValue(mockMeetupDraft);
+            mockUseMeetup.mockReturnValue({
+              meetup: mockMeetupDraft,
+              isLoading: false,
+              isError: false,
+              errors: [],
+            });
           });
 
           it('should be disabled', () => {
@@ -169,7 +184,12 @@ describe('ViewMeetupPage', () => {
 
   describe('after approval & publishing', () => {
     beforeEach(() => {
-      mockUseMeetup.mockReturnValue(mockMeetup);
+      mockUseMeetup.mockReturnValue({
+        meetup: mockMeetup,
+        isLoading: false,
+        isError: false,
+        errors: [],
+      });
     });
 
     describe('given no user is logged in', () => {
@@ -208,7 +228,12 @@ describe('ViewMeetupPage', () => {
       mockUseAuthStore.mockReturnValue({
         loggedUser: mockUser,
       });
-      mockUseMeetup.mockReturnValue(mockMeetup);
+      mockUseMeetup.mockReturnValue({
+        meetup: mockMeetup,
+        isLoading: false,
+        isError: false,
+        errors: [],
+      });
     });
 
     describe('Back button', () => {
@@ -218,17 +243,27 @@ describe('ViewMeetupPage', () => {
         expect(screen.getByText('Meetups page')).toBeInTheDocument();
       });
     });
-  });
 
-  describe('given useMeetup returns undefined', () => {
-    beforeEach(() => {
-      mockUseAuthStore.mockReturnValue({
-        loggedUser: mockUser,
-      });
-      mockUseMeetup.mockReturnValue(undefined);
+    it('should render a Loading spinner if meetup is undefined', () => {
+      mockUseMeetup.mockReturnValue({});
+      render(<ViewMeetupPage />, { wrapper: MockRouter });
+      expect(screen.getByText('loadingText.meetup')).toBeInTheDocument();
     });
 
-    it('should render a Not Found page', () => {
+    it('should render a Loading spinner while meetup is loading', () => {
+      mockUseMeetup.mockReturnValue({
+        meetup: mockMeetup,
+        isLoading: true,
+      });
+      render(<ViewMeetupPage />, { wrapper: MockRouter });
+      expect(screen.getByText('loadingText.meetup')).toBeInTheDocument();
+    });
+
+    it('should render Not Found page if an error occurred while loading the meetup', () => {
+      mockUseMeetup.mockReturnValue({
+        meetup: mockMeetup,
+        isError: true,
+      });
       render(<ViewMeetupPage />, { wrapper: MockRouter });
       expect(screen.getByText('notFoundPage.title')).toBeInTheDocument();
     });
