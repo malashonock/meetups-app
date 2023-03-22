@@ -2,6 +2,7 @@ import React, { PropsWithChildren, useLayoutEffect, useState } from 'react';
 import classNames from 'classnames';
 
 import { Typography, TypographyComponent } from 'components';
+import { Nullable } from 'types';
 
 import styles from './Tooltip.module.scss';
 
@@ -25,7 +26,7 @@ interface TooltipProps {
   variant?: TooltipVariant;
   position?: TooltipPosition;
   title: string;
-  description: string;
+  description?: Nullable<string>;
 }
 
 const resetOffsetX = (): void => {
@@ -81,12 +82,14 @@ export const Tooltip = ({
         >
           {title}
         </Typography>
-        <Typography
-          component={TypographyComponent.Paragraph}
-          className={styles.description}
-        >
-          {description}
-        </Typography>
+        {!!description && (
+          <Typography
+            component={TypographyComponent.Paragraph}
+            className={styles.description}
+          >
+            {description}
+          </Typography>
+        )}
       </div>
     </div>
   );

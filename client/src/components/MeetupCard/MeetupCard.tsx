@@ -121,7 +121,7 @@ export const MeetupCard = observer(
               )}
             </ul>
           )}
-          {loggedUser ? (
+          {loggedUser?.isAdmin ? (
             <div className={styles.controls}>
               <DeleteButton onClick={handleDeleteMeetup} />
               {status !== MeetupStatus.REQUEST && (

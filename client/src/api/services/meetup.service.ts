@@ -1,5 +1,5 @@
 import { httpClient } from 'api';
-import { MeetupDto, MeetupFields, MeetupStatus, IMeetup } from 'model';
+import { MeetupDto, MeetupFields, MeetupStatus, IMeetup, IUser } from 'model';
 
 export const getMeetups = async (): Promise<IMeetup[]> => {
   const { data: meetupsData } = await httpClient.get<MeetupDto[]>('/meetups');
@@ -43,6 +43,50 @@ export const updateMeetup = async (
 
 export const deleteMeetup = async (id: string): Promise<void> => {
   await httpClient.delete(`/meetups/${id}`);
+};
+
+export const getVotedUsers = async (meetupId: string): Promise<IUser[]> => {
+  const { data: votedUsers } = await httpClient.get<IUser[]>(
+    `/meetups/${meetupId}/votedusers`,
+  );
+  return votedUsers;
+};
+
+export const voteForMeetup = async (meetupId: string): Promise<IUser[]> => {
+  const { data: updatedVotedUsers } = await httpClient.post(
+    `/meetups/${meetupId}/votedusers`,
+  );
+  return updatedVotedUsers;
+};
+
+export const withdrawVoteForMeetup = async (
+  meetupId: string,
+): Promise<IUser[]> => {
+  const { data: updatedVotedUsers } = await httpClient.delete(
+    `/meetups/${meetupId}/votedusers`,
+  );
+  return updatedVotedUsers;
+};
+
+export const getParticipants = async (meetupId: string): Promise<IUser[]> => {
+  const { data: participants } = await httpClient.get<IUser[]>(
+    `/meetups/${meetupId}/participants`,
+  );
+  return participants;
+};
+
+export const joinMeetup = async (meetupId: string): Promise<IUser[]> => {
+  const { data: updatedParticipants } = await httpClient.post(
+    `/meetups/${meetupId}/participants`,
+  );
+  return updatedParticipants;
+};
+
+export const cancelJoinMeetup = async (meetupId: string): Promise<IUser[]> => {
+  const { data: updatedParticipants } = await httpClient.delete(
+    `/meetups/${meetupId}/participants`,
+  );
+  return updatedParticipants;
 };
 
 const getIMeetupFromJson = (meetupData: MeetupDto): IMeetup => {

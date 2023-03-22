@@ -3,6 +3,7 @@ import { RefObject, useEffect, useLayoutEffect, useState } from 'react';
 export const useResizeEffect = <T extends HTMLElement>(
   containerRef: RefObject<T>,
   effect: (containerWidth: number, containerHeight: number) => void,
+  externalDeps: unknown[] = [],
 ) => {
   const [containerWidth, setContainerWidth] = useState(
     containerRef.current?.clientWidth || 0,
@@ -29,5 +30,5 @@ export const useResizeEffect = <T extends HTMLElement>(
   // run effect on container resize
   useLayoutEffect((): void => {
     effect(containerWidth, containerHeight);
-  }, [containerWidth, containerHeight]);
+  }, [containerWidth, containerHeight, ...externalDeps]);
 };

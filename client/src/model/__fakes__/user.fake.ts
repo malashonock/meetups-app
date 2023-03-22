@@ -25,7 +25,7 @@ export const mockUsers: User[] = [mockUser, mockUser2];
 export const mockFullUserData: IFullUser = {
   ...mockUserData,
   post: 'Software Engineer',
-  roles: UserRole.EMPLOYEE,
+  roles: UserRole.CHIEF,
 };
 
 export const mockFullUser2Data: IFullUser = {

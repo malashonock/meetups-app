@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 
 import { User } from 'stores';
-import { Typography } from 'components';
+import { Tooltip, TooltipVariant, Typography } from 'components';
 
 import styles from './UserPreview.module.scss';
 
@@ -28,9 +28,17 @@ export const UserPreview = ({
       className={classNames(styles.user, styles[variant])}
       data-testid="user-preview"
     >
-      <div className={styles.avatar}>
-        <Typography className={styles.initials}>{initials}</Typography>
-      </div>
+      {variant === UserPreviewVariant.Image ? (
+        <Tooltip title={user.fullName}>
+          <div className={styles.avatar}>
+            <Typography className={styles.initials}>{initials}</Typography>
+          </div>
+        </Tooltip>
+      ) : (
+        <div className={styles.avatar}>
+          <Typography className={styles.initials}>{initials}</Typography>
+        </div>
+      )}
       {variant !== UserPreviewVariant.Image && (
         <Typography className={styles.name} noWrap>
           {fullName}

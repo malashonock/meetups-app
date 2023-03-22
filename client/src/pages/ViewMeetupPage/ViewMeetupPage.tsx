@@ -49,8 +49,12 @@ export const ViewMeetupPage = observer(() => {
     author,
     speakers,
     votedUsers,
+    participants,
     image,
   } = meetup;
+
+  const isFinished = meetup?.finish && isPast(meetup.finish);
+  const canPublish = meetup?.start && meetup?.finish && meetup?.place;
 
   const handleBack = (): void => navigate(-1);
 
@@ -73,7 +77,21 @@ export const ViewMeetupPage = observer(() => {
     navigate(`/meetups/${id}/edit`);
   };
 
-  const canPublish = meetup?.start && meetup?.finish && meetup?.place;
+  const toggleSupportTopic = async (): Promise<void> => {
+    if (!meetup?.hasLoggedUserVoted) {
+      await meetup?.vote();
+    } else {
+      await meetup?.withdrawVote();
+    }
+  };
+
+  const toggleJoinMeetup = async (): Promise<void> => {
+    if (!meetup?.hasLoggedUserJoined) {
+      await meetup?.join();
+    } else {
+      await meetup?.cancelJoin();
+    }
+  };
 
   const handlePublishMeetup = async (): Promise<void> => {
     await meetup?.publish();
@@ -201,34 +219,8 @@ export const ViewMeetupPage = observer(() => {
     );
   };
 
-  const renderSpeakers = () => (
-    <div className={styles.data}>
-      <Typography
-        component={TypographyComponent.Span}
-        className={styles.dataName}
-      >
-        {status === MeetupStatus.REQUEST
-          ? t('viewMeetupPage.author')
-          : t('viewMeetupPage.speakers')}
-      </Typography>
-      <div className={styles.dataContent}>
-        {status === MeetupStatus.REQUEST ? (
-          author !== undefined && <UserPreview user={author} />
-        ) : (
-          <div className={styles.speakerWrapper}>
-            {speakers.length === 1 ? (
-              <UserPreview user={speakers[0]} />
-            ) : (
-              <AvatarGroup users={speakers} />
-            )}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-
-  const renderVotedUsers = () => {
-    if (votedUsers?.length === 0) {
+  const renderSpeakers = () => {
+    if (speakers.length === 0) {
       return null;
     }
 
@@ -238,13 +230,61 @@ export const ViewMeetupPage = observer(() => {
           component={TypographyComponent.Span}
           className={styles.dataName}
         >
-          {t('viewMeetupPage.supporters')}
+          {status === MeetupStatus.REQUEST
+            ? t('viewMeetupPage.author')
+            : t('viewMeetupPage.speakers')}
         </Typography>
         <div className={styles.dataContent}>
-          <AvatarGroup users={votedUsers ?? []} />
+          {status === MeetupStatus.REQUEST ? (
+            author !== undefined && <UserPreview user={author} />
+          ) : (
+            <div className={styles.speakerWrapper}>
+              {speakers.length === 1 ? (
+                <UserPreview user={speakers[0]} />
+              ) : (
+                <AvatarGroup users={speakers} />
+              )}
+            </div>
+          )}
         </div>
       </div>
     );
+  };
+
+  const renderSupporters = () => {
+    if (status === MeetupStatus.REQUEST) {
+      return votedUsers?.length > 0 ? (
+        <div className={styles.data}>
+          <Typography
+            component={TypographyComponent.Span}
+            className={styles.dataName}
+          >
+            {t('viewMeetupPage.supporters')}
+          </Typography>
+          <div className={styles.dataContent}>
+            <AvatarGroup users={votedUsers ?? []} />
+          </div>
+        </div>
+      ) : null;
+    }
+
+    if (status === MeetupStatus.CONFIRMED) {
+      return participants?.length > 0 ? (
+        <div className={styles.data}>
+          <Typography
+            component={TypographyComponent.Span}
+            className={styles.dataName}
+          >
+            {t('viewMeetupPage.participants')}
+          </Typography>
+          <div className={styles.dataContent}>
+            <AvatarGroup users={participants ?? []} />
+          </div>
+        </div>
+      ) : null;
+    }
+
+    return null;
   };
 
   const renderActions = () => {
@@ -260,27 +300,54 @@ export const ViewMeetupPage = observer(() => {
         </Button>
         {loggedUser ? (
           <div className={styles.actionsWrapper}>
-            {status === MeetupStatus.REQUEST && (
-              <>
-                <Button
-                  id="btn-delete"
-                  className={classNames(styles.actionButton, styles.deleteBtn)}
-                  variant={ButtonVariant.Secondary}
-                  onClick={handleDeleteTopic}
-                >
-                  {t('formButtons.delete')}
-                </Button>
-                <Button
-                  id="btn-approve"
-                  className={classNames(styles.actionButton, styles.approveBtn)}
-                  variant={ButtonVariant.Primary}
-                  onClick={handleApproveTopic}
-                >
-                  {t('viewMeetupPage.approveTopicBtn')}
-                </Button>
-              </>
-            )}
-            {status === MeetupStatus.DRAFT && (
+            {status === MeetupStatus.REQUEST &&
+              (loggedUser.isAdmin ? (
+                <>
+                  <Button
+                    id="btn-delete"
+                    className={classNames(
+                      styles.actionButton,
+                      styles.deleteBtn,
+                    )}
+                    variant={ButtonVariant.Secondary}
+                    onClick={handleDeleteTopic}
+                  >
+                    {t('formButtons.delete')}
+                  </Button>
+                  <Button
+                    id="btn-approve"
+                    className={classNames(
+                      styles.actionButton,
+                      styles.approveBtn,
+                    )}
+                    variant={ButtonVariant.Primary}
+                    onClick={handleApproveTopic}
+                  >
+                    {t('viewMeetupPage.approveTopicBtn')}
+                  </Button>
+                </>
+              ) : (
+                !!meetup.canLoggedUserSupport && (
+                  <Button
+                    id="btn-vote-toggle"
+                    className={classNames(
+                      styles.actionButton,
+                      styles.toggleSupportBtn,
+                    )}
+                    variant={
+                      !meetup.hasLoggedUserVoted
+                        ? ButtonVariant.Primary
+                        : ButtonVariant.Secondary
+                    }
+                    onClick={toggleSupportTopic}
+                  >
+                    {!meetup.hasLoggedUserVoted
+                      ? t('viewMeetupPage.supportTopicBtn')
+                      : t('viewMeetupPage.unsupportTopicBtn')}
+                  </Button>
+                )
+              ))}
+            {status === MeetupStatus.DRAFT && !!loggedUser.isAdmin && (
               <Button
                 id="btn-publish"
                 className={classNames(styles.actionButton, styles.publishBtn)}
@@ -291,6 +358,28 @@ export const ViewMeetupPage = observer(() => {
                 {t('formButtons.publish')}
               </Button>
             )}
+            {status === MeetupStatus.CONFIRMED &&
+              !isFinished &&
+              !loggedUser.isAdmin &&
+              !!meetup.canLoggedUserSupport && (
+                <Button
+                  id="btn-join-toggle"
+                  className={classNames(
+                    styles.actionButton,
+                    styles.toggleJoinBtn,
+                  )}
+                  variant={
+                    !meetup.hasLoggedUserJoined
+                      ? ButtonVariant.Primary
+                      : ButtonVariant.Secondary
+                  }
+                  onClick={toggleJoinMeetup}
+                >
+                  {!meetup.hasLoggedUserJoined
+                    ? t('viewMeetupPage.joinMeetupBtn')
+                    : t('viewMeetupPage.unjoinMeetupBtn')}
+                </Button>
+              )}
           </div>
         ) : null}
       </div>
@@ -325,7 +414,7 @@ export const ViewMeetupPage = observer(() => {
             </Typography>
           </div>
         </div>
-        {renderVotedUsers()}
+        {renderSupporters()}
         {renderActions()}
       </div>
     </section>

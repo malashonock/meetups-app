@@ -86,8 +86,13 @@
     "author": "Author",
     "speakers": "Speaker(s)",
     "supporters": "Supporters",
+    "participants": "Participants",
     "approveTopicBtn": "Approve topic",
-    "deleteTopicPrompt": "Are you sure you want to delete the topic?"
+    "deleteTopicPrompt": "Are you sure you want to delete the topic?",
+    "supportTopicBtn": "Support topic",
+    "unsupportTopicBtn": "Withdraw vote",
+    "joinMeetupBtn": "Join meetup",
+    "unjoinMeetupBtn": "Cancel participation"
   },
   "viewNewsPage": {
     "title": "View news",

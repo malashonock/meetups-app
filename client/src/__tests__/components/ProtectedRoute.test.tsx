@@ -2,8 +2,8 @@ import { PropsWithChildren } from 'react';
 import { screen, render } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
-import { ProtectedRoute } from 'components';
-import { mockUser as mockedLoggedUser } from 'model/__fakes__';
+import { ProtectedRoute, RedirectCondition } from 'components';
+import { mockFullUser } from 'model/__fakes__';
 import { useAuthStore } from 'hooks';
 
 // Mock useAuthStore hook
@@ -20,6 +20,7 @@ const mockUseAuthStore = useAuthStore as jest.MockedFunction<
 beforeEach(() => {
   mockUseAuthStore.mockReturnValue({
     loggedUser: null,
+    isInitialized: true,
   });
 });
 
@@ -41,7 +42,8 @@ describe('ProtectedRoute', () => {
   describe('if redirectIf is set to "unauthenticated" or omitted', () => {
     it('if a user is logged in, navigates to the protected route', () => {
       mockUseAuthStore.mockReturnValue({
-        loggedUser: mockedLoggedUser,
+        loggedUser: mockFullUser,
+        isInitialized: true,
       });
 
       render(
@@ -97,7 +99,7 @@ describe('ProtectedRoute', () => {
   describe('if redirectIf is set to "authenticated"', () => {
     it('if no user is logged in, navigates to the protected route', () => {
       render(
-        <ProtectedRoute redirectIf="authenticated">
+        <ProtectedRoute redirectIf={RedirectCondition.Authenticated}>
           <ProtectedPage />
         </ProtectedRoute>,
         {
@@ -112,13 +114,14 @@ describe('ProtectedRoute', () => {
     describe('if a user is logged in', () => {
       beforeEach(() => {
         mockUseAuthStore.mockReturnValue({
-          loggedUser: mockedLoggedUser,
+          loggedUser: mockFullUser,
+          isInitialized: true,
         });
       });
 
       it('if redirectTo is omitted, redirects to meetups page', () => {
         render(
-          <ProtectedRoute redirectIf="authenticated">
+          <ProtectedRoute redirectIf={RedirectCondition.Authenticated}>
             <ProtectedPage />
           </ProtectedRoute>,
           {
@@ -135,7 +138,10 @@ describe('ProtectedRoute', () => {
 
       it('if redirectTo is specified, redirects to the specified route', () => {
         render(
-          <ProtectedRoute redirectIf="authenticated" redirectTo="/news">
+          <ProtectedRoute
+            redirectIf={RedirectCondition.Authenticated}
+            redirectTo="/news"
+          >
             <ProtectedPage />
           </ProtectedRoute>,
           {
