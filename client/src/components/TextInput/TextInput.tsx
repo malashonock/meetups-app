@@ -1,7 +1,7 @@
-import { HTMLAttributes } from 'react';
+import { AllHTMLAttributes } from 'react';
 
 export const TextInput = ({
   ...nativeHtmlProps
-}: HTMLAttributes<HTMLInputElement>): JSX.Element => (
-  <input type="text" {...nativeHtmlProps} data-testid="text-input" />
+}: AllHTMLAttributes<HTMLInputElement>): JSX.Element => (
+  <input {...nativeHtmlProps} data-testid="text-input" />
 );
