@@ -6,6 +6,8 @@ describe('Create news article', () => {
       cy.loginAsChief();
 
       cy.visit('/news');
+      cy.wait(1_000);
+
       cy.get('#btn-create-news').click();
       cy.url().should('contain', '/news/create');
 

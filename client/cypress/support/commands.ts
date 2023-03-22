@@ -20,22 +20,14 @@ declare global {
 Cypress.Commands.add(
   'login',
   (name: string, surname: string, password: string) => {
-    cy.session(
-      [name, surname, password],
-      () => {
-        cy.visit('/login');
-        cy.get('input[name="username"]').type(name);
-        cy.get('input[name="password"]').type(password);
-        cy.get('button[type="submit"').click();
-        cy.url().should('include', '/meetups');
-        cy.get('header').should('contain', name + ' ' + surname);
+    cy.request({
+      url: 'http://localhost:8080/api/login',
+      method: 'POST',
+      body: {
+        username: name,
+        password,
       },
-      {
-        validate: () => {
-          cy.getCookie('connect.sid').should('exist');
-        },
-      },
-    );
+    });
   },
 );
 

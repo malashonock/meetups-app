@@ -14,7 +14,7 @@ export class RootStore {
   }
 
   async init(): Promise<void> {
-    await this.authStore.onLoginChanged();
+    await this.authStore.init();
   }
 
   toJSON() {
