@@ -10,14 +10,12 @@ import { generateUsers } from 'model/__fakes__';
 const mockContainerRef = (
   containerWidth: number = 500,
   containerHeight: number = 48,
-  avatarDiameter: number = 48,
 ): void => {
   const mockedContainerRef = {
     get current() {
       return {
         clientWidth: containerWidth,
         clientHeight: containerHeight,
-        children: [{ clientWidth: avatarDiameter }],
       };
     },
     set current(value) {},

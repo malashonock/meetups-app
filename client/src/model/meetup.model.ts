@@ -48,5 +48,6 @@ export interface MeetupFields {
   finish?: Date;
   place?: string;
   author: Nullable<IUser>;
+  speakers: IUser[];
   image: Nullable<FileWithUrl>;
 }

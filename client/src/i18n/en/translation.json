@@ -84,7 +84,7 @@
     "time": "Time",
     "location": "Location",
     "author": "Author",
-    "speakers": "Speakers",
+    "speakers": "Speaker(s)",
     "supporters": "Supporters",
     "approveTopicBtn": "Approve topic",
     "deleteTopicPrompt": "Are you sure you want to delete the topic?"
@@ -106,10 +106,10 @@
         "label": "Topic",
         "errorText": "Meetup topic is required"
       },
-      "speaker": {
-        "label": "Speaker",
-        "placeholder": "Select speaker...",
-        "errorText": "Speaker is required"
+      "speakers": {
+        "label": "Speaker(s)",
+        "placeholder": "Select speaker(s)...",
+        "errorText": "At least 1 speaker is required"
       },
       "description": {
         "label": "Description",

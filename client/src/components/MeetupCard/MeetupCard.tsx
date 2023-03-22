@@ -15,7 +15,7 @@ import {
 } from 'components';
 import { isPast, parseDate } from 'utils';
 import { MeetupStatus } from 'model';
-import { Meetup, User } from 'stores';
+import { Meetup } from 'stores';
 import { useAuthStore, useLocale } from 'hooks';
 
 import styles from './MeetupCard.module.scss';

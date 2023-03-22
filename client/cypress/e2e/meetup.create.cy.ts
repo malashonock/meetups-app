@@ -16,9 +16,12 @@ describe('Create meetup', () => {
 
       cy.get('[name="subject"]').type(subject);
       cy.get('[name="excerpt"]').type(excerpt);
-      cy.get('[data-testid="select-field"]').as('authorSelect').click();
-      cy.get('@authorSelect').within(() => {
-        cy.get('[class*="SelectField_option"]').contains('chief Blick').click();
+      cy.get('[data-testid="select-field"]').as('speakersSelect').click();
+      cy.get('@speakersSelect').within(() => {
+        cy.get('[aria-label="Remove chief Blick"]').click();
+        cy.get('[class*="SelectField_option"]')
+          .contains('employee Gerlach')
+          .click();
       });
 
       cy.get('#btn-next').click();

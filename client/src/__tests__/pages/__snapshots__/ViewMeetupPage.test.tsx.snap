@@ -106,7 +106,27 @@ exports[`ViewMeetupPage after approval & publishing given a user is logged in sh
         >
           <div
             class="speakerWrapper"
-          />
+          >
+            <div
+              class="user default"
+              data-testid="user-preview"
+            >
+              <div
+                class="avatar"
+              >
+                <span
+                  class="typography span initials"
+                >
+                  JD
+                </span>
+              </div>
+              <span
+                class="typography span name noWrap"
+              >
+                John Doe
+              </span>
+            </div>
+          </div>
         </div>
       </div>
       <div
@@ -268,7 +288,27 @@ exports[`ViewMeetupPage after approval & publishing given no user is logged in s
         >
           <div
             class="speakerWrapper"
-          />
+          >
+            <div
+              class="user default"
+              data-testid="user-preview"
+            >
+              <div
+                class="avatar"
+              >
+                <span
+                  class="typography span initials"
+                >
+                  JD
+                </span>
+              </div>
+              <span
+                class="typography span name noWrap"
+              >
+                John Doe
+              </span>
+            </div>
+          </div>
         </div>
       </div>
       <div
@@ -427,7 +467,27 @@ exports[`ViewMeetupPage after topic approval, but before publishing given a user
         >
           <div
             class="speakerWrapper"
-          />
+          >
+            <div
+              class="user default"
+              data-testid="user-preview"
+            >
+              <div
+                class="avatar"
+              >
+                <span
+                  class="typography span initials"
+                >
+                  JD
+                </span>
+              </div>
+              <span
+                class="typography span name noWrap"
+              >
+                John Doe
+              </span>
+            </div>
+          </div>
         </div>
       </div>
       <div
@@ -596,7 +656,27 @@ exports[`ViewMeetupPage after topic approval, but before publishing given no use
         >
           <div
             class="speakerWrapper"
-          />
+          >
+            <div
+              class="user default"
+              data-testid="user-preview"
+            >
+              <div
+                class="avatar"
+              >
+                <span
+                  class="typography span initials"
+                >
+                  JD
+                </span>
+              </div>
+              <span
+                class="typography span name noWrap"
+              >
+                John Doe
+              </span>
+            </div>
+          </div>
         </div>
       </div>
       <div
@@ -690,7 +770,27 @@ exports[`ViewMeetupPage before topic approval given a user is logged in should m
         </span>
         <div
           class="dataContent"
-        />
+        >
+          <div
+            class="user default"
+            data-testid="user-preview"
+          >
+            <div
+              class="avatar"
+            >
+              <span
+                class="typography span initials"
+              >
+                JD
+              </span>
+            </div>
+            <span
+              class="typography span name noWrap"
+            >
+              John Doe
+            </span>
+          </div>
+        </div>
       </div>
       <div
         class="data"
@@ -799,7 +899,27 @@ exports[`ViewMeetupPage before topic approval given no user is logged in should 
         </span>
         <div
           class="dataContent"
-        />
+        >
+          <div
+            class="user default"
+            data-testid="user-preview"
+          >
+            <div
+              class="avatar"
+            >
+              <span
+                class="typography span initials"
+              >
+                JD
+              </span>
+            </div>
+            <span
+              class="typography span name noWrap"
+            >
+              John Doe
+            </span>
+          </div>
+        </div>
       </div>
       <div
         class="data"

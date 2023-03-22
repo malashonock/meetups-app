@@ -17,16 +17,20 @@ export type MeetupOptionalFields = Pick<
 
 export const meetupRequiredFieldsSchema = ({ t }: i18n) =>
   yup.object().shape({
-    author: yup
-      .object()
-      .typeError(
-        t('formFields.meetup.speaker.errorText') || 'Speaker is required',
+    speakers: yup
+      .array()
+      .of(
+        yup.object().shape({
+          id: yup.string().required(),
+          name: yup.string().required(),
+          surname: yup.string().required(),
+        }),
       )
-      .shape({
-        id: yup.string().required(),
-        name: yup.string().required(),
-        surname: yup.string().required(),
-      }),
+      .min(
+        1,
+        t('formFields.meetup.speakers.errorText') ||
+          'At least 1 speaker is required',
+      ),
     subject: yup
       .string()
       .required(

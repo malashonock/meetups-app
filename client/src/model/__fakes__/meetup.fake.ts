@@ -14,6 +14,7 @@ export const mockTopicFields: MeetupFields = {
   subject: 'Test meetup topic',
   excerpt: 'Test meetup description',
   author: mockUserData,
+  speakers: [mockUserData],
   start: undefined,
   finish: undefined,
   place: undefined,

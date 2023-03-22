@@ -97,13 +97,14 @@ const EditMeetupForm = ({
               labelText={t('formFields.meetup.location.label') || 'Location'}
             />
             <SelectField<User>
-              name="author"
-              labelText={t('formFields.meetup.speaker.label') || 'Speaker'}
+              name="speakers"
+              labelText={t('formFields.meetup.speakers.label') || 'Speaker(s)'}
               placeholderText={
-                t('formFields.meetup.speaker.placeholder') ||
-                'Select speaker...'
+                t('formFields.meetup.speakers.placeholder') ||
+                'Select speaker(s)...'
               }
               selectProps={{
+                isMulti: true,
                 options: users?.map(
                   (user: User): SelectOption<User> => ({
                     value: user,
@@ -178,6 +179,7 @@ export const EditMeetupPage = observer((): JSX.Element => {
     subject: meetup.subject || '',
     excerpt: meetup.excerpt || '',
     author: meetup.author,
+    speakers: meetup.speakers,
     start: meetup.start,
     finish: meetup.finish,
     place: meetup.place || '',

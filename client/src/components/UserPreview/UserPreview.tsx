@@ -1,4 +1,3 @@
-import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 
 import { User } from 'stores';
