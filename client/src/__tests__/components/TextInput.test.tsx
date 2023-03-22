@@ -7,9 +7,9 @@ const TEXT = 'Hello, world!';
 
 describe('TextInput', () => {
   it('handles clicks', () => {
-    render(<TextInput />);
+    render(<TextInput name="message" />);
 
-    const input = screen.getByRole('textbox') as HTMLInputElement;
+    const input = screen.getByTestId('text-input-message') as HTMLInputElement;
     expect(input).toBeInTheDocument();
 
     userEvent.type(input, TEXT);
@@ -19,9 +19,15 @@ describe('TextInput', () => {
   it('can be assigned an external class or event handler', () => {
     const mockHandleChange = jest.fn();
 
-    render(<TextInput className="test-class" onChange={mockHandleChange} />);
+    render(
+      <TextInput
+        name="message"
+        className="test-class"
+        onChange={mockHandleChange}
+      />,
+    );
 
-    const input = screen.getByRole('textbox') as HTMLInputElement;
+    const input = screen.getByTestId('text-input-message') as HTMLInputElement;
     expect(input).toBeInTheDocument();
 
     expect(input.classList).toContain('test-class');

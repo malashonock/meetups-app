@@ -1,6 +1,6 @@
 import { News } from 'stores';
-import { Maybe, Optional } from 'types';
 import { useNewsStore } from 'hooks';
+import { Maybe, Optional } from 'types';
 
 export const useNewsArticle = (id: Maybe<string>): Optional<News> => {
   const newsStore = useNewsStore();

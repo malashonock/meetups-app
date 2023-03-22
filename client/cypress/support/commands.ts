@@ -2,24 +2,44 @@
 
 import '@testing-library/cypress/add-commands';
 import { faker } from '@faker-js/faker';
+
 import { MeetupStatus, IUser } from 'model';
+import { AlertSeverity } from 'types';
 
 declare global {
   namespace Cypress {
     interface Chainable {
       login(name: string, surname: string, password: string): Chainable<void>;
+      logout(): Chainable<void>;
       loginAsChief(): Chainable<void>;
       loginAsEmployee(): Chainable<void>;
       createNewsArticle(): Chainable<string>;
       createTopic(): Chainable<string>;
       createMeetupDraft(): Chainable<string>;
+      createMeetup(): Chainable<string>;
+      expectToastToPopupAndDismiss(
+        variant: AlertSeverity,
+        shouldExpireIn?: number,
+      ): Chainable<void>;
+      getByTestId<E extends Node = HTMLElement>(
+        testId: string,
+        options?: Partial<Loggable & Timeoutable & Withinable & Shadow>,
+      ): Chainable<JQuery<E>>;
     }
   }
 }
 
+Cypress.Commands.add('logout', () => {
+  cy.request({
+    url: 'http://localhost:8080/api/logout',
+    method: 'GET',
+  });
+});
+
 Cypress.Commands.add(
   'login',
   (name: string, surname: string, password: string) => {
+    cy.logout();
     cy.request({
       url: 'http://localhost:8080/api/login',
       method: 'POST',
@@ -133,4 +153,45 @@ Cypress.Commands.add('createMeetupDraft', function () {
       })
       .its('id');
   });
+});
+
+Cypress.Commands.add('createMeetup', function () {
+  cy.createTopic().then((createdTopicId) => {
+    const formData = new FormData();
+    formData.append('status', MeetupStatus.CONFIRMED);
+
+    cy.request({
+      url: `http://localhost:8080/api/meetups/${createdTopicId}`,
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      body: formData,
+    })
+      .its('body')
+      .then((body: ArrayBuffer) => {
+        const bodyAsString = Cypress.Blob.arrayBufferToBinaryString(body);
+        return JSON.parse(bodyAsString);
+      })
+      .its('id');
+  });
+});
+
+Cypress.Commands.add(
+  'expectToastToPopupAndDismiss',
+  (variant: AlertSeverity, shouldExpireIn: number = 3_000) => {
+    cy.getByTestId('toast')
+      .should('exist')
+      .within(() => {
+        cy.getByTestId(`icon-${variant}`).should('exist');
+      });
+
+    cy.wait(shouldExpireIn);
+
+    cy.getByTestId('toast').should('not.exist');
+  },
+);
+
+Cypress.Commands.add('getByTestId', (testId: string, options) => {
+  return cy.get(`[data-testid="${testId}"]`, options);
 });

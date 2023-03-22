@@ -1,7 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { MeetupCard } from 'components';
 import { IMeetup, MeetupStatus } from 'model';
-import { Meetup, User } from 'stores';
+import { Meetup, MeetupStore, RootStore, User } from 'stores';
 import { withRouter } from 'storybook-addon-react-router-v6';
 
 export default {
@@ -58,10 +58,14 @@ const meetupUpcomingData: IMeetup = {
   place: 'комн. 601b',
 };
 
-const meetupTopic: Meetup = new Meetup(meetupTopicData);
-const meetupDraftNoDate: Meetup = new Meetup(meetupDraftNoDateData);
-const meetupDraft: Meetup = new Meetup(meetupDraftData);
-const meetupConfirmed: Meetup = new Meetup(meetupUpcomingData);
+const meetupStore = new MeetupStore(new RootStore());
+const meetupTopic: Meetup = new Meetup(meetupTopicData, meetupStore);
+const meetupDraftNoDate: Meetup = new Meetup(
+  meetupDraftNoDateData,
+  meetupStore,
+);
+const meetupDraft: Meetup = new Meetup(meetupDraftData, meetupStore);
+const meetupConfirmed: Meetup = new Meetup(meetupUpcomingData, meetupStore);
 
 export const MeetupCard_Topic_NoExcerpt = Template.bind({});
 MeetupCard_Topic_NoExcerpt.args = {

@@ -1,5 +1,7 @@
+import { mockFullUser } from 'model/__fakes__';
 import {
   AuthStore,
+  Locale,
   MeetupStore,
   NewsStore,
   RootStore,
@@ -41,6 +43,24 @@ describe('RootStore', () => {
       const rootStore = new RootStore();
       await rootStore.init();
       expect(spiedOnAuthStoreInit).toHaveBeenCalled();
+    });
+  });
+
+  describe('toJSON instance() method', () => {
+    it('should serialize correctly', () => {
+      const rootStore = new RootStore();
+      rootStore.authStore.loggedUser = mockFullUser;
+      rootStore.uiStore.locale = Locale.EN;
+      expect(JSON.stringify(rootStore)).toBe(
+        JSON.stringify({
+          authStore: {
+            loggedUser: mockFullUser,
+          },
+          uiStore: {
+            locale: Locale.EN,
+          },
+        }),
+      );
     });
   });
 });

@@ -2,12 +2,7 @@ import { faker } from '@faker-js/faker';
 
 import { IMeetup, MeetupDto, MeetupFields, MeetupStatus } from 'model';
 import { Meetup, MeetupStore, RootStore } from 'stores';
-import {
-  mockImageWithUrl,
-  mockUser2Data,
-  mockUserData,
-  mockUsersData,
-} from 'model/__fakes__';
+import { mockImageWithUrl, mockUserData, mockUsersData } from 'model/__fakes__';
 import { generateArray } from 'utils';
 
 export const mockTopicFields: MeetupFields = {
@@ -40,8 +35,8 @@ export const mockTopicData: IMeetup = {
   start: mockTopicFields.start,
   finish: mockTopicFields.start,
   speakers: [mockUserData],
-  votedUsers: [mockUserData, mockUser2Data],
-  participants: [mockUserData, mockUser2Data],
+  votedUsers: [mockUserData],
+  participants: [mockUserData],
   status: MeetupStatus.REQUEST,
   imageUrl: mockTopicFields.image?.url ?? null,
 };

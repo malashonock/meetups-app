@@ -88,7 +88,9 @@ const getSubjectInput = () =>
 const getExcerptInput = () =>
   screen.getByLabelText('formFields.meetup.description.label');
 const getSpeakerSelect = () =>
-  screen.getByTestId('select-field').querySelector('input') as HTMLInputElement;
+  screen
+    .getByTestId('select-speakers')
+    .querySelector('input') as HTMLInputElement;
 const getStartDatePicker = () =>
   screen.getByLabelText(
     'formFields.meetup.datetimeStart.label',

@@ -3,8 +3,11 @@ import * as MobX from 'mobx';
 import { UserStore, RootStore, User, AuthStore } from 'stores';
 import * as UserApi from 'api/services/user.service';
 import {
+  mockFullUser,
+  mockFullUser2,
   mockFullUsers,
   mockUser,
+  mockUser2,
   mockUserData,
   mockUsers,
 } from 'model/__fakes__';
@@ -32,6 +35,41 @@ describe('UserStore', () => {
     it('should initialize users field to an empty array', () => {
       const userStore = new UserStore(mockAuthStore);
       expect(userStore.users.length).toBe(0);
+    });
+  });
+
+  describe('init() instance method', () => {
+    describe('given no user is logged in', () => {
+      it('should clear the users array', async () => {
+        const authStore = new AuthStore(new RootStore());
+        authStore.loggedUser = null;
+        const userStore = new UserStore(authStore);
+        userStore.users = [mockFullUser, mockFullUser2];
+        await userStore.init();
+        expect(userStore.users.length).toBe(0);
+      });
+    });
+
+    describe('given a user without admin rights is logged in', () => {
+      it('should fill the users array with the logged user', async () => {
+        const authStore = new AuthStore(new RootStore());
+        authStore.loggedUser = mockFullUser2;
+        const userStore = new UserStore(authStore);
+        await userStore.init();
+        expect(userStore.users.length).toBe(1);
+        expect(userStore.users[0]).toStrictEqual(mockUser2);
+      });
+    });
+
+    describe('given a user with admin rights is logged in', () => {
+      it('should call the loadUsers() instance method', async () => {
+        const authStore = new AuthStore(new RootStore());
+        authStore.loggedUser = mockFullUser;
+        const userStore = new UserStore(authStore);
+        const spiedOnLoadUsers = jest.spyOn(userStore, 'loadUsers');
+        await userStore.init();
+        expect(spiedOnLoadUsers).toHaveBeenCalled();
+      });
     });
   });
 
@@ -97,6 +135,17 @@ describe('UserStore', () => {
       await userStore.loadUsers();
       const foundUsers = userStore.findUsers([]);
       expect(foundUsers.length).toBe(0);
+    });
+  });
+
+  describe('toJSON() instance method', () => {
+    it('should serialize correctly', () => {
+      const userStore = new UserStore(mockAuthStore);
+      userStore.users = [...mockUsers];
+
+      expect(userStore.toJSON()).toStrictEqual({
+        users: userStore.users,
+      });
     });
   });
 });

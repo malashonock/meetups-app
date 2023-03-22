@@ -12,6 +12,8 @@ import {
   mockUpdatedNewsArticleData,
   mockUpdatedNewsArticleFields,
 } from 'model/__fakes__';
+import { AppError } from 'model';
+import { AlertSeverity } from 'types';
 
 const spiedOnMobXMakeObservable = jest.spyOn(MobX, 'makeObservable');
 const spiedOnApiGetNews = jest.spyOn(NewsApi, 'getNews');
@@ -19,14 +21,15 @@ const spiedOnApiCreateNewsArticle = jest.spyOn(NewsApi, 'createNewsArticle');
 const spiedOnApiUpdateNewsArticle = jest.spyOn(NewsApi, 'updateNewsArticle');
 const spiedOnApiDeleteNewsArticle = jest.spyOn(NewsApi, 'deleteNewsArticle');
 
+const ERROR_CODE = '500';
+const ERROR_PROBLEM = 'Internal server error';
+const ERROR_HINT = 'File a ticket to tech support';
+const appError = new AppError(ERROR_CODE, ERROR_PROBLEM, ERROR_HINT);
+
 beforeEach(() => {
-  spiedOnApiGetNews.mockReturnValue(Promise.resolve(mockNewsData));
-  spiedOnApiCreateNewsArticle.mockReturnValue(
-    Promise.resolve(mockNewsArticleData),
-  );
-  spiedOnApiUpdateNewsArticle.mockReturnValue(
-    Promise.resolve(mockUpdatedNewsArticleData),
-  );
+  spiedOnApiGetNews.mockResolvedValue(mockNewsData);
+  spiedOnApiCreateNewsArticle.mockResolvedValue(mockNewsArticleData);
+  spiedOnApiUpdateNewsArticle.mockResolvedValue(mockUpdatedNewsArticleData);
 });
 
 afterEach(() => {
@@ -43,69 +46,92 @@ describe('NewsStore', () => {
     it('should initialize instance fields properly', () => {
       const newsStore = new NewsStore(new RootStore());
 
-      expect(newsStore.isLoading).toBe(false);
-      expect(newsStore.isError).toBe(false);
-      expect(newsStore.errors.length).toBe(0);
-
       expect(newsStore.news.length).toBe(0);
+      expect(newsStore.isInitialized).toBe(false);
+      expect(newsStore.onError).toBeTruthy();
     });
   });
 
   describe('loadNews() instance method', () => {
-    it('should call API getNews() method', async () => {
-      const newsStore = new NewsStore(new RootStore());
-      await newsStore.loadNews();
-      expect(spiedOnApiGetNews).toHaveBeenCalled();
-    });
-
-    it('should be in isLoading state while API is running the request', async () => {
-      const newsStore = new NewsStore(new RootStore());
-      const loadNewsTask = newsStore.loadNews();
-      expect(newsStore.isLoading).toBe(true);
-      await loadNewsTask;
-      expect(newsStore.isLoading).toBe(false);
-    });
-
-    describe('given API request resolves successfully', () => {
-      it('should populate news field with fetched news', async () => {
+    describe('given isInitialized is false', () => {
+      it('should call API getNews() method', async () => {
         const newsStore = new NewsStore(new RootStore());
         await newsStore.loadNews();
-
-        expect(newsStore.isLoading).toBe(false);
-        expect(newsStore.isError).toBe(false);
-        expect(newsStore.errors.length).toBe(0);
-
-        expect(newsStore.news.length).toBe(mockNews.length);
-        expect(JSON.stringify(newsStore.news)).toBe(JSON.stringify(mockNews));
+        expect(spiedOnApiGetNews).toHaveBeenCalled();
       });
-    });
 
-    describe('given API request rejects with an error', () => {
-      const ERROR_CODE = '404';
-      const ERROR_MESSAGE = 'Resource not found';
+      describe('given API request resolves successfully', () => {
+        it('should populate news field with fetched news', async () => {
+          const newsStore = new NewsStore(new RootStore());
+          await newsStore.loadNews();
 
-      beforeEach(() => {
-        spiedOnApiGetNews.mockImplementation(() => {
-          throw new AxiosError(ERROR_MESSAGE, ERROR_CODE);
+          expect(newsStore.news.length).toBe(mockNews.length);
+          expect(JSON.stringify(newsStore.news)).toBe(JSON.stringify(mockNews));
+        });
+
+        it('should set isInitialized field to true', async () => {
+          const newsStore = new NewsStore(new RootStore());
+          await newsStore.loadNews();
+
+          expect(newsStore.isInitialized).toBe(true);
         });
       });
 
-      it('should populate errors field with the caught error', async () => {
+      describe('given API request rejects with an error', () => {
+        beforeEach(() => {
+          spiedOnApiGetNews.mockRejectedValue(appError);
+        });
+
+        it('should not add any elements to the news array', async () => {
+          const newsStore = new NewsStore(new RootStore());
+          await newsStore.loadNews();
+          expect(newsStore.news.length).toBe(0);
+        });
+
+        it('should leave isInitialized field false', async () => {
+          const newsStore = new NewsStore(new RootStore());
+          await newsStore.loadNews();
+          expect(newsStore.isInitialized).toBe(false);
+        });
+
+        it('should push an error alert up to the root store', async () => {
+          const rootStore = new RootStore();
+          const spiedOnRootStoreOnAlert = jest.fn();
+          rootStore.onAlert = spiedOnRootStoreOnAlert;
+          const newsStore = new NewsStore(rootStore);
+
+          await newsStore.loadNews();
+
+          expect(spiedOnRootStoreOnAlert).toHaveBeenCalledTimes(1);
+          expect(spiedOnRootStoreOnAlert.mock.calls[0][0].severity).toBe(
+            AlertSeverity.Error,
+          );
+        });
+      });
+    });
+
+    describe('given isInitialized is true', () => {
+      it('should not call API getMeetups() method', async () => {
         const newsStore = new NewsStore(new RootStore());
+        newsStore.isInitialized = true;
 
         await newsStore.loadNews();
 
-        expect(newsStore.isLoading).toBe(false);
-        expect(newsStore.isError).toBe(true);
-        expect(newsStore.errors.length).toBe(1);
-        expect((newsStore.errors[0] as AxiosError).code).toBe(ERROR_CODE);
-        expect((newsStore.errors[0] as AxiosError).message).toBe(ERROR_MESSAGE);
+        expect(spiedOnApiGetNews).not.toHaveBeenCalled();
       });
 
-      it('should not add any elements to the news array', async () => {
+      it('should leave the news field untouched', async () => {
         const newsStore = new NewsStore(new RootStore());
+        newsStore.isInitialized = true;
         await newsStore.loadNews();
         expect(newsStore.news.length).toBe(0);
+      });
+
+      it('should leave isInitialized field true', async () => {
+        const newsStore = new NewsStore(new RootStore());
+        newsStore.isInitialized = true;
+        await newsStore.loadNews();
+        expect(newsStore.isInitialized).toBe(true);
       });
     });
   });
@@ -130,16 +156,6 @@ describe('NewsStore', () => {
       );
     });
 
-    it('should be in isLoading state while API is running the request', async () => {
-      const newsStore = new NewsStore(new RootStore());
-      const createNewsArticleTask = newsStore.createNewsArticle(
-        mockNewsArticleFields,
-      );
-      expect(newsStore.isLoading).toBe(true);
-      await createNewsArticleTask;
-      expect(newsStore.isLoading).toBe(false);
-    });
-
     describe('given API request resolves successfully', () => {
       it('should append the newly constructed news instance to news field array', async () => {
         const newsStore = new NewsStore(new RootStore());
@@ -148,34 +164,45 @@ describe('NewsStore', () => {
         );
         expect(newsStore.news).toContain(newArticle);
       });
-    });
 
-    describe('given API request rejects with an error', () => {
-      const ERROR_CODE = '403';
-      const ERROR_MESSAGE = 'Forbidden';
-
-      beforeEach(() => {
-        spiedOnApiCreateNewsArticle.mockImplementation(() => {
-          throw new AxiosError(ERROR_MESSAGE, ERROR_CODE);
-        });
-      });
-
-      it('should populate errors field with the caught error', async () => {
-        const newsStore = new NewsStore(new RootStore());
+      it('should push a success alert up to the root store', async () => {
+        const rootStore = new RootStore();
+        const spiedOnRootStoreOnAlert = jest.fn();
+        rootStore.onAlert = spiedOnRootStoreOnAlert;
+        const newsStore = new NewsStore(rootStore);
 
         await newsStore.createNewsArticle(mockNewsArticleFields);
 
-        expect(newsStore.isLoading).toBe(false);
-        expect(newsStore.isError).toBe(true);
-        expect(newsStore.errors.length).toBe(1);
-        expect((newsStore.errors[0] as AxiosError).code).toBe(ERROR_CODE);
-        expect((newsStore.errors[0] as AxiosError).message).toBe(ERROR_MESSAGE);
+        expect(spiedOnRootStoreOnAlert).toHaveBeenCalledTimes(1);
+        expect(spiedOnRootStoreOnAlert.mock.calls[0][0].severity).toBe(
+          AlertSeverity.Success,
+        );
+      });
+    });
+
+    describe('given API request rejects with an error', () => {
+      beforeEach(() => {
+        spiedOnApiCreateNewsArticle.mockRejectedValue(appError);
       });
 
       it('should not add any elements to the news array', async () => {
         const newsStore = new NewsStore(new RootStore());
         await newsStore.createNewsArticle(mockNewsArticleFields);
         expect(newsStore.news.length).toBe(0);
+      });
+
+      it('should push an error alert up to the root store', async () => {
+        const rootStore = new RootStore();
+        const spiedOnRootStoreOnAlert = jest.fn();
+        rootStore.onAlert = spiedOnRootStoreOnAlert;
+        const newsStore = new NewsStore(rootStore);
+
+        await newsStore.createNewsArticle(mockNewsArticleFields);
+
+        expect(spiedOnRootStoreOnAlert).toHaveBeenCalledTimes(1);
+        expect(spiedOnRootStoreOnAlert.mock.calls[0][0].severity).toBe(
+          AlertSeverity.Error,
+        );
       });
     });
   });
@@ -189,6 +216,23 @@ describe('NewsStore', () => {
       expect(newArticle).not.toBeUndefined();
       newsStore.onNewsArticleDeleted(newArticle!);
       expect(newsStore.news).not.toContain(newArticle);
+    });
+
+    it('should push a success alert up to the root store', async () => {
+      const rootStore = new RootStore();
+      const spiedOnRootStoreOnAlert = jest.fn();
+      const newsStore = new NewsStore(rootStore);
+      const newArticle = await newsStore.createNewsArticle(
+        mockNewsArticleFields,
+      );
+      rootStore.onAlert = spiedOnRootStoreOnAlert;
+
+      newsStore.onNewsArticleDeleted(newArticle!);
+
+      expect(spiedOnRootStoreOnAlert).toHaveBeenCalledTimes(1);
+      expect(spiedOnRootStoreOnAlert.mock.calls[0][0].severity).toBe(
+        AlertSeverity.Success,
+      );
     });
   });
 
@@ -207,19 +251,18 @@ describe('NewsStore', () => {
 describe('News', () => {
   describe('constructor', () => {
     it('should make the returned instance observable', () => {
-      const newsStore = new NewsStore(new RootStore());
-      const newsArticle = new News(mockNewsArticleData, newsStore);
+      const newsArticle = new News(
+        mockNewsArticleData,
+        new NewsStore(new RootStore()),
+      );
       expect(spiedOnMobXMakeObservable).toHaveBeenCalled();
     });
 
     it('should initialize instance fields properly', () => {
-      const newsArticle = new News(mockNewsArticleData);
+      const newsStore = new NewsStore(new RootStore());
+      const newsArticle = new News(mockNewsArticleData, newsStore);
 
-      expect(newsArticle.newsStore).toBeNull();
-      expect(newsArticle.isLoading).toBe(false);
-      expect(newsArticle.isError).toBe(false);
-      expect(newsArticle.errors.length).toBe(0);
-
+      expect(newsArticle.newsStore).toBe(newsStore);
       expect(newsArticle.id).toBe(mockNewsArticleData.id);
       expect(newsArticle.publicationDate).toBe(
         mockNewsArticleData.publicationDate,
@@ -227,12 +270,16 @@ describe('News', () => {
       expect(newsArticle.title).toBe(mockNewsArticleData.title);
       expect(newsArticle.text).toBe(mockNewsArticleData.text);
       expect(newsArticle.image).toBe(mockNewsArticleData.image);
+      expect(newsArticle.onError).toBeTruthy();
     });
   });
 
   describe('update() instance method', () => {
     it('should call API updateNewsArticle() function', async () => {
-      const newsArticle = new News(mockNewsArticleData);
+      const newsArticle = new News(
+        mockNewsArticleData,
+        new NewsStore(new RootStore()),
+      );
       await newsArticle.update(mockUpdatedNewsArticleFields);
       expect(spiedOnApiUpdateNewsArticle).toHaveBeenCalledWith(
         newsArticle.id,
@@ -240,57 +287,43 @@ describe('News', () => {
       );
     });
 
-    it('should be in isLoading state while API is running the request', async () => {
-      const newsArticle = new News(mockNewsArticleData);
-      const updateNewsArticleTask = newsArticle.update(
-        mockUpdatedNewsArticleFields,
-      );
-      expect(newsArticle.isLoading).toBe(true);
-      await updateNewsArticleTask;
-      expect(newsArticle.isLoading).toBe(false);
-    });
-
     describe('given API request resolves successfully', () => {
       it('should update news instance fields', async () => {
-        const newsArticle = new News(mockNewsArticleData);
+        const newsArticle = new News(
+          mockNewsArticleData,
+          new NewsStore(new RootStore()),
+        );
         await newsArticle.update(mockUpdatedNewsArticleFields);
-
-        expect(newsArticle.isLoading).toBe(false);
-        expect(newsArticle.isError).toBe(false);
-        expect(newsArticle.errors.length).toBe(0);
-
         expect(newsArticle.title).toBe(mockUpdatedNewsArticleFields.title);
         expect(newsArticle.text).toBe(mockUpdatedNewsArticleFields.text);
         expect(newsArticle.image).toBe(mockUpdatedNewsArticleFields.image);
       });
-    });
 
-    describe('given API request rejects with an error', () => {
-      const ERROR_CODE = '500';
-      const ERROR_MESSAGE = 'Internal server error';
-
-      beforeEach(() => {
-        spiedOnApiUpdateNewsArticle.mockImplementation(() => {
-          throw new AxiosError(ERROR_MESSAGE, ERROR_CODE);
-        });
-      });
-
-      it('populate errors field with the caught error', async () => {
-        const newsArticle = new News(mockNewsArticleData);
+      it('should push a success alert up to the root store', async () => {
+        const rootStore = new RootStore();
+        const spiedOnRootStoreOnAlert = jest.fn();
+        rootStore.onAlert = spiedOnRootStoreOnAlert;
+        const newsArticle = new News(mockNewsArticleData, rootStore.newsStore);
 
         await newsArticle.update(mockUpdatedNewsArticleFields);
 
-        expect(newsArticle.isLoading).toBe(false);
-        expect(newsArticle.isError).toBe(true);
-        expect(newsArticle.errors.length).toBe(1);
-        expect((newsArticle.errors[0] as AxiosError).code).toBe(ERROR_CODE);
-        expect((newsArticle.errors[0] as AxiosError).message).toBe(
-          ERROR_MESSAGE,
+        expect(spiedOnRootStoreOnAlert).toHaveBeenCalledTimes(1);
+        expect(spiedOnRootStoreOnAlert.mock.calls[0][0].severity).toBe(
+          AlertSeverity.Success,
         );
+      });
+    });
+
+    describe('given API request rejects with an error', () => {
+      beforeEach(() => {
+        spiedOnApiUpdateNewsArticle.mockRejectedValue(appError);
       });
 
       it('should leave news instance data untouched', async () => {
-        const newsArticle = new News(mockNewsArticleData);
+        const newsArticle = new News(
+          mockNewsArticleData,
+          new NewsStore(new RootStore()),
+        );
 
         const originalTitle = newsArticle.title;
         const originalText = newsArticle.text;
@@ -302,26 +335,35 @@ describe('News', () => {
         expect(newsArticle.text).toBe(originalText);
         expect(newsArticle.image).toBe(originalImage);
       });
+
+      it('should push an error alert up to the root store', async () => {
+        const rootStore = new RootStore();
+        const spiedOnRootStoreOnAlert = jest.fn();
+        rootStore.onAlert = spiedOnRootStoreOnAlert;
+        const newsArticle = new News(mockNewsArticleData, rootStore.newsStore);
+
+        await newsArticle.update(mockUpdatedNewsArticleFields);
+
+        expect(spiedOnRootStoreOnAlert).toHaveBeenCalledTimes(1);
+        expect(spiedOnRootStoreOnAlert.mock.calls[0][0].severity).toBe(
+          AlertSeverity.Error,
+        );
+      });
     });
   });
 
   describe('delete() instance method', () => {
     it('should call API deleteNewsArticle() function', async () => {
-      const newsArticle = new News(mockNewsArticleData);
+      const newsArticle = new News(
+        mockNewsArticleData,
+        new NewsStore(new RootStore()),
+      );
       await newsArticle.delete();
       expect(spiedOnApiDeleteNewsArticle).toHaveBeenCalledWith(newsArticle.id);
     });
 
-    it('should be in isLoading state while API is running the request', async () => {
-      const newsArticle = new News(mockNewsArticleData);
-      const deleteNewsArticleTask = newsArticle.delete();
-      expect(newsArticle.isLoading).toBe(true);
-      await deleteNewsArticleTask;
-      expect(newsArticle.isLoading).toBe(false);
-    });
-
     describe('given API request resolves successfully', () => {
-      it('given a news store, should call its onNewsArticleDeleted() method', async () => {
+      it("should call the news store's onNewsArticleDeleted() method", async () => {
         const spiedOnNewsStoreOnNewsArticleDeleted = jest.spyOn(
           NewsStore.prototype,
           'onNewsArticleDeleted',
@@ -332,10 +374,6 @@ describe('News', () => {
         );
         await newsArticle.delete();
 
-        expect(newsArticle.isLoading).toBe(false);
-        expect(newsArticle.isError).toBe(false);
-        expect(newsArticle.errors.length).toBe(0);
-
         expect(spiedOnNewsStoreOnNewsArticleDeleted).toHaveBeenCalledWith(
           newsArticle,
         );
@@ -343,32 +381,11 @@ describe('News', () => {
     });
 
     describe('given API request rejects with an error', () => {
-      const ERROR_CODE = '403';
-      const ERROR_MESSAGE = 'Forbidden';
-
       beforeEach(() => {
-        spiedOnApiDeleteNewsArticle.mockImplementation(() => {
-          throw new AxiosError(ERROR_MESSAGE, ERROR_CODE);
-        });
+        spiedOnApiDeleteNewsArticle.mockRejectedValue(appError);
       });
 
-      it('should populate errors field with the caught error', async () => {
-        const newsArticle = new News(
-          mockNewsArticleData,
-          new NewsStore(new RootStore()),
-        );
-        await newsArticle.delete();
-
-        expect(newsArticle.isLoading).toBe(false);
-        expect(newsArticle.isError).toBe(true);
-        expect(newsArticle.errors.length).toBe(1);
-        expect((newsArticle.errors[0] as AxiosError).code).toBe(ERROR_CODE);
-        expect((newsArticle.errors[0] as AxiosError).message).toBe(
-          ERROR_MESSAGE,
-        );
-      });
-
-      it('given a news store, should not call its onNewsArticleDeleted() method', async () => {
+      it("should not call the news store's onNewsArticleDeleted() method", async () => {
         const spiedOnNewsStoreOnNewsArticleDeleted = jest.spyOn(
           NewsStore.prototype,
           'onNewsArticleDeleted',
@@ -382,12 +399,29 @@ describe('News', () => {
 
         expect(spiedOnNewsStoreOnNewsArticleDeleted).not.toHaveBeenCalled();
       });
+
+      it('should push an error alert up to the root store', async () => {
+        const rootStore = new RootStore();
+        const spiedOnRootStoreOnAlert = jest.fn();
+        rootStore.onAlert = spiedOnRootStoreOnAlert;
+        const newsArticle = new News(mockNewsArticleData, rootStore.newsStore);
+
+        await newsArticle.delete();
+
+        expect(spiedOnRootStoreOnAlert).toHaveBeenCalledTimes(1);
+        expect(spiedOnRootStoreOnAlert.mock.calls[0][0].severity).toBe(
+          AlertSeverity.Error,
+        );
+      });
     });
   });
 
   describe('toJSON instance() method', () => {
     it('should serialize to IUser', () => {
-      const newsArticle = new News(mockNewsArticleData);
+      const newsArticle = new News(
+        mockNewsArticleData,
+        new NewsStore(new RootStore()),
+      );
       expect(JSON.stringify(newsArticle)).toBe(
         JSON.stringify(mockNewsArticleData),
       );

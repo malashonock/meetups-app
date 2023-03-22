@@ -2,7 +2,7 @@ import { FunctionComponent, SVGProps } from 'react';
 import classNames from 'classnames';
 
 import { Typography, IconButton } from 'components';
-import { AlertSeverity } from 'types';
+import { AlertSeverity, Maybe } from 'types';
 
 import styles from './Toast.module.scss';
 import { ReactComponent as ErrorIcon } from './assets/error.svg';
@@ -13,7 +13,7 @@ import { ReactComponent as CloseIcon } from './assets/cross.svg';
 
 interface ToastProps {
   variant: AlertSeverity;
-  title?: string;
+  title?: Maybe<string>;
   description: string;
   onClose: () => void;
 }
@@ -46,7 +46,10 @@ export const Toast = ({
   };
 
   return (
-    <div className={classNames(styles.toast, styles[variant])}>
+    <div
+      className={classNames(styles.toast, styles[variant])}
+      data-testid="toast"
+    >
       <span className={styles.icon}>{renderIcon()}</span>
       <span className={styles.text}>
         {title !== undefined && (
@@ -56,7 +59,11 @@ export const Toast = ({
           {description}
         </Typography>
       </span>
-      <IconButton className={styles.closeBtn} onClick={onClose}>
+      <IconButton
+        className={styles.closeBtn}
+        onClick={onClose}
+        data-testid="btn-close"
+      >
         <CloseIcon />
       </IconButton>
     </div>

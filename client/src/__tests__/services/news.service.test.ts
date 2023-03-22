@@ -27,7 +27,7 @@ import {
 import { apiUrl, RestResolver } from 'utils';
 import { FileWithUrl } from 'types';
 
-// Mock getNewsFromJson
+// Mock getStaticFile
 const mockGetStaticFile = jest.spyOn(StaticApi, 'getStaticFile');
 
 const mockNewsGetSuccess: RestResolver = (req, res, ctx) => {

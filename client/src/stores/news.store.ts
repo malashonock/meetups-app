@@ -89,17 +89,22 @@ export class NewsStore extends Loadable {
   }
 
   onNewsArticleDeleted(deletedArticle: News): void {
-    this.news.splice(this.news.indexOf(deletedArticle), 1);
-
-    this.rootStore.onAlert(
-      new Alert(
-        {
-          severity: AlertSeverity.Success,
-          text: i18n.t('alerts.news.deleted'),
-        },
-        this.rootStore.uiStore,
-      ),
+    const deletedNews: News[] = this.news.splice(
+      this.news.indexOf(deletedArticle),
+      1,
     );
+
+    if (deletedNews.length > 0) {
+      this.rootStore.onAlert(
+        new Alert(
+          {
+            severity: AlertSeverity.Success,
+            text: i18n.t('alerts.news.deleted'),
+          },
+          this.rootStore.uiStore,
+        ),
+      );
+    }
   }
 
   findNewsArticle(id: string): Optional<News> {
@@ -122,13 +127,10 @@ export class News extends Loadable implements INews {
   text: string;
   image: Nullable<FileWithUrl>;
 
-  constructor(newsArticleData: INews, newsStore?: NewsStore) {
+  constructor(newsArticleData: INews, newsStore: Nullable<NewsStore>) {
     super();
     this.setupObservable();
-
-    if (newsStore) {
-      this.newsStore = newsStore;
-    }
+    this.newsStore = newsStore;
 
     ({
       id: this.id,
@@ -165,19 +167,19 @@ export class News extends Loadable implements INews {
         newsArticleData,
       );
       runInAction(() => {
-        Object.assign(this, updatedNewsData);
+        Object.assign(this, new News(updatedNewsData, this.newsStore));
       });
-    });
 
-    this.newsStore?.rootStore.onAlert(
-      new Alert(
-        {
-          severity: AlertSeverity.Success,
-          text: i18n.t('alerts.news.updated'),
-        },
-        this.newsStore.rootStore.uiStore,
-      ),
-    );
+      this.newsStore?.rootStore.onAlert(
+        new Alert(
+          {
+            severity: AlertSeverity.Success,
+            text: i18n.t('alerts.news.updated'),
+          },
+          this.newsStore.rootStore.uiStore,
+        ),
+      );
+    });
   }
 
   async delete(): Promise<void> {

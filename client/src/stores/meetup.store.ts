@@ -95,17 +95,22 @@ export class MeetupStore extends Loadable {
   }
 
   onMeetupDeleted(deletedMeetup: Meetup): void {
-    this.meetups.splice(this.meetups.indexOf(deletedMeetup), 1);
-
-    this.rootStore.onAlert(
-      new Alert(
-        {
-          severity: AlertSeverity.Success,
-          text: i18n.t('alerts.meetup.deleted'),
-        },
-        this.rootStore.uiStore,
-      ),
+    const deletedMeetups: Meetup[] = this.meetups.splice(
+      this.meetups.indexOf(deletedMeetup),
+      1,
     );
+
+    if (deletedMeetups.length > 0) {
+      this.rootStore.onAlert(
+        new Alert(
+          {
+            severity: AlertSeverity.Success,
+            text: i18n.t('alerts.meetup.deleted'),
+          },
+          this.rootStore.uiStore,
+        ),
+      );
+    }
   }
 
   findMeetup(id: string): Optional<Meetup> {
@@ -138,13 +143,10 @@ export class Meetup extends Loadable implements IMeetup {
   imageUrl: Nullable<string>;
   image: Nullable<FileWithUrl> = null;
 
-  constructor(meetupData: IMeetup, meetupStore?: MeetupStore) {
+  constructor(meetupData: IMeetup, meetupStore: Nullable<MeetupStore>) {
     super();
     this.setupObservable();
-
-    if (meetupStore) {
-      this.meetupStore = meetupStore;
-    }
+    this.meetupStore = meetupStore;
 
     ({
       id: this.id,
@@ -236,20 +238,20 @@ export class Meetup extends Loadable implements IMeetup {
     await this.tryLoad(async () => {
       const updatedMeetupData = await API.updateMeetup(this.id, meetupData);
       runInAction(async () => {
-        Object.assign(this, new Meetup(updatedMeetupData));
+        Object.assign(this, new Meetup(updatedMeetupData, this.meetupStore));
         await this.init();
       });
-    });
 
-    this.meetupStore?.rootStore.onAlert(
-      new Alert(
-        {
-          severity: AlertSeverity.Success,
-          text: i18n.t('alerts.meetup.updated'),
-        },
-        this.meetupStore.rootStore.uiStore,
-      ),
-    );
+      this.meetupStore?.rootStore.onAlert(
+        new Alert(
+          {
+            severity: AlertSeverity.Success,
+            text: i18n.t('alerts.meetup.updated'),
+          },
+          this.meetupStore.rootStore.uiStore,
+        ),
+      );
+    });
   }
 
   async approve(): Promise<void> {
@@ -264,19 +266,19 @@ export class Meetup extends Loadable implements IMeetup {
         MeetupStatus.DRAFT,
       );
       runInAction(() => {
-        Object.assign(this, new Meetup(updatedMeetupData));
+        Object.assign(this, new Meetup(updatedMeetupData, this.meetupStore));
       });
-    });
 
-    this.meetupStore?.rootStore.onAlert(
-      new Alert(
-        {
-          severity: AlertSeverity.Success,
-          text: i18n.t('alerts.meetup.approved'),
-        },
-        this.meetupStore.rootStore.uiStore,
-      ),
-    );
+      this.meetupStore?.rootStore.onAlert(
+        new Alert(
+          {
+            severity: AlertSeverity.Success,
+            text: i18n.t('alerts.meetup.approved'),
+          },
+          this.meetupStore.rootStore.uiStore,
+        ),
+      );
+    });
   }
 
   async publish(): Promise<void> {
@@ -295,19 +297,19 @@ export class Meetup extends Loadable implements IMeetup {
         MeetupStatus.CONFIRMED,
       );
       runInAction(() => {
-        Object.assign(this, new Meetup(updatedMeetupData));
+        Object.assign(this, new Meetup(updatedMeetupData, this.meetupStore));
       });
-    });
 
-    this.meetupStore?.rootStore.onAlert(
-      new Alert(
-        {
-          severity: AlertSeverity.Success,
-          text: i18n.t('alerts.meetup.published'),
-        },
-        this.meetupStore.rootStore.uiStore,
-      ),
-    );
+      this.meetupStore?.rootStore.onAlert(
+        new Alert(
+          {
+            severity: AlertSeverity.Success,
+            text: i18n.t('alerts.meetup.published'),
+          },
+          this.meetupStore.rootStore.uiStore,
+        ),
+      );
+    });
   }
 
   get actor(): Maybe<FullUser> {
@@ -354,17 +356,17 @@ export class Meetup extends Loadable implements IMeetup {
       runInAction(() => {
         this.votedUsers.unshift(new User(this.actor!));
       });
-    });
 
-    this.meetupStore?.rootStore.onAlert(
-      new Alert(
-        {
-          severity: AlertSeverity.Success,
-          text: i18n.t('alerts.meetup.votedFor'),
-        },
-        this.meetupStore.rootStore.uiStore,
-      ),
-    );
+      this.meetupStore?.rootStore.onAlert(
+        new Alert(
+          {
+            severity: AlertSeverity.Success,
+            text: i18n.t('alerts.meetup.votedFor'),
+          },
+          this.meetupStore.rootStore.uiStore,
+        ),
+      );
+    });
   }
 
   async withdrawVote(): Promise<void> {
@@ -383,17 +385,17 @@ export class Meetup extends Loadable implements IMeetup {
           (votedUser: User): boolean => votedUser.id !== this.actor!.id,
         );
       });
-    });
 
-    this.meetupStore?.rootStore.onAlert(
-      new Alert(
-        {
-          severity: AlertSeverity.Success,
-          text: i18n.t('alerts.meetup.unvotedFor'),
-        },
-        this.meetupStore.rootStore.uiStore,
-      ),
-    );
+      this.meetupStore?.rootStore.onAlert(
+        new Alert(
+          {
+            severity: AlertSeverity.Success,
+            text: i18n.t('alerts.meetup.unvotedFor'),
+          },
+          this.meetupStore.rootStore.uiStore,
+        ),
+      );
+    });
   }
 
   get hasLoggedUserJoined(): boolean {
@@ -410,8 +412,8 @@ export class Meetup extends Loadable implements IMeetup {
 
   async join(): Promise<void> {
     if (
-      this.status !== MeetupStatus.CONFIRMED &&
-      (!this.start || (this.start && !isPast(this.start)))
+      this.status !== MeetupStatus.CONFIRMED ||
+      (this.start && isPast(this.start))
     ) {
       return;
     }
@@ -425,23 +427,23 @@ export class Meetup extends Loadable implements IMeetup {
       runInAction(() => {
         this.participants.unshift(new User(this.actor!));
       });
-    });
 
-    this.meetupStore?.rootStore.onAlert(
-      new Alert(
-        {
-          severity: AlertSeverity.Success,
-          text: i18n.t('alerts.meetup.joined'),
-        },
-        this.meetupStore.rootStore.uiStore,
-      ),
-    );
+      this.meetupStore?.rootStore.onAlert(
+        new Alert(
+          {
+            severity: AlertSeverity.Success,
+            text: i18n.t('alerts.meetup.joined'),
+          },
+          this.meetupStore.rootStore.uiStore,
+        ),
+      );
+    });
   }
 
   async cancelJoin(): Promise<void> {
     if (
-      this.status !== MeetupStatus.CONFIRMED &&
-      (!this.start || (this.start && !isPast(this.start)))
+      this.status !== MeetupStatus.CONFIRMED ||
+      (this.start && isPast(this.start))
     ) {
       return;
     }
@@ -457,17 +459,17 @@ export class Meetup extends Loadable implements IMeetup {
           (participant: User): boolean => participant.id !== this.actor!.id,
         );
       });
-    });
 
-    this.meetupStore?.rootStore.onAlert(
-      new Alert(
-        {
-          severity: AlertSeverity.Success,
-          text: i18n.t('alerts.meetup.unjoined'),
-        },
-        this.meetupStore.rootStore.uiStore,
-      ),
-    );
+      this.meetupStore?.rootStore.onAlert(
+        new Alert(
+          {
+            severity: AlertSeverity.Success,
+            text: i18n.t('alerts.meetup.unjoined'),
+          },
+          this.meetupStore.rootStore.uiStore,
+        ),
+      );
+    });
   }
 
   async delete(): Promise<void> {

@@ -35,7 +35,7 @@ export const ConfirmDialog = ({
 
   return (
     <Modal show={isOpen} onClose={onClose}>
-      <div className={styles.dialog}>
+      <div className={styles.dialog} data-testid="confirm-dialog">
         <Typography
           className={styles.prompt}
           component={TypographyComponent.Paragraph}
@@ -44,18 +44,18 @@ export const ConfirmDialog = ({
         </Typography>
         <div className={styles.actionButtons}>
           <Button
+            id="confirm-button"
             className={classNames(styles.actionBtn, styles.confirmBtn)}
             variant={ButtonVariant.Primary}
             onClick={confirmAndClose}
-            data-testid="confirm-button"
           >
             {confirmBtnLabel ?? 'OK'}
           </Button>
           <Button
+            id="cancel-button"
             className={classNames(styles.actionBtn, styles.cancelBtn)}
             variant={ButtonVariant.Default}
             onClick={onClose}
-            data-testid="cancel-button"
           >
             {t('formButtons.cancel')}
           </Button>

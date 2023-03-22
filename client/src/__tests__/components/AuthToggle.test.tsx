@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import { AuthToggle } from 'components';
-import { AuthStore, RootStore, UserStore } from 'stores';
+import { AuthStore, RootStore } from 'stores';
 import { mockFullUser as mockedLoggedUser } from 'model/__fakes__';
 import { useAuthStore } from 'hooks';
 

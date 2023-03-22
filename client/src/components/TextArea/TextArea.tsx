@@ -51,7 +51,7 @@ export const TextArea = ({
         className={classNames(nativeHtmlProps.className, styles.textArea, {
           [styles.showCharCounter]: showCharCounter,
         })}
-        data-testid="text-area"
+        data-testid={`text-area-${nativeHtmlProps.name}`}
       ></textarea>
       {showCharCounter && maxCharCount && maxCharCount > 0 && (
         <div className={styles.charCounter} data-testid="char-counter">

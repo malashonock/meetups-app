@@ -32,7 +32,7 @@ export const Modal = ({
 
   return show ? (
     <Portal wrapperId="modal-root">
-      <div className={styles.overlay}>
+      <div className={styles.overlay} data-testid="modal-overlay">
         <div className={styles.content}>{children}</div>
       </div>
     </Portal>

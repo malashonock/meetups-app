@@ -33,7 +33,9 @@ export class UserStore extends Loadable {
     });
   }
 
-  async init(loggedUser: Nullable<FullUser>): Promise<void> {
+  async init(): Promise<void> {
+    const { loggedUser } = this.authStore;
+
     if (!loggedUser) {
       this.users = [];
       return;

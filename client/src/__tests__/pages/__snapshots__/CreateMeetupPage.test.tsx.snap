@@ -86,7 +86,7 @@ exports[`CreateMeetupPage Step 1 - required fields should match snapshot 1`] = `
                 </label>
                 <input
                   class="input default"
-                  data-testid="text-input"
+                  data-testid="text-input-subject"
                   id="subject"
                   name="subject"
                   type="text"
@@ -103,7 +103,7 @@ exports[`CreateMeetupPage Step 1 - required fields should match snapshot 1`] = `
                   formFields.meetup.speakers.label
                 </label>
                 <div
-                  data-testid="select-field"
+                  data-testid="select-speakers"
                 >
                   <div
                     class=" css-b62m3t-container"
@@ -204,7 +204,7 @@ exports[`CreateMeetupPage Step 1 - required fields should match snapshot 1`] = `
                 >
                   <textarea
                     class="input default textArea"
-                    data-testid="text-area"
+                    data-testid="text-area-excerpt"
                     id="excerpt"
                     name="excerpt"
                     rows="1"
@@ -218,6 +218,7 @@ exports[`CreateMeetupPage Step 1 - required fields should match snapshot 1`] = `
             >
               <button
                 class="actionButton back button default"
+                data-testid="btn-back"
                 id="btn-back"
                 type="button"
               >
@@ -225,6 +226,7 @@ exports[`CreateMeetupPage Step 1 - required fields should match snapshot 1`] = `
               </button>
               <button
                 class="actionButton next button primary"
+                data-testid="btn-next"
                 disabled=""
                 id="btn-next"
                 type="submit"
@@ -398,7 +400,7 @@ exports[`CreateMeetupPage Step 2 - optional fields should match snapshot 1`] = `
                 </label>
                 <input
                   class="input success"
-                  data-testid="text-input"
+                  data-testid="text-input-place"
                   id="place"
                   name="place"
                   type="text"
@@ -464,6 +466,7 @@ exports[`CreateMeetupPage Step 2 - optional fields should match snapshot 1`] = `
             >
               <button
                 class="actionButton back button default"
+                data-testid="btn-back"
                 id="btn-back"
                 type="submit"
               >
@@ -471,6 +474,7 @@ exports[`CreateMeetupPage Step 2 - optional fields should match snapshot 1`] = `
               </button>
               <button
                 class="actionButton submit button primary"
+                data-testid="btn-create"
                 id="btn-create"
                 type="submit"
               >

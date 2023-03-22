@@ -121,7 +121,7 @@ export class AuthStore extends Loadable {
   }
 
   async onLoginChanged(): Promise<void> {
-    await this.userStore.init(this.loggedUser);
+    await this.userStore.init();
   }
 
   toJSON() {

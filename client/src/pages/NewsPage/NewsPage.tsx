@@ -11,7 +11,7 @@ import {
   TypographyComponent,
 } from 'components';
 import { NotFoundPage } from 'pages';
-import { useNewsStore } from 'hooks';
+import { useAuthStore, useNewsStore } from 'hooks';
 import { News } from 'stores';
 
 import styles from './NewsPage.module.scss';
@@ -19,6 +19,7 @@ import styles from './NewsPage.module.scss';
 export const NewsPage = observer(() => {
   const newsStore = useNewsStore();
   const { news } = newsStore;
+  const { loggedUser } = useAuthStore();
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -37,14 +38,16 @@ export const NewsPage = observer(() => {
         >
           {t('news')}
         </Typography>
-        <Button
-          id="btn-create-news"
-          variant={ButtonVariant.Secondary}
-          onClick={handleCreateNews}
-          className={styles.createNewsBtn}
-        >
-          {t('newsPage.createNewsBtn')}
-        </Button>
+        {loggedUser?.isAdmin && (
+          <Button
+            id="btn-create-news"
+            variant={ButtonVariant.Secondary}
+            onClick={handleCreateNews}
+            className={styles.createNewsBtn}
+          >
+            {t('newsPage.createNewsBtn')}
+          </Button>
+        )}
       </div>
       {newsStore.isLoading ? (
         <LoadingSpinner text={t('loadingText.news')} />

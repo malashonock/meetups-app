@@ -1,6 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { NewsCard } from 'components';
-import { News } from 'stores';
+import { INews } from 'model';
+import { News, NewsStore, RootStore } from 'stores';
 import { getFileWithUrl } from 'utils';
 import testImage from './assets/news-img.jpg';
 
@@ -21,7 +22,9 @@ const Template: ComponentStory<typeof NewsCard> = (args) => (
   </div>
 );
 
-const newsArticle: News = new News({
+const newsStore = new NewsStore(new RootStore());
+
+const newsArticleData: INews = {
   id: 'AAA-AAA',
   publicationDate: new Date(),
   title: 'Our Vilnius office celebrates 1 year!',
@@ -29,7 +32,9 @@ const newsArticle: News = new News({
     '🙌 The SaM Solutions office in #Vilnius celebrates a one-year anniversary.' +
     ' 🎉 Congratulations to our colleagues! Keep it up! More new victories and achievements ahead. 💪 #SaMSolutions',
   image: getFileWithUrl(new File(['testImage'], 'news-img.jpg'), testImage),
-});
+};
+
+const newsArticle: News = new News(newsArticleData, newsStore);
 
 export const Default = Template.bind({});
 

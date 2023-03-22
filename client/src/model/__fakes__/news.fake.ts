@@ -78,15 +78,19 @@ export const mockNewsArticle2: News = new News(
 
 export const mockNews: News[] = [mockNewsArticle, mockNewsArticle2];
 
-export const generateNewsArticle = (): News =>
-  new News({
+export const generateNewsArticle = (newsStore?: NewsStore): News => {
+  const newsArticleData: INews = {
     id: faker.datatype.uuid(),
     publicationDate: faker.date.recent(),
     title: faker.company.catchPhrase(),
     text: faker.lorem.paragraph(),
     image: mockImageWithUrl,
-  });
+  };
+
+  return new News(newsArticleData, newsStore ?? new NewsStore(new RootStore()));
+};
 
 export const generateNews = (count: number): News[] => {
-  return generateArray<News>(count, generateNewsArticle);
+  const newsStore = new NewsStore(new RootStore());
+  return generateArray<News>(count, () => generateNewsArticle(newsStore));
 };

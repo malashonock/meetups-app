@@ -15,7 +15,14 @@ import {
 import { NotFoundPage } from 'pages';
 import { MeetupStatus } from 'model';
 import { isPast, parseDate } from 'utils';
-import { useAuthStore, useMeetup, useLocale, useConfirmDialog } from 'hooks';
+import {
+  useAuthStore,
+  useMeetupStore,
+  useMeetup,
+  useLocale,
+  useConfirmDialog,
+} from 'hooks';
+import { Optional } from 'types';
 
 import styles from './ViewMeetupPage.module.scss';
 import defaultImage from 'assets/images/default-image.jpg';
@@ -26,18 +33,34 @@ import pin from './assets/pin.svg';
 export const ViewMeetupPage = observer(() => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const meetupStore = useMeetupStore();
   const meetup = useMeetup(id);
   const { i18n, t } = useTranslation();
   const [locale] = useLocale();
   const { loggedUser } = useAuthStore();
   const confirm = useConfirmDialog();
 
-  if (!meetup || meetup.isLoading) {
+  let isLoading: boolean;
+  let isError: Optional<boolean>;
+
+  isLoading = meetup?.isLoading ?? meetupStore.isLoading;
+
+  if (meetupStore && meetupStore.isInitialized && !meetup) {
+    isError = true;
+  } else {
+    isError = meetup?.isError;
+  }
+
+  if (isLoading || meetup?.isInitialized === false) {
     return <LoadingSpinner text={t('loadingText.meetup')} />;
   }
 
-  if (meetup.isError) {
+  if (isError) {
     return <NotFoundPage />;
+  }
+
+  if (!meetup) {
+    return null;
   }
 
   const {
@@ -110,7 +133,7 @@ export const ViewMeetupPage = observer(() => {
           >
             {t('viewMeetupPage.topic')}
           </Typography>
-          <div className={styles.dataContent}>
+          <div className={styles.dataContent} data-testid="heading">
             <Typography
               className={styles.meetupHeading}
               component={TypographyComponent.Heading2}
@@ -124,14 +147,14 @@ export const ViewMeetupPage = observer(() => {
 
     return (
       <div className={styles.headerData}>
-        <figure className={styles.imageWrapper}>
+        <figure className={styles.imageWrapper} data-testid="image">
           <img
             className={styles.image}
             src={image?.url ?? defaultImage}
             alt={t('viewMeetupPage.imgAlt') || 'Meetup image'}
           />
         </figure>
-        <div className={styles.headerDataContent}>
+        <div className={styles.headerDataContent} data-testid="heading">
           <Typography
             className={styles.meetupHeading}
             component={TypographyComponent.Heading2}
@@ -183,7 +206,7 @@ export const ViewMeetupPage = observer(() => {
             [styles.notFilledOutline]: !canPublish,
           })}
         >
-          <div id="date" className={styles.info}>
+          <div id="date" className={styles.info} data-testid="date">
             <img
               className={styles.image}
               src={calendar}
@@ -193,7 +216,7 @@ export const ViewMeetupPage = observer(() => {
               {date || '—'}
             </Typography>
           </div>
-          <div id="time" className={styles.info}>
+          <div id="time" className={styles.info} data-testid="time">
             <img
               className={styles.image}
               src={clock}
@@ -203,7 +226,7 @@ export const ViewMeetupPage = observer(() => {
               {time || '—'}
             </Typography>
           </div>
-          <div id="location" className={styles.info}>
+          <div id="location" className={styles.info} data-testid="location">
             <img
               className={styles.image}
               src={pin}
@@ -223,28 +246,38 @@ export const ViewMeetupPage = observer(() => {
       return null;
     }
 
+    if (status === MeetupStatus.REQUEST) {
+      return (
+        <div className={styles.data} data-testid="author">
+          <Typography
+            component={TypographyComponent.Span}
+            className={styles.dataName}
+          >
+            {t('viewMeetupPage.author')}
+          </Typography>
+          <div className={styles.dataContent}>
+            <UserPreview user={author} />
+          </div>
+        </div>
+      );
+    }
+
     return (
-      <div className={styles.data}>
+      <div className={styles.data} data-testid="speakers">
         <Typography
           component={TypographyComponent.Span}
           className={styles.dataName}
         >
-          {status === MeetupStatus.REQUEST
-            ? t('viewMeetupPage.author')
-            : t('viewMeetupPage.speakers')}
+          {t('viewMeetupPage.speakers')}
         </Typography>
         <div className={styles.dataContent}>
-          {status === MeetupStatus.REQUEST ? (
-            author !== undefined && <UserPreview user={author} />
-          ) : (
-            <div className={styles.speakerWrapper}>
-              {speakers.length === 1 ? (
-                <UserPreview user={speakers[0]} />
-              ) : (
-                <AvatarGroup users={speakers} />
-              )}
-            </div>
-          )}
+          <div className={styles.speakerWrapper}>
+            {speakers.length === 1 ? (
+              <UserPreview user={speakers[0]} />
+            ) : (
+              <AvatarGroup users={speakers} />
+            )}
+          </div>
         </div>
       </div>
     );
@@ -253,7 +286,7 @@ export const ViewMeetupPage = observer(() => {
   const renderSupporters = () => {
     if (status === MeetupStatus.REQUEST) {
       return votedUsers?.length > 0 ? (
-        <div className={styles.data}>
+        <div className={styles.data} data-testid="voted-users">
           <Typography
             component={TypographyComponent.Span}
             className={styles.dataName}
@@ -269,7 +302,7 @@ export const ViewMeetupPage = observer(() => {
 
     if (status === MeetupStatus.CONFIRMED) {
       return participants?.length > 0 ? (
-        <div className={styles.data}>
+        <div className={styles.data} data-testid="participants">
           <Typography
             component={TypographyComponent.Span}
             className={styles.dataName}
@@ -397,7 +430,7 @@ export const ViewMeetupPage = observer(() => {
         {renderHeader()}
         {renderTimePlace()}
         {renderSpeakers()}
-        <div className={styles.data}>
+        <div className={styles.data} data-testid="description">
           <Typography
             component={TypographyComponent.Span}
             className={styles.dataName}

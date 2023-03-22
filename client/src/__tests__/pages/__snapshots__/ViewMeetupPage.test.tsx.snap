@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ViewMeetupPage after approval & publishing given a user is logged in should match snapshot 1`] = `
+exports[`ViewMeetupPage after approval & publishing given a user with admin rights is logged in should match snapshot 1`] = `
 <DocumentFragment>
   <section
     class="container CONFIRMED"
@@ -18,6 +18,7 @@ exports[`ViewMeetupPage after approval & publishing given a user is logged in sh
       >
         <figure
           class="imageWrapper"
+          data-testid="image"
         >
           <img
             alt="viewMeetupPage.imgAlt"
@@ -27,6 +28,7 @@ exports[`ViewMeetupPage after approval & publishing given a user is logged in sh
         </figure>
         <div
           class="headerDataContent"
+          data-testid="heading"
         >
           <h2
             class="typography h2 meetupHeading"
@@ -48,6 +50,7 @@ exports[`ViewMeetupPage after approval & publishing given a user is logged in sh
         >
           <div
             class="info"
+            data-testid="date"
             id="date"
           >
             <img
@@ -63,6 +66,7 @@ exports[`ViewMeetupPage after approval & publishing given a user is logged in sh
           </div>
           <div
             class="info"
+            data-testid="time"
             id="time"
           >
             <img
@@ -78,6 +82,7 @@ exports[`ViewMeetupPage after approval & publishing given a user is logged in sh
           </div>
           <div
             class="info"
+            data-testid="location"
             id="location"
           >
             <img
@@ -95,6 +100,7 @@ exports[`ViewMeetupPage after approval & publishing given a user is logged in sh
       </div>
       <div
         class="data"
+        data-testid="speakers"
       >
         <span
           class="typography span dataName"
@@ -131,6 +137,7 @@ exports[`ViewMeetupPage after approval & publishing given a user is logged in sh
       </div>
       <div
         class="data"
+        data-testid="description"
       >
         <span
           class="typography span dataName"
@@ -149,6 +156,7 @@ exports[`ViewMeetupPage after approval & publishing given a user is logged in sh
       </div>
       <div
         class="data"
+        data-testid="participants"
       >
         <span
           class="typography span dataName"
@@ -169,6 +177,596 @@ exports[`ViewMeetupPage after approval & publishing given a user is logged in sh
       >
         <button
           class="actionButton backBtn button default"
+          data-testid="btn-back"
+          id="btn-back"
+        >
+          formButtons.back
+        </button>
+        <div
+          class="actionsWrapper"
+        />
+      </div>
+    </div>
+  </section>
+</DocumentFragment>
+`;
+
+exports[`ViewMeetupPage after approval & publishing given a user with non-admin rights is logged in given meetup start has not passed Join Meetup toggler given the logged user already joined should match snapshot 1`] = `
+<DocumentFragment>
+  <section
+    class="container CONFIRMED"
+  >
+    <h1
+      class="typography h1 heading"
+    >
+      viewMeetupPage.title
+    </h1>
+    <div
+      class="dataWrapper"
+    >
+      <div
+        class="headerData"
+      >
+        <figure
+          class="imageWrapper"
+          data-testid="image"
+        >
+          <img
+            alt="viewMeetupPage.imgAlt"
+            class="image"
+            src="default-image.jpg"
+          />
+        </figure>
+        <div
+          class="headerDataContent"
+          data-testid="heading"
+        >
+          <h2
+            class="typography h2 meetupHeading"
+          >
+            Test meetup topic
+          </h2>
+        </div>
+      </div>
+      <div
+        class="data"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.timePlaceInfo.valid
+        </span>
+        <div
+          class="dataContent timePlaceInfo"
+        >
+          <div
+            class="info"
+            data-testid="date"
+            id="date"
+          >
+            <img
+              alt="viewMeetupPage.date"
+              class="image"
+              src="calendar.svg"
+            />
+            <span
+              class="typography span"
+            >
+              r, 1 января, 2999
+            </span>
+          </div>
+          <div
+            class="info"
+            data-testid="time"
+            id="time"
+          >
+            <img
+              alt="viewMeetupPage.time"
+              class="image"
+              src="clock.svg"
+            />
+            <span
+              class="typography span"
+            >
+              00:00 — 02:00
+            </span>
+          </div>
+          <div
+            class="info"
+            data-testid="location"
+            id="location"
+          >
+            <img
+              alt="viewMeetupPage.location"
+              class="image"
+              src="pin.svg"
+            />
+            <span
+              class="typography span"
+            >
+              room 123
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        class="data"
+        data-testid="speakers"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.speakers
+        </span>
+        <div
+          class="dataContent"
+        >
+          <div
+            class="speakerWrapper"
+          >
+            <div
+              class="user default"
+              data-testid="user-preview"
+            >
+              <div
+                class="avatar"
+              >
+                <span
+                  class="typography span initials"
+                >
+                  JD
+                </span>
+              </div>
+              <span
+                class="typography span name noWrap"
+              >
+                John Doe
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="data"
+        data-testid="description"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.description
+        </span>
+        <div
+          class="dataContent"
+        >
+          <p
+            class="typography p excerpt"
+          >
+            Test meetup description
+          </p>
+        </div>
+      </div>
+      <div
+        class="data"
+        data-testid="participants"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.participants
+        </span>
+        <div
+          class="dataContent"
+        >
+          <ul
+            class="container stacked"
+            style="--gap: 10px;"
+          />
+        </div>
+      </div>
+      <div
+        class="dataContent actions"
+      >
+        <button
+          class="actionButton backBtn button default"
+          data-testid="btn-back"
+          id="btn-back"
+        >
+          formButtons.back
+        </button>
+        <div
+          class="actionsWrapper"
+        >
+          <button
+            class="actionButton toggleJoinBtn button secondary"
+            data-testid="btn-join-toggle"
+            id="btn-join-toggle"
+          >
+            viewMeetupPage.unjoinMeetupBtn
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+</DocumentFragment>
+`;
+
+exports[`ViewMeetupPage after approval & publishing given a user with non-admin rights is logged in given meetup start has not passed Join Meetup toggler given the logged user has not yet joined should match snapshot 1`] = `
+<DocumentFragment>
+  <section
+    class="container CONFIRMED"
+  >
+    <h1
+      class="typography h1 heading"
+    >
+      viewMeetupPage.title
+    </h1>
+    <div
+      class="dataWrapper"
+    >
+      <div
+        class="headerData"
+      >
+        <figure
+          class="imageWrapper"
+          data-testid="image"
+        >
+          <img
+            alt="viewMeetupPage.imgAlt"
+            class="image"
+            src="default-image.jpg"
+          />
+        </figure>
+        <div
+          class="headerDataContent"
+          data-testid="heading"
+        >
+          <h2
+            class="typography h2 meetupHeading"
+          >
+            Test meetup topic
+          </h2>
+        </div>
+      </div>
+      <div
+        class="data"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.timePlaceInfo.valid
+        </span>
+        <div
+          class="dataContent timePlaceInfo"
+        >
+          <div
+            class="info"
+            data-testid="date"
+            id="date"
+          >
+            <img
+              alt="viewMeetupPage.date"
+              class="image"
+              src="calendar.svg"
+            />
+            <span
+              class="typography span"
+            >
+              r, 1 января, 2999
+            </span>
+          </div>
+          <div
+            class="info"
+            data-testid="time"
+            id="time"
+          >
+            <img
+              alt="viewMeetupPage.time"
+              class="image"
+              src="clock.svg"
+            />
+            <span
+              class="typography span"
+            >
+              00:00 — 02:00
+            </span>
+          </div>
+          <div
+            class="info"
+            data-testid="location"
+            id="location"
+          >
+            <img
+              alt="viewMeetupPage.location"
+              class="image"
+              src="pin.svg"
+            />
+            <span
+              class="typography span"
+            >
+              room 123
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        class="data"
+        data-testid="speakers"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.speakers
+        </span>
+        <div
+          class="dataContent"
+        >
+          <div
+            class="speakerWrapper"
+          >
+            <div
+              class="user default"
+              data-testid="user-preview"
+            >
+              <div
+                class="avatar"
+              >
+                <span
+                  class="typography span initials"
+                >
+                  JD
+                </span>
+              </div>
+              <span
+                class="typography span name noWrap"
+              >
+                John Doe
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="data"
+        data-testid="description"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.description
+        </span>
+        <div
+          class="dataContent"
+        >
+          <p
+            class="typography p excerpt"
+          >
+            Test meetup description
+          </p>
+        </div>
+      </div>
+      <div
+        class="data"
+        data-testid="participants"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.participants
+        </span>
+        <div
+          class="dataContent"
+        >
+          <ul
+            class="container stacked"
+            style="--gap: 10px;"
+          />
+        </div>
+      </div>
+      <div
+        class="dataContent actions"
+      >
+        <button
+          class="actionButton backBtn button default"
+          data-testid="btn-back"
+          id="btn-back"
+        >
+          formButtons.back
+        </button>
+        <div
+          class="actionsWrapper"
+        >
+          <button
+            class="actionButton toggleJoinBtn button primary"
+            data-testid="btn-join-toggle"
+            id="btn-join-toggle"
+          >
+            viewMeetupPage.joinMeetupBtn
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+</DocumentFragment>
+`;
+
+exports[`ViewMeetupPage after approval & publishing given a user with non-admin rights is logged in given meetup start has passed should match snapshot 1`] = `
+<DocumentFragment>
+  <section
+    class="container CONFIRMED"
+  >
+    <h1
+      class="typography h1 heading"
+    >
+      viewMeetupPage.title
+    </h1>
+    <div
+      class="dataWrapper"
+    >
+      <div
+        class="headerData"
+      >
+        <figure
+          class="imageWrapper"
+          data-testid="image"
+        >
+          <img
+            alt="viewMeetupPage.imgAlt"
+            class="image"
+            src="http://localhost/test.jpg"
+          />
+        </figure>
+        <div
+          class="headerDataContent"
+          data-testid="heading"
+        >
+          <h2
+            class="typography h2 meetupHeading"
+          >
+            Test meetup topic
+          </h2>
+        </div>
+      </div>
+      <div
+        class="data"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.timePlaceInfo.valid
+        </span>
+        <div
+          class="dataContent timePlaceInfo"
+        >
+          <div
+            class="info"
+            data-testid="date"
+            id="date"
+          >
+            <img
+              alt="viewMeetupPage.date"
+              class="image"
+              src="calendar.svg"
+            />
+            <span
+              class="typography span"
+            >
+              f, 15 марта, 2099
+            </span>
+          </div>
+          <div
+            class="info"
+            data-testid="time"
+            id="time"
+          >
+            <img
+              alt="viewMeetupPage.time"
+              class="image"
+              src="clock.svg"
+            />
+            <span
+              class="typography span"
+            >
+              14:00 — 15:30
+            </span>
+          </div>
+          <div
+            class="info"
+            data-testid="location"
+            id="location"
+          >
+            <img
+              alt="viewMeetupPage.location"
+              class="image"
+              src="pin.svg"
+            />
+            <span
+              class="typography span"
+            >
+              room 123
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        class="data"
+        data-testid="speakers"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.speakers
+        </span>
+        <div
+          class="dataContent"
+        >
+          <div
+            class="speakerWrapper"
+          >
+            <div
+              class="user default"
+              data-testid="user-preview"
+            >
+              <div
+                class="avatar"
+              >
+                <span
+                  class="typography span initials"
+                >
+                  JD
+                </span>
+              </div>
+              <span
+                class="typography span name noWrap"
+              >
+                John Doe
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="data"
+        data-testid="description"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.description
+        </span>
+        <div
+          class="dataContent"
+        >
+          <p
+            class="typography p excerpt"
+          >
+            Test meetup description
+          </p>
+        </div>
+      </div>
+      <div
+        class="data"
+        data-testid="participants"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.participants
+        </span>
+        <div
+          class="dataContent"
+        >
+          <ul
+            class="container stacked"
+            style="--gap: 10px;"
+          />
+        </div>
+      </div>
+      <div
+        class="dataContent actions"
+      >
+        <button
+          class="actionButton backBtn button default"
+          data-testid="btn-back"
           id="btn-back"
         >
           formButtons.back
@@ -200,6 +798,7 @@ exports[`ViewMeetupPage after approval & publishing given no user is logged in s
       >
         <figure
           class="imageWrapper"
+          data-testid="image"
         >
           <img
             alt="viewMeetupPage.imgAlt"
@@ -209,6 +808,7 @@ exports[`ViewMeetupPage after approval & publishing given no user is logged in s
         </figure>
         <div
           class="headerDataContent"
+          data-testid="heading"
         >
           <h2
             class="typography h2 meetupHeading"
@@ -230,6 +830,7 @@ exports[`ViewMeetupPage after approval & publishing given no user is logged in s
         >
           <div
             class="info"
+            data-testid="date"
             id="date"
           >
             <img
@@ -245,6 +846,7 @@ exports[`ViewMeetupPage after approval & publishing given no user is logged in s
           </div>
           <div
             class="info"
+            data-testid="time"
             id="time"
           >
             <img
@@ -260,6 +862,7 @@ exports[`ViewMeetupPage after approval & publishing given no user is logged in s
           </div>
           <div
             class="info"
+            data-testid="location"
             id="location"
           >
             <img
@@ -277,6 +880,7 @@ exports[`ViewMeetupPage after approval & publishing given no user is logged in s
       </div>
       <div
         class="data"
+        data-testid="speakers"
       >
         <span
           class="typography span dataName"
@@ -313,6 +917,7 @@ exports[`ViewMeetupPage after approval & publishing given no user is logged in s
       </div>
       <div
         class="data"
+        data-testid="description"
       >
         <span
           class="typography span dataName"
@@ -331,6 +936,7 @@ exports[`ViewMeetupPage after approval & publishing given no user is logged in s
       </div>
       <div
         class="data"
+        data-testid="participants"
       >
         <span
           class="typography span dataName"
@@ -351,6 +957,7 @@ exports[`ViewMeetupPage after approval & publishing given no user is logged in s
       >
         <button
           class="actionButton backBtn button default"
+          data-testid="btn-back"
           id="btn-back"
         >
           formButtons.back
@@ -361,7 +968,7 @@ exports[`ViewMeetupPage after approval & publishing given no user is logged in s
 </DocumentFragment>
 `;
 
-exports[`ViewMeetupPage after topic approval, but before publishing given a user is logged in should match snapshot 1`] = `
+exports[`ViewMeetupPage after topic approval, but before publishing given a user with admin rights is logged in should match snapshot 1`] = `
 <DocumentFragment>
   <section
     class="container DRAFT"
@@ -379,6 +986,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given a user
       >
         <figure
           class="imageWrapper"
+          data-testid="image"
         >
           <img
             alt="viewMeetupPage.imgAlt"
@@ -388,6 +996,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given a user
         </figure>
         <div
           class="headerDataContent"
+          data-testid="heading"
         >
           <h2
             class="typography h2 meetupHeading"
@@ -409,6 +1018,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given a user
         >
           <div
             class="info"
+            data-testid="date"
             id="date"
           >
             <img
@@ -424,6 +1034,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given a user
           </div>
           <div
             class="info"
+            data-testid="time"
             id="time"
           >
             <img
@@ -439,6 +1050,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given a user
           </div>
           <div
             class="info"
+            data-testid="location"
             id="location"
           >
             <img
@@ -456,6 +1068,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given a user
       </div>
       <div
         class="data"
+        data-testid="speakers"
       >
         <span
           class="typography span dataName"
@@ -492,6 +1105,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given a user
       </div>
       <div
         class="data"
+        data-testid="description"
       >
         <span
           class="typography span dataName"
@@ -513,6 +1127,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given a user
       >
         <button
           class="actionButton backBtn button default"
+          data-testid="btn-back"
           id="btn-back"
         >
           formButtons.back
@@ -522,11 +1137,185 @@ exports[`ViewMeetupPage after topic approval, but before publishing given a user
         >
           <button
             class="actionButton publishBtn button primary"
+            data-testid="btn-publish"
             id="btn-publish"
           >
             formButtons.publish
           </button>
         </div>
+      </div>
+    </div>
+  </section>
+</DocumentFragment>
+`;
+
+exports[`ViewMeetupPage after topic approval, but before publishing given a user with non-admin rights is logged in should match snapshot 1`] = `
+<DocumentFragment>
+  <section
+    class="container DRAFT"
+  >
+    <h1
+      class="typography h1 heading"
+    >
+      viewMeetupPage.title
+    </h1>
+    <div
+      class="dataWrapper"
+    >
+      <div
+        class="headerData"
+      >
+        <figure
+          class="imageWrapper"
+          data-testid="image"
+        >
+          <img
+            alt="viewMeetupPage.imgAlt"
+            class="image"
+            src="http://localhost/test.jpg"
+          />
+        </figure>
+        <div
+          class="headerDataContent"
+          data-testid="heading"
+        >
+          <h2
+            class="typography h2 meetupHeading"
+          >
+            Test meetup topic
+          </h2>
+        </div>
+      </div>
+      <div
+        class="data"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.timePlaceInfo.valid
+        </span>
+        <div
+          class="dataContent timePlaceInfo"
+        >
+          <div
+            class="info"
+            data-testid="date"
+            id="date"
+          >
+            <img
+              alt="viewMeetupPage.date"
+              class="image"
+              src="calendar.svg"
+            />
+            <span
+              class="typography span"
+            >
+              f, 15 марта, 2099
+            </span>
+          </div>
+          <div
+            class="info"
+            data-testid="time"
+            id="time"
+          >
+            <img
+              alt="viewMeetupPage.time"
+              class="image"
+              src="clock.svg"
+            />
+            <span
+              class="typography span"
+            >
+              14:00 — 15:30
+            </span>
+          </div>
+          <div
+            class="info"
+            data-testid="location"
+            id="location"
+          >
+            <img
+              alt="viewMeetupPage.location"
+              class="image"
+              src="pin.svg"
+            />
+            <span
+              class="typography span"
+            >
+              room 123
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        class="data"
+        data-testid="speakers"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.speakers
+        </span>
+        <div
+          class="dataContent"
+        >
+          <div
+            class="speakerWrapper"
+          >
+            <div
+              class="user default"
+              data-testid="user-preview"
+            >
+              <div
+                class="avatar"
+              >
+                <span
+                  class="typography span initials"
+                >
+                  JD
+                </span>
+              </div>
+              <span
+                class="typography span name noWrap"
+              >
+                John Doe
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="data"
+        data-testid="description"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.description
+        </span>
+        <div
+          class="dataContent"
+        >
+          <p
+            class="typography p excerpt"
+          >
+            Test meetup description
+          </p>
+        </div>
+      </div>
+      <div
+        class="dataContent actions"
+      >
+        <button
+          class="actionButton backBtn button default"
+          data-testid="btn-back"
+          id="btn-back"
+        >
+          formButtons.back
+        </button>
+        <div
+          class="actionsWrapper"
+        />
       </div>
     </div>
   </section>
@@ -551,6 +1340,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given no use
       >
         <figure
           class="imageWrapper"
+          data-testid="image"
         >
           <img
             alt="viewMeetupPage.imgAlt"
@@ -560,6 +1350,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given no use
         </figure>
         <div
           class="headerDataContent"
+          data-testid="heading"
         >
           <h2
             class="typography h2 meetupHeading"
@@ -581,6 +1372,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given no use
         >
           <div
             class="info"
+            data-testid="date"
             id="date"
           >
             <img
@@ -596,6 +1388,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given no use
           </div>
           <div
             class="info"
+            data-testid="time"
             id="time"
           >
             <img
@@ -611,6 +1404,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given no use
           </div>
           <div
             class="info"
+            data-testid="location"
             id="location"
           >
             <img
@@ -628,6 +1422,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given no use
       </div>
       <div
         class="data"
+        data-testid="speakers"
       >
         <span
           class="typography span dataName"
@@ -664,6 +1459,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given no use
       </div>
       <div
         class="data"
+        data-testid="description"
       >
         <span
           class="typography span dataName"
@@ -685,6 +1481,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given no use
       >
         <button
           class="actionButton backBtn button default"
+          data-testid="btn-back"
           id="btn-back"
         >
           formButtons.back
@@ -695,7 +1492,7 @@ exports[`ViewMeetupPage after topic approval, but before publishing given no use
 </DocumentFragment>
 `;
 
-exports[`ViewMeetupPage before topic approval given a user is logged in should match snapshot 1`] = `
+exports[`ViewMeetupPage before topic approval given a user with admin rights is logged in should match snapshot 1`] = `
 <DocumentFragment>
   <section
     class="container REQUEST"
@@ -718,6 +1515,7 @@ exports[`ViewMeetupPage before topic approval given a user is logged in should m
         </span>
         <div
           class="dataContent"
+          data-testid="heading"
         >
           <h2
             class="typography h2 meetupHeading"
@@ -728,6 +1526,7 @@ exports[`ViewMeetupPage before topic approval given a user is logged in should m
       </div>
       <div
         class="data"
+        data-testid="author"
       >
         <span
           class="typography span dataName"
@@ -760,6 +1559,7 @@ exports[`ViewMeetupPage before topic approval given a user is logged in should m
       </div>
       <div
         class="data"
+        data-testid="description"
       >
         <span
           class="typography span dataName"
@@ -778,6 +1578,7 @@ exports[`ViewMeetupPage before topic approval given a user is logged in should m
       </div>
       <div
         class="data"
+        data-testid="voted-users"
       >
         <span
           class="typography span dataName"
@@ -798,6 +1599,7 @@ exports[`ViewMeetupPage before topic approval given a user is logged in should m
       >
         <button
           class="actionButton backBtn button default"
+          data-testid="btn-back"
           id="btn-back"
         >
           formButtons.back
@@ -807,15 +1609,275 @@ exports[`ViewMeetupPage before topic approval given a user is logged in should m
         >
           <button
             class="actionButton deleteBtn button secondary"
+            data-testid="btn-delete"
             id="btn-delete"
           >
             formButtons.delete
           </button>
           <button
             class="actionButton approveBtn button primary"
+            data-testid="btn-approve"
             id="btn-approve"
           >
             viewMeetupPage.approveTopicBtn
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+</DocumentFragment>
+`;
+
+exports[`ViewMeetupPage before topic approval given a user with non-admin rights is logged in Support Topic button given the logged user already voted should match snapshot 1`] = `
+<DocumentFragment>
+  <section
+    class="container REQUEST"
+  >
+    <h1
+      class="typography h1 heading"
+    >
+      viewMeetupPage.title
+    </h1>
+    <div
+      class="dataWrapper"
+    >
+      <div
+        class="data"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.topic
+        </span>
+        <div
+          class="dataContent"
+          data-testid="heading"
+        >
+          <h2
+            class="typography h2 meetupHeading"
+          >
+            Test meetup topic
+          </h2>
+        </div>
+      </div>
+      <div
+        class="data"
+        data-testid="author"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.author
+        </span>
+        <div
+          class="dataContent"
+        >
+          <div
+            class="user default"
+            data-testid="user-preview"
+          >
+            <div
+              class="avatar"
+            >
+              <span
+                class="typography span initials"
+              >
+                JD
+              </span>
+            </div>
+            <span
+              class="typography span name noWrap"
+            >
+              John Doe
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        class="data"
+        data-testid="description"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.description
+        </span>
+        <div
+          class="dataContent"
+        >
+          <p
+            class="typography p excerpt"
+          >
+            Test meetup description
+          </p>
+        </div>
+      </div>
+      <div
+        class="data"
+        data-testid="voted-users"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.supporters
+        </span>
+        <div
+          class="dataContent"
+        >
+          <ul
+            class="container stacked"
+            style="--gap: 10px;"
+          />
+        </div>
+      </div>
+      <div
+        class="dataContent actions"
+      >
+        <button
+          class="actionButton backBtn button default"
+          data-testid="btn-back"
+          id="btn-back"
+        >
+          formButtons.back
+        </button>
+        <div
+          class="actionsWrapper"
+        >
+          <button
+            class="actionButton toggleSupportBtn button secondary"
+            data-testid="btn-vote-toggle"
+            id="btn-vote-toggle"
+          >
+            viewMeetupPage.unsupportTopicBtn
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+</DocumentFragment>
+`;
+
+exports[`ViewMeetupPage before topic approval given a user with non-admin rights is logged in Support Topic button given the logged user has not yet voted should match snapshot 1`] = `
+<DocumentFragment>
+  <section
+    class="container REQUEST"
+  >
+    <h1
+      class="typography h1 heading"
+    >
+      viewMeetupPage.title
+    </h1>
+    <div
+      class="dataWrapper"
+    >
+      <div
+        class="data"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.topic
+        </span>
+        <div
+          class="dataContent"
+          data-testid="heading"
+        >
+          <h2
+            class="typography h2 meetupHeading"
+          >
+            Test meetup topic
+          </h2>
+        </div>
+      </div>
+      <div
+        class="data"
+        data-testid="author"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.author
+        </span>
+        <div
+          class="dataContent"
+        >
+          <div
+            class="user default"
+            data-testid="user-preview"
+          >
+            <div
+              class="avatar"
+            >
+              <span
+                class="typography span initials"
+              >
+                JD
+              </span>
+            </div>
+            <span
+              class="typography span name noWrap"
+            >
+              John Doe
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        class="data"
+        data-testid="description"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.description
+        </span>
+        <div
+          class="dataContent"
+        >
+          <p
+            class="typography p excerpt"
+          >
+            Test meetup description
+          </p>
+        </div>
+      </div>
+      <div
+        class="data"
+        data-testid="voted-users"
+      >
+        <span
+          class="typography span dataName"
+        >
+          viewMeetupPage.supporters
+        </span>
+        <div
+          class="dataContent"
+        >
+          <ul
+            class="container stacked"
+            style="--gap: 10px;"
+          />
+        </div>
+      </div>
+      <div
+        class="dataContent actions"
+      >
+        <button
+          class="actionButton backBtn button default"
+          data-testid="btn-back"
+          id="btn-back"
+        >
+          formButtons.back
+        </button>
+        <div
+          class="actionsWrapper"
+        >
+          <button
+            class="actionButton toggleSupportBtn button primary"
+            data-testid="btn-vote-toggle"
+            id="btn-vote-toggle"
+          >
+            viewMeetupPage.supportTopicBtn
           </button>
         </div>
       </div>
@@ -847,6 +1909,7 @@ exports[`ViewMeetupPage before topic approval given no user is logged in should 
         </span>
         <div
           class="dataContent"
+          data-testid="heading"
         >
           <h2
             class="typography h2 meetupHeading"
@@ -857,6 +1920,7 @@ exports[`ViewMeetupPage before topic approval given no user is logged in should 
       </div>
       <div
         class="data"
+        data-testid="author"
       >
         <span
           class="typography span dataName"
@@ -889,6 +1953,7 @@ exports[`ViewMeetupPage before topic approval given no user is logged in should 
       </div>
       <div
         class="data"
+        data-testid="description"
       >
         <span
           class="typography span dataName"
@@ -907,6 +1972,7 @@ exports[`ViewMeetupPage before topic approval given no user is logged in should 
       </div>
       <div
         class="data"
+        data-testid="voted-users"
       >
         <span
           class="typography span dataName"
@@ -927,6 +1993,7 @@ exports[`ViewMeetupPage before topic approval given no user is logged in should 
       >
         <button
           class="actionButton backBtn button default"
+          data-testid="btn-back"
           id="btn-back"
         >
           formButtons.back
