@@ -8,8 +8,7 @@ import {
   mockFullUser,
   mockFullUsers,
   mockMeetup,
-  mockShortUsersData,
-  mockUserData,
+  mockUsersData,
 } from 'model/__fakes__';
 import { apiUrl, RestResolver } from 'utils';
 
@@ -25,7 +24,7 @@ const mockUserGetHandler: RestResolver = (req, res, ctx) => {
 
 const mockRelatedUsersGet: RestResolver = (req, res, ctx) => {
   return req.params.id === mockMeetup.id
-    ? res(ctx.status(200), ctx.json(mockShortUsersData))
+    ? res(ctx.status(200), ctx.json(mockUsersData))
     : res(ctx.status(404));
 };
 
@@ -93,7 +92,7 @@ describe('User API service', () => {
       it('should return an array of users who voted for the specified meetup', async () => {
         const votedUsers = await getVotedUsers(mockMeetup.id);
         expect(spiedOnVotedUsersGetHandler).toHaveBeenCalled();
-        expect(votedUsers).toEqual(mockShortUsersData);
+        expect(votedUsers).toEqual(mockUsersData);
       });
     });
 
@@ -116,7 +115,7 @@ describe('User API service', () => {
       it('should return an array of users who voted for the specified meetup', async () => {
         const participants = await getParticipants(mockMeetup.id);
         expect(spiedOnParticipantsGetHandler).toHaveBeenCalled();
-        expect(participants).toEqual(mockShortUsersData);
+        expect(participants).toEqual(mockUsersData);
       });
     });
 

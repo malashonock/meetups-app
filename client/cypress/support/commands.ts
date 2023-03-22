@@ -2,7 +2,7 @@
 
 import '@testing-library/cypress/add-commands';
 import { faker } from '@faker-js/faker';
-import { MeetupStatus, ShortUser } from 'model';
+import { MeetupStatus, IUser } from 'model';
 
 declare global {
   namespace Cypress {
@@ -57,14 +57,13 @@ Cypress.Commands.add('createNewsArticle', function () {
   formData.append('title', title);
   formData.append('text', text);
 
-  cy.fixture<string>('../fixtures/test-image-1.jpeg', 'base64').then(
-    (image: string) => {
-      formData.append(
-        'image',
-        Cypress.Blob.base64StringToBlob(image, 'image/jpeg'),
-      );
-    },
-  );
+  cy.fixture<string>('test-image-1.jpeg', 'binary').then((image: string) => {
+    formData.append(
+      'image',
+      Cypress.Blob.binaryStringToBlob(image, 'image/jpeg'),
+      'test-image-1.jpeg',
+    );
+  });
 
   cy.request({
     url: 'http://localhost:8080/api/news',
@@ -87,7 +86,7 @@ Cypress.Commands.add('createTopic', function () {
 
   const subject: string = faker.company.catchPhrase();
   const excerpt: string = faker.lorem.paragraph();
-  const author: ShortUser = {
+  const author: IUser = {
     id: 'uuu-bbb',
     name: 'chief',
     surname: 'Blick',
@@ -98,14 +97,13 @@ Cypress.Commands.add('createTopic', function () {
   formData.append('excerpt', excerpt);
   formData.append('author', JSON.stringify(author));
 
-  cy.fixture<string>('../fixtures/test-image-1.jpeg', 'base64').then(
-    (image: string) => {
-      formData.append(
-        'image',
-        Cypress.Blob.base64StringToBlob(image, 'image/jpeg'),
-      );
-    },
-  );
+  cy.fixture<string>('test-image-1.jpeg', 'binary').then((image: string) => {
+    formData.append(
+      'image',
+      Cypress.Blob.binaryStringToBlob(image, 'image/jpeg'),
+      'test-image-1.jpeg',
+    );
+  });
 
   cy.request({
     url: 'http://localhost:8080/api/meetups',

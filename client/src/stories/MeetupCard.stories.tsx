@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { MeetupCard } from 'components';
-import { MeetupStatus, UserRole } from 'model';
+import { IMeetup, MeetupStatus } from 'model';
 import { Meetup, User } from 'stores';
 import { withRouter } from 'storybook-addon-react-router-v6';
 
@@ -26,11 +26,9 @@ const author: User = new User({
   id: 'AAA-AAA',
   name: 'Joe',
   surname: 'Jackson',
-  post: '',
-  roles: UserRole.EMPLOYEE,
 });
 
-const meetupTopic: Meetup = new Meetup({
+const meetupTopicData: IMeetup = {
   id: 'AAA-AAA',
   status: MeetupStatus.REQUEST,
   author,
@@ -41,61 +39,51 @@ const meetupTopic: Meetup = new Meetup({
   speakers: [],
   votedUsers: [],
   participants: [],
-  image: null,
-});
+  imageUrl: null,
+};
 
-const meetupOnModerationNoDate: Meetup = new Meetup({
-  ...meetupTopic,
-  status: MeetupStatus.REQUEST,
-});
+const meetupDraftNoDateData: IMeetup = {
+  ...meetupTopicData,
+  status: MeetupStatus.DRAFT,
+};
 
-const meetupOnModeration: Meetup = new Meetup({
-  ...meetupOnModerationNoDate,
+const meetupDraftData: IMeetup = {
+  ...meetupDraftNoDateData,
   start: new Date(2022, 3, 23, 15, 0),
-});
+};
 
-const meetupUpcoming: Meetup = new Meetup({
-  ...meetupOnModeration,
+const meetupUpcomingData: IMeetup = {
+  ...meetupDraftData,
   status: MeetupStatus.CONFIRMED,
   place: 'комн. 601b',
-});
+};
 
-const meetupFinished: Meetup = new Meetup({
-  ...meetupUpcoming,
-});
+const meetupTopic: Meetup = new Meetup(meetupTopicData);
+const meetupDraftNoDate: Meetup = new Meetup(meetupDraftNoDateData);
+const meetupDraft: Meetup = new Meetup(meetupDraftData);
+const meetupConfirmed: Meetup = new Meetup(meetupUpcomingData);
 
 export const MeetupCard_Topic_NoExcerpt = Template.bind({});
-
 MeetupCard_Topic_NoExcerpt.args = {
   meetup: meetupTopic,
 };
 
 export const MeetupCard_Topic_WithExcerpt = Template.bind({});
-
 MeetupCard_Topic_WithExcerpt.args = {
   meetup: meetupTopic,
 };
 
-export const MeetupCard_OnModerationNoDate = Template.bind({});
-
-MeetupCard_OnModerationNoDate.args = {
-  meetup: meetupOnModerationNoDate,
+export const MeetupCard_DraftNoDate = Template.bind({});
+MeetupCard_DraftNoDate.args = {
+  meetup: meetupDraftNoDate,
 };
 
-export const MeetupCard_OnModeration = Template.bind({});
-
-MeetupCard_OnModeration.args = {
-  meetup: meetupOnModeration,
+export const MeetupCard_Draft = Template.bind({});
+MeetupCard_Draft.args = {
+  meetup: meetupDraft,
 };
 
-export const MeetupCard_Upcoming = Template.bind({});
-
-MeetupCard_Upcoming.args = {
-  meetup: meetupUpcoming,
-};
-
-export const MeetupCard_Finished = Template.bind({});
-
-MeetupCard_Finished.args = {
-  meetup: meetupFinished,
+export const MeetupCard_Confirmed = Template.bind({});
+MeetupCard_Confirmed.args = {
+  meetup: meetupConfirmed,
 };

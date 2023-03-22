@@ -5,7 +5,10 @@ export const loginRoutes = express.Router();
 
 // cookie-based authentication
 loginRoutes.get("/login", ensureAuthenticated, 
-  (req, res) => res.json({ user: req.user }))
+  (req, res) => {
+    const { password, ...cleanUser } = req.user;
+    return res.json(cleanUser);
+  });
 
 loginRoutes.post(
   "/login",
@@ -15,11 +18,8 @@ loginRoutes.post(
   passport.authenticate("local"),
   (req, res) => {
     const user = JSON.parse(JSON.stringify(req.user)); // hack
-    const cleanUser = Object.assign({}, user);
-    if (cleanUser.local) {
-      delete cleanUser.local.password;
-    }
-    res.json({ user: cleanUser });
+    const { password, ...cleanUser } = user;
+    res.json(cleanUser);
   }
 );
 

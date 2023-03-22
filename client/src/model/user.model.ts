@@ -1,18 +1,15 @@
 export enum UserRole {
-  CHIEF = 'chief',
-  EMPLOYEE = 'employee',
+  CHIEF = 'CHIEF',
+  EMPLOYEE = 'EMPLOYEE',
 }
 
 export interface IUser {
   id: string;
   name: string;
   surname: string;
+}
+
+export interface IFullUser extends IUser {
   post: string;
   roles: UserRole;
 }
-
-export type ShortUser = Pick<IUser, 'id' | 'name' | 'surname'>;
-
-export type FullUser = IUser & {
-  password: string;
-};

@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 
 import { Meetup, MeetupStore } from 'stores';
 import { RootContext } from 'components';
@@ -23,6 +23,13 @@ export const useMeetupStore = (): UseMeetupStoreResult => {
   const errors = meetupStore?.errors;
   const createMeetup = meetupStore?.createMeetup;
   const findMeetup = meetupStore?.findMeetup;
+
+  // Hydrate meetup store on first load
+  useEffect((): void => {
+    (async (): Promise<void> => {
+      await meetupStore?.loadMeetups();
+    })();
+  }, [meetupStore]);
 
   return {
     meetupStore,

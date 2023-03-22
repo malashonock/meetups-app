@@ -1,5 +1,6 @@
 import { Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
 
 import {
   Header,
@@ -24,82 +25,84 @@ import {
 
 import styles from './App.module.scss';
 
-export const App = (): JSX.Element => (
-  <RootStoreProvider>
-    <BrowserRouter>
-      <Suspense fallback={<LoadingSpinner />}>
-        <Header />
-        <main className={styles.container}>
-          <Routes>
-            <Route path="/" element={<Navigate replace to="/meetups" />} />
-            <Route
-              path="login"
-              element={
-                <ProtectedRoute redirectIf="authenticated">
-                  <LoginPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route path="meetups">
-              <Route element={<MeetupsPage />}>
-                <Route
-                  index
-                  element={<Navigate replace to={meetupTabsLinks[0]} />}
-                />
-                {meetupTabsLinks.map((tabLink) => (
+export const App = observer(
+  (): JSX.Element => (
+    <RootStoreProvider>
+      <BrowserRouter>
+        <Suspense fallback={<LoadingSpinner />}>
+          <Header />
+          <main className={styles.container}>
+            <Routes>
+              <Route path="/" element={<Navigate replace to="/meetups" />} />
+              <Route
+                path="login"
+                element={
+                  <ProtectedRoute redirectIf="authenticated">
+                    <LoginPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="meetups">
+                <Route element={<MeetupsPage />}>
                   <Route
-                    key={tabLink}
-                    path={tabLink}
-                    element={meetupTabsMapper[tabLink].component}
+                    index
+                    element={<Navigate replace to={meetupTabsLinks[0]} />}
                   />
-                ))}
-              </Route>
-              <Route
-                path="create"
-                element={
-                  <ProtectedRoute>
-                    <CreateMeetupPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route path=":id">
-                <Route index element={<ViewMeetupPage />} />
+                  {meetupTabsLinks.map((tabLink) => (
+                    <Route
+                      key={tabLink}
+                      path={tabLink}
+                      element={meetupTabsMapper[tabLink].component}
+                    />
+                  ))}
+                </Route>
                 <Route
-                  path="edit"
+                  path="create"
                   element={
                     <ProtectedRoute>
-                      <EditMeetupPage />
+                      <CreateMeetupPage />
                     </ProtectedRoute>
                   }
                 />
+                <Route path=":id">
+                  <Route index element={<ViewMeetupPage />} />
+                  <Route
+                    path="edit"
+                    element={
+                      <ProtectedRoute>
+                        <EditMeetupPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                </Route>
               </Route>
-            </Route>
-            <Route path="news">
-              <Route index element={<NewsPage />} />
-              <Route
-                path="create"
-                element={
-                  <ProtectedRoute>
-                    <CreateNewsPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route path=":id">
-                <Route index element={<ViewNewsPage />} />
+              <Route path="news">
+                <Route index element={<NewsPage />} />
                 <Route
-                  path="edit"
+                  path="create"
                   element={
                     <ProtectedRoute>
-                      <EditNewsPage />
+                      <CreateNewsPage />
                     </ProtectedRoute>
                   }
                 />
+                <Route path=":id">
+                  <Route index element={<ViewNewsPage />} />
+                  <Route
+                    path="edit"
+                    element={
+                      <ProtectedRoute>
+                        <EditNewsPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                </Route>
               </Route>
-            </Route>
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </main>
-      </Suspense>
-    </BrowserRouter>
-  </RootStoreProvider>
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </main>
+        </Suspense>
+      </BrowserRouter>
+    </RootStoreProvider>
+  ),
 );

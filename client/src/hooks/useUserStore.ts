@@ -12,7 +12,7 @@ export interface UseUserStoreResult {
 }
 
 export const useUserStore = (): UseUserStoreResult => {
-  const userStore = useContext(RootContext)?.userStore;
+  const userStore = useContext(RootContext)?.authStore?.userStore;
   const users = userStore?.users;
   const findUser = userStore?.findUser;
   const findUsers = userStore?.findUsers;

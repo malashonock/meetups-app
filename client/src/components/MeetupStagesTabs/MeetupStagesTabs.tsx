@@ -8,7 +8,7 @@ import styles from './MeetupStagesTabs.module.scss';
 
 export enum MeetupTabLink {
   Topics = 'topics',
-  OnModeration = 'moderation',
+  Drafts = 'drafts',
   Upcoming = 'upcoming',
   Finished = 'finished',
 }

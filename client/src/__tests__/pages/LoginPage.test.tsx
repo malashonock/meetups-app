@@ -7,7 +7,7 @@ import userEvent from '@testing-library/user-event';
 
 import { LoginPage } from 'pages';
 import { useAuthStore } from 'hooks';
-import { RootStore } from 'stores';
+import { AuthStore, RootStore, UserStore } from 'stores';
 import { Credentials } from 'model';
 
 // Mock useAuthStore hook
@@ -26,9 +26,12 @@ beforeEach(() => {
   mockUseAuthStore.mockReturnValue({
     authStore: {
       rootStore: new RootStore(),
+      userStore: new UserStore(new AuthStore(new RootStore())),
       loggedUser: null,
       logIn: mockLogIn,
       logOut: jest.fn(),
+      onLoginChanged: jest.fn(),
+      toJSON: jest.fn(),
     },
   });
 });

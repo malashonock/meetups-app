@@ -31,10 +31,15 @@ beforeEach(() => {
     newsStore: {
       rootStore: new RootStore(),
       news: [],
+      isInitialized: true,
+      isLoading: false,
+      isError: false,
+      errors: [],
       loadNews: jest.fn(),
       createNewsArticle: mockNewsStoreCreateArticle,
       findNewsArticle: jest.fn(),
       onNewsArticleDeleted: jest.fn(),
+      toJSON: jest.fn(),
     },
   });
 });

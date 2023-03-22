@@ -16,8 +16,7 @@ import {
 import { isPast, parseDate } from 'utils';
 import { MeetupStatus } from 'model';
 import { Meetup, User } from 'stores';
-import { useAuthStore, useLocale, useUser } from 'hooks';
-import { Optional } from 'types';
+import { useAuthStore, useLocale } from 'hooks';
 
 import styles from './MeetupCard.module.scss';
 
@@ -27,26 +26,17 @@ interface MeetupCardProps {
 
 export enum MeetupCardVariant {
   Topic = 'topic',
-  OnModeration = 'onModeration',
+  Draft = 'draft',
   Upcoming = 'upcoming',
   Finished = 'finished',
 }
 
 export const MeetupCard = observer(
   ({ meetup }: MeetupCardProps): JSX.Element => {
-    const {
-      status,
-      author: authorData,
-      start,
-      place,
-      subject,
-      excerpt,
-      votedUsers,
-      id,
-    } = meetup;
+    const { status, author, start, place, subject, excerpt, votedUsers, id } =
+      meetup;
 
     const { loggedUser } = useAuthStore();
-    const author: Optional<User> = useUser(authorData);
     const [locale] = useLocale();
     const { i18n, t } = useTranslation();
 
@@ -88,7 +78,7 @@ export const MeetupCard = observer(
         default:
           return MeetupCardVariant.Topic;
         case MeetupStatus.DRAFT:
-          return MeetupCardVariant.OnModeration;
+          return MeetupCardVariant.Draft;
         case MeetupStatus.CONFIRMED:
           return start && isPast(start)
             ? MeetupCardVariant.Finished
@@ -103,9 +93,7 @@ export const MeetupCard = observer(
       >
         <header className={styles.header}>
           {status === MeetupStatus.REQUEST ? (
-            author !== undefined && (
-              <UserPreview user={author} variant={UserPreviewVariant.Card} />
-            )
+            <UserPreview user={author} variant={UserPreviewVariant.Card} />
           ) : (
             <ul className={styles.appointment}>
               {start !== undefined ? (
@@ -161,11 +149,11 @@ export const MeetupCard = observer(
         </div>
 
         <footer className={styles.footer}>
-          {status === MeetupStatus.REQUEST
-            ? votesCount > 0 && <VotesCount votesCount={votesCount} />
-            : author !== undefined && (
-                <UserPreview user={author} variant={UserPreviewVariant.Card} />
-              )}
+          {status === MeetupStatus.REQUEST ? (
+            votesCount > 0 && <VotesCount votesCount={votesCount} />
+          ) : (
+            <UserPreview user={author} variant={UserPreviewVariant.Card} />
+          )}
         </footer>
       </article>
     );

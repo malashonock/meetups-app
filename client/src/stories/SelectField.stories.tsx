@@ -10,7 +10,7 @@ import {
   Typography,
   TypographyComponent,
 } from 'components';
-import { ShortUser } from 'model';
+import { IUser } from 'model';
 import { Nullable, Optional } from 'types';
 
 export default {
@@ -88,19 +88,19 @@ const Template: ComponentStory<typeof SelectField> = (args) => (
   </Formik>
 );
 
-const user1: ShortUser = {
+const user1: IUser = {
   id: 'uuu-aaa',
   name: 'employee',
   surname: 'Gerlach',
 };
 
-const user2: ShortUser = {
+const user2: IUser = {
   id: 'uuu-bbb',
   name: 'chief',
   surname: 'Blick',
 };
 
-const getUserName = (user: ShortUser): string => `${user.name} ${user.surname}`;
+const getUserName = (user: IUser): string => `${user.name} ${user.surname}`;
 
 export const StringValue_SingleChoice = Template.bind({});
 StringValue_SingleChoice.args = {

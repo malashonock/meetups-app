@@ -71,10 +71,10 @@ describe('NewsPage', () => {
     });
   });
 
-  it('should render Not Found page if an error occurred while loading news', () => {
+  it('should render a Loading spinner if news are undefined', () => {
     mockUseNewsStore.mockReturnValue({});
     render(<NewsPage />, { wrapper: MockRouter });
-    expect(screen.getByText('notFoundPage.title')).toBeInTheDocument();
+    expect(screen.getByText('loadingText.news')).toBeInTheDocument();
   });
 
   it('should render a Loading spinner while news are loading', () => {
@@ -84,5 +84,14 @@ describe('NewsPage', () => {
     });
     render(<NewsPage />, { wrapper: MockRouter });
     expect(screen.getByText('loadingText.news')).toBeInTheDocument();
+  });
+
+  it('should render Not Found page if an error occurred while loading news', () => {
+    mockUseNewsStore.mockReturnValue({
+      news: mockNews,
+      isError: true,
+    });
+    render(<NewsPage />, { wrapper: MockRouter });
+    expect(screen.getByText('notFoundPage.title')).toBeInTheDocument();
   });
 });

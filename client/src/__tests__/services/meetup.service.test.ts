@@ -15,15 +15,13 @@ import * as UserApi from 'api/services/user.service';
 import {
   mockMeetupData,
   mockMeetup,
-  mockMeetupDto,
   mockImagesWithUrl,
   mockMeetupFields,
   generateMeetupsData,
-  getMeetupDtoFromData,
 } from 'model/__fakes__';
 import { apiUrl, RestResolver } from 'utils';
 import { FileWithUrl } from 'types';
-import { IMeetup, MeetupDto, ShortUser } from 'model';
+import { MeetupDto, IUser } from 'model';
 
 // Mock getNewsFromJson
 const mockGetStaticFile = jest.spyOn(StaticApi, 'getStaticFile');
@@ -32,11 +30,13 @@ const mockGetStaticFile = jest.spyOn(StaticApi, 'getStaticFile');
 const mockGetVotedUsers = jest.spyOn(UserApi, 'getVotedUsers');
 const mockGetParticipants = jest.spyOn(UserApi, 'getParticipants');
 
-const mockMeetupsData: IMeetup[] = [mockMeetupData, ...generateMeetupsData(20)];
-const mockMeetupsDto: MeetupDto[] = mockMeetupsData.map(getMeetupDtoFromData);
+const mockMeetupsDto: MeetupDto[] = [
+  mockMeetupData,
+  ...generateMeetupsData(20),
+];
 const findMeetup = (id: string) => {
-  return mockMeetupsData.filter(
-    (meetupData: IMeetup): boolean => meetupData.id === id,
+  return mockMeetupsDto.filter(
+    (meetupDto: MeetupDto): boolean => meetupDto.id === id,
   )[0];
 };
 
@@ -46,16 +46,16 @@ const mockMeetupsGetSuccess: RestResolver = (req, res, ctx) => {
 
 const mockMeetupGetHandler: RestResolver = (req, res, ctx) => {
   return req.params.id === mockMeetup.id
-    ? res(ctx.status(200), ctx.json(mockMeetupDto))
+    ? res(ctx.status(200), ctx.json(mockMeetupData))
     : res(ctx.status(404));
 };
 
 const mockMeetupPostSuccess: RestResolver = (req, res, ctx) => {
-  return res(ctx.status(201), ctx.json(mockMeetupDto));
+  return res(ctx.status(201), ctx.json(mockMeetupData));
 };
 
 const mockMeetupPatchSuccess: RestResolver = (req, res, ctx) => {
-  return res(ctx.status(200), ctx.json(mockMeetupDto));
+  return res(ctx.status(200), ctx.json(mockMeetupData));
 };
 
 const mockMeetupDeleteSuccess: RestResolver = (req, res, ctx) => {
@@ -98,12 +98,12 @@ beforeEach(() => {
     },
   );
   mockGetVotedUsers.mockImplementation(
-    async (meetupId: string): Promise<ShortUser[]> => {
+    async (meetupId: string): Promise<IUser[]> => {
       return findMeetup(meetupId).votedUsers;
     },
   );
   mockGetParticipants.mockImplementation(
-    async (meetupId: string): Promise<ShortUser[]> => {
+    async (meetupId: string): Promise<IUser[]> => {
       return findMeetup(meetupId).participants;
     },
   );
@@ -124,7 +124,7 @@ describe('Meetups API service', () => {
     it('should return an array of all meetups', async () => {
       const meetups = await getMeetups();
       expect(spiedOnMeetupsGetHandler).toHaveBeenCalled();
-      expect(meetups).toEqual(mockMeetupsData);
+      expect(meetups).toEqual(mockMeetupsDto);
     });
   });
 

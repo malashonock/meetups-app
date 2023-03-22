@@ -3,16 +3,19 @@ import { AxiosError } from 'axios';
 
 import { MeetupStore, RootStore, Meetup, User } from 'stores';
 import * as MeetupApi from 'api/services/meetup.service';
-import { IMeetup, MeetupStatus, ShortUser } from 'model';
+import * as FileApi from 'api/services/static.service';
+import { MeetupStatus, IUser, IMeetup } from 'model';
 import {
   generateMeetupsData,
   mapMeetupsData,
-  mockMeetupData,
   mockMeetupDraftData,
   mockMeetupDraftFilledData,
+  mockMeetupData,
   mockMeetupFields,
   mockMeetupStore,
   mockTopicData,
+  mockTopicFields,
+  mockImageWithUrl,
 } from 'model/__fakes__';
 
 const spiedOnMobXMakeAutoObservable = jest.spyOn(MobX, 'makeAutoObservable');
@@ -20,6 +23,7 @@ const spiedOnApiGetMeetups = jest.spyOn(MeetupApi, 'getMeetups');
 const spiedOnApiCreateMeetup = jest.spyOn(MeetupApi, 'createMeetup');
 const spiedOnApiUpdateMeetup = jest.spyOn(MeetupApi, 'updateMeetup');
 const spiedOnApiDeleteMeetup = jest.spyOn(MeetupApi, 'deleteMeetup');
+const spiedOnGetStaticFile = jest.spyOn(FileApi, 'getStaticFile');
 
 const getIds = <T extends { id: string }>(objects: T[]): string[] =>
   objects.map(({ id }: T): string => id);
@@ -148,8 +152,8 @@ describe('MeetupStore', () => {
   describe('createMeetup() instance method', () => {
     it('should call API createMeetup() method', async () => {
       const meetupStore = new MeetupStore(new RootStore());
-      await meetupStore.createMeetup(mockTopicData);
-      expect(spiedOnApiCreateMeetup).toHaveBeenCalledWith(mockTopicData);
+      await meetupStore.createMeetup(mockTopicFields);
+      expect(spiedOnApiCreateMeetup).toHaveBeenCalledWith(mockTopicFields);
     });
 
     it('should be in isLoading state while API is running the request', async () => {
@@ -163,7 +167,7 @@ describe('MeetupStore', () => {
     describe('given API request resolves successfully', () => {
       it('should append the newly constructed meetup instance to meetups field array', async () => {
         const meetupStore = new MeetupStore(new RootStore());
-        const newMeetup = await meetupStore.createMeetup(mockTopicData);
+        const newMeetup = await meetupStore.createMeetup(mockTopicFields);
         expect(meetupStore.meetups).toContain(newMeetup);
       });
     });
@@ -203,7 +207,7 @@ describe('MeetupStore', () => {
   describe('onMeetupDeleted() instance method', () => {
     it('should remove the deleted meetup instance from meetups field array', async () => {
       const meetupStore = new MeetupStore(new RootStore());
-      const newMeetup = await meetupStore.createMeetup(mockTopicData);
+      const newMeetup = await meetupStore.createMeetup(mockTopicFields);
       expect(newMeetup).not.toBeUndefined();
       meetupStore.onMeetupDeleted(newMeetup!);
       expect(meetupStore.meetups).not.toContain(newMeetup);
@@ -256,15 +260,15 @@ describe('Meetup', () => {
       expect(meetup.excerpt).toBe(mockMeetupData.excerpt);
       expect(meetup.author?.id).toBe(mockMeetupData.author?.id);
       expect(getIds<User>(meetup.speakers)).toEqual(
-        getIds<ShortUser>(mockMeetupData.speakers),
+        getIds<IUser>(mockMeetupData.speakers),
       );
       expect(getIds<User>(meetup.votedUsers)).toEqual(
-        getIds<ShortUser>(mockMeetupData.votedUsers),
+        getIds<IUser>(mockMeetupData.votedUsers),
       );
       expect(getIds<User>(meetup.participants)).toEqual(
-        getIds<ShortUser>(mockMeetupData.participants),
+        getIds<IUser>(mockMeetupData.participants),
       );
-      expect(meetup.image).toBe(mockMeetupData.image);
+      expect(meetup.imageUrl).toBe(mockMeetupData.imageUrl);
     });
   });
 
@@ -272,6 +276,9 @@ describe('Meetup', () => {
     beforeEach(() => {
       spiedOnApiUpdateMeetup.mockReturnValue(
         Promise.resolve(mockMeetupDraftFilledData),
+      );
+      spiedOnGetStaticFile.mockReturnValue(
+        Promise.resolve(mockMeetupFields.image!),
       );
     });
 
@@ -285,7 +292,7 @@ describe('Meetup', () => {
     });
 
     it('should be in isLoading state while API is running the request', async () => {
-      const meetup = new Meetup(mockMeetupData);
+      const meetup = new Meetup(mockMeetupDraftData);
       const updateMeetupTask = meetup.update(mockMeetupFields);
       expect(meetup.isLoading).toBe(true);
       await updateMeetupTask;

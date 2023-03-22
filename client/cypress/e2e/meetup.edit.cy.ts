@@ -4,7 +4,7 @@ describe('Edit meetup', () => {
   describe('given a user is logged in', () => {
     it('should update an existing meetup', function () {
       cy.createMeetupDraft().then((createdMeetupId: string) => {
-        cy.visit('/meetups/moderation');
+        cy.visit('/meetups/drafts');
         cy.get(`[href="/meetups/${createdMeetupId}"]`, {
           timeout: 10_000,
         }).within(() => {
@@ -66,7 +66,7 @@ describe('Edit meetup', () => {
 
   describe('given no user is logged in', () => {
     it('there should be no Edit button on the meetup card', () => {
-      cy.visit('/meetups/moderation');
+      cy.visit('/meetups/drafts');
       cy.get('[class*="MeetupCard"]', { timeout: 10_000 })
         .first()
         .within(() => {

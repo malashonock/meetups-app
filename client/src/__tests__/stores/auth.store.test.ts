@@ -3,13 +3,13 @@ import * as MobX from 'mobx';
 import { AuthStore, RootStore, UserStore } from 'stores';
 import { Credentials } from 'model';
 import * as LoginApi from 'api/services/login.service';
-import { mockFullUser, mockUser } from 'model/__fakes__';
+import { mockFullUser } from 'model/__fakes__';
 
 const spiedOnMobXMakeAutoObservable = jest.spyOn(MobX, 'makeAutoObservable');
 const spiedOnApiLogin = jest.spyOn(LoginApi, 'login');
 const spiedOnApiLogout = jest.spyOn(LoginApi, 'logout');
-const spiedOnUserStoreFindUser = jest.spyOn(UserStore.prototype, 'findUser');
 const spiedOnStorageGetItem = jest.spyOn(Storage.prototype, 'getItem');
+const spiedOnUserStoreInit = jest.spyOn(UserStore.prototype, 'init');
 
 const testCredentials: Credentials = {
   username: mockFullUser.name,
@@ -32,7 +32,6 @@ describe('AuthStore', () => {
   describe('login() instance method', () => {
     beforeEach(() => {
       spiedOnApiLogin.mockReturnValue(Promise.resolve(mockFullUser));
-      spiedOnUserStoreFindUser.mockReturnValue(mockUser);
     });
 
     it('should call API login() method', async () => {
@@ -41,20 +40,17 @@ describe('AuthStore', () => {
       expect(spiedOnApiLogin).toHaveBeenCalledWith(testCredentials);
     });
 
-    it('should find the logged in user in the user store and assign it to loggedUser field', async () => {
-      spiedOnUserStoreFindUser.mockReturnValue(mockUser);
-      spiedOnStorageGetItem.mockReturnValue(JSON.stringify(mockUser));
+    it('should assign the logged in user to loggedUser field', async () => {
+      spiedOnStorageGetItem.mockReturnValue(JSON.stringify(mockFullUser));
       const authStore = new AuthStore(new RootStore());
       await authStore.logIn(testCredentials);
-      expect(spiedOnUserStoreFindUser).toHaveBeenCalledWith(mockFullUser.id);
-      expect(authStore.loggedUser).toBe(mockUser);
+      expect(authStore.loggedUser).toStrictEqual(mockFullUser);
     });
 
-    it('should clear the loggedUser field if logged in user is not found in the user store', async () => {
-      spiedOnUserStoreFindUser.mockReturnValue(undefined);
+    it('should re-initialize user store on user login', async () => {
       const authStore = new AuthStore(new RootStore());
       await authStore.logIn(testCredentials);
-      expect(authStore.loggedUser).toBeNull();
+      expect(spiedOnUserStoreInit).toHaveBeenCalledWith(mockFullUser);
     });
   });
 
@@ -69,6 +65,12 @@ describe('AuthStore', () => {
       const authStore = new AuthStore(new RootStore());
       await authStore.logOut();
       expect(authStore.loggedUser).toBeNull();
+    });
+
+    it('should re-initialize user store on user logout', async () => {
+      const authStore = new AuthStore(new RootStore());
+      await authStore.logOut();
+      expect(spiedOnUserStoreInit).toHaveBeenCalledWith(null);
     });
   });
 });

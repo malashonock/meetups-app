@@ -4,8 +4,8 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
 import { AuthToggle } from 'components';
-import { RootStore } from 'stores';
-import { mockUser as mockedLoggedUser } from 'model/__fakes__';
+import { AuthStore, RootStore, UserStore } from 'stores';
+import { mockFullUser as mockedLoggedUser } from 'model/__fakes__';
 import { useAuthStore } from 'hooks';
 
 // Mock useAuthStore hook
@@ -76,9 +76,12 @@ describe('AuthToggle', () => {
         loggedUser: mockedLoggedUser,
         authStore: {
           rootStore: new RootStore(),
+          userStore: new UserStore(new AuthStore(new RootStore())),
           loggedUser: mockedLoggedUser,
           logIn: jest.fn(),
           logOut: mockedLogout,
+          onLoginChanged: jest.fn(),
+          toJSON: jest.fn(),
         },
       });
     });

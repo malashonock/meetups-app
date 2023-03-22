@@ -1,9 +1,9 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 
 import { News, NewsStore } from 'stores';
-import { RootContext } from 'components';
 import { NewsFields } from 'model';
 import { Optional } from 'types';
+import { RootContext } from 'components';
 
 export interface UseNewsStoreResult {
   newsStore?: NewsStore;
@@ -23,6 +23,13 @@ export const useNewsStore = (): UseNewsStoreResult => {
   const errors = newsStore?.errors;
   const createNewsArticle = newsStore?.createNewsArticle;
   const findNewsArticle = newsStore?.findNewsArticle;
+
+  // Hydrate news store on first load
+  useEffect((): void => {
+    (async (): Promise<void> => {
+      await newsStore?.loadNews();
+    })();
+  }, [newsStore]);
 
   return {
     newsStore,

@@ -9,12 +9,7 @@ import { apiUrl, RestResolver } from 'utils';
 import { Credentials } from 'model';
 
 const mockLoginGetSuccess: RestResolver = (req, res, ctx) => {
-  return res(
-    ctx.status(200),
-    ctx.json({
-      user: mockUserData,
-    }),
-  );
+  return res(ctx.status(200), ctx.json(mockUserData));
 };
 
 const mockLoginGetError: RestResolver = (req, res, ctx) => {
@@ -22,12 +17,7 @@ const mockLoginGetError: RestResolver = (req, res, ctx) => {
 };
 
 const mockLoginPostSuccess: RestResolver = (req, res, ctx) => {
-  return res(
-    ctx.status(201),
-    ctx.json({
-      user: mockFullUser,
-    }),
-  );
+  return res(ctx.status(201), ctx.json(mockFullUser));
 };
 
 const mockLoginPostError: RestResolver = (req, res, ctx) => {
@@ -68,7 +58,7 @@ describe('Login API service', () => {
       it('should return full info about the logged in user', async () => {
         const validCredentials: Credentials = {
           username: mockFullUser.name,
-          password: mockFullUser.password,
+          password: 'private',
         };
         const fullUserData = await login(validCredentials);
         expect(spiedOnLoginPostHandler).toHaveBeenCalled();

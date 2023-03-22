@@ -1,9 +1,9 @@
 import { PropsWithChildren } from 'react';
-import { MemoryRouter, Routes, Route, Outlet } from 'react-router-dom';
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { MeetupStagesTabs, Typography } from 'components';
+import { MeetupStagesTabs } from 'components';
 import { meetupTabsMapper } from 'components/MeetupStagesTabs/meetupTabsMapper';
 
 // Mock meetupTabToDescriptor
@@ -14,7 +14,7 @@ jest.mock('components/MeetupStagesTabs/meetupTabsMapper', () => ({
       label: () => 'Topics',
       component: 'Topics list',
     },
-    moderation: {
+    drafts: {
       label: () => 'On moderation',
       component: 'Meetups on moderation',
     },
@@ -34,10 +34,7 @@ const MockRouter = ({ children }: PropsWithChildren): JSX.Element => (
     <Routes>
       <Route path="/meetups" element={<>{children}</>}>
         <Route path="topics" element={meetupTabsMapper.topics.component} />
-        <Route
-          path="moderation"
-          element={meetupTabsMapper.moderation.component}
-        />
+        <Route path="drafts" element={meetupTabsMapper.drafts.component} />
         <Route path="upcoming" element={meetupTabsMapper.upcoming.component} />
         <Route path="finished" element={meetupTabsMapper.finished.component} />
       </Route>

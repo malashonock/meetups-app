@@ -1,25 +1,36 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 
 import * as API from 'api';
-import { RootStore } from 'stores';
 import { FileWithUrl, ILoadable, Nullable, Optional } from 'types';
 import { INews, NewsFields } from 'model';
+import { RootStore } from './root.store';
 
 export class NewsStore implements ILoadable {
+  rootStore: RootStore;
   news: News[];
+  isInitialized: boolean;
+
   isLoading: boolean;
   isError: boolean;
   errors: unknown[];
 
-  constructor(public rootStore: RootStore) {
+  constructor(rootStore: RootStore) {
+    this.rootStore = rootStore;
     makeAutoObservable(this);
+
     this.news = [];
+    this.isInitialized = false;
+
     this.isLoading = false;
     this.isError = false;
     this.errors = [];
   }
 
   async loadNews(): Promise<void> {
+    if (this.isInitialized) {
+      return;
+    }
+
     try {
       this.isLoading = true;
 
@@ -28,11 +39,13 @@ export class NewsStore implements ILoadable {
         this.news = newsData.map(
           (newsArticleData: INews): News => new News(newsArticleData, this),
         );
-      });
 
-      this.isLoading = false;
-      this.isError = false;
-      this.errors.length = 0;
+        this.isInitialized = true;
+
+        this.isLoading = false;
+        this.isError = false;
+        this.errors.length = 0;
+      });
     } catch (error) {
       this.isLoading = false;
       this.isError = true;
@@ -49,9 +62,7 @@ export class NewsStore implements ILoadable {
       const newArticleData = await API.createNewsArticle(newsArticleData);
       const newArticle = new News(newArticleData, this);
 
-      runInAction(() => {
-        this.news.push(newArticle);
-      });
+      this.news.push(newArticle);
 
       this.isLoading = false;
       this.isError = false;

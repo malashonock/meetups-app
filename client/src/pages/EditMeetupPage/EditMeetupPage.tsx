@@ -163,10 +163,10 @@ const EditMeetupForm = ({
 
 export const EditMeetupPage = observer((): JSX.Element => {
   const { id } = useParams();
-  const { meetup, isLoading, isError } = useMeetup(id);
+  const { meetup, isInitialized, isLoading, isError } = useMeetup(id);
   const { i18n, t } = useTranslation();
 
-  if (!meetup || isLoading) {
+  if (!meetup || !isInitialized || isLoading) {
     return <LoadingSpinner text={t('loadingText.meetup')} />;
   }
 

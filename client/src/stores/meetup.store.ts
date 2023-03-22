@@ -3,23 +3,34 @@ import { makeAutoObservable, runInAction } from 'mobx';
 import * as API from 'api';
 import { RootStore, User } from 'stores';
 import { FileWithUrl, ILoadable, Nullable, Optional } from 'types';
-import { IMeetup, MeetupFields, MeetupStatus, ShortUser } from 'model';
+import { IMeetup, MeetupFields, MeetupStatus } from 'model';
 
 export class MeetupStore implements ILoadable {
+  rootStore: RootStore;
   meetups: Meetup[];
+  isInitialized: boolean;
+
   isLoading: boolean;
   isError: boolean;
   errors: unknown[];
 
-  constructor(public rootStore: RootStore) {
+  constructor(rootStore: RootStore) {
+    this.rootStore = rootStore;
     makeAutoObservable(this);
+
     this.meetups = [];
+    this.isInitialized = false;
+
     this.isLoading = false;
     this.isError = false;
     this.errors = [];
   }
 
   async loadMeetups(): Promise<void> {
+    if (this.isInitialized) {
+      return;
+    }
+
     try {
       this.isLoading = true;
 
@@ -28,11 +39,13 @@ export class MeetupStore implements ILoadable {
         this.meetups = meetupsData.map(
           (meetupData: IMeetup): Meetup => new Meetup(meetupData, this),
         );
-      });
 
-      this.isLoading = false;
-      this.isError = false;
-      this.errors.length = 0;
+        this.isInitialized = true;
+
+        this.isLoading = false;
+        this.isError = false;
+        this.errors.length = 0;
+      });
     } catch (error) {
       this.isLoading = false;
       this.isError = true;
@@ -47,9 +60,7 @@ export class MeetupStore implements ILoadable {
       const newMeetupData = await API.createMeetup(meetupData);
       const newMeetup = new Meetup(newMeetupData, this);
 
-      runInAction(() => {
-        this.meetups.push(newMeetup);
-      });
+      this.meetups.push(newMeetup);
 
       this.isLoading = false;
       this.isError = false;
@@ -80,6 +91,7 @@ export class MeetupStore implements ILoadable {
 
 export class Meetup implements IMeetup, ILoadable {
   meetupStore: Nullable<MeetupStore> = null;
+  isInitialized: boolean;
   isLoading: boolean;
   isError: boolean;
   errors: unknown[];
@@ -92,11 +104,12 @@ export class Meetup implements IMeetup, ILoadable {
   place?: string;
   subject: string;
   excerpt: string;
-  author: Nullable<User>;
+  author: User;
   speakers: User[];
   votedUsers: User[];
   participants: User[];
-  image: Nullable<FileWithUrl>;
+  imageUrl: Nullable<string>;
+  image: Nullable<FileWithUrl> = null;
 
   constructor(meetupData: IMeetup, meetupStore?: MeetupStore) {
     if (meetupStore) {
@@ -113,7 +126,7 @@ export class Meetup implements IMeetup, ILoadable {
       place: this.place,
       subject: this.subject,
       excerpt: this.excerpt,
-      image: this.image,
+      imageUrl: this.imageUrl,
     } = meetupData);
 
     const {
@@ -123,16 +136,44 @@ export class Meetup implements IMeetup, ILoadable {
       participants: participantsData,
     } = meetupData;
 
-    const userStore = this.meetupStore?.rootStore.userStore;
+    this.author = new User(authorData);
+    this.speakers = speakersData.map(User.factory);
+    this.votedUsers = votedUsersData.map(User.factory);
+    this.participants = participantsData.map(User.factory);
 
-    this.author = userStore?.findUser(authorData) ?? null;
-    this.speakers = userStore?.findUsers(speakersData) ?? [];
-    this.votedUsers = userStore?.findUsers(votedUsersData) ?? [];
-    this.participants = userStore?.findUsers(participantsData) ?? [];
-
+    this.isInitialized = false;
     this.isLoading = false;
     this.isError = false;
     this.errors = [];
+  }
+
+  async init(): Promise<Meetup> {
+    this.isInitialized = false;
+
+    if (!this.imageUrl) {
+      this.isInitialized = true;
+      return this;
+    }
+
+    try {
+      this.isLoading = true;
+
+      const image = await API.getStaticFile(this.imageUrl);
+      runInAction(() => {
+        this.image = image;
+        this.isInitialized = true;
+
+        this.isLoading = false;
+        this.isError = false;
+        this.errors.length = 0;
+      });
+    } catch (error) {
+      this.isLoading = false;
+      this.isError = true;
+      this.errors.push(error);
+    } finally {
+      return this;
+    }
   }
 
   async update(meetupData: Partial<MeetupFields>): Promise<void> {
@@ -140,8 +181,9 @@ export class Meetup implements IMeetup, ILoadable {
       this.isLoading = true;
 
       const updatedMeetupData = await API.updateMeetup(this.id, meetupData);
-      runInAction(() => {
+      runInAction(async () => {
         Object.assign(this, updatedMeetupData);
+        await this.init();
       });
 
       this.isLoading = false;
@@ -241,17 +283,11 @@ export class Meetup implements IMeetup, ILoadable {
       place: this.place,
       subject: this.subject,
       excerpt: this.excerpt,
-      author: this.author ? this.author.asShortUser() : null,
-      speakers: this.speakers.map(
-        (speaker: User): ShortUser => speaker.asShortUser(),
-      ),
-      votedUsers: this.votedUsers.map(
-        (votedUser: User): ShortUser => votedUser.asShortUser(),
-      ),
-      participants: this.participants.map(
-        (participant: User): ShortUser => participant.asShortUser(),
-      ),
-      image: this.image,
+      author: this.author?.toJSON() ?? null,
+      speakers: this.speakers.map(User.serialize),
+      votedUsers: this.votedUsers.map(User.serialize),
+      participants: this.participants.map(User.serialize),
+      imageUrl: this.imageUrl,
     };
   }
 }

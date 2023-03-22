@@ -18,6 +18,7 @@ export const fixedUsers = [
     roles: "CHIEF",
   },
 ];
+
 const generateUser = () => {
   return {
     id: faker.datatype.uuid(),
@@ -39,3 +40,13 @@ export const generateUsers = (count) => {
 
 export const getRandomUser = (users) =>
   users[faker.datatype.number(0, users.length)];
+
+export const getShortUserFrom = ({ id, name, surname }) => {
+  return {
+    id,
+    name,
+    surname,
+  };
+}
+
+export const getRandomShortUser = (users) => getShortUserFrom(getRandomUser(users));

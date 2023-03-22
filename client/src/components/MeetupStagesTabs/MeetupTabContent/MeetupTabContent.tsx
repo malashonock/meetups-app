@@ -39,7 +39,7 @@ export const MeetupTabContent = observer(
             meetups?.filter((meetup) => meetup.status === MeetupStatus.REQUEST),
           );
           break;
-        case MeetupCardVariant.OnModeration:
+        case MeetupCardVariant.Draft:
           setSelectedMeetups(
             meetups?.filter((meetup) => meetup.status === MeetupStatus.DRAFT),
           );
@@ -66,13 +66,13 @@ export const MeetupTabContent = observer(
       }
     }, [variant, meetups, meetups?.length]);
 
-    if (!meetups || isError) {
+    if (isError) {
       return <NotFoundPage />;
     }
 
     return (
       <section className={styles.meetupsTab}>
-        {isLoading ? (
+        {!meetups || isLoading ? (
           <LoadingSpinner text={t('loadingText.meetups')} />
         ) : (
           <>
