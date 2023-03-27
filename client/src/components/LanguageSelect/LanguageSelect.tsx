@@ -13,36 +13,43 @@ const options: SelectOption<Locale>[] = [
   { value: Locale.RU, label: 'RU' },
 ];
 
-export const LanguageSelect = observer((): JSX.Element => {
-  const [locale, setLocale] = useLocale();
+interface LanguageSelectProps {
+  onSelect?: () => void;
+}
 
-  const handleChange = (newOption: unknown): void => {
-    const newLocale = (newOption as SelectOption<Locale>).value;
-    setLocale(newLocale);
-  };
+export const LanguageSelect = observer(
+  ({ onSelect }: LanguageSelectProps): JSX.Element => {
+    const [locale, setLocale] = useLocale();
 
-  return (
-    <div className={styles.container} data-testid="language-select">
-      <ReactSelect
-        options={options}
-        value={
-          locale
-            ? options.find((option) => option.value === locale)
-            : options[0]
-        }
-        onChange={handleChange}
-        classNames={{
-          control: (state) =>
-            classNames(styles.input, {
-              [styles.focused]: state.isFocused,
-            }),
-          menu: () => styles.menu,
-          option: (state) =>
-            classNames(styles.option, {
-              [styles.selected]: state.isSelected,
-            }),
-        }}
-      />
-    </div>
-  );
-});
+    const handleChange = (newOption: unknown): void => {
+      const newLocale = (newOption as SelectOption<Locale>).value;
+      setLocale(newLocale);
+      onSelect?.call(null);
+    };
+
+    return (
+      <div className={styles.container} data-testid="language-select">
+        <ReactSelect
+          options={options}
+          value={
+            locale
+              ? options.find((option) => option.value === locale)
+              : options[0]
+          }
+          onChange={handleChange}
+          classNames={{
+            control: (state) =>
+              classNames(styles.input, {
+                [styles.focused]: state.isFocused,
+              }),
+            menu: () => styles.menu,
+            option: (state) =>
+              classNames(styles.option, {
+                [styles.selected]: state.isSelected,
+              }),
+          }}
+        />
+      </div>
+    );
+  },
+);

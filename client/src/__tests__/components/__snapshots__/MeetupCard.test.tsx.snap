@@ -44,7 +44,7 @@ exports[`MeetupCard after topic approval should match snapshot 1`] = `
         class="controls"
       >
         <button
-          class="button"
+          class="button light"
           data-testid="delete-button"
         >
           <svg>
@@ -52,7 +52,7 @@ exports[`MeetupCard after topic approval should match snapshot 1`] = `
           </svg>
         </button>
         <button
-          class="button"
+          class="button light"
           data-testid="edit-button"
         >
           <svg>
@@ -134,7 +134,7 @@ exports[`MeetupCard before topic approval should match snapshot 1`] = `
         class="controls"
       >
         <button
-          class="button"
+          class="button light"
           data-testid="delete-button"
         >
           <svg>

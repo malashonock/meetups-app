@@ -4,3 +4,4 @@ export * from './number';
 export * from './file';
 export * from './array';
 export * from './test';
+export * from './dom';

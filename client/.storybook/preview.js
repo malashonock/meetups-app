@@ -16,6 +16,10 @@ export const parameters = {
         name: 'white',
         value: '#ffffff',
       },
+      {
+        name: 'purple',
+        value: '#8065ec',
+      },
     ],
   },
   i18n,

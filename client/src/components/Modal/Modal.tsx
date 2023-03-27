@@ -1,6 +1,7 @@
-import { PropsWithChildren, useEffect } from 'react';
+import { PropsWithChildren } from 'react';
 
-import { Portal } from 'components';
+import { Overlay, Portal } from 'components';
+import { useOnKeyDown } from 'hooks';
 import { Nullable } from 'types';
 
 import styles from './Modal.module.scss';
@@ -15,26 +16,13 @@ export const Modal = ({
   onClose,
   children,
 }: PropsWithChildren<ModalProps>): Nullable<JSX.Element> => {
-  // Close modal on Escape button
-  useEffect(() => {
-    const closeOnEscapeKey = (event: KeyboardEvent): void => {
-      if (event.key === 'Escape') {
-        onClose();
-      }
-    };
-
-    document.body.addEventListener('keydown', closeOnEscapeKey);
-
-    return () => {
-      document.body.removeEventListener('keydown', closeOnEscapeKey);
-    };
-  }, [onClose]);
+  useOnKeyDown('Escape', onClose);
 
   return show ? (
     <Portal wrapperId="modal-root">
-      <div className={styles.overlay} data-testid="modal-overlay">
+      <Overlay>
         <div className={styles.content}>{children}</div>
-      </div>
+      </Overlay>
     </Portal>
   ) : null;
 };

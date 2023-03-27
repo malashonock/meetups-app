@@ -71,9 +71,9 @@ const spiedOnSuccessAlertDismiss = jest.spyOn(mockSuccessAlert, 'dismiss');
 const spiedOnInfoAlertDismiss = jest.spyOn(mockInfoAlert, 'dismiss');
 
 beforeEach(() => {
-  mockUseUiStore.mockReturnValue({
-    alerts: mockAlerts,
-  });
+  const { uiStore } = new RootStore();
+  uiStore.alerts = mockAlerts;
+  mockUseUiStore.mockReturnValue(uiStore);
 });
 
 afterEach(() => {

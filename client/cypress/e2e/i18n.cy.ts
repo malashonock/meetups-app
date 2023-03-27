@@ -7,6 +7,7 @@ describe('Internationalization', () => {
     cy.wait(1_000);
 
     cy.getByTestId('language-select')
+      .first()
       .click()
       .within(() => {
         cy.get('[class*="LanguageSelect_option"]').contains('EN').click();
@@ -56,6 +57,7 @@ describe('Internationalization', () => {
     cy.wait(1_000);
 
     cy.getByTestId('language-select', { timeout: 10_000 })
+      .first()
       .click()
       .within(() => {
         cy.get('[class*="LanguageSelect_option"]').contains('RU').click();

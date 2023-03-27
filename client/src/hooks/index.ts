@@ -10,3 +10,4 @@ export * from './useLocale';
 export * from './useTouchOnLocaleChanged';
 export * from './useResizeEffect';
 export * from './useConfirmDialog';
+export * from './useOnKeyDown';

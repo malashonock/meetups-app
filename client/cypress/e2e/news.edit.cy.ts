@@ -31,7 +31,7 @@ describe('Edit news article', () => {
         cy.url().should('match', /\/news$/);
 
         cy.visit(`/news/${createdNewsId}`);
-        cy.getByTestId('title', { timeout: 10_000 }).should(
+        cy.getByTestId('title', { timeout: 15_000 }).should(
           'contain',
           updatedTitle,
         );

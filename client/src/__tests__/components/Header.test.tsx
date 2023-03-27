@@ -62,7 +62,7 @@ describe('Header', () => {
   it('renders the link to meetups page', async () => {
     render(<Header />, { wrapper: MockLoginRouter });
 
-    const meetupsPageLink = screen.getByText('meetups');
+    const meetupsPageLink = screen.getAllByText('meetups')[0];
     expect(meetupsPageLink).toBeInTheDocument();
 
     userEvent.click(meetupsPageLink);
@@ -74,7 +74,7 @@ describe('Header', () => {
   it('renders the link to news page', async () => {
     render(<Header />, { wrapper: MockLoginRouter });
 
-    const newsPageLink = screen.getByText('news');
+    const newsPageLink = screen.getAllByText('news')[0];
     expect(newsPageLink).toBeInTheDocument();
 
     userEvent.click(newsPageLink);
@@ -86,14 +86,14 @@ describe('Header', () => {
   it('renders language select', async () => {
     render(<Header />, { wrapper: MockLoginRouter });
 
-    const languageSelect = screen.getByTestId('language-select');
+    const languageSelect = screen.getAllByTestId('language-select')[0];
     expect(languageSelect).toBeInTheDocument();
   });
 
   it('renders authentication toggle', async () => {
     render(<Header />, { wrapper: MockLoginRouter });
 
-    const authToggle = screen.getByTestId('auth-toggle');
+    const authToggle = screen.getAllByTestId('auth-toggle')[0];
     expect(authToggle).toBeInTheDocument();
   });
 
@@ -122,7 +122,7 @@ describe('Header', () => {
     it('renders the user preview', async () => {
       render(<Header />, { wrapper: MockLoginRouter });
 
-      const userName = screen.getByText(mockedLoggedUser.fullName);
+      const userName = screen.getAllByText(mockedLoggedUser.fullName)[0];
       expect(userName).toBeInTheDocument();
     });
   });
