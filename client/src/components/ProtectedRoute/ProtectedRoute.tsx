@@ -31,7 +31,7 @@ export const ProtectedRoute = observer(
     const doRedirect =
       (redirectIf === RedirectCondition.Unauthenticated && !loggedUser) ||
       (redirectIf === RedirectCondition.NonAdmin &&
-        loggedUser?.isAdmin === false) ||
+        (!loggedUser || loggedUser.isAdmin === false)) ||
       (redirectIf === RedirectCondition.Authenticated && !!loggedUser);
 
     const defaultRedirect =
