@@ -17,7 +17,7 @@ export default {
   title: 'Components/SelectField',
   component: SelectField,
   parameters: {
-    layout: 'centered',
+    // layout: 'centered',
   },
 } as ComponentMeta<typeof SelectField>;
 
@@ -113,6 +113,7 @@ StringValue_SingleChoice.args = {
       { value: getUserName(user2), label: getUserName(user2) },
     ],
   },
+  isDropDown: true,
 };
 
 export const StringValue_MultiChoice = Template.bind({});
@@ -123,6 +124,7 @@ StringValue_MultiChoice.args = {
     ...StringValue_SingleChoice.args.selectProps,
     isMulti: true,
   },
+  isDropDown: true,
 };
 
 export const ObjectValue_SingleChoice = Template.bind({});
@@ -136,6 +138,7 @@ ObjectValue_SingleChoice.args = {
       { value: user2, label: getUserName(user2) },
     ],
   },
+  isDropDown: true,
 };
 
 export const ObjectValue_MultiChoice = Template.bind({});
@@ -146,4 +149,5 @@ ObjectValue_MultiChoice.args = {
     ...ObjectValue_SingleChoice.args.selectProps,
     isMulti: true,
   },
+  isDropDown: true,
 };

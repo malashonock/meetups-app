@@ -15,10 +15,11 @@ const options: SelectOption<Locale>[] = [
 
 interface LanguageSelectProps {
   onSelect?: () => void;
+  isDropDown?: boolean;
 }
 
 export const LanguageSelect = observer(
-  ({ onSelect }: LanguageSelectProps): JSX.Element => {
+  ({ onSelect, isDropDown = true }: LanguageSelectProps): JSX.Element => {
     const [locale, setLocale] = useLocale();
 
     const handleChange = (newOption: unknown): void => {
@@ -47,6 +48,25 @@ export const LanguageSelect = observer(
               classNames(styles.option, {
                 [styles.selected]: state.isSelected,
               }),
+          }}
+          styles={{
+            menu: (baseStyles) =>
+              isDropDown
+                ? baseStyles
+                : {
+                    position: 'relative',
+                    zIndex: 0,
+                    border: 'none',
+                  },
+            dropdownIndicator: (baseStyles, props) => {
+              const {
+                selectProps: { menuIsOpen },
+              } = props;
+              return {
+                ...baseStyles,
+                transform: menuIsOpen ? 'rotate(180deg)' : undefined,
+              };
+            },
           }}
         />
       </div>
