@@ -24,12 +24,6 @@ $line-height: 0.25rem;
   z-index: 11;
   @include smooth-transition(all);
 
-  &:hover {
-    .line {
-      background-color: rgba($white, 0.4);
-    }
-  }
-
   &:active {
     transform: scale(0.97);
   }
@@ -58,12 +52,6 @@ $line-height: 0.25rem;
 .wrapper.open {
   @include smooth-transition(all);
 
-  &:hover {
-    .line {
-      background-color: $purple;
-    }
-  }
-
   .line {
     background-color: $gray-03;
   }
@@ -84,5 +72,19 @@ $line-height: 0.25rem;
 
   .line3 {
     transform: rotate(-45deg);
+  }
+}
+
+@media (hover: hover) {
+  .wrapper:hover {
+    .line {
+      background-color: rgba($white, 0.4);
+    }
+  }
+
+  .wrapper:hover.open {
+    .line {
+      background-color: $purple;
+    }
   }
 }
