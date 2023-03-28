@@ -47,7 +47,7 @@ export const BurgerMenu = ({
               onToggle={onClose}
             />
           </div>
-          <LanguageSelect onSelect={onClose} />
+          <LanguageSelect onSelect={onClose} isDropDown={false} />
         </div>
         <div className={styles.nav}>
           <PageLink url="/meetups" onFollowLink={onClose} theme={Theme.Light}>
