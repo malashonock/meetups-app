@@ -21,6 +21,7 @@ export type SelectFieldProps<TValue> = InputFieldExternalProps & {
   comparerFn?: (value1: Nullable<TValue>, value2: Nullable<TValue>) => boolean;
   placeholderText?: string;
   containerAttributes?: Omit<React.HTMLAttributes<HTMLDivElement>, 'children'>;
+  isDropDown?: boolean;
 };
 
 export const SelectField = <TValue extends unknown>({
@@ -28,6 +29,7 @@ export const SelectField = <TValue extends unknown>({
   selectProps,
   comparerFn,
   containerAttributes,
+  isDropDown = true,
   ...inputFieldProps
 }: SelectFieldProps<TValue>): JSX.Element => (
   <InputField containerAttributes={containerAttributes} {...inputFieldProps}>
@@ -127,6 +129,25 @@ export const SelectField = <TValue extends unknown>({
                 classNames(styles.option, {
                   [styles.selected]: state.isSelected,
                 }),
+            }}
+            styles={{
+              menu: (baseStyles) =>
+                isDropDown
+                  ? baseStyles
+                  : {
+                      position: 'relative',
+                      zIndex: 0,
+                      border: 'none',
+                    },
+              dropdownIndicator: (baseStyles, props) => {
+                const {
+                  selectProps: { menuIsOpen },
+                } = props;
+                return {
+                  ...baseStyles,
+                  transform: menuIsOpen ? 'rotate(180deg)' : undefined,
+                };
+              },
             }}
           />
         </div>
