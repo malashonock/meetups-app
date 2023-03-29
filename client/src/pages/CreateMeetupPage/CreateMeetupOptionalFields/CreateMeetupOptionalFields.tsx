@@ -20,7 +20,14 @@ import { useLocale, useTouchOnLocaleChanged } from 'hooks';
 import styles from './CreateMeetupOptionalFields.module.scss';
 
 export const CreateMeetupOptionalFields = ({
-  dataContext: { values, errors, touched, isSubmitting, setFieldTouched },
+  dataContext: {
+    values,
+    errors,
+    touched,
+    isValidating,
+    isSubmitting,
+    setFieldTouched,
+  },
   activeStep,
   setStepPassed,
   handlePreviousStep,
@@ -31,12 +38,14 @@ export const CreateMeetupOptionalFields = ({
   useTouchOnLocaleChanged(locale, errors, touched, setFieldTouched);
 
   const hasErrors = Object.entries(errors).length > 0;
-  const isPassed = !hasErrors;
+  const isPassed = !(isValidating || hasErrors);
   const canSubmit = isPassed && !isSubmitting;
 
   useEffect(() => {
-    setStepPassed(activeStep.index, isPassed);
-  }, [isPassed]);
+    if (!isValidating) {
+      setStepPassed(activeStep.index, isPassed);
+    }
+  }, [isValidating, isPassed]);
 
   return (
     <div className={styles.container}>
