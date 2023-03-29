@@ -1,12 +1,12 @@
 ## Built With
 
-- [React](https://reactjs.org/)
+- [React](https://reactjs.org/) - the library for web and native user interfaces
 - [TypeScript](https://www.typescriptlang.org/) - a strongly typed programming language that builds on JavaScript
 - [React Router](https://reactrouter.com/en/main) - for client-side routing
 - [MobX](https://mobx.js.org/README.html) - for state management
 - [Formik](https://formik.org/) - to build forms
 - [Yup](https://github.com/jquense/yup) - to validate form fields
-- [Axios](https://axios-http.com/) - to run HTTP request against the backend
+- [Axios](https://axios-http.com/) - to run HTTP requests against the backend
 - [react-i18next](https://react.i18next.com/) - for internationalization
 - [React Datepicker](https://reactdatepicker.com/) - the basis for datetime picker component
 - [React Dropzone](https://react-dropzone.js.org/) - the basis for image uploader component
