@@ -43,11 +43,13 @@
   }
 }
 
-.error {
+.error,
+.error:focus {
   border: 2px solid $red-02;
 }
 
-.success {
+.success,
+.success:focus {
   border: 2px solid $green-02;
 }
 

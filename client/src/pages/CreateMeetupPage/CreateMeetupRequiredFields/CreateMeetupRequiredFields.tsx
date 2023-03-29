@@ -21,7 +21,7 @@ import { Nullable } from 'types';
 import styles from './CreateMeetupRequiredFields.module.scss';
 
 export const CreateMeetupRequiredFields = ({
-  dataContext: { errors, touched, isSubmitting, setFieldTouched },
+  dataContext: { errors, touched, isValidating, isSubmitting, setFieldTouched },
   activeStep,
   setStepPassed,
   handleBack,
@@ -34,12 +34,15 @@ export const CreateMeetupRequiredFields = ({
 
   const isTouched = Object.entries(touched).length > 0;
   const hasErrors = Object.entries(errors).length > 0;
-  const isPassed = (isTouched || activeStep.passed) && !hasErrors;
-  const canSubmit = isPassed && !hasErrors && !isSubmitting;
+  const isPassed =
+    (isTouched || activeStep.passed) && !(isValidating || hasErrors);
+  const canSubmit = isPassed && !isSubmitting;
 
   useEffect(() => {
-    setStepPassed(activeStep.index, isPassed);
-  }, [isPassed]);
+    if (!isValidating) {
+      setStepPassed(activeStep.index, isPassed);
+    }
+  }, [isValidating, isPassed]);
 
   return (
     <div className={styles.container}>
