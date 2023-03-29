@@ -100,15 +100,11 @@ describe('Create meetup', () => {
   });
 
   describe('given no user is logged in', () => {
-    it('should redirect to Login page', () => {
+    it('should not render Create Meetup button', () => {
       cy.visit('/meetups');
       cy.url().should('contain', '/meetups/topics');
 
-      cy.getByTestId('btn-create-meetup').click();
-
-      cy.expectToastToPopupAndDismiss(AlertSeverity.Error);
-
-      cy.url().should('contain', '/login');
+      cy.getByTestId('btn-create-meetup').should('not.exist');
     });
 
     it('should not allow to navigate to /create route via browser address bar', () => {

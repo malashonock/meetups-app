@@ -14,7 +14,7 @@ import {
 import { NotFoundPage } from 'pages';
 import { MeetupStatus } from 'model';
 import { Meetup } from 'stores';
-import { useMeetupStore } from 'hooks';
+import { useAuthStore, useMeetupStore } from 'hooks';
 import { isPast } from 'utils';
 
 import styles from './MeetupTabContent.module.scss';
@@ -25,6 +25,7 @@ interface MeetupTabContentProps {
 
 export const MeetupTabContent = observer(
   ({ variant }: MeetupTabContentProps) => {
+    const { loggedUser } = useAuthStore();
     const meetupStore = useMeetupStore();
     const { meetups } = meetupStore;
     const [selectedMeetups, setSelectedMeetups] = useState<Meetup[]>();
@@ -84,7 +85,7 @@ export const MeetupTabContent = observer(
                   count: selectedMeetups?.length || 0,
                 })}
               </div>
-              {variant === MeetupCardVariant.Topic && (
+              {loggedUser && variant === MeetupCardVariant.Topic && (
                 <Button
                   id="btn-create-meetup"
                   variant={ButtonVariant.Secondary}

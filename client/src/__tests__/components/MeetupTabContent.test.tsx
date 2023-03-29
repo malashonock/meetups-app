@@ -6,9 +6,9 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { MeetupCardVariant, MeetupTabContent } from 'components';
-import { useMeetupStore } from 'hooks';
+import { useAuthStore, useMeetupStore } from 'hooks';
 import { MeetupStatus } from 'model';
-import { generateMeetups } from 'model/__fakes__';
+import { generateMeetups, mockFullUser } from 'model/__fakes__';
 import { Meetup, RootStore } from 'stores';
 
 const TOPICS_COUNT = 10;
@@ -43,9 +43,13 @@ const mockMeetups = [
 jest.mock('hooks', () => {
   return {
     ...jest.requireActual('hooks'),
+    useAuthStore: jest.fn(),
     useMeetupStore: jest.fn(),
   };
 });
+const mockUseAuthStore = useAuthStore as jest.MockedFunction<
+  typeof useAuthStore
+>;
 const mockUseMeetupStore = useMeetupStore as jest.MockedFunction<
   typeof useMeetupStore
 >;
@@ -65,9 +69,13 @@ jest.mock('components/MeetupCard/MeetupCard', () => {
 });
 
 beforeEach(() => {
-  const { meetupStore } = new RootStore();
+  const { meetupStore, authStore } = new RootStore();
+
   meetupStore.meetups = mockMeetups;
   mockUseMeetupStore.mockReturnValue(meetupStore);
+
+  authStore.loggedUser = null;
+  mockUseAuthStore.mockReturnValue(authStore);
 });
 
 afterEach(() => {
@@ -101,11 +109,18 @@ describe('MeetupTabContent', () => {
     expect(renderedSubjects).toEqual(expectedSubjects);
   });
 
-  it('shows Create meetup button only on topics tab', () => {
+  it('shows Create meetup button only if a user is logged in and only on topics tab', () => {
     const { rerender } = render(
       <MeetupTabContent variant={MeetupCardVariant.Topic} />,
       { wrapper: MockRouter },
     );
+    expect(screen.queryByText('meetupTabContent.createMeetupBtn')).toBeNull();
+
+    const { authStore } = new RootStore();
+    authStore.loggedUser = mockFullUser;
+    mockUseAuthStore.mockReturnValue(authStore);
+
+    rerender(<MeetupTabContent variant={MeetupCardVariant.Topic} />);
     expect(
       screen.getByText('meetupTabContent.createMeetupBtn'),
     ).toBeInTheDocument();
@@ -197,6 +212,12 @@ describe('MeetupTabContent', () => {
 });
 
 describe('Create meetup button', () => {
+  beforeEach(() => {
+    const { authStore } = new RootStore();
+    authStore.loggedUser = mockFullUser;
+    mockUseAuthStore.mockReturnValue(authStore);
+  });
+
   it('on click, navigates to /meetups/create route', () => {
     render(<MeetupTabContent variant={MeetupCardVariant.Topic} />, {
       wrapper: MockRouter,
