@@ -1,16 +1,22 @@
-# Getting Started with Create React App
-
-[![pipeline status](https://gitlab.com/samfeinternship2022/kireynko-kalinin-malashonak/badges/master/pipeline.svg)](https://gitlab.com/samfeinternship2022/kireynko-kalinin-malashonak/-/commits/master)
-[![coverage report](https://gitlab.com/samfeinternship2022/kireynko-kalinin-malashonak/badges/master/coverage.svg)](https://gitlab.com/samfeinternship2022/kireynko-kalinin-malashonak/-/commits/master)
-
 ## Built With
 
 - [React](https://reactjs.org/)
-- [Jest](https://jestjs.io) - unit testing framework
-- [ESLint](https://eslint.org/) - JavaScript linting utility
-- [Cypress](https://www.cypress.io/) - tools for e2e and integration tests
 - [TypeScript](https://www.typescriptlang.org/) - a strongly typed programming language that builds on JavaScript
-- [Storybook](https://storybook.js.org/)
+- [React Router](https://reactrouter.com/en/main) - for client-side routing
+- [MobX](https://mobx.js.org/README.html) - for state management
+- [Formik](https://formik.org/) - to build forms
+- [Yup](https://github.com/jquense/yup) - to validate form fields
+- [Axios](https://axios-http.com/) - to run HTTP request against the backend
+- [react-i18next](https://react.i18next.com/) - for internationalization
+- [React Datepicker](https://reactdatepicker.com/) - the basis for datetime picker component
+- [React Dropzone](https://react-dropzone.js.org/) - the basis for image uploader component
+- [React Select](https://react-select.com/home) - the basis for dropdown components
+- [Jest](https://jestjs.io) - unit testing framework
+- [Cypress](https://www.cypress.io/) - tools for e2e and integration tests
+- [Storybook](https://storybook.js.org/) - a frontend workshop for building UI components and pages in isolation
+- [Faker](https://fakerjs.dev/) - to generate fake data in tests
+- [ESLint](https://eslint.org/) - JavaScript linting utility
+- [Prettier](https://prettier.io/) - an opinionated code formatter
 
 ## Resources
 
