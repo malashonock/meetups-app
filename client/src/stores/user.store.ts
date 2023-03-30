@@ -7,10 +7,10 @@ import {
 } from 'mobx';
 
 import * as API from 'api';
-import { AuthStore, FullUser } from 'stores';
+import { AuthStore } from 'stores';
 import { IUser } from 'model';
 import { getFirstLetter } from 'utils';
-import { Loadable, Maybe, Nullable, Optional } from 'types';
+import { Loadable, Maybe, Optional } from 'types';
 
 export class UserStore extends Loadable {
   authStore: AuthStore;

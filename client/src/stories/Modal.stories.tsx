@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta } from '@storybook/react';
 
 import { Modal } from 'components';
 

@@ -1,13 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import {
-  Button,
-  ButtonVariant,
-  Stepper,
-  StepperContext,
-  Typography,
-  TypographyComponent,
-} from 'components';
+import { Button, ButtonVariant, Stepper, StepperContext } from 'components';
 import { withRouter } from 'storybook-addon-react-router-v6';
 
 /* Mocked steps */

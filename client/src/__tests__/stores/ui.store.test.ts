@@ -1,17 +1,13 @@
-import { makePersistable, stopPersisting } from 'mobx-persist-store';
+import { makePersistable } from 'mobx-persist-store';
 
 import { UiStore, RootStore, Locale } from 'stores';
 import { Alert, AlertSeverity } from 'types';
 
 jest.mock('mobx-persist-store', () => ({
   makePersistable: jest.fn(),
-  stopPersisting: jest.fn(),
 }));
 const mockMobXMakePersistable = makePersistable as jest.MockedFunction<
   typeof makePersistable
->;
-const mockMobXStopPersisting = stopPersisting as jest.MockedFunction<
-  typeof stopPersisting
 >;
 
 describe('UiStore', () => {

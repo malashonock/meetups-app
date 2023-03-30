@@ -2,7 +2,6 @@ import { renderHook } from '@testing-library/react';
 
 import { useMeetup } from 'hooks';
 import { useMeetupStore } from 'hooks/useMeetupStore';
-import { NotFoundError } from 'model';
 import { mockMeetup } from 'model/__fakes__';
 import { RootStore } from 'stores';
 

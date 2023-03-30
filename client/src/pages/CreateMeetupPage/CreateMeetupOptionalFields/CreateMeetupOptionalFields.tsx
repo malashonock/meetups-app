@@ -45,7 +45,7 @@ export const CreateMeetupOptionalFields = ({
     if (!isValidating) {
       setStepPassed(activeStep.index, isPassed);
     }
-  }, [isValidating, isPassed]);
+  }, [isValidating, isPassed, activeStep.index, setStepPassed]);
 
   return (
     <div className={styles.container}>

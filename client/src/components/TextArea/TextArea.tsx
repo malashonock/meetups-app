@@ -37,7 +37,7 @@ export const TextArea = ({
       // Trying to set this with state or a ref will product an incorrect value.
       textArea.style.height = textAreaHeight + 'px';
     }
-  }, [textAreaRef.current, value]);
+  }, [value]);
 
   const charCount = value?.toString().length ?? 0;
 

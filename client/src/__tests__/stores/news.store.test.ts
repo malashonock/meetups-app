@@ -1,5 +1,4 @@
 import * as MobX from 'mobx';
-import { AxiosError } from 'axios';
 
 import { NewsStore, RootStore, News } from 'stores';
 import * as NewsApi from 'api/services/news.service';
@@ -39,7 +38,7 @@ afterEach(() => {
 describe('NewsStore', () => {
   describe('constructor', () => {
     it('should make the returned instance observable', () => {
-      const newsStore = new NewsStore(new RootStore());
+      new NewsStore(new RootStore());
       expect(spiedOnMobXMakeObservable).toHaveBeenCalled();
     });
 
@@ -251,10 +250,7 @@ describe('NewsStore', () => {
 describe('News', () => {
   describe('constructor', () => {
     it('should make the returned instance observable', () => {
-      const newsArticle = new News(
-        mockNewsArticleData,
-        new NewsStore(new RootStore()),
-      );
+      new News(mockNewsArticleData, new NewsStore(new RootStore()));
       expect(spiedOnMobXMakeObservable).toHaveBeenCalled();
     });
 

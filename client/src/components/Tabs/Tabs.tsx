@@ -33,10 +33,13 @@ export function Tabs({ children }: PropsWithChildren) {
     setActiveTabValue(e.target.dataset.tabValue as string);
   };
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useLayoutEffect(() => {
     setActiveTabValue(arrayChildren[0].props.value);
   }, []);
+  /* eslint-enable react-hooks/exhaustive-deps */
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useLayoutEffect(() => {
     const index = arrayChildren.findIndex(
       (child: ReactElement<TabProps>): boolean =>
@@ -45,6 +48,7 @@ export function Tabs({ children }: PropsWithChildren) {
 
     setIndicatorPosition(index + 1);
   }, [activeTabValue]);
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   return (
     <>

@@ -2,7 +2,6 @@ import { renderHook } from '@testing-library/react';
 
 import { useNewsArticle } from 'hooks';
 import { useNewsStore } from 'hooks/useNewsStore';
-import { NotFoundError } from 'model';
 import { mockNewsArticle } from 'model/__fakes__';
 import { RootStore } from 'stores';
 

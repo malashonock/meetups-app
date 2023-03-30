@@ -24,7 +24,7 @@ afterEach(() => {
 describe('AuthStore', () => {
   describe('constructor', () => {
     it('should make the returned instance observable', () => {
-      const authStore = new AuthStore(new RootStore());
+      new AuthStore(new RootStore());
       expect(spiedOnMobXMakeObservable).toHaveBeenCalled();
     });
 

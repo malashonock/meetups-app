@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { BurgerButton, ButtonVariant } from 'components';
+import { BurgerButton } from 'components';
 import { useState } from 'react';
 
 export default {

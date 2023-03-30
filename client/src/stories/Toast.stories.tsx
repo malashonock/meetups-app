@@ -1,8 +1,7 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import { Toast } from 'components';
-import { RootStore, UiStore } from 'stores';
-import { Alert, AlertSeverity } from 'types';
+import { AlertSeverity } from 'types';
 
 export default {
   title: 'Components/Toast',

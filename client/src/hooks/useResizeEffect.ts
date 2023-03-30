@@ -25,10 +25,12 @@ export const useResizeEffect = <T extends HTMLElement>(
     window.addEventListener('resize', updateContainerSize);
     return (): void =>
       window.removeEventListener('resize', updateContainerSize);
-  }, [containerRef.current]);
+  }, [containerRef]);
 
   // run effect on container resize
+  /* eslint-disable react-hooks/exhaustive-deps */
   useLayoutEffect((): void => {
     effect(containerWidth, containerHeight);
-  }, [containerWidth, containerHeight, ...externalDeps]);
+  }, [effect, containerWidth, containerHeight, ...externalDeps]);
+  /* eslint-enable react-hooks/exhaustive-deps */
 };

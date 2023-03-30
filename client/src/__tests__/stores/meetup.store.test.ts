@@ -80,7 +80,7 @@ afterEach(() => {
 describe('MeetupStore', () => {
   describe('constructor', () => {
     it('should make the returned instance observable', () => {
-      const meetupStore = new MeetupStore(new RootStore());
+      new MeetupStore(new RootStore());
       expect(spiedOnMobXMakeObservable).toHaveBeenCalled();
     });
 
@@ -285,7 +285,7 @@ describe('MeetupStore', () => {
 describe('Meetup', () => {
   describe('constructor', () => {
     it('should make the returned instance observable', () => {
-      const meetup = new Meetup(mockMeetupData, mockMeetupStore);
+      new Meetup(mockMeetupData, mockMeetupStore);
       expect(spiedOnMobXMakeObservable).toHaveBeenCalled();
     });
 
@@ -326,7 +326,7 @@ describe('Meetup', () => {
 
       it('should not call API getStaticFile() function', async () => {
         const meetup = new Meetup(meetupData, mockMeetupStore);
-        const initializedMeetup = await meetup.init();
+        await meetup.init();
         expect(spiedOnGetStaticFile).not.toHaveBeenCalled();
       });
 
@@ -341,7 +341,7 @@ describe('Meetup', () => {
     describe('given imageUrl field is not empty', () => {
       it('should call API getStaticFile() function', async () => {
         const meetup = new Meetup(mockMeetupData, mockMeetupStore);
-        const initializedMeetup = await meetup.init();
+        await meetup.init();
         expect(spiedOnGetStaticFile).toHaveBeenCalledWith(meetup.imageUrl);
       });
 
@@ -373,7 +373,7 @@ describe('Meetup', () => {
           rootStore.onAlert = spiedOnRootStoreOnAlert;
           const meetup = new Meetup(mockMeetupData, rootStore.meetupStore);
 
-          const initializedMeetup = await meetup.init();
+          await meetup.init();
 
           expect(spiedOnRootStoreOnAlert).toHaveBeenCalledTimes(1);
           expect(spiedOnRootStoreOnAlert.mock.calls[0][0].severity).toBe(
@@ -673,10 +673,6 @@ describe('Meetup', () => {
 
     it('should return false if the logged user is the author of the meetup', () => {
       const rootStore = new RootStore();
-      const meetupData: IMeetup = {
-        ...mockMeetupData,
-        author: mockUserData,
-      };
       const meetup = new Meetup(mockMeetupData, rootStore.meetupStore);
       jest.spyOn(meetup, 'actor', 'get').mockReturnValue(mockFullUser);
       expect(meetup!.canLoggedUserSupport).toBe(false);
@@ -684,10 +680,6 @@ describe('Meetup', () => {
 
     it('should return false if the logged user is one of the speakers of the meetup', () => {
       const rootStore = new RootStore();
-      const meetupData: IMeetup = {
-        ...mockMeetupData,
-        speakers: [mockUserData],
-      };
       const meetup = new Meetup(mockMeetupData, rootStore.meetupStore);
       jest.spyOn(meetup, 'actor', 'get').mockReturnValue(mockFullUser);
       expect(meetup!.canLoggedUserSupport).toBe(false);

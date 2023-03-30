@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { i18n } from 'i18next';
 
@@ -65,12 +65,38 @@ export const Stepper = <T extends unknown>({
 
   const activeStep: StepState<T> = stepsState[activeStepIndex];
 
+  const setStepPassed = useCallback(
+    (stepIndex: number, state: boolean): void => {
+      const isStepAlreadyPassed = passedStepsIndices.includes(stepIndex);
+
+      if (state === true && !isStepAlreadyPassed) {
+        // add step to the list of passed steps
+        setPassedStepsIndices([...passedStepsIndices, stepIndex]);
+      }
+
+      if (state === false && isStepAlreadyPassed) {
+        // remove step from the list of passed steps
+        setPassedStepsIndices(
+          passedStepsIndices.filter(
+            (passedStepIndex) => passedStepIndex !== stepIndex,
+          ),
+        );
+      }
+    },
+    [passedStepsIndices],
+  );
+
   // mark as passed visited steps that don't require validation
   useEffect(() => {
     if (activeStep.noValidate && !activeStep.passed) {
       setStepPassed(activeStepIndex, true);
     }
-  }, [activeStepIndex]);
+  }, [
+    activeStepIndex,
+    activeStep.noValidate,
+    activeStep.passed,
+    setStepPassed,
+  ]);
 
   // sync steps state with changes in active step selection or validation status
   const updateStepState = (stepState: StepState<T>): StepState<T> => {
@@ -102,28 +128,12 @@ export const Stepper = <T extends unknown>({
     };
   };
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect((): void => {
     const updatedStepsState = stepsState.map(updateStepState);
     setStepsState([...updatedStepsState]);
   }, [activeStepIndex, passedStepsIndices]);
-
-  const setStepPassed = (stepIndex: number, state: boolean): void => {
-    const isStepAlreadyPassed = passedStepsIndices.includes(stepIndex);
-
-    if (state === true && !isStepAlreadyPassed) {
-      // add step to the list of passed steps
-      setPassedStepsIndices([...passedStepsIndices, stepIndex]);
-    }
-
-    if (state === false && isStepAlreadyPassed) {
-      // remove step from the list of passed steps
-      setPassedStepsIndices(
-        passedStepsIndices.filter(
-          (passedStepIndex) => passedStepIndex !== stepIndex,
-        ),
-      );
-    }
-  };
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   const navigate = useNavigate();
   const handleBack = () => navigate(-1);
