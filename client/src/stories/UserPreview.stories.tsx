@@ -1,6 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { UserPreview, UserPreviewVariant } from 'components';
-import { UserRole } from 'model';
 import { User } from 'stores';
 
 export default {

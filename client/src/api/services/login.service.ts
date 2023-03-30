@@ -1,5 +1,5 @@
 import { httpClient } from 'api';
-import { Credentials, IFullUser, IUser } from 'model';
+import { Credentials, IFullUser } from 'model';
 
 export const login = async (credentials: Credentials): Promise<IFullUser> => {
   const { data: authenticatedUser } = await httpClient.post<IFullUser>(

@@ -20,7 +20,7 @@ const TestChildComponent = observer((): JSX.Element => {
       });
       setChoice(userChoice);
     })();
-  }, []);
+  }, [confirm]);
 
   return <div data-testid="choice">{JSON.stringify(choice)}</div>;
 });

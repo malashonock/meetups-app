@@ -58,6 +58,8 @@ export const SelectField = <TValue extends unknown>({
               if (selectProps.options) {
                 const matchingOption = findOptionByValue(value);
                 return matchingOption;
+              } else {
+                return undefined;
               }
             })
             .filter(

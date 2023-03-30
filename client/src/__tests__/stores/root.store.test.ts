@@ -6,7 +6,6 @@ import {
   NewsStore,
   RootStore,
   UiStore,
-  UserStore,
 } from 'stores';
 
 const spiedOnAuthStoreInit = jest.spyOn(AuthStore.prototype, 'init');

@@ -28,7 +28,7 @@ afterEach(() => {
 describe('UserStore', () => {
   describe('constructor', () => {
     it('should make the returned instance observable', () => {
-      const userStore = new UserStore(mockAuthStore);
+      new UserStore(mockAuthStore);
       expect(spiedOnMobXMakeObservable).toHaveBeenCalled();
     });
 
@@ -153,7 +153,7 @@ describe('UserStore', () => {
 describe('User', () => {
   describe('constructor', () => {
     it('should make the returned instance observable', () => {
-      const user = new User(mockUserData);
+      new User(mockUserData);
       expect(spiedOnMobXMakeObservable).toHaveBeenCalled();
     });
 

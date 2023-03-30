@@ -1,5 +1,4 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import i18n from 'i18n';
 
 import { API_BASE_URL } from 'api/constants';
 import {

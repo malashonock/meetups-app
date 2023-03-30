@@ -15,7 +15,6 @@ import {
   mockFullUser2,
   mockUser,
   mockUser2,
-  mockMeetupStore,
 } from 'model/__fakes__';
 import { useAuthStore, useLocale, useMeetup, useMeetupStore } from 'hooks';
 import { Locale, Meetup, RootStore } from 'stores';

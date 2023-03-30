@@ -39,6 +39,7 @@ export const ProtectedRoute = observer(
 
     const redirectTarget = redirectTo ?? defaultRedirect;
 
+    /* eslint-disable react-hooks/exhaustive-deps */
     useEffect((): void => {
       if (doRedirect) {
         switch (redirectIf) {
@@ -63,6 +64,7 @@ export const ProtectedRoute = observer(
         }
       }
     }, [doRedirect, redirectIf]);
+    /* eslint-enable react-hooks/exhaustive-deps */
 
     if (!authStore.isInitialized) {
       return <LoadingSpinner />;

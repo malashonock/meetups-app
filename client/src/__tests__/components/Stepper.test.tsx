@@ -1,4 +1,4 @@
-import { PropsWithChildren, useState } from 'react';
+import { PropsWithChildren } from 'react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 
@@ -142,7 +142,6 @@ const getNextBtn = () => screen.getByTestId('next-btn');
 const getSubmitBtn = () => screen.getByTestId('submit-btn');
 const getPassBtn = () => screen.getByTestId('pass-btn');
 const getFailBtn = () => screen.getByTestId('fail-btn');
-const getCounterBtn = () => screen.getByTestId('counter-btn');
 
 describe('Stepper', () => {
   it('should progress forward correctly', () => {

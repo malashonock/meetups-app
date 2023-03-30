@@ -9,13 +9,13 @@ export type TabsContextType = {
 
 export const TabsContext = React.createContext<TabsContextType | null>(null);
 
-interface Tab {
+interface TabConfig {
   title: string;
   element: JSX.Element;
 }
 
 interface TabsManagerProps {
-  tabs: Tab[];
+  tabs: TabConfig[];
 }
 
 export const TabsManager = ({ tabs }: TabsManagerProps) => {
@@ -25,7 +25,7 @@ export const TabsManager = ({ tabs }: TabsManagerProps) => {
     <TabsContext.Provider value={{ activeTabValue, setActiveTabValue }}>
       <Tabs>
         {tabs.map(
-          (tab: Tab, index: number): JSX.Element => (
+          (tab: TabConfig, index: number): JSX.Element => (
             <Tab value={`${index}`} key={tab.title}>
               {tab.title}
             </Tab>
@@ -33,7 +33,7 @@ export const TabsManager = ({ tabs }: TabsManagerProps) => {
         )}
       </Tabs>
       {tabs.map(
-        (tab: Tab, index: number): JSX.Element => (
+        (tab: TabConfig, index: number): JSX.Element => (
           <TabContent key={index} value={`${index}`}>
             {tab.element}
           </TabContent>

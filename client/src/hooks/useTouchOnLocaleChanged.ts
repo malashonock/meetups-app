@@ -18,5 +18,5 @@ export const useTouchOnLocaleChanged = <T>(
         setFieldTouched(fieldName);
       }
     });
-  }, [locale]);
+  }, [locale, errors, touched, setFieldTouched]);
 };

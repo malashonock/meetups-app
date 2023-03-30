@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 
 import { User } from 'stores';
-import { Tooltip, TooltipVariant, Typography } from 'components';
+import { Tooltip, Typography } from 'components';
 
 import styles from './UserPreview.module.scss';
 

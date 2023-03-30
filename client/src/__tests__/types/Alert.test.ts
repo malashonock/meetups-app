@@ -1,5 +1,5 @@
 import * as MobX from 'mobx';
-import { RootStore, UiStore } from 'stores';
+import { RootStore } from 'stores';
 
 import { Alert, AlertSeverity } from 'types';
 
@@ -21,7 +21,7 @@ afterEach(() => {
 describe('Alert class', () => {
   describe('constructor', () => {
     it('should make the created instance observable', () => {
-      const alert = new Alert(
+      new Alert(
         {
           severity: AlertSeverity.Error,
           text: 'An error occurred',

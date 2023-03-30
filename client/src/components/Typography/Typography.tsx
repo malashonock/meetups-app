@@ -16,6 +16,7 @@ export enum TypographyComponent {
 
 type HTMLElementName = keyof JSX.IntrinsicElements;
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 type HTMLElement<TElementName extends HTMLElementName> =
   JSX.IntrinsicElements[TElementName] extends DetailedHTMLProps<
     infer TAttributes,
@@ -23,6 +24,7 @@ type HTMLElement<TElementName extends HTMLElementName> =
   >
     ? TElement
     : never;
+/* eslint-enable @typescript-eslint/no-unused-vars */
 
 type TypographyProps = {
   component?: TypographyComponent;

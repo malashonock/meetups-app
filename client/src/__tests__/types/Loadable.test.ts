@@ -8,8 +8,7 @@ const spiedOnMobXMakeObservable = jest.spyOn(MobX, 'makeObservable');
 describe('Loadable class', () => {
   describe('constructor', () => {
     it('should call makeObservable', () => {
-      const loadable = new Loadable();
-
+      new Loadable();
       expect(spiedOnMobXMakeObservable).toHaveBeenCalled();
     });
 
@@ -75,7 +74,7 @@ describe('Loadable class', () => {
 
       const task = loadable.tryLoad(mockFailedTask);
 
-      const result = await task;
+      await task;
 
       expect(mockErrorHandler).toHaveBeenCalledWith(mockServerError);
     });
@@ -91,7 +90,7 @@ describe('Loadable class', () => {
 
       const task = loadable.tryLoad(mockFailedTask, mockCustomErrorHandler);
 
-      const result = await task;
+      await task;
 
       expect(mockErrorHandler).not.toHaveBeenCalled();
       expect(mockCustomErrorHandler).toHaveBeenCalledWith(mockServerError);

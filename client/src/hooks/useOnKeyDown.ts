@@ -13,5 +13,5 @@ export const useOnKeyDown = (key: string, effect: () => void): void => {
     return () => {
       document.removeEventListener('keydown', handler);
     };
-  }, [effect]);
+  }, [effect, key]);
 };

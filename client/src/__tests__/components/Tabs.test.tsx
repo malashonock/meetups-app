@@ -33,7 +33,6 @@ describe('Tabs', () => {
       },
     );
 
-    const tab1 = screen.queryByText('Tab 1') as HTMLElement;
     const tab2 = screen.getByText('Tab 2') as HTMLElement;
 
     userEvent.click(tab2);
